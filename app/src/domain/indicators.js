@@ -2,6 +2,7 @@ import {unionDuration,eventDate} from './time.js';
 import {evaluateReading} from './limits.js';
 import {summarizeReadings} from './statistics.js';
 import {normalizeCorrection} from './review.js';
+import {requireThat} from './errors.js';
 const sumKnown=(rows,key)=>rows.length?rows.reduce((n,r)=>n+r[key],0):null;
 const contextKey=context=>JSON.stringify(Object.entries(context??{}).sort(([a],[b])=>a.localeCompare(b)));
 function ranking(rows,key,unit) {
@@ -23,13 +24,14 @@ export function effectiveRecords(type,rows,corrections=[]) {
   });return {items,conflicts};
 }
 export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}={}) {
+  requireThat(Number.isSafeInteger(from)&&Number.isSafeInteger(to)&&from>=0&&to>from,'INVALID_PERIOD');
   const notes=[],alerts=[],series=[],groups=new Map();
   const production=data.production??[],losses=data.losses??[],stoppages=data.stoppages??[],collections=data.collections??[];
   const included=production.filter(p=>p.startedAt>=from&&p.endedAt<=to);
   if(production.some(p=>p.startedAt<to&&p.endedAt>from&&!included.includes(p))) {notes.push('production-crosses-period-no-proration');complete=false;}
   const gross=included.filter(p=>p.basis==='gross'),good=included.filter(p=>p.basis==='good');
-  const rejected=losses.filter(l=>l.kind==='reject'&&l.unit==='pieces'),mass=losses.filter(l=>l.unit==='kg'),rework=losses.filter(l=>l.kind==='rework'&&l.unit==='pieces');
-  const totals={grossPieces:sumKnown(gross,'quantity'),goodPieces:sumKnown(good,'quantity'),rejectedPieces:sumKnown(rejected,'amount'),lossKg:sumKnown(mass,'amount'),reworkPieces:sumKnown(rework,'amount'),stopMinutes:null,openStoppages:0,rejectPercent:null};
+  const rejected=losses.filter(l=>l.kind==='reject'&&l.unit==='pieces'),mass=losses.filter(l=>l.unit==='kg'&&l.kind!=='rework'),rework=losses.filter(l=>l.kind==='rework'&&l.unit==='pieces'),reworkMass=losses.filter(l=>l.kind==='rework'&&l.unit==='kg');
+  const totals={grossPieces:sumKnown(gross,'quantity'),goodPieces:sumKnown(good,'quantity'),rejectedPieces:sumKnown(rejected,'amount'),lossKg:sumKnown(mass,'amount'),reworkPieces:sumKnown(rework,'amount'),reworkKg:sumKnown(reworkMass,'amount'),stopMinutes:null,openStoppages:0,rejectPercent:null};
   const perMachine=new Map();for(const s of stoppages) {const key=s.context.machineId,rows=perMachine.get(key)??[];rows.push(s);perMachine.set(key,rows);}
   let stopMs=0,overlap=false;
   for(const rows of perMachine.values()) {const result=unionDuration(rows,{from,to});stopMs+=result.milliseconds;totals.openStoppages+=result.openCount;overlap||=result.hasOverlap;}
@@ -49,7 +51,7 @@ export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}
   }
   const statistics=[...groups.values()].map(g=>({...g,readings:undefined,...summarizeReadings(g.readings,{sigmaMethod,rule:data.parameterVersions?.[g.versionId]?.rule})}));
   const closed=stoppages.filter(s=>s.endedAt!=null&&s.startedAt<to&&s.endedAt>from).map(s=>({...s,minutes:(Math.min(s.endedAt,to)-Math.max(s.startedAt,from))/60000}));
-  const reasonRanking={stopMinutes:ranking(closed,'minutes','minutes'),rejectedPieces:ranking(rejected,'amount','pieces'),lossKg:ranking(mass,'amount','kg'),reworkPieces:ranking(rework,'amount','pieces')};
+  const reasonRanking={stopMinutes:ranking(closed,'minutes','minutes'),rejectedPieces:ranking(rejected,'amount','pieces'),lossKg:ranking(mass,'amount','kg'),reworkPieces:ranking(rework,'amount','pieces'),reworkKg:ranking(reworkMass,'amount','kg')};
   for(const target of (data.targets??[]).filter(t=>t.active)) {
     if(!complete||target.fromDate!==eventDate(from)||target.toDate!==eventDate(to-1)) {notes.push(`target-window-unavailable:${target.id}`);continue;}
     const scoped={production:included.filter(r=>contextKey(r.context)===contextKey(target.context)),losses:losses.filter(r=>contextKey(r.context)===contextKey(target.context)),stoppages:stoppages.filter(r=>contextKey(r.context)===contextKey(target.context)),collections:[]};

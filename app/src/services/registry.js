@@ -1,6 +1,7 @@
 import {assertRole,assertId,knownKeys,requireThat} from '../domain/errors.js';
 import {validateRule} from '../domain/limits.js';
 import {loadContext} from '../domain/context.js';
+import {validateDate} from '../domain/time.js';
 export const registryKinds=['machines','processes','products','parameters','reasons','targets'];
 const extras={machines:[],processes:['machineId'],products:['processIds'],parameters:['processId'],reasons:['kind'],targets:['metric','unit','fromDate','toDate','context','operator','threshold']};
 export function createRegistryService({repo,actor,idFactory=()=>crypto.randomUUID()}) {
@@ -22,7 +23,7 @@ export function createRegistryService({repo,actor,idFactory=()=>crypto.randomUUI
     if(kind==='targets') {
       requireThat(({producedPieces:'pieces',stopMinutes:'minutes',rejectedPieces:'pieces',lossKg:'kg'})[payload.metric]===payload.unit,'INVALID_UNIT');
       requireThat(['lower','upper'].includes(payload.operator)&&Number.isFinite(payload.threshold)&&payload.threshold>=0,'VALIDATION','threshold');
-      requireThat(/^\d{4}-\d{2}-\d{2}$/.test(payload.fromDate)&&payload.fromDate<=payload.toDate,'INVALID_PERIOD');
+      validateDate(payload.fromDate);validateDate(payload.toDate);requireThat(payload.fromDate<=payload.toDate,'INVALID_PERIOD');
       await loadContext(repo,payload.context);
     }
   }

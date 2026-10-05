@@ -19,5 +19,9 @@ test('integrated synthetic workflow persists operations, human decision, revisio
   const history=await view.history.loadPeriod({fromDate:'2026-10-05',toDate:'2026-10-05',context:{machineId:f.context.machineId}});
   assert.equal(history.complete,true);assert.equal(history.effective.production[0].quantity,99);assert.equal(history.production[0].quantity,100);assert.equal(history.reviews[0].state,'approved');
   assert.ok(view.csv.exportRecords(history.production,['quantity','basis','context.machineId']).includes('100'));
+  const collectionCorrection=await op.analysis.requestCorrection({recordType:'collections',recordId:col.id,replacement:{...col,readings:{[f.parameterId]:{...col.readings[f.parameterId],raw:'-550',value:-550}}},reason:'Synthetic value review'});
+  const changed=await eng.analysis.decideCorrection(collectionCorrection.id,{decision:'approved',justification:'Synthetic source checked'});
+  assert.equal(changed.replacement.readings[f.parameterId].value,-550);
+  assert.equal((await repo('view').get(`collections/${col.id}`)).readings[f.parameterId].value,-650);
   await assert.rejects(()=>view.operations.recordProduction({context:f.context,quantity:1,basis:'gross',startedAt:time,endedAt:time+100}),{code:'FORBIDDEN'});
 });

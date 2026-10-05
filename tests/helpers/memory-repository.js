@@ -14,7 +14,7 @@ export function memoryRepository() {
     const limit=q.limit??200,items=rows.slice(0,limit),complete=rows.length<=limit,last=items.at(-1);
     return {items,complete,nextCursor:!complete?{date:last.eventDate,key:last.id}:null};
   };
-  return {timestamp:()=>Date.UTC(2026,9,5),get:async path=>get(path),
+  return {listenerCount:()=>listeners.size,timestamp:()=>Date.UTC(2026,9,5),get:async path=>get(path),
     create:async(path,data)=>{requireThat(!values.has(path),'CONFLICT'); values.set(path,clone(data));notify();return clone(data);},
     updateRegistry:async(path,patch)=>{requireThat(values.has(path),'NOT_FOUND');const value={...get(path),...patch};values.set(path,value);notify();return clone(value);},
     transact:async(path,updater)=>{const next=updater(get(path));requireThat(next!==undefined,'CONFLICT');values.set(path,clone(next));notify();return clone(next);},

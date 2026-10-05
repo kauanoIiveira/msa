@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {parseReading} from '../../app/src/domain/numbers.js';
 
 test('preserves zero, signed vacuum and unambiguous decimal inputs', () => {
-  for (const [raw, value] of [['0,8', 0.8], ['0.8', 0.8], ['-600', -600], [0, 0]]) {
+  for (const [raw, value] of [['0,8', 0.8], ['0.8', 0.8], ['-600', -600], [0, 0], [1e-7, 1e-7], [1e308, 1e308]]) {
     assert.equal(parseReading(raw).value, value);
     assert.equal(parseReading(raw).status, 'valid');
   }

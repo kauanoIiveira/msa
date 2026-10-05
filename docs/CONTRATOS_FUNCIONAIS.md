@@ -64,7 +64,7 @@ query: fromDate/toDate ISO, context parcial opcional, limit (padrao 200, max 500
 
 Production/stoppages precisam de inicios anteriores para encontrar intervalos que atravessam o recorte. loadPeriod faz essa busca em paginas limitadas; conjuntos truncados sao parciais. Nao ratear pecas de uma producao que cruza a janela. Tempo parado usa uniao por maquina; Pareto por motivo conserva aviso de sobreposicao. Ausencia de apontamento nao comprova perda zero.
 
-buildIndicators retorna totals, series, statistics, reasonRanking, alerts, complete, notes. Separar unidades/denominadores; refugo% exige producao bruta compativel e cobertura completa. comparePeriods retorna periods e changes com difference/percentChange; base zero ou ausente nao produz percentual.
+buildIndicators retorna totals, series, statistics, reasonRanking, alerts, complete, notes. Exige janela positiva explicita em milissegundos. Separar unidades/denominadores; refugo% exige producao bruta compativel e cobertura completa. Retrabalho em kg fica em reworkKg, nao em lossKg. comparePeriods retorna periods e changes com difference/percentChange; base zero ou ausente nao produz percentual.
 
 summarizeReadings exige sigmaMethod population/sample; nValid/nMissing/nInvalid, media, minimo/maximo, sigma e Cp/Cpk demonstrativos com homologated=false. N insuficiente, dispersao zero e faixa inadequada retornam null/motivo. Nao mistura versoes/contextos; nao implementa normalidade ou um n minimo universal de liberacao.
 

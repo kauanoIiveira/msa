@@ -1,6 +1,7 @@
 import {assertRole,requireThat,knownKeys} from './errors.js';
 import {assertPeriod} from './time.js';
 import {parseReading} from './numbers.js';
+import {stableStringify} from './canonical.js';
 export function normalizeCorrection(record) {
   if(record?.recordType!=='collections') return record;
   const readings=record.replacement?.readings;
@@ -18,7 +19,7 @@ export function validateReplacement(type,original,replacement) {
   requireThat(['collections','production','losses','stoppages'].includes(type),'INVALID_KIND');
   knownKeys(replacement,Object.keys(original));
   for(const key of ['id','context','origin','createdBy','createdAt','timePrecision','eventDate','occurredAt','source','kind','unit','basis','planned']) {
-    requireThat(JSON.stringify(replacement[key])===JSON.stringify(original[key]),'CORRECTION_CONTEXT',key);
+    requireThat(stableStringify(replacement[key])===stableStringify(original[key]),'CORRECTION_CONTEXT',key);
   }
   if(type==='production') {
     requireThat(Number.isSafeInteger(replacement.quantity)&&replacement.quantity>=0&&replacement.quantity<=1e12,'INVALID_QUANTITY');assertPeriod(replacement.startedAt,replacement.endedAt);
@@ -29,6 +30,8 @@ export function validateReplacement(type,original,replacement) {
     requireThat(Object.keys(original.readings).sort().join('|')===Object.keys(replacement.readings??{}).sort().join('|'),'CORRECTION_CONTEXT');
     for(const [id,r] of Object.entries(replacement.readings)) {
       const old=original.readings[id];requireThat(r.parameterId===old.parameterId&&r.versionId===old.versionId,'CORRECTION_CONTEXT');
+      knownKeys(r,['parameterId','versionId','raw','status','value']);
+      if(r.raw===old.raw&&r.status===old.status&&r.value===old.value) continue;
       const parsed=parseReading(r.raw);requireThat(r.status===parsed.status&&r.value===parsed.value,'INVALID_READINGS');
     }
   }

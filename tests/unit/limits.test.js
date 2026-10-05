@@ -15,3 +15,7 @@ test('uses declared signed inequality and never approves draft or missing', () =
   assert.equal(evaluateReading(parseReading('-650'),{...version,status:'draft'}).state,'pending');
   assert.equal(evaluateReading(parseReading(null),version).state,'missing');
 });
+test('malformed valid readings cannot receive an inside-limit state',()=>{
+  const version={status:'approved',rule:{kind:'range',lower:0,upper:1}};
+  for(const value of [undefined,NaN,Infinity]) assert.equal(evaluateReading({status:'valid',value},version).state,'invalid');
+});

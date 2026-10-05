@@ -213,10 +213,10 @@
               ".validate": "newData.isString() && (newData.val() == 'pieces' || newData.val() == 'minutes' || newData.val() == 'kg') && (!data.parent().exists() || newData.val() == data.val())"
             },
             "fromDate": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 10 && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "toDate": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 10 && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "context": {
               ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true)) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
@@ -350,7 +350,7 @@
               ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
             },
             "eventDate": {
-              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "timePrecision": {
               ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
@@ -453,7 +453,7 @@
               ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
             },
             "eventDate": {
-              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "timePrecision": {
               ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
@@ -544,7 +544,7 @@
               ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
             },
             "eventDate": {
-              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "timePrecision": {
               ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
@@ -635,7 +635,7 @@
               ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
             },
             "eventDate": {
-              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "timePrecision": {
               ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
@@ -691,7 +691,7 @@
           ],
           "$id": {
             ".write": "(!data.exists() ? (auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && newData.child('state').val() == 'waiting') : (auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && ((data.child('state').val() == 'waiting' && newData.child('state').val() == 'analyzing') || (data.child('state').val() == 'analyzing' && (newData.child('state').val() == 'approved' || newData.child('state').val() == 'rejected'))))) && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"eventDate\",\"context\",\"collectionId\",\"scope\",\"state\",\"history\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child('collections').child(newData.child('collectionId').val()).exists()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('collectionId') || newData.hasChild('collectionId')) && (!data.hasChild('scope') || newData.hasChild('scope')) && (!data.hasChild('state') || newData.hasChild('state')) && (!data.hasChild('history') || newData.hasChild('history')))",
+            ".validate": "newData.hasChildren([\"id\",\"eventDate\",\"context\",\"collectionId\",\"scope\",\"state\",\"history\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child('collections').child(newData.child('collectionId').val()).exists() && newData.child('eventDate').val() == root.child('workspaces').child($ws).child('collections').child(newData.child('collectionId').val()).child('eventDate').val()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('collectionId') || newData.hasChild('collectionId')) && (!data.hasChild('scope') || newData.hasChild('scope')) && (!data.hasChild('state') || newData.hasChild('state')) && (!data.hasChild('history') || newData.hasChild('history')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -702,7 +702,7 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "eventDate": {
-              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "context": {
               ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (true) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
@@ -812,7 +812,7 @@
           ],
           "$id": {
             ".write": "(!data.exists() ? (auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && newData.child('state').val() == 'waiting' && !newData.hasChild('decision')) : (auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && data.child('createdBy').val() != auth.uid && data.child('state').val() == 'waiting' && (newData.child('state').val() == 'approved' || newData.child('state').val() == 'rejected') && newData.hasChild('decision'))) && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"eventDate\",\"recordType\",\"recordId\",\"reason\",\"state\",\"replacement\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child(newData.child('recordType').val()).child(newData.child('recordId').val()).exists()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('recordType') || newData.hasChild('recordType')) && (!data.hasChild('recordId') || newData.hasChild('recordId')) && (!data.hasChild('reason') || newData.hasChild('reason')) && (!data.hasChild('state') || newData.hasChild('state')) && (!data.hasChild('replacement') || newData.hasChild('replacement')) && (!data.hasChild('decision') || newData.hasChild('decision')))",
+            ".validate": "newData.hasChildren([\"id\",\"eventDate\",\"recordType\",\"recordId\",\"reason\",\"state\",\"replacement\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child(newData.child('recordType').val()).child(newData.child('recordId').val()).exists() && newData.child('eventDate').val() == root.child('workspaces').child($ws).child(newData.child('recordType').val()).child(newData.child('recordId').val()).child('eventDate').val()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('recordType') || newData.hasChild('recordType')) && (!data.hasChild('recordId') || newData.hasChild('recordId')) && (!data.hasChild('reason') || newData.hasChild('reason')) && (!data.hasChild('state') || newData.hasChild('state')) && (!data.hasChild('replacement') || newData.hasChild('replacement')) && (!data.hasChild('decision') || newData.hasChild('decision')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -823,7 +823,7 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "eventDate": {
-              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+              ".validate": "newData.isString() && newData.val().matches(/^([0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)|[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])|([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29)$/) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "recordType": {
               ".validate": "newData.isString() && (newData.val() == 'collections' || newData.val() == 'production' || newData.val() == 'losses' || newData.val() == 'stoppages') && (!data.parent().exists() || newData.val() == data.val())"

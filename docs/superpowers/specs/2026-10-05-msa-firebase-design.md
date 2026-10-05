@@ -1,6 +1,6 @@
 # MVP MSA: funcoes, Firebase e publicacao estatica
 
-Data: 05/10/2026. Status: especificacao aprovada pelo usuario; produto ainda nao implementado.
+Data: 05/10/2026. Status: especificacao aprovada pelo usuario; fase funcional implementada e testada localmente. Interface e validacao remota pendentes.
 
 ## 1. Entendimento e decisoes
 
@@ -141,4 +141,4 @@ A URL do banco ja foi recebida. Para validar nuvem: verificar provedor Auth habi
 
 Para publicar: definir repositorio/conta e revisar os arquivos que podem ficar publicos. Nenhuma foto/documento/medicao real sera enviado automaticamente. Dados de demonstracao sinteticos podem existir em workspace separado; importacao de material real exige escolha/confirmacao explicita.
 
-O usuario aprovou esta especificacao em 05/10/2026. O proximo artefato e o plano de implementacao funcional, para revisao e escolha do modo de execucao; executar a logica/testes primeiro e fazer o brainstorming de design/layout somente apos essa etapa. Esta especificacao nao declara codigo, testes ou integracao remota concluidos.
+O usuario aprovou esta especificacao em 05/10/2026 e escolheu execucao direta. A fase funcional foi implementada; evidencias, decisoes e limites estao em `docs/ENTREGA_FUNCIONAL.md`. O brainstorming de design/layout permanece como proxima etapa. Nao houve publicacao ou validacao da nuvem real.

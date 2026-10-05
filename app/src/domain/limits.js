@@ -10,6 +10,7 @@ export function validateRule(rule) {
 export function evaluateReading(reading,version) {
   const result=(state,severity,reason)=>({state,severity,reason,rule:version?.rule??null});
   if(reading.status!=='valid') return result(reading.status,'data',reading.status);
+  if(!Number.isFinite(reading.value)) return result('invalid','data','invalid-numeric-value');
   try {validateRule(version?.rule);} catch { return result('pending','data','invalid-limit'); }
   const rule=version.rule;
   if(version.status!=='approved'||rule.kind==='pending') return result('pending','data','unapproved-limit');

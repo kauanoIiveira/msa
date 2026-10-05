@@ -9,7 +9,7 @@ export function createHistoryService({repo}) {
     if(q.fromDate) validateDate(q.fromDate);if(q.toDate) validateDate(q.toDate);
     requireThat(!q.fromDate||!q.toDate||q.fromDate<=q.toDate,'INVALID_PERIOD');
     if(q.limit!=null) requireThat(Number.isInteger(q.limit)&&q.limit>0&&q.limit<=500,'INVALID_QUERY');
-    if(q.cursor) {validateDate(q.cursor.date);assertId(q.cursor.key);}
+    if(q.cursor) {validateDate(q.cursor.date);assertId(q.cursor.key);requireThat((!q.fromDate||q.cursor.date>=q.fromDate)&&(!q.toDate||q.cursor.date<=q.toDate),'INVALID_QUERY');}
     if(q.context) {knownKeys(q.context,['machineId','processId','productId','recipe','lot','order','shift']);for(const key of ['machineId','processId','productId']) if(q.context[key]) assertId(q.context[key]);}
     return q;
   }

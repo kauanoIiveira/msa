@@ -4,11 +4,13 @@ import {requireThat} from './errors.js';
 export function summarizeReadings(readings,{sigmaMethod,rule}={}) {
   requireThat(['population','sample'].includes(sigmaMethod),'SIGMA_METHOD_REQUIRED');
   const values=readings.filter(r=>r.status==='valid'&&Number.isFinite(r.value)).map(r=>r.value);
-  const n=values.length;
+  const n=values.length,constant=n>0&&values.every(v=>v===values[0]);
   const r={nValid:n,nMissing:readings.filter(r=>r.status==='missing').length,nInvalid:readings.length-n-readings.filter(r=>r.status==='missing').length,
-    mean:n?mean(values):null,min:n?min(values):null,max:n?max(values):null,sigma:null,cp:null,cpk:null,sigmaMethod,homologated:false};
+    mean:n?(constant?values[0]:mean(values)):null,min:n?min(values):null,max:n?max(values):null,sigma:null,cp:null,cpk:null,sigmaMethod,homologated:false};
   if(n<2) return {...r,reason:'insufficient-data'};
-  r.sigma=values.every(v=>v===values[0])?0:(sigmaMethod==='population'?standardDeviation(values):sampleStandardDeviation(values));
+  if(!Number.isFinite(r.mean)) return {...r,mean:null,reason:'non-finite-statistics'};
+  r.sigma=constant?0:(sigmaMethod==='population'?standardDeviation(values):sampleStandardDeviation(values));
+  if(!Number.isFinite(r.sigma)) return {...r,sigma:null,reason:'non-finite-statistics'};
   if(!r.sigma) return {...r,reason:'zero-dispersion'};
   try { validateRule(rule); } catch { return {...r,reason:'invalid-limit'}; }
   if(rule.kind!=='range') return {...r,reason:'bilateral-limit-required'};

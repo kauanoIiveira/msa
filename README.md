@@ -35,6 +35,8 @@ Carregar `vendor/papaparse.min.js` como script classico e importar `src/browser.
 
 Contratos e exemplos: [docs/CONTRATOS_FUNCIONAIS.md](docs/CONTRATOS_FUNCIONAIS.md). Provisionamento: [firebase/CONFIGURACAO.md](firebase/CONFIGURACAO.md).
 
+Resultados, cobertura e decisoes de execucao: [docs/ENTREGA_FUNCIONAL.md](docs/ENTREGA_FUNCIONAL.md).
+
 `npm start` serve exclusivamente `app/`. Como o frontend foi adiado por escolha do usuario, ainda nao ha index.html: a raiz retorna 404. Nao confundir os modulos testados com um MVP visual publicado.
 
 ## GitHub Pages
