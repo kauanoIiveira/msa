@@ -13,8 +13,8 @@
         "machines": {
           ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
           "$id": {
-            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\"]) && (true)",
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\"]) && (true) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('name') || newData.hasChild('name')) && (!data.hasChild('code') || newData.hasChild('code')) && (!data.hasChild('active') || newData.hasChild('active')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -25,13 +25,16 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "name": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "code": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "active": {
-              ".validate": "newData.isBoolean()"
+              ".validate": "newData.isBoolean()",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "$other": {
               ".validate": false
@@ -41,8 +44,8 @@
         "processes": {
           ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
           "$id": {
-            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"machineId\"]) && (data.exists() || root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true)",
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"machineId\"]) && (data.exists() || root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('name') || newData.hasChild('name')) && (!data.hasChild('code') || newData.hasChild('code')) && (!data.hasChild('active') || newData.hasChild('active')) && (!data.hasChild('machineId') || newData.hasChild('machineId')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -53,13 +56,16 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "name": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "code": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "active": {
-              ".validate": "newData.isBoolean()"
+              ".validate": "newData.isBoolean()",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "machineId": {
               ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
@@ -72,8 +78,8 @@
         "products": {
           ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
           "$id": {
-            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"processIds\"]) && (true)",
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"processIds\"]) && (true) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('name') || newData.hasChild('name')) && (!data.hasChild('code') || newData.hasChild('code')) && (!data.hasChild('active') || newData.hasChild('active')) && (!data.hasChild('processIds') || newData.hasChild('processIds')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -84,13 +90,16 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "name": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "code": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "active": {
-              ".validate": "newData.isBoolean()"
+              ".validate": "newData.isBoolean()",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "processIds": {
               ".validate": "newData.hasChildren()",
@@ -106,8 +115,8 @@
         "parameters": {
           ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
           "$id": {
-            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"processId\"]) && (data.exists() || root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true)",
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"processId\"]) && (data.exists() || root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('name') || newData.hasChild('name')) && (!data.hasChild('code') || newData.hasChild('code')) && (!data.hasChild('active') || newData.hasChild('active')) && (!data.hasChild('processId') || newData.hasChild('processId')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -118,13 +127,16 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "name": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "code": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "active": {
-              ".validate": "newData.isBoolean()"
+              ".validate": "newData.isBoolean()",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "processId": {
               ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
@@ -137,8 +149,8 @@
         "reasons": {
           ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
           "$id": {
-            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"kind\"]) && (true)",
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"kind\"]) && (true) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('name') || newData.hasChild('name')) && (!data.hasChild('code') || newData.hasChild('code')) && (!data.hasChild('active') || newData.hasChild('active')) && (!data.hasChild('kind') || newData.hasChild('kind')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -149,13 +161,16 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "name": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "code": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "active": {
-              ".validate": "newData.isBoolean()"
+              ".validate": "newData.isBoolean()",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin') && data.parent().exists() && newData.exists()"
             },
             "kind": {
               ".validate": "newData.isString() && (newData.val() == 'stop' || newData.val() == 'reject' || newData.val() == 'material' || newData.val() == 'rework') && (!data.parent().exists() || newData.val() == data.val())"
@@ -168,8 +183,8 @@
         "targets": {
           ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
           "$id": {
-            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"metric\",\"unit\",\"fromDate\",\"toDate\",\"context\",\"operator\",\"threshold\"]) && (newData.child('fromDate').val() <= newData.child('toDate').val() && ((newData.child('metric').val() == 'lossKg' && newData.child('unit').val() == 'kg') || (newData.child('metric').val() == 'stopMinutes' && newData.child('unit').val() == 'minutes') || ((newData.child('metric').val() == 'producedPieces' || newData.child('metric').val() == 'rejectedPieces') && newData.child('unit').val() == 'pieces')))",
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"name\",\"active\",\"createdBy\",\"createdAt\",\"metric\",\"unit\",\"fromDate\",\"toDate\",\"context\",\"operator\",\"threshold\"]) && (newData.child('fromDate').val() <= newData.child('toDate').val() && ((newData.child('metric').val() == 'lossKg' && newData.child('unit').val() == 'kg') || (newData.child('metric').val() == 'stopMinutes' && newData.child('unit').val() == 'minutes') || ((newData.child('metric').val() == 'producedPieces' || newData.child('metric').val() == 'rejectedPieces') && newData.child('unit').val() == 'pieces'))) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('name') || newData.hasChild('name')) && (!data.hasChild('code') || newData.hasChild('code')) && (!data.hasChild('active') || newData.hasChild('active')) && (!data.hasChild('metric') || newData.hasChild('metric')) && (!data.hasChild('unit') || newData.hasChild('unit')) && (!data.hasChild('fromDate') || newData.hasChild('fromDate')) && (!data.hasChild('toDate') || newData.hasChild('toDate')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('operator') || newData.hasChild('operator')) && (!data.hasChild('threshold') || newData.hasChild('threshold')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -180,13 +195,16 @@
               ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
             },
             "name": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && data.parent().exists() && newData.exists()"
             },
             "code": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && data.parent().exists() && newData.exists()"
             },
             "active": {
-              ".validate": "newData.isBoolean()"
+              ".validate": "newData.isBoolean()",
+              ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && data.parent().exists() && newData.exists()"
             },
             "metric": {
               ".validate": "newData.isString() && (newData.val() == 'producedPieces' || newData.val() == 'stopMinutes' || newData.val() == 'rejectedPieces' || newData.val() == 'lossKg') && (!data.parent().exists() || newData.val() == data.val())"
@@ -201,7 +219,7 @@
               ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 10 && (!data.parent().exists() || newData.val() == data.val())"
             },
             "context": {
-              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true))",
+              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true)) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
               "machineId": {
                 ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
               },
@@ -242,7 +260,7 @@
           ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
           "$id": {
             ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"parameterId\",\"unit\",\"nature\",\"status\",\"rule\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child('parameters').child(newData.child('parameterId').val()).child('active').val() == true && (newData.child('rule').child('kind').val() != 'pending' || newData.child('status').val() == 'draft'))",
+            ".validate": "newData.hasChildren([\"id\",\"parameterId\",\"unit\",\"nature\",\"status\",\"rule\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child('parameters').child(newData.child('parameterId').val()).child('active').val() == true && (newData.child('rule').child('kind').val() != 'pending' || newData.child('status').val() == 'draft')) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('parameterId') || newData.hasChild('parameterId')) && (!data.hasChild('unit') || newData.hasChild('unit')) && (!data.hasChild('nature') || newData.hasChild('nature')) && (!data.hasChild('status') || newData.hasChild('status')) && (!data.hasChild('rule') || newData.hasChild('rule')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -265,7 +283,7 @@
               ".validate": "newData.isString() && (newData.val() == 'draft' || newData.val() == 'approved') && (!data.parent().exists() || newData.val() == data.val())"
             },
             "rule": {
-              ".validate": "newData.hasChildren([\"kind\"]) && ((newData.child('kind').val() == 'pending' && !newData.hasChild('lower') && !newData.hasChild('upper')) || (newData.child('kind').val() == 'range' && newData.hasChildren(['lower','upper']) && newData.child('lower').val() < newData.child('upper').val()) || (newData.child('kind').val() == 'lower' && newData.hasChild('lower') && !newData.hasChild('upper')) || (newData.child('kind').val() == 'upper' && newData.hasChild('upper') && !newData.hasChild('lower')))",
+              ".validate": "newData.hasChildren([\"kind\"]) && ((newData.child('kind').val() == 'pending' && !newData.hasChild('lower') && !newData.hasChild('upper')) || (newData.child('kind').val() == 'range' && newData.hasChildren(['lower','upper']) && newData.child('lower').val() < newData.child('upper').val()) || (newData.child('kind').val() == 'lower' && newData.hasChild('lower') && !newData.hasChild('upper')) || (newData.child('kind').val() == 'upper' && newData.hasChild('upper') && !newData.hasChild('lower'))) && ((!data.hasChild('kind') || newData.hasChild('kind')) && (!data.hasChild('lower') || newData.hasChild('lower')) && (!data.hasChild('upper') || newData.hasChild('upper')))",
               "kind": {
                 ".validate": "newData.isString() && (newData.val() == 'range' || newData.val() == 'lower' || newData.val() == 'upper' || newData.val() == 'pending') && (!data.parent().exists() || newData.val() == data.val())"
               },
@@ -278,6 +296,388 @@
               "$other": {
                 ".validate": false
               }
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "collections": {
+          ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
+          ".indexOn": [
+            "eventDate"
+          ],
+          "$id": {
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"context\",\"origin\",\"eventDate\",\"timePrecision\",\"createdBy\",\"createdAt\",\"readings\"]) && ((newData.child('timePrecision').val() == 'instant' && newData.hasChild('occurredAt')) || (newData.child('timePrecision').val() == 'date' && newData.child('origin').val() == 'import' && !newData.hasChild('occurredAt'))) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('origin') || newData.hasChild('origin')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('timePrecision') || newData.hasChild('timePrecision')) && (!data.hasChild('occurredAt') || newData.hasChild('occurredAt')) && (!data.hasChild('source') || newData.hasChild('source')) && (!data.hasChild('readings') || newData.hasChild('readings')))",
+            "id": {
+              ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdBy": {
+              ".validate": "newData.isString() && (!data.parent().exists() ? newData.val() == auth.uid : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "context": {
+              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true)) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
+              "machineId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "processId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "productId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "recipe": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "lot": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "order": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "shift": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "origin": {
+              ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "eventDate": {
+              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "timePrecision": {
+              ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "occurredAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "source": {
+              ".validate": "newData.hasChildren([\"file\"]) && (true) && ((!data.hasChild('file') || newData.hasChild('file')) && (!data.hasChild('sheet') || newData.hasChild('sheet')) && (!data.hasChild('row') || newData.hasChild('row')) && (!data.hasChild('cells') || newData.hasChild('cells')))",
+              "file": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 240 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "sheet": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "row": {
+                ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "cells": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "readings": {
+              ".validate": "newData.hasChildren()",
+              "$pid": {
+                ".validate": "newData.hasChildren([\"parameterId\",\"versionId\",\"status\"]) && (((newData.child('status').val() == 'valid' && newData.hasChild('value') && newData.hasChild('raw')) || (newData.child('status').val() != 'valid' && !newData.hasChild('value'))) && root.child('workspaces').child($ws).child('parameters').child($pid).child('active').val() == true && root.child('workspaces').child($ws).child('parameters').child($pid).child('processId').val() == newData.parent().parent().child('context').child('processId').val() && root.child('workspaces').child($ws).child('parameterVersions').child(newData.child('versionId').val()).child('parameterId').val() == $pid) && ((!data.hasChild('parameterId') || newData.hasChild('parameterId')) && (!data.hasChild('versionId') || newData.hasChild('versionId')) && (!data.hasChild('raw') || newData.hasChild('raw')) && (!data.hasChild('status') || newData.hasChild('status')) && (!data.hasChild('value') || newData.hasChild('value')))",
+                "parameterId": {
+                  ".validate": "newData.val() == $pid && (!data.parent().exists() || newData.val() == data.val())"
+                },
+                "versionId": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+                },
+                "raw": {
+                  ".validate": "newData.isString() && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+                },
+                "status": {
+                  ".validate": "newData.isString() && (newData.val() == 'valid' || newData.val() == 'missing' || newData.val() == 'invalid') && (!data.parent().exists() || newData.val() == data.val())"
+                },
+                "value": {
+                  ".validate": "newData.isNumber() && (!data.parent().exists() || newData.val() == data.val())"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "production": {
+          ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
+          ".indexOn": [
+            "eventDate"
+          ],
+          "$id": {
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"context\",\"origin\",\"eventDate\",\"timePrecision\",\"createdBy\",\"createdAt\",\"quantity\",\"basis\",\"startedAt\",\"endedAt\"]) && (((newData.child('timePrecision').val() == 'instant' && newData.hasChild('occurredAt')) || (newData.child('timePrecision').val() == 'date' && newData.child('origin').val() == 'import' && !newData.hasChild('occurredAt'))) && newData.child('timePrecision').val() == 'instant' && newData.child('endedAt').val() > newData.child('startedAt').val()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('origin') || newData.hasChild('origin')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('timePrecision') || newData.hasChild('timePrecision')) && (!data.hasChild('occurredAt') || newData.hasChild('occurredAt')) && (!data.hasChild('source') || newData.hasChild('source')) && (!data.hasChild('quantity') || newData.hasChild('quantity')) && (!data.hasChild('basis') || newData.hasChild('basis')) && (!data.hasChild('startedAt') || newData.hasChild('startedAt')) && (!data.hasChild('endedAt') || newData.hasChild('endedAt')))",
+            "id": {
+              ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdBy": {
+              ".validate": "newData.isString() && (!data.parent().exists() ? newData.val() == auth.uid : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "context": {
+              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true)) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
+              "machineId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "processId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "productId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "recipe": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "lot": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "order": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "shift": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "origin": {
+              ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "eventDate": {
+              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "timePrecision": {
+              ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "occurredAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "source": {
+              ".validate": "newData.hasChildren([\"file\"]) && (true) && ((!data.hasChild('file') || newData.hasChild('file')) && (!data.hasChild('sheet') || newData.hasChild('sheet')) && (!data.hasChild('row') || newData.hasChild('row')) && (!data.hasChild('cells') || newData.hasChild('cells')))",
+              "file": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 240 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "sheet": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "row": {
+                ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "cells": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "quantity": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000000 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "basis": {
+              ".validate": "newData.isString() && (newData.val() == 'gross' || newData.val() == 'good') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "startedAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "endedAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "losses": {
+          ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
+          ".indexOn": [
+            "eventDate"
+          ],
+          "$id": {
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"context\",\"origin\",\"eventDate\",\"timePrecision\",\"createdBy\",\"createdAt\",\"kind\",\"unit\",\"amount\",\"reasonId\"]) && (((newData.child('timePrecision').val() == 'instant' && newData.hasChild('occurredAt')) || (newData.child('timePrecision').val() == 'date' && newData.child('origin').val() == 'import' && !newData.hasChild('occurredAt'))) && (root.child('workspaces').child($ws).child('reasons').child(newData.child('reasonId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('reasons').child(newData.child('reasonId').val()).child('kind').val() == newData.child('kind').val()) && (newData.child('unit').val() == 'kg' || newData.child('amount').val() % 1 == 0)) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('origin') || newData.hasChild('origin')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('timePrecision') || newData.hasChild('timePrecision')) && (!data.hasChild('occurredAt') || newData.hasChild('occurredAt')) && (!data.hasChild('source') || newData.hasChild('source')) && (!data.hasChild('kind') || newData.hasChild('kind')) && (!data.hasChild('unit') || newData.hasChild('unit')) && (!data.hasChild('amount') || newData.hasChild('amount')) && (!data.hasChild('reasonId') || newData.hasChild('reasonId')))",
+            "id": {
+              ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdBy": {
+              ".validate": "newData.isString() && (!data.parent().exists() ? newData.val() == auth.uid : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "context": {
+              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true)) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
+              "machineId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "processId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "productId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "recipe": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "lot": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "order": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "shift": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "origin": {
+              ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "eventDate": {
+              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "timePrecision": {
+              ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "occurredAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "source": {
+              ".validate": "newData.hasChildren([\"file\"]) && (true) && ((!data.hasChild('file') || newData.hasChild('file')) && (!data.hasChild('sheet') || newData.hasChild('sheet')) && (!data.hasChild('row') || newData.hasChild('row')) && (!data.hasChild('cells') || newData.hasChild('cells')))",
+              "file": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 240 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "sheet": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "row": {
+                ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "cells": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "kind": {
+              ".validate": "newData.isString() && (newData.val() == 'reject' || newData.val() == 'material' || newData.val() == 'rework') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "unit": {
+              ".validate": "newData.isString() && (newData.val() == 'pieces' || newData.val() == 'kg') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "amount": {
+              ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 1000000000000 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "reasonId": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "stoppages": {
+          ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
+          ".indexOn": [
+            "eventDate"
+          ],
+          "$id": {
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && (!data.exists() ? !newData.hasChild('endedAt') : !data.hasChild('endedAt') && newData.hasChildren(['endedAt','closedBy','closedAt'])) && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren([\"id\",\"context\",\"origin\",\"eventDate\",\"timePrecision\",\"createdBy\",\"createdAt\",\"startedAt\",\"planned\",\"reasonId\"]) && (((newData.child('timePrecision').val() == 'instant' && newData.hasChild('occurredAt')) || (newData.child('timePrecision').val() == 'date' && newData.child('origin').val() == 'import' && !newData.hasChild('occurredAt'))) && newData.child('timePrecision').val() == 'instant' && (root.child('workspaces').child($ws).child('reasons').child(newData.child('reasonId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('reasons').child(newData.child('reasonId').val()).child('kind').val() == 'stop') && (!newData.hasChild('endedAt') ? !newData.hasChild('closedBy') && !newData.hasChild('closedAt') : newData.child('endedAt').val() > newData.child('startedAt').val() && newData.child('closedBy').val() == auth.uid && newData.child('closedAt').val() == now)) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('origin') || newData.hasChild('origin')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('timePrecision') || newData.hasChild('timePrecision')) && (!data.hasChild('occurredAt') || newData.hasChild('occurredAt')) && (!data.hasChild('source') || newData.hasChild('source')) && (!data.hasChild('startedAt') || newData.hasChild('startedAt')) && (!data.hasChild('planned') || newData.hasChild('planned')) && (!data.hasChild('reasonId') || newData.hasChild('reasonId')) && (!data.hasChild('endedAt') || newData.hasChild('endedAt')) && (!data.hasChild('closedBy') || newData.hasChild('closedBy')) && (!data.hasChild('closedAt') || newData.hasChild('closedAt')))",
+            "id": {
+              ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdBy": {
+              ".validate": "newData.isString() && (!data.parent().exists() ? newData.val() == auth.uid : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val()) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "context": {
+              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true)) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
+              "machineId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "processId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "productId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "recipe": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "lot": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "order": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "shift": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "origin": {
+              ".validate": "newData.isString() && (newData.val() == 'manual' || newData.val() == 'import' || newData.val() == 'demo') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "eventDate": {
+              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "timePrecision": {
+              ".validate": "newData.isString() && (newData.val() == 'date' || newData.val() == 'instant') && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "occurredAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "source": {
+              ".validate": "newData.hasChildren([\"file\"]) && (true) && ((!data.hasChild('file') || newData.hasChild('file')) && (!data.hasChild('sheet') || newData.hasChild('sheet')) && (!data.hasChild('row') || newData.hasChild('row')) && (!data.hasChild('cells') || newData.hasChild('cells')))",
+              "file": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 240 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "sheet": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "row": {
+                ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "cells": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "startedAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "planned": {
+              ".validate": "newData.isBoolean() && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "reasonId": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "endedAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0"
+            },
+            "closedBy": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+            },
+            "closedAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0"
             },
             "$other": {
               ".validate": false

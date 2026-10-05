@@ -39,9 +39,13 @@ export function createFirebaseRepository({db,sdk,workspaceId}) {
     }),
     updateRegistry:(path,patch)=>protect(async()=>{await sdk.update(reference(path),patch);return (await sdk.get(reference(path))).val();}),
     transact:(path,updater)=>protect(async()=>{
-      const ref=reference(path); await sdk.get(ref);
-      const result=await sdk.runTransaction(ref,updater,{applyLocally:false});
-      requireThat(result.committed,'CONFLICT');return result.snapshot.val();
+      const ref=reference(path);let off;
+      try {
+        // Keep the server snapshot in the SDK cache until the transaction is acknowledged.
+        await new Promise((resolve,reject)=>{off=sdk.onValue(ref,()=>resolve(),reject);});
+        const result=await sdk.runTransaction(ref,updater,{applyLocally:false});
+        requireThat(result.committed,'CONFLICT');return result.snapshot.val();
+      } finally {off?.();}
     }),
     list:(path,q={})=>protect(async()=>page(await sdk.get(queryRef(path,q)),q)),
     watch:(path,q,onNext,onError)=>{

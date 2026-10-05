@@ -21,3 +21,10 @@ test('rules enforce roles, scalar immutability, field whitelist and contexts',as
   await assertFails(sdk.set(sdk.ref(db,'workspaces/demo/processes/bad'),{id:'bad',name:'Bad',machineId:'missing',active:true,createdBy:'admin',createdAt:sdk.serverTimestamp()}));
   await r.deactivate('machines',m.id);assert.equal((await repo.get(`machines/${m.id}`)).active,false);
 });
+test('deleting one of multiple product links cannot bypass immutable association rules',async t=>{
+  const env=await setup(t),db=env.authenticatedContext('admin').database();let i=0;
+  const r=createRegistryService({repo:createFirebaseRepository({db,sdk,workspaceId:'demo'}),actor:{uid:'admin',role:'admin'},idFactory:()=>`link${++i}`});
+  const m=await r.create('machines',{name:'M'}),a=await r.create('processes',{name:'A',machineId:m.id}),b=await r.create('processes',{name:'B',machineId:m.id});
+  const product=await r.create('products',{name:'Q',processIds:{[a.id]:true,[b.id]:true}});
+  await assertFails(sdk.remove(sdk.ref(db,`workspaces/demo/products/${product.id}/processIds/${a.id}`)));
+});
