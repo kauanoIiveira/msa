@@ -691,7 +691,7 @@
           ],
           "$id": {
             ".write": "(!data.exists() ? (auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && newData.child('state').val() == 'waiting') : (auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && ((data.child('state').val() == 'waiting' && newData.child('state').val() == 'analyzing') || (data.child('state').val() == 'analyzing' && (newData.child('state').val() == 'approved' || newData.child('state').val() == 'rejected'))))) && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
-            ".validate": "newData.hasChildren([\"id\",\"eventDate\",\"collectionId\",\"scope\",\"state\",\"history\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child('collections').child(newData.child('collectionId').val()).exists()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('collectionId') || newData.hasChild('collectionId')) && (!data.hasChild('scope') || newData.hasChild('scope')) && (!data.hasChild('state') || newData.hasChild('state')) && (!data.hasChild('history') || newData.hasChild('history')))",
+            ".validate": "newData.hasChildren([\"id\",\"eventDate\",\"context\",\"collectionId\",\"scope\",\"state\",\"history\",\"createdBy\",\"createdAt\"]) && (root.child('workspaces').child($ws).child('collections').child(newData.child('collectionId').val()).exists()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('collectionId') || newData.hasChild('collectionId')) && (!data.hasChild('scope') || newData.hasChild('scope')) && (!data.hasChild('state') || newData.hasChild('state')) && (!data.hasChild('history') || newData.hasChild('history')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
             },
@@ -703,6 +703,33 @@
             },
             "eventDate": {
               ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.parent().exists() || newData.val() == data.val())"
+            },
+            "context": {
+              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (true) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift')))",
+              "machineId": {
+                ".validate": "newData.val() == root.child('workspaces').child($ws).child('collections').child(newData.parent().parent().child('collectionId').val()).child('context').child('machineId').val() && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "processId": {
+                ".validate": "newData.val() == root.child('workspaces').child($ws).child('collections').child(newData.parent().parent().child('collectionId').val()).child('context').child('processId').val() && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "productId": {
+                ".validate": "newData.val() == root.child('workspaces').child($ws).child('collections').child(newData.parent().parent().child('collectionId').val()).child('context').child('productId').val() && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "recipe": {
+                ".validate": "newData.val() == root.child('workspaces').child($ws).child('collections').child(newData.parent().parent().child('collectionId').val()).child('context').child('recipe').val() && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "lot": {
+                ".validate": "newData.val() == root.child('workspaces').child($ws).child('collections').child(newData.parent().parent().child('collectionId').val()).child('context').child('lot').val() && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "order": {
+                ".validate": "newData.val() == root.child('workspaces').child($ws).child('collections').child(newData.parent().parent().child('collectionId').val()).child('context').child('order').val() && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "shift": {
+                ".validate": "newData.val() == root.child('workspaces').child($ws).child('collections').child(newData.parent().parent().child('collectionId').val()).child('context').child('shift').val() && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              }
             },
             "collectionId": {
               ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"

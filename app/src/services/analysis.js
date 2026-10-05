@@ -8,7 +8,7 @@ export function createAnalysisService({repo,actor,idFactory=()=>crypto.randomUUI
     async submitReview(payload) {
       assertRole(actor,['admin','operator','engineer']);knownKeys(payload,['collectionId','scope']);assertId(payload.collectionId);text(payload.scope,'scope');
       const col=await repo.get(`collections/${payload.collectionId}`);requireThat(col,'NOT_FOUND');
-      const id=assertId(idFactory());return repo.create(`reviews/${id}`,{id,collectionId:payload.collectionId,scope:payload.scope,state:'waiting',eventDate:col.eventDate,createdBy:actor.uid,createdAt:repo.timestamp(),history:{0:event('waiting')}});
+      const id=assertId(idFactory());return repo.create(`reviews/${id}`,{id,context:col.context,collectionId:payload.collectionId,scope:payload.scope,state:'waiting',eventDate:col.eventDate,createdBy:actor.uid,createdAt:repo.timestamp(),history:{0:event('waiting')}});
     },
     async startReview(id) {
       assertRole(actor,['admin','engineer']);return repo.transact(`reviews/${assertId(id)}`,current=>{
