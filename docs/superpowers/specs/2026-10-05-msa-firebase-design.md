@@ -1,6 +1,6 @@
 # MVP MSA: funcoes, Firebase e publicacao estatica
 
-Data: 05/10/2026. Status: especificacao funcional para revisao; produto ainda nao implementado.
+Data: 05/10/2026. Status: especificacao aprovada pelo usuario; produto ainda nao implementado.
 
 ## 1. Entendimento e decisoes
 
@@ -10,7 +10,7 @@ Decisoes do usuario: Firebase Realtime Database; acesso pelo navegador de outras
 
 Configuracao recebida: projeto `msayellowteam`, dominio de autenticacao `msayellowteam.firebaseapp.com` e banco `https://msayellowteam-default-rtdb.firebaseio.com`. A configuracao web sera centralizada em um modulo e usara os valores fornecidos, sem credencial administrativa no navegador. Analytics e Storage nao serao inicializados: nao sao necessarios para os registros estruturados desta fase.
 
-Proposta adicional a revisar: Authentication por e-mail/senha; usuarios explicitamente autorizados; fluxo simples da Engenharia; alertas internos; Pareto de motivos; comparacoes filtradas e CSV. Sao propostas da equipe, nao requisitos ja homologados pela MSA.
+Escopo adicional aprovado pelo usuario: Authentication por e-mail/senha; usuarios explicitamente autorizados; fluxo simples da Engenharia; alertas internos; Pareto de motivos; comparacoes filtradas e CSV. Sao escolhas para o MVP, nao requisitos ja homologados pela MSA.
 
 ## 2. Stack e mobilidade
 
@@ -89,7 +89,7 @@ Grupos de funcoes: cadastros e versoes; registrar coleta/producao/perda; iniciar
 
 Cada operacao retorna resultado ou erro estruturado com codigo e campo, sem strings HTML. Falha de configuracao, credencial, autorizacao, referencia, validacao e rede tem codigos distintos. A logica nunca chama um resultado local de "salvo no Firebase" antes da confirmacao remota.
 
-No RTDB, usar `workspaces/{workspaceId}` para separar demonstracao e piloto. Filhos: `members`, `machines`, `processes`, `products`, `parameters`, `parameterVersions`, `reasons`, `collections`, `production`, `stoppages`, `losses`, `reviews` e `corrections`. Nao e uma plataforma multiempresa completa: e separacao minima para impedir mistura de demonstracao e registros de trabalho.
+No RTDB, usar `workspaces/{workspaceId}` para separar demonstracao e piloto. Filhos: `members`, `machines`, `processes`, `products`, `parameters`, `parameterVersions`, `reasons`, `targets`, `collections`, `production`, `stoppages`, `losses`, `reviews` e `corrections`. `targets` armazena as metas ja previstas no escopo, com unidade e periodo explicitos. Nao e uma plataforma multiempresa completa: e separacao minima para impedir mistura de demonstracao e registros de trabalho.
 
 Todo registro tem ID estavel, origem (`manual`, `import` ou `demo`), autor autenticado, instante da ocorrencia e `createdAt` de servidor. Fonte importada conserva arquivo/celula/linha e data sem inventar horario/operador/maquina ausentes. IDs de importacao sao determinísticos por origem/linha/contexto para evitar importar duas vezes.
 
@@ -141,4 +141,4 @@ A URL do banco ja foi recebida. Para validar nuvem: verificar provedor Auth habi
 
 Para publicar: definir repositorio/conta e revisar os arquivos que podem ficar publicos. Nenhuma foto/documento/medicao real sera enviado automaticamente. Dados de demonstracao sinteticos podem existir em workspace separado; importacao de material real exige escolha/confirmacao explicita.
 
-O usuario deve revisar o escopo, especialmente login/permissoes e os opcionais selecionados. Depois da aprovacao desta especificacao, produzir o plano de implementacao funcional; executar a logica/testes primeiro e fazer o brainstorming de design/layout somente apos essa etapa. Esta especificacao nao declara codigo, testes ou integracao remota concluidos.
+O usuario aprovou esta especificacao em 05/10/2026. O proximo artefato e o plano de implementacao funcional, para revisao e escolha do modo de execucao; executar a logica/testes primeiro e fazer o brainstorming de design/layout somente apos essa etapa. Esta especificacao nao declara codigo, testes ou integracao remota concluidos.
