@@ -1,0 +1,13 @@
+node_modules/
+.superpowers/
+.runtime/
+*-debug.log
+firebase-debug.log
+database-debug.log
+auth-debug.log
+analise/
+entrega/
+output/
+.env*
+!.env.example
+coverage/
