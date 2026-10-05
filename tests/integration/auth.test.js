@@ -1,0 +1,24 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {initializeApp,deleteApp} from 'firebase/app';
+import * as authSdk from 'firebase/auth';
+import {setup,sdk} from '../helpers/firebase-env.js';
+import {createAuthService} from '../../app/src/services/auth.js';
+import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
+import {createAuthenticatedMsa} from '../../app/src/services/create-msa.js';
+test('real emulator email/password login grants no workspace until a trusted membership exists',async t=>{
+  const env=await setup(t),app=initializeApp({projectId:'demo-msa',apiKey:'demo-key',databaseURL:'https://demo-msa.firebaseio.com'},'auth-flow');
+  const auth=authSdk.getAuth(app);authSdk.connectAuthEmulator(auth,'http://127.0.0.1:9099',{disableWarnings:true});
+  const db=sdk.getDatabase(app);sdk.connectDatabaseEmulator(db,'127.0.0.1',9000);
+  t.after(()=>deleteApp(app));
+  const creds=await authSdk.createUserWithEmailAndPassword(auth,'synthetic@example.com','Synthetic-test-123');await authSdk.signOut(auth);
+  const service=createAuthService({auth,sdk:authSdk});
+  const controller=createAuthenticatedMsa({authService:service,repositoryFactory:workspaceId=>createFirebaseRepository({db,sdk,workspaceId})});t.after(()=>controller.dispose());
+  const loggedIn=new Promise(resolve=>{const off=controller.watchSession(state=>{if(state.user) {off();resolve();}});});
+  await service.signIn('synthetic@example.com','Synthetic-test-123');await loggedIn;
+  await assert.rejects(()=>controller.onWorkspace('demo'),{code:'FORBIDDEN'});
+  await env.withSecurityRulesDisabled(async ctx=>{await sdk.set(sdk.ref(ctx.database(),`workspaces/demo/members/${creds.user.uid}`),{role:'admin'});});
+  const msa=await controller.onWorkspace('demo');const machine=await msa.registry.create('machines',{name:'Synthetic authorized machine'});
+  assert.equal(machine.createdBy,creds.user.uid);await service.signOut();
+  await assert.rejects(()=>msa.registry.create('machines',{name:'Stale'}),{code:'STALE_SESSION'});
+});

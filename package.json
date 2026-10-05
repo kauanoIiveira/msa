@@ -13,5 +13,5 @@
     "start": "node scripts/serve.mjs"
   },
   "dependencies": { "simple-statistics": "7.12.1", "papaparse": "5.7.0" },
-  "devDependencies": { "firebase": "12.19.0", "@firebase/rules-unit-testing": "5.0.2", "firebase-tools": "15.32.1" }
+  "devDependencies": { "firebase": "12.19.0", "@firebase/rules-unit-testing": "5.0.2", "firebase-tools": "15.32.1", "acorn": "8.19.0" }
 }

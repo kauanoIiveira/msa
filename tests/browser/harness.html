@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="pt-BR"><meta charset="utf-8"><title>MSA Test Harness</title><body><pre id="result">running</pre>
+<script src="../vendor/papaparse.min.js"></script>
+<script type="module">
+try {
+  const core=await import('../src/index.js');
+  const browser=await import('../src/browser.js');
+  const r=core.summarizeReadings([...Array(7).fill('0,8'),...Array(10).fill('0.9')].map(core.parseReading),{sigmaMethod:'population',rule:{kind:'range',lower:0.8,upper:0.9}});
+  if(Math.abs(r.cpk-0.2788866755113585)>1e-10) throw new Error('BF regression');
+  const csv=core.createCsvService({papa:globalThis.Papa});
+  const parsed=globalThis.Papa.parse(csv.exportRecords([{value:-600}],['value']),{header:true,delimiter:';'});
+  if(parsed.data[0].value!=='-600'||typeof browser.createBrowserMsa!=='function') throw new Error('Browser modules');
+  window.testResult={ok:true,n:r.nValid,cp:r.cp,cpk:r.cpk,firebaseModule:true};
+} catch(error) {window.testResult={ok:false,error:error.message};}
+document.getElementById('result').textContent=JSON.stringify(window.testResult,null,2);
+</script></body></html>

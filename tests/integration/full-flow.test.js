@@ -1,0 +1,23 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import Papa from 'papaparse';
+import {setup,sdk} from '../helpers/firebase-env.js';
+import {seed} from '../helpers/fixtures.js';
+import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
+import {createMsaServices} from '../../app/src/services/create-msa.js';
+test('integrated synthetic workflow persists operations, human decision, revision and export for another session',async t=>{
+  const env=await setup(t),repo=uid=>createFirebaseRepository({db:env.authenticatedContext(uid).database(),sdk,workspaceId:'demo'}),f=await seed(repo('admin'));
+  const op=createMsaServices({repo:repo('op'),actor:{uid:'op',role:'operator'},papa:Papa}),eng=createMsaServices({repo:repo('eng'),actor:{uid:'eng',role:'engineer'},papa:Papa});
+  const time=Date.parse('2026-10-05T15:00:00Z');
+  const col=await op.operations.recordCollection({context:f.context,occurredAt:time,readings:[{parameterId:f.parameterId,versionId:f.versionId,raw:'-650'}]});
+  const production=await op.operations.recordProduction({context:f.context,quantity:100,basis:'gross',startedAt:time,endedAt:time+3600000});
+  await op.operations.recordLoss({context:f.context,occurredAt:time,kind:'reject',amount:2,unit:'pieces',reasonId:f.reasons.reject});
+  const stop=await op.operations.startStoppage({context:f.context,startedAt:time,planned:false,reasonId:f.reasons.stop});await op.operations.closeStoppage(stop.id,{endedAt:time+60000,reasonId:f.reasons.stop});
+  const review=await op.analysis.submitReview({collectionId:col.id,scope:'Synthetic collection'});await eng.analysis.startReview(review.id);await eng.analysis.decideReview(review.id,{decision:'approved',justification:'Human review, not equipment release'});
+  const correction=await op.analysis.requestCorrection({recordType:'production',recordId:production.id,replacement:{...production,quantity:99},reason:'Count correction'});await eng.analysis.decideCorrection(correction.id,{decision:'approved',justification:'Verified count'});
+  const view=createMsaServices({repo:repo('view'),actor:{uid:'view',role:'viewer'},papa:Papa});
+  const history=await view.history.loadPeriod({fromDate:'2026-10-05',toDate:'2026-10-05',context:{machineId:f.context.machineId}});
+  assert.equal(history.complete,true);assert.equal(history.effective.production[0].quantity,99);assert.equal(history.production[0].quantity,100);assert.equal(history.reviews[0].state,'approved');
+  assert.ok(view.csv.exportRecords(history.production,['quantity','basis','context.machineId']).includes('100'));
+  await assert.rejects(()=>view.operations.recordProduction({context:f.context,quantity:1,basis:'gross',startedAt:time,endedAt:time+100}),{code:'FORBIDDEN'});
+});
