@@ -1,0 +1,10 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "workspaces": { "$ws": { "members": { "$uid": {
+      ".read": "auth != null && auth.uid == $uid && data.child('role').val() != null",
+      ".write": false
+    } } } }
+  }
+}
