@@ -8,6 +8,8 @@ Funcoes de cadastro, limites versionados, coleta, producao, paradas, perdas, ana
 
 A configuracao web recebida esta em `app/src/config/firebase.js`. Isso nao habilita usuarios/provedor nem publica regras. Nenhum registro industrial original foi enviado ao Firebase. Validacao de nuvem e publicacao no GitHub ainda pendentes.
 
+Os 41 parametros da lista da equipe e da planilha agora possuem catalogo de referencia, previa/instalacao confirmada e consulta completa para o dashboard, inclusive parametros sem leitura. Veja [docs/PARAMETROS_MSA.md](docs/PARAMETROS_MSA.md). Todas as versoes instaladas sao rascunhos, nao limites homologados. O trabalho foi integrado localmente na master, sem push.
+
 ## Desenvolvimento E Testes
 
 Node >=22. Dependencias fixadas em package-lock.json.

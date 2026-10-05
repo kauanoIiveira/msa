@@ -1,6 +1,6 @@
 # Entrega Funcional MSA
 
-05/10/2026. Execucao direta, sem subagentes. Funcoes implementadas e verificadas; interface visual e configuracao remota pendentes. Branch: codex/msa-funcoes.
+05/10/2026. Execucao direta, sem subagentes. Funcoes implementadas e verificadas; interface visual e configuracao remota pendentes. Integrado localmente na master a pedido do usuario, sem push.
 
 ## Escopo Entregue
 
@@ -14,15 +14,16 @@
 - CSV com previa/confirmacao, identidade deterministica e protecao de formulas na exportacao.
 - Auth e-mail/senha, membros/papeis explicitamente provisionados e regras RTDB default deny.
 - Adaptadores/fabricas para a futura interface estatica; workflow Pages manual, bloqueado ate existir interface aprovada.
+- Catalogo de referencia dos 41 parametros MSA, instalacao confirmada/idempotente de rascunhos e dados completos para o dashboard: [PARAMETROS_MSA.md](PARAMETROS_MSA.md).
 
 ## Evidencia De Verificacao
 
 | Verificacao | Resultado |
 | --- | --- |
-| npm run test:unit | 30 testes passaram, zero skips |
-| npm run test:emulator | 15 testes passaram, zero skips |
-| Navegador headless | Funcoes e imports Firebase carregaram na raiz e em /msa-test/ |
-| verify:static | 26 arquivos, nenhum import local ausente ou artefato industrial |
+| npm run test:unit | 41 testes passaram, zero skips |
+| npm run test:emulator | 16 testes passaram, zero skips |
+| Navegador headless | Funcoes, catalogo, dados do dashboard e imports Firebase carregaram na raiz e em /msa-test/ |
+| verify:static | 29 arquivos, nenhum import local ausente ou artefato industrial |
 | verify:static --deploy | Bloqueio esperado: index-not-yet-implemented |
 
 Os testes incluem BF (17 valores, Cp 0.33864810597807815 e Cpk 0.2788866755113583), dispersao zero, leitura invalida/ausente, autor forjado, papel indevido, auto-elevacao, isolamento de workspace, concorrencia em parada/parecer/importacao, revisao imutavel, login real no Auth Emulator, logout com cancelamento de listeners, datas impossiveis, recortes parciais e kg separado de pecas/retrabalho.
@@ -55,5 +56,7 @@ Nenhum achado menor foi catalogado para adiamento. Revisao independente, testes 
 Nao ha index/interface visual, dashboard renderizado, cores de desvios, QR, OCR, coleta de equipamento, IA, fila offline duravel ou monitoramento com navegador fechado. Cp/Cpk permanecem demonstrativos e nao homologados. Uma decisao no sistema nao libera uma maquina.
 
 Nenhum documento/foto/medicao original foi enviado ao RTDB. Nao houve push, PR, publicacao do site, provisionamento de usuario real ou deploy de regras remotas. Firebase web config esta integrada; a nuvem depende dos passos em [CONFIGURACAO.md](../firebase/CONFIGURACAO.md).
+
+O catalogo inclui somente nomes, unidades e limites solicitados, nao as medicoes originais. A instalacao exige um processo real ja cadastrado e classificacao de natureza por parametro. O dashboard como pagina inicial foi indicado pelo usuario; apenas sua base de dados foi acrescentada, sem antecipar o brainstorming do layout.
 
 Contratos de uso: [CONTRATOS_FUNCIONAIS.md](CONTRATOS_FUNCIONAIS.md). Layout/design podem ser discutidos usando estes contratos sem reimplementar a logica.

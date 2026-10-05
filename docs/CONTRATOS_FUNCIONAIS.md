@@ -27,6 +27,8 @@ createMsaServices({repo,actor,papa,clock?,idFactory?}) integra os servicos para 
 - history.list(kind,query), watch(kind,query,onNext,onError), loadPeriod(query).
 - csv.previewImport(text,options), confirmImport(preview,{confirmed:true}), exportRecords(rows,columns).
 - getIndicators(query,{from,to,sigmaMethod?}) retorna indicadores sobre revisoes aprovadas, mais notas de cobertura.
+- catalog.preview({processId}), catalog.install({processId,natureByCode,confirmed:true}).
+- getDashboard(query,{from,to,sigmaMethod?}) agrega os indicadores e todos os parametros de referencia/customizados do processo selecionado.
 
 Metodos da Session retornam promessas, exceto history.watch, que retorna cancelamento sincronamente. Fabricas puras como createCsvService exportam CSV como string sincronamente. Erros MsaError possuem code e field opcional; sem HTML. Importacao pode parar apos gravar algumas linhas: repetir com o mesmo preview e seguro por idempotencia.
 
@@ -67,6 +69,18 @@ Production/stoppages precisam de inicios anteriores para encontrar intervalos qu
 buildIndicators retorna totals, series, statistics, reasonRanking, alerts, complete, notes. Exige janela positiva explicita em milissegundos. Separar unidades/denominadores; refugo% exige producao bruta compativel e cobertura completa. Retrabalho em kg fica em reworkKg, nao em lossKg. comparePeriods retorna periods e changes com difference/percentChange; base zero ou ausente nao produz percentual.
 
 summarizeReadings exige sigmaMethod population/sample; nValid/nMissing/nInvalid, media, minimo/maximo, sigma e Cp/Cpk demonstrativos com homologated=false. N insuficiente, dispersao zero e faixa inadequada retornam null/motivo. Nao mistura versoes/contextos; nao implementa normalidade ou um n minimo universal de liberacao.
+
+## Catalogo MSA E Dados Do Dashboard
+
+getMsaParameterCatalog() devolve uma copia independente das 41 referencias, com code MSA_<coluna>, name, unit, group, source.column/name/unit/limits, draftRule, issues e questions. source conserva os limites originais: 80/75 e 0/0 nunca sao invertidos ou aprovados. As 21 zonas e o vacuo assinado usam draftRule pending; Pressao Ar usa lower 6.5 em bar como rascunho, com questao de unidade exposta.
+
+catalog.preview nao grava. install e restrito a admin, requer confirmed=true e natureByCode com todos os 41 codigos classificados explicitamente como measurement/setpoint. IDs deterministas por processo tornam repeticao e concorrencia identica idempotentes. Instala parametros e versoes draft; nao cria maquinas/produtos, leituras nem aprovacao da Engenharia. Conflitos com cadastro manual/codigo duplicado ou natureza divergente retornam CATALOG_CONFLICT. Validacoes ocorrem antes da primeira escrita; queda de rede pode deixar instalacao parcial, retomavel com o mesmo pedido. Nao altera versoes novas ja aprovadas.
+
+getDashboard exige query.context com machineId/processId/productId e query.fromDate/toDate correspondentes as datas de range.from/to (fim exclusivo, America/Sao_Paulo). Opcionais recipe/lot/order/shift continuam filtros explicitos. A funcao pura buildDashboard(data,{context,from,to,complete,sigmaMethod?}) aplica o recorte e devolve os campos de buildIndicators mais context e parameters. As 41 referencias continuam visiveis mesmo sem cadastro/leituras; parametros customizados ativos tambem aparecem.
+
+Cada linha de parameters tem parameterIds, configurationState, state, latest ou null, observationCount e statistics. Estados incluem not-configured, no-version, no-data, within, outside, missing, invalid, pending, latest-time-ambiguous, revision-conflict e duplicate-parameter-code. latest conserva valor/raw, unidade/natureza/regra da versao realmente coletada, data/precisao e contexto. Data-only com empate no mesmo dia nao produz uma ultima leitura ficticia; recorte intradia com data-only fica explicitamente parcial. statistics continua separado por contexto completo e versao, com unidade explicita; Cp/Cpk de versao nao aprovada ficam null nas linhas e no resumo geral. Os totais podem ser parciais conforme complete/notes; uma ultima leitura conforme nao certifica todo o periodo.
+
+Esta API entrega dados e estados, nao uma pagina ou layout. O dashboard visual como pagina inicial sera a proxima etapa.
 
 ## CSV
 

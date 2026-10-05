@@ -10,3 +10,5 @@ export {createFirebaseRepository} from './repositories/firebase-repository.js';
 export {createAuthService} from './services/auth.js';
 export {createMsaServices,createAuthenticatedMsa} from './services/create-msa.js';
 export {createCsvService,stableImportId} from './io/csv.js';
+export {getMsaParameterCatalog} from './catalog/msa-parameters.js';
+export {buildDashboard} from './domain/dashboard.js';

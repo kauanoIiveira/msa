@@ -10,7 +10,10 @@ try {
   const csv=core.createCsvService({papa:globalThis.Papa});
   const parsed=globalThis.Papa.parse(csv.exportRecords([{value:-600}],['value']),{header:true,delimiter:';'});
   if(parsed.data[0].value!=='-600'||typeof browser.createBrowserMsa!=='function') throw new Error('Browser modules');
-  window.testResult={ok:true,n:r.nValid,cp:r.cp,cpk:r.cpk,firebaseModule:true};
+  const catalog=core.getMsaParameterCatalog();
+  const dashboard=core.buildDashboard({},{context:{machineId:'m',processId:'p',productId:'q'},from:0,to:1000,complete:true});
+  if(catalog.length!==41||dashboard.parameters.length!==41||dashboard.parameters.some(row=>row.state!=='not-configured'||row.latest!==null)) throw new Error('Incomplete parameter dashboard');
+  window.testResult={ok:true,n:r.nValid,cp:r.cp,cpk:r.cpk,firebaseModule:true,catalogCount:catalog.length,dashboardCount:dashboard.parameters.length};
 } catch(error) {window.testResult={ok:false,error:error.message};}
 document.getElementById('result').textContent=JSON.stringify(window.testResult,null,2);
 </script></body></html>

@@ -5,15 +5,26 @@ import {createHistoryService} from './history.js';
 import {createCsvService} from '../io/csv.js';
 import {buildIndicators} from '../domain/indicators.js';
 import {assertId,requireThat} from '../domain/errors.js';
+import {createCatalogService} from './catalog.js';
+import {buildDashboard} from '../domain/dashboard.js';
+import {assertPeriod,eventDate} from '../domain/time.js';
 export function createMsaServices(options) {
   const history=createHistoryService(options),operations=createOperations(options);
   return {
-    registry:createRegistryService(options),operations,analysis:createAnalysisService(options),history,
+    registry:createRegistryService(options),catalog:createCatalogService(options),operations,analysis:createAnalysisService(options),history,
     csv:createCsvService({...options,operations}),
     async getIndicators(query,range) {
       const period=await history.loadPeriod(query);
       const indicators=buildIndicators({...period,...period.effective},{...range,complete:period.complete});
       return {...indicators,notes:[...period.notes,...indicators.notes]};
+    },
+    async getDashboard(query,range) {
+      assertPeriod(range?.from,range?.to);
+      requireThat(query?.fromDate===eventDate(range.from)&&query?.toDate===eventDate(range.to-1),'INVALID_PERIOD');
+      for(const field of ['machineId','processId','productId']) assertId(query.context?.[field],field);
+      const period=await history.loadPeriod(query),parameters=await options.repo.get('parameters')??{};
+      const view=buildDashboard({...period,...period.effective,parameters},{...range,context:query.context,complete:period.complete});
+      return {...view,notes:[...new Set([...period.notes,...view.notes])]};
     }
   };
 }
