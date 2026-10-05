@@ -1,0 +1,33 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {memoryRepository} from '../helpers/memory-repository.js';
+import {createRegistryService} from '../../app/src/services/registry.js';
+import {assertContext} from '../../app/src/domain/context.js';
+test('validates relational context and prevents role-based registry edits',async()=>{
+  const repo=memoryRepository();let id=0;
+  const admin=createRegistryService({repo,actor:{uid:'admin',role:'admin'},idFactory:()=>`id${++id}`});
+  const machine=await admin.create('machines',{name:'Machine'});
+  const process=await admin.create('processes',{name:'Process',machineId:machine.id});
+  const product=await admin.create('products',{name:'Product',processIds:{[process.id]:true}});
+  const registries={machines:await repo.get('machines'),processes:await repo.get('processes'),products:await repo.get('products')};
+  assert.equal(assertContext({machineId:machine.id,processId:process.id,productId:product.id},registries).productId,product.id);
+  assert.throws(()=>assertContext({machineId:'other',processId:process.id,productId:product.id},registries));
+  const op=createRegistryService({repo,actor:{uid:'op',role:'operator'}});
+  await assert.rejects(()=>op.create('machines',{name:'Forbidden'}),{code:'FORBIDDEN'});
+  await admin.deactivate('machines',machine.id);
+  const inactive=await repo.get('machines');
+  assert.throws(()=>assertContext({machineId:machine.id,processId:process.id,productId:product.id},{...registries,machines:inactive}),{code:'INVALID_REFERENCE'});
+});
+test('immutable parameter versions are distinct while metadata changes preserve them',async()=>{
+  const repo=memoryRepository();let id=0;
+  const admin=createRegistryService({repo,actor:{uid:'admin',role:'admin'},idFactory:()=>`id${++id}`});
+  const m=await admin.create('machines',{name:'Machine'});
+  const p=await admin.create('processes',{name:'Process',machineId:m.id});
+  const param=await admin.create('parameters',{name:'Vacuum',processId:p.id});
+  const eng=createRegistryService({repo,actor:{uid:'eng',role:'engineer'},idFactory:()=>`v${++id}`});
+  const v=await eng.createParameterVersion(param.id,{unit:'mmHg',nature:'measurement',status:'approved',rule:{kind:'upper',upper:-600}});
+  await admin.update('parameters',param.id,{name:'Vacuum renamed'});
+  assert.deepEqual(await repo.get(`parameterVersions/${v.id}`),v);
+  await assert.rejects(()=>admin.update('parameterVersions',v.id,{unit:'bar'}));
+  await assert.rejects(()=>eng.createParameterVersion(param.id,{unit:'s',nature:'measurement',status:'approved',rule:{kind:'range',lower:80,upper:75}}),{code:'INVALID_LIMIT'});
+});

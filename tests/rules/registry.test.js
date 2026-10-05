@@ -1,0 +1,23 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assertFails} from '@firebase/rules-unit-testing';
+import {setup,sdk} from '../helpers/firebase-env.js';
+import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
+import {createRegistryService} from '../../app/src/services/registry.js';
+test('rules enforce roles, scalar immutability, field whitelist and contexts',async t=>{
+  const env=await setup(t);const db=env.authenticatedContext('admin').database();
+  const repo=createFirebaseRepository({db,sdk,workspaceId:'demo'});let i=0;
+  const r=createRegistryService({repo,actor:{uid:'admin',role:'admin'},idFactory:()=>`id${++i}`});
+  const m=await r.create('machines',{name:'M'});const p=await r.create('processes',{name:'P',machineId:m.id});
+  const param=await r.create('parameters',{name:'Vacuum',processId:p.id});
+  const v=await r.createParameterVersion(param.id,{unit:'mmHg',nature:'measurement',status:'approved',rule:{kind:'upper',upper:-600}});
+  assert.equal(typeof v.createdAt,'number');
+  await assertFails(sdk.update(sdk.ref(db,`workspaces/demo/parameterVersions/${v.id}`),{unit:'bar'}));
+  await assertFails(sdk.remove(sdk.ref(db,`workspaces/demo/machines/${m.id}`)));
+  await assertFails(sdk.update(sdk.ref(db,`workspaces/demo/machines/${m.id}`),{unknown:true}));
+  await assertFails(sdk.update(sdk.ref(db,`workspaces/demo/machines/${m.id}`),{createdBy:'op'}));
+  const op=env.authenticatedContext('op').database();
+  await assertFails(sdk.update(sdk.ref(op,`workspaces/demo/machines/${m.id}`),{name:'Forged'}));
+  await assertFails(sdk.set(sdk.ref(db,'workspaces/demo/processes/bad'),{id:'bad',name:'Bad',machineId:'missing',active:true,createdBy:'admin',createdAt:sdk.serverTimestamp()}));
+  await r.deactivate('machines',m.id);assert.equal((await repo.get(`machines/${m.id}`)).active,false);
+});
