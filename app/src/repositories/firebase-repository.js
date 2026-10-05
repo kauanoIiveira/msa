@@ -1,7 +1,7 @@
 import {assertId,requireThat,MsaError} from '../domain/errors.js';
 export function firebaseError(error) {
   if(error instanceof MsaError) return error;
-  const code=String(error?.code??'').toLowerCase();
+  const code=String(error?.code??error?.message??'').toLowerCase();
   const kind=code.includes('permission')?'FORBIDDEN':code.startsWith('auth/')?'AUTH':code.includes('network')||code.includes('unavailable')?'NETWORK':'FIREBASE';
   return new MsaError(kind,error?.message??kind);
 }
@@ -34,8 +34,9 @@ export function createFirebaseRepository({db,sdk,workspaceId}) {
     timestamp:()=>sdk.serverTimestamp(),
     get:path=>protect(async()=> (await sdk.get(reference(path))).val()),
     create:(path,data)=>protect(async()=>{
-      const result=await sdk.runTransaction(reference(path),current=>current===null?data:undefined,{applyLocally:false});
-      requireThat(result.committed,'CONFLICT'); return result.snapshot.val();
+      const ref=reference(path);
+      const result=await sdk.runTransaction(ref,current=>current===null?data:undefined,{applyLocally:false});
+      requireThat(result.committed,'CONFLICT'); return (await sdk.get(ref)).val();
     }),
     updateRegistry:(path,patch)=>protect(async()=>{await sdk.update(reference(path),patch);return (await sdk.get(reference(path))).val();}),
     transact:(path,updater)=>protect(async()=>{
@@ -44,7 +45,7 @@ export function createFirebaseRepository({db,sdk,workspaceId}) {
         // Keep the server snapshot in the SDK cache until the transaction is acknowledged.
         await new Promise((resolve,reject)=>{off=sdk.onValue(ref,()=>resolve(),reject);});
         const result=await sdk.runTransaction(ref,updater,{applyLocally:false});
-        requireThat(result.committed,'CONFLICT');return result.snapshot.val();
+        requireThat(result.committed,'CONFLICT');return (await sdk.get(ref)).val();
       } finally {off?.();}
     }),
     list:(path,q={})=>protect(async()=>page(await sdk.get(queryRef(path,q)),q)),

@@ -48,4 +48,56 @@ nodes.production=collection({...envelope,quantity:number(' && newData.val() >= 0
 const reasonCondition=kind=>`${ws}.child('reasons').child(newData.child('reasonId').val()).child('active').val() == true && ${ws}.child('reasons').child(newData.child('reasonId').val()).child('kind').val() == ${kind}`;
 nodes.losses=collection({...envelope,kind:oneOf(['reject','material','rework']),unit:oneOf(['pieces','kg']),amount:number(' && newData.val() > 0 && newData.val() <= 1000000000000'),reasonId:string()},[...envelopeKeys,'kind','unit','amount','reasonId'],immutableWrite,`(${timeCondition}) && (${reasonCondition("newData.child('kind').val()")}) && (newData.child('unit').val() == 'kg' || newData.child('amount').val() % 1 == 0)`,['eventDate']);
 nodes.stoppages=collection({...envelope,startedAt:instant(),planned:boolean(),reasonId:string(),endedAt:instant(true),closedBy:string(100,true),closedAt:instant(true)},[...envelopeKeys,'startedAt','planned','reasonId'],`${operator} && (!data.exists() ? !newData.hasChild('endedAt') : !data.hasChild('endedAt') && newData.hasChildren(['endedAt','closedBy','closedAt']))`,`(${timeCondition}) && newData.child('timePrecision').val() == 'instant' && (${reasonCondition("'stop'")}) && (!newData.hasChild('endedAt') ? !newData.hasChild('closedBy') && !newData.hasChild('closedAt') : newData.child('endedAt').val() > newData.child('startedAt').val() && newData.child('closedBy').val() == auth.uid && newData.child('closedAt').val() == now)`,['eventDate']);
+const justification=()=>scalar("newData.isString() && newData.val().length <= 2000 && newData.val().replace(' ', '').replace('\\n', '').replace('\\r', '').replace('\\t', '').length > 0");
+const reviewEvent=states=>object(['state','by','at'],{
+  state:oneOf(states),
+  by:scalar('newData.isString() && (!data.parent().exists() ? newData.val() == auth.uid : newData.val() == data.val())'),
+  at:scalar('newData.isNumber() && (!data.parent().exists() ? newData.val() == now : newData.val() == data.val())'),
+  justification:justification()
+});
+const finalEvent=reviewEvent(['approved','rejected']);
+finalEvent['.validate']+=" && newData.hasChild('justification') && newData.child('state').val() == newData.parent().parent().child('state').val()";
+const history=object(['0'],{'0':reviewEvent(['waiting']),'1':reviewEvent(['analyzing']),'2':finalEvent},"(newData.parent().child('state').val() == 'waiting' && !newData.hasChild('1') && !newData.hasChild('2')) || (newData.parent().child('state').val() == 'analyzing' && newData.hasChild('1') && !newData.hasChild('2')) || ((newData.parent().child('state').val() == 'approved' || newData.parent().child('state').val() == 'rejected') && newData.hasChildren(['1','2']))");
+const transition="(data.child('state').val() == 'waiting' && newData.child('state').val() == 'analyzing') || (data.child('state').val() == 'analyzing' && (newData.child('state').val() == 'approved' || newData.child('state').val() == 'rejected'))";
+nodes.reviews=collection({...meta,eventDate:date(),collectionId:string(),scope:justification(),state:oneOf(['waiting','analyzing','approved','rejected'],true),history},['id','eventDate','collectionId','scope','state','history','createdBy','createdAt'],`(!data.exists() ? (${operator} && newData.child('state').val() == 'waiting') : (${editor} && (${transition})))`,`${ws}.child('collections').child(newData.child('collectionId').val()).exists()`,['eventDate']);
+const original=`${ws}.child(newData.parent().child('recordType').val()).child(newData.parent().child('recordId').val())`;
+const originalField=`${ws}.child(newData.parent().parent().child('recordType').val()).child(newData.parent().parent().child('recordId').val())`;
+const replacementFields={};
+const types=['collections','production','losses','stoppages'];
+for(const type of types) {
+  for(const [key,value] of Object.entries(nodes[type].$id)) if(!key.startsWith('.')&&!key.startsWith('$')) replacementFields[key]=structuredClone(value);
+}
+for(const value of Object.values(replacementFields)) {
+  if(Object.keys(value).every(key=>key.startsWith('.'))) value['.validate']+=" && (!data.parent().exists() || newData.val() == data.val())";
+}
+// A replacement is an immutable revision embedded in its correction, not another live operation.
+for(const key of ['id','createdBy','createdAt','origin','eventDate','timePrecision','occurredAt','kind','unit','basis','planned','closedBy','closedAt']) {
+  if(!replacementFields[key]) continue;
+  replacementFields[key]=scalar(`newData.val() == ${originalField}.child('${key}').val()`);
+}
+replacementFields.context=context();
+for(const key of ['machineId','processId','productId','recipe','lot','order','shift']) {
+  const ref=`${ws}.child(newData.parent().parent().parent().child('recordType').val()).child(newData.parent().parent().parent().child('recordId').val()).child('context').child('${key}')`;
+  replacementFields.context[key]=scalar(`newData.val() == ${ref}.val()`);
+  const contextOriginal=`${ws}.child(newData.parent().parent().child('recordType').val()).child(newData.parent().parent().child('recordId').val())`;
+  replacementFields.context['.validate']+=` && (!${contextOriginal}.child('context').child('${key}').exists() || newData.hasChild('${key}'))`;
+}
+const allFields=Object.keys(replacementFields);
+const revisionReadingOriginal=`${ws}.child('collections').child(newData.parent().parent().parent().child('recordId').val()).child('readings').child(newData.child('parameterId').val())`;
+const revisionReading=object(['parameterId','versionId','status'],{parameterId:string(),versionId:string(),status:oneOf(['valid','missing','invalid']),raw:scalar('newData.isString() && newData.val().length <= 100'),value:number()},`${revisionReadingOriginal}.exists() && newData.child('versionId').val() == ${revisionReadingOriginal}.child('versionId').val() && ((newData.child('status').val() == 'valid' && newData.hasChildren(['value','raw'])) || (newData.child('status').val() != 'valid' && !newData.hasChild('value')))`);
+replacementFields.readings=object(['0'],Object.fromEntries(Array.from({length:100},(_,i)=>[String(i),structuredClone(revisionReading)])));
+for(const key of ['file','sheet','row','cells']) {
+  const sourceField=`${ws}.child(newData.parent().parent().parent().child('recordType').val()).child(newData.parent().parent().parent().child('recordId').val()).child('source').child('${key}')`;
+  replacementFields.source[key]=scalar(`newData.val() == ${sourceField}.val()`);
+  replacementFields.source['.validate']+=` && (!${originalField}.child('source').child('${key}').exists() || newData.hasChild('${key}'))`;
+}
+const replacementConditions=types.map(type=>{
+  const fields=Object.keys(nodes[type].$id).filter(k=>!k.startsWith('.')&&!k.startsWith('$'));
+  const required={collections:[...envelopeKeys,'readings'],production:[...envelopeKeys,'quantity','basis','startedAt','endedAt'],losses:[...envelopeKeys,'kind','unit','amount','reasonId'],stoppages:[...envelopeKeys,'startedAt','planned','reasonId','endedAt','closedBy','closedAt']}[type];
+  return `(newData.parent().child('recordType').val() == '${type}' && newData.hasChildren(${JSON.stringify(required)}) && ${allFields.filter(k=>!fields.includes(k)).map(k=>`!newData.hasChild('${k}')`).join(' && ')||'true'}${type==='production'||type==='stoppages'?" && newData.child('endedAt').val() > newData.child('startedAt').val()":''}${type==='losses'?" && (newData.child('unit').val() == 'kg' || newData.child('amount').val() % 1 == 0)":''})`;
+});
+const replacement=object(envelopeKeys,replacementFields,`${original}.exists() && (${replacementConditions.join(' || ')}) && ${['occurredAt','source','kind','unit','basis','planned','closedBy','closedAt'].map(key=>`(newData.hasChild('${key}') == ${original}.hasChild('${key}'))`).join(' && ')} && (!newData.hasChild('reasonId') || (${ws}.child('reasons').child(newData.child('reasonId').val()).child('kind').val() == (newData.parent().child('recordType').val() == 'stoppages' ? 'stop' : newData.child('kind').val())))`);
+const correctionDecision=reviewEvent(['approved','rejected']);
+correctionDecision['.validate']+=" && newData.hasChild('justification') && newData.child('state').val() == newData.parent().child('state').val()";
+nodes.corrections=collection({...meta,eventDate:date(),recordType:oneOf(types),recordId:string(),reason:justification(),state:oneOf(['waiting','approved','rejected'],true),replacement,decision:correctionDecision},['id','eventDate','recordType','recordId','reason','state','replacement','createdBy','createdAt'],`(!data.exists() ? (${operator} && newData.child('state').val() == 'waiting' && !newData.hasChild('decision')) : (${editor} && data.child('createdBy').val() != auth.uid && data.child('state').val() == 'waiting' && (newData.child('state').val() == 'approved' || newData.child('state').val() == 'rejected') && newData.hasChild('decision')))`,`${ws}.child(newData.child('recordType').val()).child(newData.child('recordId').val()).exists()`,['eventDate']);
 await writeFile(new URL('./database.rules.json',import.meta.url),JSON.stringify({rules},null,2)+'\n');
