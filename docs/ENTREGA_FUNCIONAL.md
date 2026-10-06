@@ -1,5 +1,9 @@
 # Entrega Funcional MSA
 
+## Estado Mais Recente
+
+O registro abaixo preserva a evolucao do trabalho. Para o estado atual, consulte README.md e CONTINUE_AQUI.md. Em 05/10, o usuario autorizou o cenario ficticio de 14 dias em msa, a revisao de configuracoes e o simulador local com 11 cenarios. A interface e o gate de publicacao estatico estao implementados. A conta Fabiana Dias tem membership em msa, alem do antigo demo. O documento de entrevista esta em docs/Roteiro_Entrevista_MSA_Equipe_Amarela.docx. As notas antigas sobre interface inexistente e workspace vazio nao descrevem mais o estado atual.
+
 05/10/2026. Execucao direta, sem subagentes. Funcoes implementadas e verificadas; interface visual e configuracao remota pendentes. Integrado localmente na master a pedido do usuario, sem push.
 
 ## Escopo Entregue
@@ -51,12 +55,22 @@ Registro completo das decisoes tomadas durante a execucao, na ordem em que ocorr
 
 Nenhum achado menor foi catalogado para adiamento. Revisao independente, testes remotos, design/layout e publicacao sao pendencias de escopo, nao alegacoes de conclusao.
 
+## Atualizacao Da Interface (05/10/2026)
+
+Interface HTML/CSS/JS entregue no checkout local: login sem cadastro, dashboard com graficos e todos os 41 parametros, apontamentos, Engenharia, historico, cadastros e configuracoes. Barra lateral neutra, Configuracoes acima de Sair, temas claro/escuro/sistema e VLibras opcional. Formularios usam os servicos e validacoes existentes, sem uma segunda implementacao dos calculos.
+
+Conta Firebase de teste provisionada e autenticada, com admin somente em `demo`. Cenario sintetico criado por confirmacao explicita no teste de navegador. Nenhuma medicao original foi enviada. Login, restauracao de sessao, leitura dos 41 parametros, logout e VLibras real foram testados. As regras remotas foram publicadas pelo usuario, nao por esta implementacao.
+
+Verificacao: 78 testes unitarios, 16 testes de integracao/regras, harness em raiz/subdiretorio, navegador com formularios e exportacao, screenshots desktop/mobile claro/escuro e canvas com pixels desenhados. Gate estatico com `--deploy` aprovado. Auditoria npm de dependencias de producao: zero vulnerabilidades; ferramentas de desenvolvimento ainda reportam vulnerabilidades transitivas. Nao houve atualizacao forcada dessas ferramentas.
+
 ## Nao Entregue / Nao Alegado
 
-Nao ha index/interface visual, dashboard renderizado, cores de desvios, QR, OCR, coleta de equipamento, IA, fila offline duravel ou monitoramento com navegador fechado. Cp/Cpk permanecem demonstrativos e nao homologados. Uma decisao no sistema nao libera uma maquina.
+Atualizacao posterior (05/10): entrada diretamente no dashboard e `index.html` na raiz; autenticacao por dialogo somente para acesso aos dados, com restauracao de sessao Firebase. Workspace operacional agora e `msa`; membership admin da conta existente foi provisionado nesse workspace. Registros ficticios anteriores continuam preservados em `demo`, fora do produto. Nenhum sensor ou indicador e preenchido automaticamente. Os 41 parametros aparecem sem leitura; instalacao de referencias exige cadastro de processo e natureza por parametro, sem aprovar faixas ou criar medicoes. O teste remoto confirmou zero coletas/producao/perdas/paradas no workspace operacional nesta verificacao. A interface nao apresenta o sistema como desafio/prototipo/demonstracao. A fixture local e acessada somente pela instrumentacao dos testes, nao pela inicializacao do produto.
 
-Nenhum documento/foto/medicao original foi enviado ao RTDB. Nao houve push, PR, publicacao do site, provisionamento de usuario real ou deploy de regras remotas. Firebase web config esta integrada; a nuvem depende dos passos em [CONFIGURACAO.md](../firebase/CONFIGURACAO.md).
+Nao ha QR, OCR, coleta de equipamento, IA, fila offline duravel ou monitoramento com navegador fechado. Importacao CSV, comparacoes e solicitacao de correcoes ainda nao tem fluxo visual completo. Cp/Cpk permanecem demonstrativos e nao homologados. Uma decisao no sistema nao libera uma maquina.
 
-O catalogo inclui somente nomes, unidades e limites solicitados, nao as medicoes originais. A instalacao exige um processo real ja cadastrado e classificacao de natureza por parametro. O dashboard como pagina inicial foi indicado pelo usuario; apenas sua base de dados foi acrescentada, sem antecipar o brainstorming do layout.
+Nenhum documento/foto/medicao original foi enviado ao RTDB. Nao houve push, PR ou publicacao do site. A senha temporaria da conta real nao esta no repositorio e deve ser alterada antes de exposicao publica. Provisionamento adicional: [CONFIGURACAO.md](../firebase/CONFIGURACAO.md).
+
+O catalogo inclui somente nomes, unidades e limites solicitados, nao as medicoes originais. A instalacao exige um processo real ja cadastrado e classificacao de natureza por parametro. O cenario ficticio usa versoes aprovadas separadas para algumas faixas, exclusivamente para demonstracao; aquecimento, vacuo e limites invertidos permanecem pendentes. Essas versoes nao representam homologacao industrial.
 
 Contratos de uso: [CONTRATOS_FUNCIONAIS.md](CONTRATOS_FUNCIONAIS.md). Layout/design podem ser discutidos usando estes contratos sem reimplementar a logica.

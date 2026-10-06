@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "node --test tests/unit/*.test.js",
     "test:unit": "node --test tests/unit/*.test.js",
@@ -12,6 +14,16 @@
     "verify:static": "node scripts/verify-static.mjs",
     "start": "node scripts/serve.mjs"
   },
-  "dependencies": { "simple-statistics": "7.12.1", "papaparse": "5.7.0" },
-  "devDependencies": { "firebase": "12.19.0", "@firebase/rules-unit-testing": "5.0.2", "firebase-tools": "15.32.1", "acorn": "8.19.0" }
+  "dependencies": {
+    "chart.js": "4.5.1",
+    "lucide": "1.52.0",
+    "papaparse": "5.7.0",
+    "simple-statistics": "7.12.1"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "5.0.2",
+    "acorn": "8.19.0",
+    "firebase": "12.19.0",
+    "firebase-tools": "15.32.1"
+  }
 }
