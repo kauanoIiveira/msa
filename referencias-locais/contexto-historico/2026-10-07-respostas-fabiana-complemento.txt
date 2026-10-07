@@ -1,0 +1,51 @@
+Quais resultados devemos priorizar? Além dos requisitos mínimos do enunciado, quais três resultados fariam mais diferença para a MSA? Por exemplo: reduzir transcrição, acelerar a análise da Engenharia ou identificar melhor as perdas. Como vocês avaliam essas dificuldades hoje? 
+Metas da Produção : Produtividade / OEE / MTBF / MTTR são definidos com a alta gerencia a meta em todo ano  /  revisadas anualmente em reunião de resultados
+Nossa meta é : 95%
+Tempo de coleta, erro de transcrição, completude, tempo de análise ou outro indicador)
+Todos os mencionados, e possibilidade de análise me tempo real
+
+Qual será o processo piloto? 
+Quais máquina, produto e receita devemos usar como referência para desenvolver e testar? 
+Maquina : NHPL /   Linha: Montagem /  Processo de montagem do abafador / Abafadores VGARD HP e MARK V (Low / Medium / High)
+
+A máquina com 21 zonas corresponde à planilha de selos?  Sim é um exemplo de como coletamos os dados mas o escopo é a maquina NHPL montagem
+Devemos demonstrar também a linha de abafadores ou concentrar o piloto em um processo? NHPL Montagem dos abafadores
+Qual fluxo completo o sistema deve atender?  Fluxo completo considerando as entradas do processo /  Processo em si  /  Saidas do Proceso
+Do registro dos dados até a análise e eventual liberação, quais etapas precisam acontecer, quem participa e qual informação cada pessoa precisa receber? 
+Registros dos dados manualmente pela produção, coleta dos dados pelo técnico de produção, registro manual dos dados no sistema Power Bi /  Todas as informações de Produtividade / OEE / Quaidade / Parâmetros de processo /  Downtimes devem ser passadas
+Quais decisões exigem aprovação da Engenharia? Quando parâmetos estão fora do especificado
+ Quais dados estão realmente disponíveis para coleta automática? Todos deveria ser considerados para a proposta
+O equipamento disponibiliza temperaturas medidas e ajustadas, pressão, vácuo, contadores, estados e alarmes? sim
+Quais informações existem somente em instrumentos analógicos, papel ou apontamentos do operador? Pressão em manometro
+Qual forma de coleta podemos implementar e demonstrar no desafio?  Automática ou semi automática /  Sistema  integrado com possibilidade de acesso em TV, Computador, celular , tablet
+Existe acesso autorizado para leitura do CLP/IHM, exportação de arquivos ou histórico disponível? sim
+Quem pode confirmar os equipamentos e interfaces? Time de manutenção e TI
+Se a integração não estiver disponível a tempo, qual alternativa seria aceitável: importação de arquivo, OCR ou registro digital? Importação de arquivos automática
+Qual referência devemos usar para validar os parâmetros e calcular os indicadores? CP e CPK /  Cálculo de OEE / Cálculo de MTBF e MTTR /  Cálculo da taxa de falha / Cálculo da Produtividade
+Há uma versão aprovada de receitas, limites e metas? Sim Porem precisa ser revisada
+Para Cp/Cpk, qual método, frequência de coleta e quantidade de amostras a Engenharia adota? Pelo menos  30 amostras /  frequencia 1 x a cada turno 
+Quantas peças correspondem a cada ciclo?  TakT Time : 12 segundos / peça
+Como são identificadas aprovadas e reprovadas? Conforme Critérios de Inspeção da Qualidade
+Quando os contadores reiniciam e como devemos relacioná-los a produto, ordem e turno? Não temos contadores automáticos
+Como registrar e classificar paradas, refugos e perdas? Registro deveria ser quando a máquina parar, algum sensor começaria a computar o tempo e pararia a contagem em sua volta. Esses dados deveriam ser transferidos em tempo real para um programa diretório onde poderemos consultar em tempo real como o que houve e as  causas. Os cálculo sobre os indicadores OEE/ Refugo /  MTBF e MTTR deveriam considerar o tempo total da parada ocorrida.
+Quais categorias vocês utilizam? O que define início e fim de uma parada? 
+As paradas hoje são anotadas manualmente na folha da produção a hora inicial que a máquina parou e a hora final que a máquina voltou produzindo peças boas e validadas.
+Micro paradas não são tratadas hoje em função da dificuldade de coleta de dados, precisamos de um sistema automático de coleta de dados que possa identificar a quantidade de microparada e o tempo que elas se somam e o motivos das mesmas para podermos tratar via método de solução de problemas. Tem que tr uma forma de capturar automaticamente a microparada e classificarmos o motivo no sistema que será criado.
+
+Quais motivos podem vir dos alarmes e quais precisam de confirmação humana? 
+Parada de linha e parâmeto fora do especificado
+Como são obtidas as quantidades de refugo e a perda de material em kg?
+Manualmente pelo time de Qualidade
+Será usado em computador, tablet ou celular? 
+Todos
+Existe rede disponível junto às máquinas?  Existe porem tem restrição de segurança de TI – Política rígida de segurança cibernética
+Há restrições de instalação, armazenamento ou acesso que precisamos considerar?  sim
+Quais situações devem gerar um alerta e para quem? Parada de linha e parâmeto fora do especificado /  Produtividade < 95%
+A empresa já dispõe de um sistema andon? sim
+Como ocorre a visualização física das falhas e interrupções das máquinas? Verbal e alarme sonoro imediato / Dados são imputados no Power Bi, porém não em tempo real
+ Existe um problema nesse sentido, e se sim, a agilidade de perceber as interrupções é um dos principais? Não é dificil
+A empresa tem disponível estes dispositivos, sensores e indutores?
+ - Módulo IoT Concentrador (ESP32 / CLP IoT) - 1un. - Transdutor de Pressão Industrial (0–10 bar) - 1un. - Transdutor de Vácuo Industrial (0 a -1 bar) - 1un. - Módulo de Leitura Térmica (RS-485 / Modbus) - 1un. 
+Não
+- Sensores Indutivos / Acopladores Digitais - 4un.
+Sim

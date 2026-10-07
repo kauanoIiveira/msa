@@ -4,7 +4,7 @@ import {installAuthFixture} from './fixtures/auth.mjs';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE??'playwright');
 const server=await createStaticServer({port:0}),browser=await chromium.launch({headless:true}),url=`http://127.0.0.1:${server.address().port}/`;
 const saved=page=>page.evaluate(()=>JSON.parse(localStorage.getItem('msa.demo.workspace.v1')).data);
-async function login(page,options){await installAuthFixture(page,options);await page.goto(url);await page.locator('#login [name=email]').fill('test@example.com');await page.locator('#login [name=password]').fill('fixture-only');await page.locator('#login [type=submit]').click();await page.locator('.dataset-bar').waitFor();}
+async function login(page,options){await installAuthFixture(page,options);await page.goto(url);await page.locator('#login [name=re]').fill('00000');await page.locator('#login [name=password]').fill('fixture-only');await page.locator('#login [type=submit]').click();await page.locator('.dataset-bar').waitFor();}
 try{
  const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await login(page);
  await page.locator('.rail a[href="#history"]').click();await page.locator('[data-action=csv-import]').click();

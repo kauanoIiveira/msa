@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-10-07T17:16:14.450Z",
+  "readOnly": true,
+  "allPreserved": true,
+  "results": [
+    {
+      "root": "machines",
+      "records": 1,
+      "preserved": true
+    },
+    {
+      "root": "processes",
+      "records": 1,
+      "preserved": true
+    },
+    {
+      "root": "products",
+      "records": 2,
+      "preserved": true
+    },
+    {
+      "root": "parameters",
+      "records": 41,
+      "preserved": true
+    },
+    {
+      "root": "parameterVersions",
+      "records": 59,
+      "preserved": true
+    },
+    {
+      "root": "reasons",
+      "records": 9,
+      "preserved": true
+    },
+    {
+      "root": "targets",
+      "records": 4,
+      "preserved": true
+    },
+    {
+      "root": "collections",
+      "records": 28,
+      "preserved": true
+    },
+    {
+      "root": "production",
+      "records": 56,
+      "preserved": true
+    },
+    {
+      "root": "losses",
+      "records": 94,
+      "preserved": true
+    },
+    {
+      "root": "stoppages",
+      "records": 29,
+      "preserved": true
+    },
+    {
+      "root": "reviews",
+      "records": 4,
+      "preserved": true
+    },
+    {
+      "root": "corrections",
+      "records": 1,
+      "preserved": true
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Retomada local do MSA
 
+**Atualização prioritária — 07/10/2026:** leia [RETOMADA_2026-10-07.md](RETOMADA_2026-10-07.md) e [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md). Especificação NHPL aprovada, implementação adiada; quatro perfis ativos no Firebase. Fontes/evidências acompanham GitHub conforme autorização. Afirmações provisórias e de exclusão do Git abaixo descrevem a preparação anterior.
+
 > Atualização de 06/10/2026: o usuário autorizou publicar na master também as fontes, os documentos e os artefatos locais do projeto. As menções anteriores a materiais fora do Git e a mudanças ainda não publicadas descrevem a preparação anterior. O .gitignore atual exclui ambientes instalados, caches e cópias temporárias de teste.
 
 Pasta preparada em 06/10/2026 para a equipe continuar em outro computador em 07/10/2026. O pacote conserva o código atual, inclusive alterações ainda não commitadas, documentação, fontes originais, logos e evidências locais. Nenhum conteúdo foi publicado nesta preparação.

@@ -1,0 +1,757 @@
+{
+  "checkedAt": "2026-10-07T16:28:33.123Z",
+  "workspace": "msa",
+  "readOnly": true,
+  "counts": {
+    "machines": 1,
+    "processes": 1,
+    "products": 2,
+    "parameters": 41,
+    "parameterVersions": 59,
+    "reasons": 9,
+    "targets": 4,
+    "collections": 28,
+    "production": 56,
+    "losses": 94,
+    "stoppages": 29,
+    "reviews": 4,
+    "corrections": 1
+  },
+  "origins": {
+    "collections": {
+      "demo": 28
+    },
+    "production": {
+      "demo": 56
+    },
+    "losses": {
+      "demo": 94
+    },
+    "stoppages": {
+      "demo": 29
+    }
+  },
+  "collectionDateRange": [
+    "2026-09-22",
+    "2026-10-05"
+  ],
+  "referenceIssues": [],
+  "hashes": {
+    "machines": "71a51d76b7e5a7d8a00181384c20544e72071cba8b338532b4509eab3be6c79b",
+    "processes": "7496a295ba3b05e10baf6b12bc91d87f178a01e7f3be075ef54ceae2645e98dd",
+    "products": "d9e1bd68a5ee799088330e1b6ae0bb2a88896f418503a56c542d08db231ea83c",
+    "parameters": "f9f83abddd47cf22f3d02b351bf6247c30ed335dc5cd27b599f9fabad68a9020",
+    "parameterVersions": "c77db33466761d32f802c451f070270cb81ce229761ad885c153c9def6fb294c",
+    "reasons": "a4b49604fc1c550ea730f550bc70da9ba4b2206faf90a3e0238d03af1c0ba098",
+    "targets": "5b922a123f5df7e39e2d2e442b03a8b1c1d1f85034002e19e33586c1d33c53d7",
+    "collections": "83cb169f352930346e15b70d293801f60a9afc5b52efa425de0f4916cec969a2",
+    "production": "6ed4c22f0466d51fd34fc38778f5523c8b04a8c844b7e59eff0223b714b2ad12",
+    "losses": "65878eed803206748e76ea1953fb119b710d453c2aa1a66dcd5be343e52a301d",
+    "stoppages": "577910ca3e9d2a0b8e31b51cec53db0af76684203d40affd8ce8212af2a85cf3",
+    "reviews": "e10c1669ce08a922c04d9bdc44c70bc9ddf8b73b131a66b648693bcd3c80baeb",
+    "corrections": "15ca4be7f5738577924b53555cc6be29e99d44d9af6720fba9508e47ba45d6d2"
+  },
+  "queries": [
+    {
+      "product": "Selo A03",
+      "window": "initial",
+      "fromDate": "2026-10-01",
+      "toDate": "2026-10-07",
+      "dataset": "operational",
+      "records": {
+        "collections": 0,
+        "production": 0,
+        "losses": 0,
+        "stoppages": 0,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "no-data": 41
+      },
+      "groups": 0,
+      "validSamples": [],
+      "capabilityReasons": {},
+      "notes": [
+        "target-window-unavailable:c26_target_mass",
+        "target-window-unavailable:c26_target_production",
+        "target-window-unavailable:c26_target_reject",
+        "target-window-unavailable:c26_target_stop"
+      ],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A03",
+      "window": "initial",
+      "fromDate": "2026-10-01",
+      "toDate": "2026-10-07",
+      "dataset": "presentation",
+      "records": {
+        "collections": 5,
+        "production": 28,
+        "losses": 17,
+        "stoppages": 14,
+        "reviews": 3,
+        "corrections": 1
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 18,
+        "stoppages": 9
+      },
+      "complete": true,
+      "parameterStates": {
+        "within": 16,
+        "pending": 23,
+        "outside": 2
+      },
+      "groups": 41,
+      "validSamples": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "capabilityReasons": {
+        "unapproved-limit": 23,
+        "insufficient-sample": 2,
+        "setpoint": 15,
+        "bilateral-limit-required": 1
+      },
+      "notes": [
+        "target-window-unavailable:c26_target_mass",
+        "target-window-unavailable:c26_target_production",
+        "target-window-unavailable:c26_target_reject",
+        "target-window-unavailable:c26_target_stop"
+      ],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A03",
+      "window": "available",
+      "fromDate": "2026-09-22",
+      "toDate": "2026-10-05",
+      "dataset": "operational",
+      "records": {
+        "collections": 0,
+        "production": 0,
+        "losses": 0,
+        "stoppages": 0,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "no-data": 41
+      },
+      "groups": 0,
+      "validSamples": [],
+      "capabilityReasons": {},
+      "notes": [
+        "target-window-unavailable:c26_target_mass",
+        "target-window-unavailable:c26_target_production",
+        "target-window-unavailable:c26_target_reject",
+        "target-window-unavailable:c26_target_stop"
+      ],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A03",
+      "window": "available",
+      "fromDate": "2026-09-22",
+      "toDate": "2026-10-05",
+      "dataset": "presentation",
+      "records": {
+        "collections": 14,
+        "production": 28,
+        "losses": 47,
+        "stoppages": 14,
+        "reviews": 4,
+        "corrections": 1
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "within": 16,
+        "pending": 23,
+        "outside": 2
+      },
+      "groups": 41,
+      "validSamples": [
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "capabilityReasons": {
+        "unapproved-limit": 23,
+        "insufficient-sample": 2,
+        "setpoint": 15,
+        "bilateral-limit-required": 1
+      },
+      "notes": [
+        "target-window-unavailable:c26_target_mass",
+        "target-window-unavailable:c26_target_production",
+        "target-window-unavailable:c26_target_reject",
+        "target-window-unavailable:c26_target_stop"
+      ],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 2
+      }
+    },
+    {
+      "product": "Selo A03",
+      "window": "target-window",
+      "fromDate": "2026-09-29",
+      "toDate": "2026-10-05",
+      "dataset": "operational",
+      "records": {
+        "collections": 0,
+        "production": 0,
+        "losses": 0,
+        "stoppages": 0,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "no-data": 41
+      },
+      "groups": 0,
+      "validSamples": [],
+      "capabilityReasons": {},
+      "notes": [],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A03",
+      "window": "target-window",
+      "fromDate": "2026-09-29",
+      "toDate": "2026-10-05",
+      "dataset": "presentation",
+      "records": {
+        "collections": 7,
+        "production": 28,
+        "losses": 23,
+        "stoppages": 14,
+        "reviews": 4,
+        "corrections": 1
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 14,
+        "stoppages": 7
+      },
+      "complete": true,
+      "parameterStates": {
+        "within": 16,
+        "pending": 23,
+        "outside": 2
+      },
+      "groups": 41,
+      "validSamples": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "capabilityReasons": {
+        "unapproved-limit": 23,
+        "insufficient-sample": 2,
+        "setpoint": 15,
+        "bilateral-limit-required": 1
+      },
+      "notes": [],
+      "targetAlerts": 2,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 2
+      }
+    },
+    {
+      "product": "Selo A05",
+      "window": "initial",
+      "fromDate": "2026-10-01",
+      "toDate": "2026-10-07",
+      "dataset": "operational",
+      "records": {
+        "collections": 0,
+        "production": 0,
+        "losses": 0,
+        "stoppages": 0,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "no-data": 41
+      },
+      "groups": 0,
+      "validSamples": [],
+      "capabilityReasons": {},
+      "notes": [],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A05",
+      "window": "initial",
+      "fromDate": "2026-10-01",
+      "toDate": "2026-10-07",
+      "dataset": "presentation",
+      "records": {
+        "collections": 5,
+        "production": 28,
+        "losses": 17,
+        "stoppages": 15,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 18,
+        "stoppages": 9
+      },
+      "complete": true,
+      "parameterStates": {
+        "within": 18,
+        "pending": 23
+      },
+      "groups": 41,
+      "validSamples": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "capabilityReasons": {
+        "unapproved-limit": 23,
+        "insufficient-sample": 2,
+        "setpoint": 15,
+        "bilateral-limit-required": 1
+      },
+      "notes": [
+        "open-stoppages-not-final"
+      ],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A05",
+      "window": "available",
+      "fromDate": "2026-09-22",
+      "toDate": "2026-10-05",
+      "dataset": "operational",
+      "records": {
+        "collections": 0,
+        "production": 0,
+        "losses": 0,
+        "stoppages": 0,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "no-data": 41
+      },
+      "groups": 0,
+      "validSamples": [],
+      "capabilityReasons": {},
+      "notes": [],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A05",
+      "window": "available",
+      "fromDate": "2026-09-22",
+      "toDate": "2026-10-05",
+      "dataset": "presentation",
+      "records": {
+        "collections": 14,
+        "production": 28,
+        "losses": 47,
+        "stoppages": 15,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "within": 18,
+        "pending": 23
+      },
+      "groups": 41,
+      "validSamples": [
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "capabilityReasons": {
+        "unapproved-limit": 23,
+        "insufficient-sample": 2,
+        "setpoint": 15,
+        "bilateral-limit-required": 1
+      },
+      "notes": [
+        "open-stoppages-not-final"
+      ],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 2
+      }
+    },
+    {
+      "product": "Selo A05",
+      "window": "target-window",
+      "fromDate": "2026-09-29",
+      "toDate": "2026-10-05",
+      "dataset": "operational",
+      "records": {
+        "collections": 0,
+        "production": 0,
+        "losses": 0,
+        "stoppages": 0,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 0,
+        "stoppages": 0
+      },
+      "complete": true,
+      "parameterStates": {
+        "no-data": 41
+      },
+      "groups": 0,
+      "validSamples": [],
+      "capabilityReasons": {},
+      "notes": [],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 0
+      }
+    },
+    {
+      "product": "Selo A05",
+      "window": "target-window",
+      "fromDate": "2026-09-29",
+      "toDate": "2026-10-05",
+      "dataset": "presentation",
+      "records": {
+        "collections": 7,
+        "production": 28,
+        "losses": 23,
+        "stoppages": 15,
+        "reviews": 0,
+        "corrections": 0
+      },
+      "tableCandidatesOutsideWindow": {
+        "production": 14,
+        "stoppages": 7
+      },
+      "complete": true,
+      "parameterStates": {
+        "within": 18,
+        "pending": 23
+      },
+      "groups": 41,
+      "validSamples": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "capabilityReasons": {
+        "unapproved-limit": 23,
+        "insufficient-sample": 2,
+        "setpoint": 15,
+        "bilateral-limit-required": 1
+      },
+      "notes": [
+        "open-stoppages-not-final"
+      ],
+      "targetAlerts": 0,
+      "hourly": {
+        "allocatedHours": 0,
+        "unallocatedRecords": 2
+      }
+    }
+  ]
+}

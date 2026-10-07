@@ -8,7 +8,7 @@ assert.ok(
   process.env.MSA_TEST_PASSWORD,
   "MSA_TEST_PASSWORD is required; never stored in this file.",
 );
-assert.ok(process.env.MSA_TEST_EMAIL,"MSA_TEST_EMAIL is required; never stored in this file.");
+assert.ok(process.env.MSA_TEST_RE,"MSA_TEST_RE is required; never stored in this file.");
 const server = await createStaticServer({ port: 0 }),
   browser = await chromium.launch({ headless: true }),
   errors = [];
@@ -19,7 +19,7 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
   await page.locator('#login').waitFor();
-  await page.locator('#login [name=email]').fill(process.env.MSA_TEST_EMAIL);
+  await page.locator('#login [name=re]').fill(process.env.MSA_TEST_RE);
   await page.locator('#login [name=password]').fill(process.env.MSA_TEST_PASSWORD);
   await page.locator('#login [type=submit]').click();
   await page.locator("[data-action=logout]").waitFor({ timeout: 60000 });

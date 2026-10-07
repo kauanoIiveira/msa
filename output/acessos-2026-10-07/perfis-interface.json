@@ -1,0 +1,62 @@
+{
+  "fixtureOnly": true,
+  "results": [
+    {
+      "re": "00000",
+      "role": "admin",
+      "pages": [
+        "Visão da produção",
+        "Parâmetros",
+        "Apontamentos",
+        "Engenharia",
+        "CEP e capacidade",
+        "Histórico",
+        "Cadastros",
+        "Configurações"
+      ]
+    },
+    {
+      "re": "00001",
+      "role": "engineer",
+      "pages": [
+        "Visão da produção",
+        "Parâmetros",
+        "Apontamentos",
+        "Engenharia",
+        "CEP e capacidade",
+        "Histórico",
+        "Cadastros",
+        "Configurações"
+      ]
+    },
+    {
+      "re": "00002",
+      "role": "operator",
+      "pages": [
+        "Visão da produção",
+        "Parâmetros",
+        "Apontamentos",
+        "Engenharia",
+        "CEP e capacidade",
+        "Histórico",
+        "Cadastros",
+        "Configurações"
+      ]
+    },
+    {
+      "re": "00003",
+      "role": "viewer",
+      "pages": [
+        "Visão da produção",
+        "Parâmetros",
+        "Apontamentos",
+        "Engenharia",
+        "CEP e capacidade",
+        "Histórico",
+        "Cadastros",
+        "Configurações"
+      ]
+    }
+  ],
+  "errors": []
+}

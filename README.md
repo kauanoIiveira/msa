@@ -1,5 +1,7 @@
 # MSA Yellow Team
 
+**Retomada atual — 07/10/2026:** comece por [RETOMADA_2026-10-07.md](RETOMADA_2026-10-07.md) e [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md). Especificação NHPL aprovada; implementação adiada pelo usuário; plano ainda pendente. Login por RE e quatro perfis de teste já existem. As notas abaixo descrevem etapas anteriores quando divergirem da atualização atual.
+
 Para retomar com o pacote local completo, comece por [LEIA_PRIMEIRO.md](LEIA_PRIMEIRO.md), use [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md) e siga o [guia de transferência](docs/TRANSFERENCIA_LOCAL.md). Os originais e o contexto privado agora acompanham a cópia local; partes antigas deste documento permanecem como histórico.
 
 Base funcional para o desafio MSA/SENAI. HTML/CSS/JavaScript modular e Firebase Authentication + Realtime Database. Sem framework de interface ou servidor de producao.

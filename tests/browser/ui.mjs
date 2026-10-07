@@ -17,7 +17,7 @@ try {
   page.on("pageerror", (error) => errors.push(error.message));
   await installAuthFixture(page);
   await page.goto(url);
-  await page.locator('#login [name=email]').fill('test@example.com');
+  await page.locator('#login [name=re]').fill('00000');
   await page.locator('#login [name=password]').fill('fixture-only');
   await page.locator('#login [type=submit]').click();
   await page.locator(".zones .zone").first().waitFor();

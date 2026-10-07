@@ -23,3 +23,8 @@ test('static artifact permits only the verified MSA brand image and keeps other 
   await writeFile(logo,'unexpected binary');
   assert.equal((await verifyStatic(dir)).ok,false);
 });
+test('static artifact rejects unverified WebP images instead of treating binary files as source text',async t=>{
+  const dir=await mkdtemp(join(tmpdir(),'msa-webp-'));t.after(()=>rm(dir,{recursive:true,force:true}));
+  await writeFile(join(dir,'unverified.webp'),'RIFF unverified WEBP');
+  assert.equal((await verifyStatic(dir)).ok,false);
+});

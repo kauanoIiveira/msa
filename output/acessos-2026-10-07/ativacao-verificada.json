@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-07T17:11:01.959Z",
+  "workspace": "msa",
+  "readOnly": true,
+  "results": [
+    {
+      "re": "00000",
+      "role": "admin",
+      "authenticationVerified": true,
+      "membershipVerified": true,
+      "dataReadVerified": true,
+      "machines": 1
+    },
+    {
+      "re": "00001",
+      "role": "engineer",
+      "authenticationVerified": true,
+      "membershipVerified": true,
+      "dataReadVerified": true,
+      "machines": 1
+    },
+    {
+      "re": "00002",
+      "role": "operator",
+      "authenticationVerified": true,
+      "membershipVerified": true,
+      "dataReadVerified": true,
+      "machines": 1
+    },
+    {
+      "re": "00003",
+      "role": "viewer",
+      "authenticationVerified": true,
+      "membershipVerified": true,
+      "dataReadVerified": true,
+      "machines": 1
+    }
+  ]
+}

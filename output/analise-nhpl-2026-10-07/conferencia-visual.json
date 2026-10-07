@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-07",
+  "timezone": "America/Sao_Paulo",
+  "method": "Original images viewed; manual structural transcription, without importing handwritten production records",
+  "images_reviewed": [
+    {"file": "WhatsApp Image 2026-10-05 at 12.12.45.jpeg", "observed": "Vacuum Center interface with oven, recipe, times, delays, cycle counter and analog gauges. Does not establish NHPL cycle time."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.13.44.jpeg", "observed": "Pitch Board, sector NHPL; fields for date, shift, product, order, planned/actual/cumulative production, scrap, staffing and time mapping. Handwritten quantities were not certified or imported."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.14.06.jpeg", "observed": "Siemens SIMATIC HMI showing pending alarms, station, time and description. Protocol and export capability not supplied."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.15.26.jpeg", "observed": "Assembly stations and marked hardware. Does not establish a ready software data interface."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.16.05.jpeg", "observed": "Electrical cabinet and Siemens hardware; no verified tag list, addresses or protocol configuration."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.17.22.jpeg", "observed": "Current product, station states, general line state and approved/rejected quantity fields both displaying zero. No automatic counting behavior verified."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.20.02.jpeg", "observed": "Paper collection forms for VGHP/MARKV seals; date, shift, broken/wrinkled seals and laminate loss in kg. Not NHPL assembly measurement specifications."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.20.38.jpeg", "observed": "Vacuum Center thermal interface and analog pressure/vacuum gauges, marked as parameters. Do not transpose thermal limits to NHPL."},
+    {"file": "WhatsApp Image 2026-10-05 at 12.24.58.jpeg", "observed": "Close-up of analog pressure and vacuum gauges. No certified digital readings or NHPL limits inferred."}
+  ],
+  "decision": {
+    "pilot": "NHPL / Montagem / Montagem de abafadores / VGARD HP e MARK V",
+    "productivity_formula": "100 * gross_actual_pieces / approved_planned_pieces for matching context and period",
+    "initial_target_percent": 95,
+    "planning_takt_seconds_per_piece": 12,
+    "takt_source": "Fabiana interview answers provided by user",
+    "explicit_approved_plan_overrides_takt_suggestion": true,
+    "formula_status": "Documented MVP design choice requested by user; not an MSA-homologated formula",
+    "legacy_seal_data_preserved": true
+  },
+  "source_preservation": {
+    "checked_files": 10,
+    "all_sha256_preserved_after_document_creation": true,
+    "hash_report": "material-conferido.json"
+  },
+  "stage": "Written specification approved by user on 2026-10-07; implementation explicitly deferred to a later session on another computer; implementation plan not yet written"
+}

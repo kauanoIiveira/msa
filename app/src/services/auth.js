@@ -1,9 +1,15 @@
 import {firebaseError} from '../repositories/firebase-repository.js';
 import {requireThat} from '../domain/errors.js';
-export function createAuthService({auth,sdk}) {
+export function resolveLoginEmail(re,accounts) {
+  requireThat(typeof re==='string'&&/^\d{5}$/.test(re.trim()),'INVALID_LOGIN');
+  const key=re.trim();
+  requireThat(Object.hasOwn(accounts,key)&&typeof accounts[key]==='string'&&accounts[key].length>0,'INVALID_LOGIN');
+  return accounts[key];
+}
+export function createAuthService({auth,sdk,loginAccounts}) {
   const invoke=async fn=>{try{return await fn();}catch(e){throw firebaseError(e);}};
   return {
-    signIn:(email,password)=>invoke(()=>sdk.signInWithEmailAndPassword(auth,email,password)),
+    signIn:(identifier,password)=>invoke(()=>sdk.signInWithEmailAndPassword(auth,loginAccounts?resolveLoginEmail(identifier,loginAccounts):identifier,password)),
     signOut:()=>invoke(()=>sdk.signOut(auth)),
     resetPassword:email=>invoke(()=>sdk.sendPasswordResetEmail(auth,email)),
     updateDisplayName:displayName=>invoke(async()=>{

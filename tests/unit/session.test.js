@@ -16,3 +16,15 @@ test('logout revokes previously handed-out services and their listeners',async()
   await assert.rejects(()=>controller.onWorkspace('demo'),{code:'AUTH_REQUIRED'});
   controller.dispose();
 });
+
+test('changing workspace membership revokes old privileges and requires a new role-bound session',async()=>{
+  let nextUser;const authService={watchSession:callback=>{nextUser=callback;return()=>{};}};
+  const repo=memoryRepository();await repo.create('members/u',{role:'admin'});
+  const controller=createAuthenticatedMsa({authService,repositoryFactory:()=>repo});
+  nextUser({uid:'u'});const adminServices=await controller.onWorkspace('demo');
+  await repo.updateRegistry('members/u',{role:'viewer'});
+  await assert.rejects(()=>adminServices.registry.create('machines',{name:'Old privilege'}),{code:'STALE_SESSION'});
+  const viewerServices=await controller.onWorkspace('demo');
+  await assert.rejects(()=>viewerServices.registry.create('machines',{name:'Forbidden'}),{code:'FORBIDDEN'});
+  controller.dispose();assert.equal(repo.listenerCount(),0);
+});

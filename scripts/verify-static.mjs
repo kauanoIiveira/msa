@@ -3,6 +3,11 @@ import {resolve,relative,dirname,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {parse} from 'acorn';
 import {createHash} from 'node:crypto';
+const approvedAssets={
+  'assets/msa/msalogo.png':'4ce380bf6038dad8c22c1689e173757a2bddbed045288c3c1fcc0c643e9f1a4f',
+  'assets/msa/msa-logo-full.png':'b5147631a5b9e5764dc4ca38af546426d43832793773b1c8b21592e1e19c7369',
+  'assets/msa/msaphoto.webp':'25b1870898573b2525c8702a59e007a5dba6e201300d95d81a833eb7a59c770b',
+};
 export async function verifyStatic(root,{requireIndex=false}={}) {
   root=resolve(root);const errors=[];let files=0;
   async function visit(dir) {
@@ -10,9 +15,10 @@ export async function verifyStatic(root,{requireIndex=false}={}) {
       const path=resolve(dir,entry.name),name=relative(root,path);
       if(entry.isSymbolicLink()) {errors.push(`symlink:${name}`);continue;}
       if(entry.isDirectory()) {await visit(path);continue;}files++;
-      // Exact approved brand asset. Industrial documents and all other binary artifacts stay blocked.
-      if(name.replaceAll('\\','/')==='assets/msa/msalogo.png'&&createHash('sha256').update(await readFile(path)).digest('hex')==='4ce380bf6038dad8c22c1689e173757a2bddbed045288c3c1fcc0c643e9f1a4f') continue;
-      if(/\.(pdf|xlsx?|csv|jpe?g|png|zip|env)$/i.test(entry.name)) errors.push(`non-code-artifact:${name}`);
+      // Only the exact approved UI images. Industrial evidence and other binaries stay blocked.
+      const approvedHash=approvedAssets[name.replaceAll('\\','/')];
+      if(approvedHash&&createHash('sha256').update(await readFile(path)).digest('hex')===approvedHash) continue;
+      if(/\.(pdf|xlsx?|csv|jpe?g|png|webp|zip|env)$/i.test(entry.name)) errors.push(`non-code-artifact:${name}`);
       const text=await readFile(path,'utf8');
       if(/(?:file:\/\/|(?:^|[\s"'(])[A-Za-z]:[\\/]|BEGIN (?:RSA )?PRIVATE KEY|private_key\s*[=:]|serviceAccountKey)/m.test(text)) errors.push(`unsafe-content:${name}`);
       if(['.js','.mjs'].includes(extname(path))) {

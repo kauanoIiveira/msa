@@ -1,0 +1,19 @@
+{
+  "comparisonSnapshot": "output/auditoria-2026-10-06/msa-depois.json",
+  "matchingRoots": {
+    "machines": true,
+    "processes": true,
+    "products": true,
+    "parameters": true,
+    "parameterVersions": true,
+    "reasons": true,
+    "targets": true,
+    "collections": true,
+    "production": true,
+    "losses": true,
+    "stoppages": true,
+    "reviews": true,
+    "corrections": true
+  },
+  "allMatch": true
+}

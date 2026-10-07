@@ -1,0 +1,63 @@
+{
+  "realFirebase": true,
+  "operationalWrites": false,
+  "pages": [
+    "Visão da produção",
+    "Parâmetros",
+    "Apontamentos",
+    "Engenharia",
+    "CEP e capacidade",
+    "Histórico",
+    "Cadastros",
+    "Configurações"
+  ],
+  "sessionRestored": true,
+  "productionTable": {
+    "selectedPeriod": [
+      "2026-10-01",
+      "2026-10-07"
+    ],
+    "rows": 28,
+    "firstRow": "05/10, 11:00:00\tProdução\nc26_produc\n\t1.093 peças · Boas\t"
+  },
+  "cepExport": {
+    "filename": "msa-cep-2026-10-07.csv",
+    "content": "[object Promise]",
+    "containsPromise": true
+  },
+  "targetInterface": {
+    "rows": 4,
+    "actions": [
+      {
+        "label": "Novo cadastro",
+        "action": "form:target"
+      },
+      {
+        "label": "Inativar",
+        "action": "active:targets:c26_target_mass"
+      },
+      {
+        "label": "Inativar",
+        "action": "active:targets:c26_target_production"
+      },
+      {
+        "label": "Inativar",
+        "action": "active:targets:c26_target_reject"
+      },
+      {
+        "label": "Inativar",
+        "action": "active:targets:c26_target_stop"
+      }
+    ]
+  },
+  "targetFormFields": [
+    "name",
+    "metric",
+    "threshold",
+    "operator",
+    "fromDate",
+    "toDate"
+  ],
+  "logout": true,
+  "pageErrors": []
+}

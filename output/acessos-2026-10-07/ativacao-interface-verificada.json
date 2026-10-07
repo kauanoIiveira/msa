@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-07T17:16:25.679Z",
+  "realAccounts": true,
+  "operationalWrites": false,
+  "results": [
+    {
+      "re": "00001",
+      "role": "engineer",
+      "loginVerified": true,
+      "profileVerified": true
+    },
+    {
+      "re": "00002",
+      "role": "operator",
+      "loginVerified": true,
+      "profileVerified": true
+    },
+    {
+      "re": "00003",
+      "role": "viewer",
+      "loginVerified": true,
+      "profileVerified": true,
+      "noCollectionActionVerified": true
+    }
+  ]
+}

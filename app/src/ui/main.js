@@ -229,9 +229,24 @@ function filters() {
 function login(error = state.loginError) {
   const previous = app.querySelector('#login');
   const fields = previous ? new FormData(previous) : null;
-  const prefs = readPreferences();
   clearCharts();
-  app.innerHTML = `<main class="login-view" id="content" tabindex="-1"><section class="login-brand" aria-label="MSA Produção e engenharia"><img class="login-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"><div class="login-brand-copy"><p class="brand-eyebrow">MSA · Ambiente de trabalho</p><h2>Produção e<br>engenharia.</h2><p>Parâmetros, apontamentos e análises em um só lugar.</p></div><div class="precision-art" aria-hidden="true"><svg viewBox="0 0 600 360" fill="none"><path d="M30 180H570M300 20V340M80 70H520V290H80Z"/><path d="M145 110H455V250H145Z"/><circle cx="300" cy="180" r="105"/><circle cx="300" cy="180" r="58"/><path d="M70 170V190M530 170V190M290 40H310M290 320H310M145 100V120M455 240V260M290 180H310M300 170V190"/><path class="precision-accent" d="M195 180A105 105 0 0 1 300 75M405 180A105 105 0 0 1 300 285"/></svg></div><div class="login-brand-footer"><span>Produção</span><span>Qualidade</span><span>Engenharia</span></div></section><section class="login-main"><div class="login-top segmented" aria-label="Tema">${[['light','sun','Claro'],['dark','moon','Escuro'],['system','monitor','Sistema']].map(([id,ico,title])=>`<button type="button" data-theme-choice="${id}" aria-pressed="${prefs.theme===id}" class="${prefs.theme===id?'selected':''}" ${state.signingIn?'disabled':''}>${icon(ico)}<span>${title}</span></button>`).join('')}</div><form id="login" class="login-form" aria-busy="${state.signingIn}"><img class="login-mobile-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"><p class="login-eyebrow">Produção e engenharia</p><h1>Acesse sua conta</h1><p class="login-caption">Use seu e-mail e senha para entrar.</p><label class="field" for="login-email">E-mail<input id="login-email" name="email" type="email" value="${e(fields?.get('email')??'')}" placeholder="seu.email@empresa.com" required autocomplete="username" autocapitalize="none" spellcheck="false" ${state.signingIn?'readonly':''}></label><label class="field" for="login-password">Senha<div class="password-field"><input id="login-password" name="password" type="password" value="${e(fields?.get('password')??'')}" placeholder="Sua senha" required autocomplete="current-password" aria-describedby="login-error" ${state.signingIn?'readonly':''}><button class="icon-btn" type="button" data-action="password" aria-label="Mostrar senha" aria-pressed="false">${icon('eye')}</button></div></label><p class="login-error" id="login-error" role="alert">${e(error)}</p><button class="btn primary wide" type="submit" ${state.signingIn?'disabled':''}><span>${state.signingIn?'Entrando…':'Entrar'}</span>${icon('arrow-right')}</button><div class="login-secondary"><p>Conheça os cenários de operação</p>${button('Abrir simulação local','simulate','flask-conical')}</div></form><p class="login-footer">MSA · Produção e engenharia</p></section></main>`;
+  app.innerHTML = `<main class="login-view" id="content" tabindex="-1">
+    <section class="login-brand" aria-label="MSA do Brasil">
+      <img class="login-photo" src="./assets/msa/msaphoto.webp" width="1360" height="907" alt="" fetchpriority="high">
+      <img class="login-logo" src="./assets/msa/msa-logo-full.png" width="199" height="95" alt="MSA The Safety Company">
+    </section>
+    <section class="login-main">
+      <form id="login" class="login-form" aria-busy="${state.signingIn}">
+        <h1>Acesse sua conta</h1>
+        <p class="login-caption">Use seu RE e senha para entrar.</p>
+        <label class="field" for="login-re">RE<input id="login-re" name="re" type="text" value="${e(fields?.get('re')??'')}" placeholder="Seu RE" required pattern="[0-9]{5}" maxlength="5" inputmode="numeric" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="login-error" ${state.signingIn?'readonly':''}></label>
+        <label class="field" for="login-password">Senha<div class="password-field"><input id="login-password" name="password" type="password" value="${e(fields?.get('password')??'')}" placeholder="Sua senha" required autocomplete="current-password" aria-describedby="login-error" ${state.signingIn?'readonly':''}><button class="icon-btn" type="button" data-action="password" aria-label="Mostrar senha" aria-pressed="false">${icon('eye')}</button></div></label>
+        <p class="login-error" id="login-error" role="alert">${e(error)}</p>
+        <button class="btn primary wide" type="submit" ${state.signingIn?'disabled':''}><span>${state.signingIn?'Entrando…':'Entrar'}</span>${icon('arrow-right')}</button>
+        <div class="login-secondary"><p>Conheça os cenários de operação</p>${button('Abrir simulação local','simulate','flask-conical')}</div>
+      </form>
+    </section>
+  </main>`;
   icons();
   app.querySelector('#login').addEventListener('submit', async event => {
     event.preventDefault();
@@ -244,9 +259,9 @@ function login(error = state.loginError) {
     submit.disabled = true;
     submit.querySelector('span').textContent = 'Entrando…';
     form.querySelectorAll('input').forEach(input=>input.readOnly=true);
-    app.querySelectorAll('[data-theme-choice], [data-action=simulate]').forEach(button=>button.disabled=true);
+    app.querySelectorAll('[data-action=simulate]').forEach(button=>button.disabled=true);
     try {
-      const result = await getCloud().auth.signIn(data.get('email').trim(), data.get('password'));
+      const result = await getCloud().auth.signIn(data.get('re').trim(), data.get('password'));
       await enterCloud(result.user);
     } catch (error) {
       state.loginError = errorText(error);
@@ -258,7 +273,7 @@ function login(error = state.loginError) {
       submit.disabled = false;
       submit.querySelector('span').textContent = 'Entrar';
       form.querySelectorAll('input').forEach(input=>input.readOnly=false);
-      app.querySelectorAll('[data-theme-choice], [data-action=simulate]').forEach(button=>button.disabled=false);
+      app.querySelectorAll('[data-action=simulate]').forEach(button=>button.disabled=false);
     }
   });
 }

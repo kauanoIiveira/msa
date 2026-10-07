@@ -1,0 +1,63 @@
+{
+  "projectId": "msayellowteam",
+  "workspace": "msa",
+  "admin": {
+    "re": "00000",
+    "email": "adm@adm.com",
+    "passwordChanged": true,
+    "authenticationVerified": true,
+    "role": "admin"
+  },
+  "accounts": [
+    {
+      "re": "00001",
+      "email": "00001@msa.test",
+      "uid": "0eVbM9fpCWVmRhxR67baaxsrZYt2",
+      "created": true,
+      "authenticationVerified": true,
+      "expectedRole": "engineer",
+      "membership": "active",
+      "linkedRole": "engineer",
+      "consolePath": "workspaces/msa/members/0eVbM9fpCWVmRhxR67baaxsrZYt2",
+      "consoleValue": {
+        "role": "engineer"
+      },
+      "membershipVerifiedAt": "2026-10-07T17:11:01.959Z"
+    },
+    {
+      "re": "00002",
+      "email": "00002@msa.test",
+      "uid": "kyXe3uPg3deh3Kiqc11IcXJebCA2",
+      "created": true,
+      "authenticationVerified": true,
+      "expectedRole": "operator",
+      "membership": "active",
+      "linkedRole": "operator",
+      "consolePath": "workspaces/msa/members/kyXe3uPg3deh3Kiqc11IcXJebCA2",
+      "consoleValue": {
+        "role": "operator"
+      },
+      "membershipVerifiedAt": "2026-10-07T17:11:01.959Z"
+    },
+    {
+      "re": "00003",
+      "email": "00003@msa.test",
+      "uid": "MesrbrOmAkMcM3JCsF9tPcJ65r22",
+      "created": true,
+      "authenticationVerified": true,
+      "expectedRole": "viewer",
+      "membership": "active",
+      "linkedRole": "viewer",
+      "consolePath": "workspaces/msa/members/MesrbrOmAkMcM3JCsF9tPcJ65r22",
+      "consoleValue": {
+        "role": "viewer"
+      },
+      "membershipVerifiedAt": "2026-10-07T17:11:01.959Z"
+    }
+  ],
+  "membershipWritesDenied": true,
+  "operationalWrites": false,
+  "membershipActivatedAt": "2026-10-07T17:11:01.959Z",
+  "membershipActivationMethod": "Firebase Console; individual member nodes added; existing administrator preserved",
+  "previousMembershipWritesDenied": true
+}

@@ -1,0 +1,167 @@
+{
+  "read_only": true,
+  "source_directory": "C:\\Users\\Aluno\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido",
+  "file_sha256": {
+    "T20A03(EN)5 - Capability study senai.xlsx": "6a030b82f7dc32c6bd05a43a426344c72683fad61495aab70dbc13406ea11c8e",
+    "WhatsApp Image 2026-10-05 at 12.12.45.jpeg": "81c222018524dc25f3b24dd36dfd34ad62fe8fda7fcba5dde0dc310e3a5b203d",
+    "WhatsApp Image 2026-10-05 at 12.13.44.jpeg": "98711020a3f8bfe4fab62336db1093cca661e1a384b5d7f102da47cca8c71d34",
+    "WhatsApp Image 2026-10-05 at 12.14.06.jpeg": "f762f803d6db9ee7aa7c89cbed2695435c44279420e86e4aad9ae7b12e8d1db0",
+    "WhatsApp Image 2026-10-05 at 12.15.26.jpeg": "7f79fd7ca85a7f56c6e847cb544f8dbf1df7e85fe34b8426952cd48ca3fbde2e",
+    "WhatsApp Image 2026-10-05 at 12.16.05.jpeg": "d6cce69a3771576e7c43b223fbc85d38094151350575d7fca9eceb7afc6c0580",
+    "WhatsApp Image 2026-10-05 at 12.17.22.jpeg": "63999a28d69d1d0e2353d997fac6750a881938ef9bd590c0c23897f63d431e67",
+    "WhatsApp Image 2026-10-05 at 12.20.02.jpeg": "dfb7575b1bc0100720c2e8c45dcef361bdf1974f156cc165c1327cd1619428e5",
+    "WhatsApp Image 2026-10-05 at 12.20.38.jpeg": "8df5831a65e3fafb2d0b5525eed628330381e61341f936b99a7be38bce61f492",
+    "WhatsApp Image 2026-10-05 at 12.24.58.jpeg": "a3a119d2d39a7cf1307cb827cac3dd7757876292bcfee36c52020bffea2ce392"
+  },
+  "sheets": [
+    {
+      "name": "Selo ",
+      "rows": 1001,
+      "columns": 87
+    },
+    {
+      "name": "Normality test ",
+      "rows": 1209,
+      "columns": 37
+    }
+  ],
+  "selected_cells": {
+    "A1": {
+      "value_or_formula": "MSA - Capability study -  Parâmetros de Processo Selo V-Gard",
+      "cached": "MSA - Capability study -  Parâmetros de Processo Selo V-Gard"
+    },
+    "A2": {
+      "value_or_formula": null,
+      "cached": null
+    },
+    "E5": {
+      "value_or_formula": "2026-08-25 00:00:00",
+      "cached": "2026-08-25 00:00:00"
+    },
+    "I5": {
+      "value_or_formula": "Fabiana Stoicov",
+      "cached": "Fabiana Stoicov"
+    },
+    "O5": {
+      "value_or_formula": "Selo V GARD HP",
+      "cached": "Selo V GARD HP"
+    },
+    "U5": {
+      "value_or_formula": null,
+      "cached": null
+    },
+    "E6": {
+      "value_or_formula": null,
+      "cached": null
+    },
+    "I6": {
+      "value_or_formula": null,
+      "cached": null
+    },
+    "O6": {
+      "value_or_formula": null,
+      "cached": null
+    },
+    "U6": {
+      "value_or_formula": 1.33,
+      "cached": 1.33
+    },
+    "A7": {
+      "value_or_formula": null,
+      "cached": null
+    },
+    "BB9": {
+      "value_or_formula": "Tempo de Vacuo",
+      "cached": "Tempo de Vacuo"
+    },
+    "BB10": {
+      "value_or_formula": 75,
+      "cached": 75
+    },
+    "BB11": {
+      "value_or_formula": 85,
+      "cached": 85
+    },
+    "BD9": {
+      "value_or_formula": "Tempo de Resfriamento",
+      "cached": "Tempo de Resfriamento"
+    },
+    "BD10": {
+      "value_or_formula": 35,
+      "cached": 35
+    },
+    "BD11": {
+      "value_or_formula": 36,
+      "cached": 36
+    },
+    "BH9": {
+      "value_or_formula": "Tempo Contra molde",
+      "cached": "Tempo Contra molde"
+    },
+    "BH10": {
+      "value_or_formula": 80,
+      "cached": 80
+    },
+    "BH11": {
+      "value_or_formula": 75,
+      "cached": 75
+    },
+    "CF9": {
+      "value_or_formula": "Pressão Ar",
+      "cached": "Pressão Ar"
+    },
+    "CF10": {
+      "value_or_formula": "6,5",
+      "cached": "6,5"
+    },
+    "CF11": {
+      "value_or_formula": null,
+      "cached": null
+    },
+    "CH9": {
+      "value_or_formula": "Vacuo",
+      "cached": "Vacuo"
+    },
+    "CH10": {
+      "value_or_formula": -600,
+      "cached": -600
+    },
+    "CH11": {
+      "value_or_formula": null,
+      "cached": null
+    }
+  },
+  "matching_labels": [
+    {
+      "sheet": "Selo ",
+      "cell": "BB9",
+      "text": "Tempo de Vacuo"
+    },
+    {
+      "sheet": "Selo ",
+      "cell": "BD9",
+      "text": "Tempo de Resfriamento"
+    },
+    {
+      "sheet": "Selo ",
+      "cell": "BF9",
+      "text": "Tempo destacar"
+    },
+    {
+      "sheet": "Selo ",
+      "cell": "BH9",
+      "text": "Tempo Contra molde"
+    },
+    {
+      "sheet": "Selo ",
+      "cell": "BJ9",
+      "text": "Tempo prensa corte"
+    },
+    {
+      "sheet": "Selo ",
+      "cell": "BL9",
+      "text": "Tempo de esteira saida"
+    }
+  ],
+  "source_unchanged_after_read": true
+}

@@ -1801,24 +1801,14 @@ dialog { border-radius: 12px; }
 .parameter-chart-heading p { font-size: 11px; color: var(--muted); overflow-wrap: anywhere; margin-top: 5px; }
 .form-error, .login-error { font-size: 12px; }
 .form-error:not(:empty) { padding: 12px; background: var(--red-bg); border-radius: 6px; margin-top: 16px; }
-.login-view { grid-template-columns: minmax(380px,.95fr) minmax(500px,1.05fr); background: var(--surface); }
-.login-brand { background: var(--rail); color: #ffffff; min-height: 100dvh; display: flex; flex-direction: column; padding: 56px clamp(36px,5vw,80px) 36px; position: relative; overflow: hidden; }
-.login-logo { width: 186px; height: auto; display: block; margin: 0 0 72px; }
-.login-brand-copy { position: relative; z-index: 1; }
-.brand-eyebrow { color: #bbd3c4; font-size: 12px; font-weight: 600; margin-bottom: 24px; }
-.login-brand h2 { font-size: clamp(38px,4.5vw,65px); line-height: 1.13; font-weight: 650; letter-spacing: -2.5px; }
-.login-brand-copy > p:last-child { font-size: 14px; max-width: 300px; color: #c0d6c7; line-height: 1.8; margin-top: 24px; }
-.precision-art { flex: 1; min-height: 170px; display: flex; align-items: center; justify-content: center; margin: 24px -25px 0; }
-.precision-art svg { width: 100%; max-width: 550px; height: auto; stroke: #719984; stroke-width: 1; opacity: .55; }
-.precision-art .precision-accent { stroke: #83e9a6; stroke-width: 2; opacity: 1; }
-.login-brand-footer { display: flex; gap: 24px; font-size: 11px; color: #bdd3c5; border-top: 1px solid #ffffff24; padding-top: 22px; }
-.login-main { padding: 105px 48px 85px; }
-.login-top { top: 28px; right: 32px; }
-.login-top button { min-height: 36px; font-size: 11px; padding: 7px 10px; }
-.login-top svg { width: 16px; height: 16px; }
-.login-form { max-width: 420px; }
-.login-mobile-logo { display: none; width: 105px; height: auto; }
-.login-eyebrow { font-size: 12px; color: var(--accent); font-weight: 750; margin-bottom: 13px; }
+/* The login uses the supplied factory photo and full brand mark. */
+.login-view { grid-template-columns: minmax(0,1.05fr) minmax(420px,.95fr); background: var(--surface); }
+.login-brand { background: var(--rail); min-height: 100dvh; position: relative; overflow: hidden; isolation: isolate; }
+.login-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 54% center; }
+.login-brand::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,0,0,.64),rgba(0,0,0,.05) 48%); pointer-events: none; }
+.login-logo { position: absolute; top: 40px; left: 40px; z-index: 1; display: block; width: 190px; height: auto; margin: 0; filter: grayscale(1) contrast(40); mix-blend-mode: screen; }
+.login-main { padding: 64px 48px; }
+.login-form { max-width: 380px; }
 .login-form h1 { font-size: 32px; letter-spacing: -1px; font-weight: 750; margin-bottom: 12px; }
 .login-form .login-caption { font-size: 14px; margin-bottom: 34px; line-height: 1.7; }
 .login-form .field { font-size: 13px; margin-bottom: 22px; gap: 9px; }
@@ -1836,9 +1826,8 @@ dialog { border-radius: 12px; }
   .context-dates { display: none; }
   .dashboard-charts .data-section, #page > .data-section, .dashboard-bottom .data-section { padding: 18px; }
   .zone { padding: 10px; }
-  .login-view { grid-template-columns: minmax(300px,.9fr) minmax(420px,1.1fr); }
-  .login-brand { padding: 44px 36px 30px; }
-  .login-brand h2 { font-size: 46px; }
+  .login-view { grid-template-columns: minmax(0,1fr) minmax(400px,1fr); }
+  .login-logo { top: 32px; left: 32px; width: 170px; }
   .login-main { padding-inline: 36px; }
 }
 @media (max-width: 800px) {
@@ -1850,10 +1839,10 @@ dialog { border-radius: 12px; }
   .zones { grid-template-columns: repeat(5,minmax(0,1fr)); }
   .page-heading { flex-wrap: wrap; }
   .login-view { grid-template-columns: 1fr; }
-  .login-brand { display: none; }
-  .login-main { min-height: 100dvh; padding: 115px 32px 75px; }
-  .login-mobile-logo { display: block; margin-bottom: 35px; }
-  .login-top { top: 24px; right: 24px; }
+  .login-brand { display: block; min-height: 0; height: clamp(210px,36vw,300px); }
+  .login-photo { object-position: center 43%; }
+  .login-logo { top: 24px; left: 24px; width: 150px; }
+  .login-main { min-height: 0; padding: 44px 32px 52px; }
 }
 @media (max-width: 600px) {
   .workspace-title { display: none; }
@@ -1895,8 +1884,7 @@ dialog { border-radius: 12px; }
   .modal-head { padding: 20px; }
   .modal-footer { padding: 14px 20px; }
   .modal-statistics { grid-template-columns: 1fr 1fr; }
-  .login-main { padding: 110px 26px 70px; }
-  .login-top { top: 20px; right: 22px; }
+  .login-main { padding: 36px 24px 44px; }
   .login-form h1 { font-size: 29px; }
   .login-form input { font-size: 16px; }
   .login-mobile-logo { margin-bottom: 30px; }

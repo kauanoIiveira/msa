@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-07T17:35:02.379Z",
+  "realAccounts": true,
+  "operationalWrites": false,
+  "results": [
+    {
+      "re": "00003",
+      "role": "viewer",
+      "navigationLinks": 8,
+      "newCollection": 0,
+      "newProduction": 0,
+      "newMachine": 0,
+      "newTarget": 0
+    },
+    {
+      "re": "00002",
+      "role": "operator",
+      "navigationLinks": 8,
+      "newCollection": 1,
+      "newProduction": 1,
+      "newMachine": 0,
+      "newTarget": 0
+    },
+    {
+      "re": "00001",
+      "role": "engineer",
+      "navigationLinks": 8,
+      "newCollection": 1,
+      "newProduction": 1,
+      "newMachine": 0,
+      "newTarget": 1
+    }
+  ]
+}

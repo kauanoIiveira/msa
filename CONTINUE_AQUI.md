@@ -1,5 +1,9 @@
 # Continuidade do MSA
 
+## Ponto atual — 07/10/2026
+
+O usuário aprovou a [especificação NHPL](docs/superpowers/specs/2026-10-07-nhpl-produtividade-design.md) e adiou a implementação para outro computador. Seguir [RETOMADA_2026-10-07.md](RETOMADA_2026-10-07.md) e o [prompt atualizado](PROMPT_RETOMADA.md). Não solicitar aprovação da especificação novamente; elaborar/revisar o plano na retomada. As instruções abaixo permanecem como histórico.
+
 ## Pacote local preparado em 06/10/2026
 
 Entrada atual para outro computador: [LEIA_PRIMEIRO.md](LEIA_PRIMEIRO.md), [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md) e [Transferência local](docs/TRANSFERENCIA_LOCAL.md). O contexto privado e as fontes foram reunidos dentro da pasta, com exclusões compartilhadas em `.gitignore`. As instruções antigas de clone abaixo são históricas: use os arquivos atuais do pacote para conservar o trabalho ainda não commitado.

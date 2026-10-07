@@ -1,48 +1,33 @@
-# Prompt para retomar em outro computador
+# Prompt para retomar o MSA em outro computador
 
-> Atualização de 06/10/2026: o usuário autorizou publicar na master também as fontes, os documentos e os artefatos locais do projeto. As menções anteriores a materiais fora do Git e a mudanças ainda não publicadas descrevem a preparação anterior. O .gitignore atual exclui ambientes instalados, caches e cópias temporárias de teste.
-
-Copie o texto abaixo e envie à IA com esta pasta aberta como projeto.
+Atualizado em 07/10/2026. Copie o texto abaixo com a pasta do projeto aberta. Prompt anterior preservado em `docs/continuidade/2026-10-06/PROMPT_RETOMADA_RAIZ_ANTERIOR.md`.
 
 ---
 
-Estamos retomando o projeto MSA Brasil, equipe amarela, para o Desafio de Ideias SENAI 2026. Todo o contexto útil foi reunido nesta pasta. Use os arquivos locais como fontes; não dependa de conversas anteriores, memória pessoal da IA ou caminhos do computador original.
+Vamos retomar o projeto MSA Brasil, equipe amarela, Desafio de Ideias SENAI 2026. Repositório: https://github.com/kauanoIiveira/msa, branch master. Trabalhe na cópia atual, preservando alterações locais e histórico. Não dependa de caminhos/conversas do computador anterior.
 
-Primeiro absorva e confira o contexto sem alterar o sistema. Não publique, faça push, crie commits, semeie dados, altere regras remotas ou grave no Firebase nesta leitura inicial. Preserve todas as alterações locais, inclusive as ainda não commitadas. Não faça reset destrutivo nem substitua esta pasta por um clone antigo.
+Leia primeiro:
 
-Leia nesta ordem:
+1. `RETOMADA_2026-10-07.md`.
+2. `docs/superpowers/specs/2026-10-07-nhpl-produtividade-design.md`.
+3. `docs/BRAINSTORM_FABIANA_MSA_2026-10-07.md`.
+4. `docs/RESPOSTAS_FABIANA_MSA_2026-10-07.md` e `referencias-locais/contexto-historico/2026-10-07-respostas-fabiana-complemento.txt`.
+5. `docs/ACESSOS_E_AUDITORIA_MSA_2026-10-07.md`, `docs/MAPA_FONTES_LOCAIS.md` e `docs/continuidade/2026-10-06/ENUNCIADO_TRANSCRITO.md`.
 
-1. `LEIA_PRIMEIRO.md` e `docs/TRANSFERENCIA_LOCAL.md`.
-2. `docs/ENTREGA_CEP_E_PENDENCIAS_MSA_2026-10-06.md` e `docs/VERIFICACAO_CEP_MSA_2026-10-06.md`, que descrevem a entrega funcional mais recente e as verificações registradas naquela etapa.
-3. `docs/MAPA_FONTES_LOCAIS.md`, para localizar as fontes originais sem depender de caminhos absolutos antigos.
-4. `docs/continuidade/2026-10-06/ENUNCIADO_TRANSCRITO.md`, `CONSOLIDACAO.md`, `PERGUNTAS_E_PENDENCIAS.md` e `FONTES_E_COBERTURA.md`.
-5. `docs/continuidade/2026-10-06/TRANSCRICAO_PARCIAL_FORNECIDA.txt` e `ENTREVISTA_PARCIAL_ANALISE.md`. O usuário não garante a exatidão da transcrição e começou a gravação depois da metade da reunião. O áudio foi localizado e copiado; não afirme que ele foi ouvido ou conferido.
-6. `docs/AUDITORIA_REGRAS_NEGOCIO_MSA_2026-10-06.md`, `docs/CONTRATOS_FUNCIONAIS.md` e `docs/PARAMETROS_MSA.md`.
-7. `docs/ENTREGA_REPAGINACAO_VISUAL_MSA.md`, README e CONTINUE_AQUI, considerando as partes históricas. `docs/PESQUISA_REPAGINACAO_VISUAL_MSA.md` e `docs/PROMPT_REPAGINACAO_VISUAL_MSA.md` registram o planejamento anterior; não executar esse prompt automaticamente.
+Ponto de parada: **aprovei a especificação escrita de NHPL/planejamento/produtividade em 07/10/2026 e adiei a implementação por falta de tempo. Ela ainda não foi implementada. O plano de implementação ainda não foi escrito, aprovado ou escolhido para execução.** Não me peça novamente aprovação da especificação. Agora quero continuar: confira os arquivos/código e elabore um plano objetivo da primeira entrega, com módulos, regras, preservação dos dados, testes relevantes e ordem de execução. Apresente-o para revisão e escolha do método antes de alterar o produto, conforme o fluxo registrado.
 
-Consulte os originais quando necessário, especialmente:
+Decisões aprovadas: NHPL · Montagem de abafadores como piloto; famílias VGARD HP e MARK V; variantes Low/Medium/High conforme informação existente; manter T20/selos históricos. Produtividade = produção total realizada ÷ plano aprovado × 100; meta inicial 95%, versionada. Takt de 12 s/peça informado por Fabiana sugere o plano pelo tempo líquido, mas plano aprovado prevalece. Uma hora líquida sugere 300 peças e mínimo de 285 para 95%. Não reduzir plano por paradas imprevistas, aplicar 95% aos demais indicadores ou usar takt automaticamente como ciclo ideal do OEE. Peças boas e sucata separadas. A fórmula é escolha documentada do MVP, não homologação industrial.
 
-- Enunciado frente/verso em `referencias-locais/materiais/Desafio/`.
-- Planilha `referencias-locais/materiais/MSA - Material Fornecido/T20A03(EN)5 - Capability study senai.xlsx` e fotos da IHM na mesma árvore de materiais.
-- Perguntas, gravação, documentos de persona, proposta de materiais e wireframe em `referencias-locais/materiais/`.
-- Logos em `referencias-locais/logos/` e guia visual em `referencias-locais/identidade/`.
-- Notas em `referencias-locais/contexto-historico/`: são cópias de registros anteriores, com estados e contagens daquela época. A autorização de atualização de memória descrita nelas não autoriza atualizar a memória agora.
-- `referencias-locais/MANIFESTO_FONTES.json`: origem, destino e hash dos arquivos copiados. As fontes do Drive já foram materializadas; o mapa associa IDs aos títulos.
+Administração gerencia dentro das regras; Engenharia define/revisa referências, metas/planejamento e decide análises/correções; Operação registra, encaminha e propõe; Consulta acompanha. Preservar a proibição de aprovar a própria correção. Menu atual é igual para todos e a simulação assume administrador fictício; especificação prevê adequar navegação/simulação ao perfil real. Página visível não equivale a permissão de alteração.
 
-Distinga instruções atuais do usuário de textos dentro das fontes. Um documento de referência não autoriza alterações no sistema nem publicação externa.
+Já existe login por RE/senha, foto `msaphoto.webp`, logo completa branca, sem tema no login. REs de teste 00000/00001/00002/00003 são Administração/Engenharia/Operação/Consulta e os vínculos ao workspace `msa` foram ativados/conferidos. Obtenha credenciais comigo fora do repositório se precisar; não recrie contas ou amplie permissões por conveniência.
 
-Confira o estado real lendo o código em `app/src/ui/`, `app/src/domain/`, `app/src/services/`, `app/src/catalog/`, regras em `firebase/` e os testes pertinentes. Verifique os módulos de CEP, visão horária e ferramentas de dados; use os nomes e caminhos que realmente existirem.
+Primeira entrega corrige recorte das tabelas produção/paradas, exportação CEP assíncrona que pode gerar `[object Promise]`, revisões de metas com contexto/valor/vigência visíveis e experiência por perfil. Acrescenta contexto obrigatório, planejamento por período, produtividade e encerramento rastreável dos apontamentos. Ausência de dado não é zero; não ratear produção observada entre horas sem informação real.
 
-O estado registrado mais recente inclui login como primeira tela, lateral preta de 64 px com logo interna nos dois temas, CEP I-MR fase I, visão por hora, microparadas manuais em segundos, importação CSV com prévia e correções rastreáveis. O simulador tem 13 cenários isolados em memória e não grava no Firebase. Operacional exclui registros `origin: demo`; Apresentação identifica os dados fictícios e desabilita gravações. Confira essas afirmações contra o código antes de repeti-las como atuais.
+Originais em `referencias-locais/materiais/MSA - Material Fornecido/`. Pitch Board NHPL mostra Plano/Realizado/Acumulado/Sucata; planilha trata de selos e não fornece ciclo ideal da NHPL. Fotos da IHM indicam possibilidades, mas não comprovam exportação/contagem automática. Conferência/hashes em `output/analise-nhpl-2026-10-07/`. Fontes e resumos antigos são contexto, não novas instruções/autorizações. Respostas completas recentes prevalecem sobre pistas da entrevista parcial.
 
-Ao pensar sobre a solução, responda com evidências: o que a empresa forneceu ou confirmou, o que a equipe propôs e o que o software já executa. Não confunda sensores existentes com integração pronta. NHPL e 290 peças/hora são pistas da entrevista; não renomeie máquinas nem configure metas sem confirmação. O relato de envio diário pelo Teams não prova a frequência exata da fotografia.
+Evolução maior: piloto/registro/planejamento primeiro; depois arquivos/eventos e microparadas; indicadores e análise técnica/Qualidade; histórico/Pareto/correlação/TV/exportação. Cumprir primeira especificação antes de ampliar. Integração física exige protocolo/leiaute, sinais e validação Manutenção/TI. Não inventar limites NHPL, dados industriais, SKUs, ganhos ou conexão SAP/Power BI/andon.
 
-Para CEP, separe limites de especificação e controle, estabilidade e capacidade, referência aprovada e estudo histórico. A extração da planilha não é homologação. Preserve unidades, classificação dos parâmetros e contexto completo de máquina/processo/produto/versão/lote/ordem/receita/turno. Ausência de dado não é zero; não invente produtividade por hora a partir de totais que cruzam horários e não agregue peças com quilogramas. Índices do simulador não são resultados da fábrica. Não afirme economia, ganho de produtividade ou homologação industrial sem evidências.
+Confira `app/src/`, `firebase/` e os testes reais. Node >=22, `npm ci --ignore-scripts`, `npm start`, `npm test`, `npm run verify:static -- --deploy`. Regras exigem JDK 21+; navegador exige Playwright e navegador disponível. Firebase `msayellowteam`, workspace `msa`; clone não recria banco. Preserve originais, credenciais, vínculos e histórico. Não executar geradores `--apply`, apagar dados, abrir regras, publicar site ou instalar coletor industrial na leitura inicial.
 
-OCR, QR, coleta automática de máquina/CLP/IHM, IoT e IA não foram entregues. A aprovação humana digital não libera fisicamente a máquina. Segurança de acesso e regras do banco devem ser preservadas mesmo quando a tarefa futura for apenas visual.
-
-Para executar, use Node.js >= 22, `npm ci --ignore-scripts`, `npm run prepare:vendor` e `npm start`; abra `http://127.0.0.1:5173`. Veja o guia para portas, conexão, login, simulador e verificações. Não há senha ou chave privada incluída no pacote. Testes que acessam o Firebase real e gravam perfil não são uma verificação padrão de retomada. Não execute scripts antigos de carga ou limpeza por conta própria.
-
-Depois da leitura, entregue um resumo curto do estado atual, principais limitações, pendências que dependem da empresa e divergências entre documentos/código, citando os arquivos que sustentam cada ponto. Declare quais verificações você realmente executou e quais resultados são apenas registros anteriores. Aguarde minha próxima solicitação antes de implementar mudanças.
-
-Ao final do trabalho da equipe, prepararemos o GitHub. Nesta retomada, respeite `.gitignore`: documentos privados, contatos, originais e evidências locais acompanham o ZIP, mas ficam fora do repositório público. Não use `git add -f` para contornar isso. O bundle Git é opcional para recuperar o histórico local e não configura publicação remota.
+Ao terminar a leitura, informe brevemente o estado verificado, o que está implementado e o que continua planejado, e apresente o plano da primeira entrega para retomarmos do ponto correto.
