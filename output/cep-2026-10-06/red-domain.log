@@ -1,0 +1,128 @@
+✖ I-MR reproduces the NIST ten-batch example and distinguishes within from overall dispersion (7.0425ms)
+✖ missing/invalid readings break moving ranges; constants and insufficient samples never produce infinite capability (0.2ms)
+✖ draft references, setpoints, unilateral bounds and unverified chronology cannot yield bilateral capability (0.2737ms)
+✖ signals use the I and MR control limits, and unstable processes do not receive capability indices (0.7464ms)
+✖ detail selection uses the latest full context, not the first group of its version (4.8137ms)
+✖ supplied workbook keeps 17 rows, numeric text and blanks, and reproduces the corrected BF population deviation (0.1797ms)
+✖ hourly production never allocates a crossing total and preserves unknown, zero and an unfinished hour (0.7352ms)
+✖ microstoppages use explicit seconds, exclude planned/open stops and union overlapping time (0.192ms)
+✖ all indicator consumers reject draft and setpoint capability equally (33.0975ms)
+✔ keeps kg separate, requires a valid denominator and distinguishes absent amounts (0.6224ms)
+✔ unions downtime per machine and does not attribute overlapping time to a single cause (0.4103ms)
+✔ approved correction overlays preserve original readings and flag concurrent alternative revisions (0.379ms)
+✔ targets need an exact complete reporting window and comparisons compute compatible deltas (757.6129ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 4
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1038.4816
+
+✖ failing tests:
+
+test at tests\unit\cep.test.js:7:1
+✖ I-MR reproduces the NIST ten-batch example and distinguishes within from overall dispersion (7.0425ms)
+  TypeError: api.analyzeCep is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:8:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests\unit\cep.test.js:14:1
+✖ missing/invalid readings break moving ranges; constants and insufficient samples never produce infinite capability (0.2ms)
+  TypeError: api.analyzeCep is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:15:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests\unit\cep.test.js:20:1
+✖ draft references, setpoints, unilateral bounds and unverified chronology cannot yield bilateral capability (0.2737ms)
+  TypeError: api.analyzeCep is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:23:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\unit\cep.test.js:27:1
+✖ signals use the I and MR control limits, and unstable processes do not receive capability indices (0.7464ms)
+  TypeError: api.analyzeCep is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:29:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\unit\cep.test.js:32:1
+✖ detail selection uses the latest full context, not the first group of its version (4.8137ms)
+  TypeError: api.selectParameterStudy is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:35:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\unit\cep.test.js:38:1
+✖ supplied workbook keeps 17 rows, numeric text and blanks, and reproduces the corrected BF population deviation (0.1797ms)
+  TypeError: api.getCapabilityStudy is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:39:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\unit\hourly.test.js:3:1
+✖ hourly production never allocates a crossing total and preserves unknown, zero and an unfinished hour (0.7352ms)
+  TypeError: api.buildHourly is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/hourly.test.js:6:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests\unit\hourly.test.js:11:1
+✖ microstoppages use explicit seconds, exclude planned/open stops and union overlapping time (0.192ms)
+  TypeError: api.buildHourly is not a function
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/hourly.test.js:15:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests\unit\indicators.test.js:7:1
+✖ all indicator consumers reject draft and setpoint capability equally (33.0975ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 33.33333333333286
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/indicators.test.js:11:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 33.33333333333286,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

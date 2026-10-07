@@ -1,0 +1,72 @@
+{
+  "ok": false,
+  "steps": [
+    {
+      "name": "Entrada sem registros e sem permissão de escrita anônima",
+      "ok": true
+    },
+    {
+      "name": "Simulação iniciada pelo botão do produto, sem fixture injetada",
+      "ok": true
+    },
+    {
+      "name": "Cadastro machines: Máquina da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro processes: Processo da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro products: Produto da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro parameters: Temperatura da revisão",
+      "ok": true
+    },
+    {
+      "name": "Faixa invertida rejeitada na interface",
+      "ok": true
+    },
+    {
+      "name": "Limite aprovado de exemplo registrado (sem homologação industrial)",
+      "ok": true
+    },
+    {
+      "name": "Cadastro reasons: Parada da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro reasons: Refugo da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro reasons: Material da revisão",
+      "ok": true
+    },
+    {
+      "name": "Contexto selecionado: máquina → processo → produto",
+      "ok": true
+    },
+    {
+      "name": "Meta de produção registrada para o contexto",
+      "ok": true
+    },
+    {
+      "name": "Coleta digital decimal e desvio visual da regra aprovada",
+      "ok": true
+    },
+    {
+      "name": "Produção com quantidade, base e período registrada",
+      "ok": true
+    },
+    {
+      "name": "Parada iniciada e encerrada, motivo e duração de 10 minutos",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "blockedRemoteWrites": 0,
+  "error": "locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#modal [name=\"reasonId\"]')\u001b[22m\n\u001b[2m    - locator resolved to <select required=\"\" name=\"reasonId\">…</select>\u001b[22m\n\u001b[2m  - attempting select option action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    60 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m       - did not find some options\u001b[22m\n\u001b[2m     - retrying select option action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+}

@@ -1,0 +1,19 @@
+﻿type;generatedAt;responsible;fromDate;toDate;observationFromDate;observationToDate;consultationFromDate;consultationToDate;source;parameter;version;versionStatus;nature;context;unit;specificationUnit;method;phase;n;nMissing;nInvalid;nConflicted;complete;mean;sigmaWithin;sigmaOverall;cp;cpk;pp;ppk;reason;normalityVerified;homologated;minSamples;sequenceConfirmed;reference;sourceSha256;label;eventDate;rawDate;occurredAt;timePrecision;collectionId;originalId;correctionId;revisionConflict;origin;sourceCell;raw;originalRaw;status;value;movingRange;signals
+summary;2026-10-06T23:37:25.864Z;simulation-admin;2026-08-25;2026-09-29;2026-08-25;2026-09-29;2026-09-30;2026-10-06;T20A03(EN)5 - Capability study senai.xlsx · Selo  · BF17:BF33;Tempo destacar;workbook-reference;draft;unknown;;seg;seg;I-MR / MR(2);I;17;0;0;0;true;0.8588235294117648;0.005540780141843971;0.05072996561958923;;;;;unapproved-limit;false;false;25;false;"{""kind"":""range"",""lower"":0.8,""upper"":0.9}";6a030b82f7dc32c6bd05a43a426344c72683fad61495aab70dbc13406ea11c8e;;;;;;;;;;;;;;;;;
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;25/08 · linha 17;2026-08-25;2026-08-25T00:00:00;;date;;;;;;BF17;0,8;0,8;valid;0.8;;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;25/08 · linha 18;2026-08-25;2026-08-25T00:00:00;;date;;;;;;BF18;0,8;0,8;valid;0.8;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;26/08 · linha 19;2026-08-26;2026-08-26T00:00:00;;date;;;;;;BF19;0,8;0,8;valid;0.8;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;26/08 · linha 20;2026-08-26;2026-08-26T00:00:00;;date;;;;;;BF20;0,8;0,8;valid;0.8;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;27/08 · linha 21;2026-08-27;2026-08-27T00:00:00;;date;;;;;;BF21;0,8;0,8;valid;0.8;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;27/08 · linha 22;2026-08-27;2026-08-27T00:00:00;;date;;;;;;BF22;0,8;0,8;valid;0.8;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;28/08 · linha 23;2026-08-28;2026-08-28T00:00:00;;date;;;;;;BF23;0,8;0,8;valid;0.8;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;28/08 · linha 24;2026-08-28;2026-08-28T00:00:00;;date;;;;;;BF24;0,9;0,9;valid;0.9;0.09999999999999998;individual-3sigma|moving-range-limit
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;31/08 · linha 25;2026-08-31;31/08/2026;;date;;;;;;BF25;0,9;0,9;valid;0.9;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;31/08 · linha 26;2026-08-31;31/08/2026;;date;;;;;;BF26;0,90;0,90;valid;0.9;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;17/09 · linha 27;2026-09-17;2026-09-17T00:00:00;;date;;;;;;BF27;0.9;0.9;valid;0.9;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;21/09 · linha 28;2026-09-21;2026-09-21T00:00:00;;date;;;;;;BF28;0.9;0.9;valid;0.9;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;22/09 · linha 29;2026-09-22;2026-09-22T00:00:00;;date;;;;;;BF29;0.9;0.9;valid;0.9;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23/09 · linha 30;2026-09-23;2026-09-23T00:00:00;;date;;;;;;BF30;0.9;0.9;valid;0.9;0;individual-3sigma
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;24/09 · linha 31;2026-09-24;2026-09-24T00:00:00;;date;;;;;;BF31;0.9;0.9;valid;0.9;0;individual-3sigma|eight-same-side
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;25/09 · linha 32;2026-09-25;2026-09-25T00:00:00;;date;;;;;;BF32;0.9;0.9;valid;0.9;0;individual-3sigma|eight-same-side
+sample;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;29/09 · linha 33;2026-09-29;2026-09-29T00:00:00;;date;;;;;;BF33;0.9;0.9;valid;0.9;0;individual-3sigma|eight-same-side

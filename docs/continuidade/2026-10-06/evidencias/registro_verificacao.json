@@ -1,0 +1,236 @@
+{
+  "created_utc": "2026-10-06T21:13:26.043644+00:00",
+  "checkout": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias",
+  "branch": "master",
+  "head": "a268ddcd841ed7cb71f9110752498f0902e16222",
+  "prompt_original_sha256": "a7192631e6239288c3fe38e89078b0ccb10725846310c97dee2dcd014069fa2e",
+  "prompt_copy_identical": true,
+  "literal_profile_and_questions_preserved": true,
+  "all_30_local_originals_unchanged": true,
+  "source_integrity": [
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Desafio\\Desafio Frente.jpg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Desafio\\Desafio verso.jpg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Gravação de Voz\\Gravação Fabiana(1).m4a",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Gravação de Voz\\Gravação Fabiana.m4a",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Lista de Materiais e ganho de produção.docx",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Matriz de Prioridade\\Captura de tela 2026-10-06 102815.png",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\T20A03(EN)5 - Capability study senai.xlsx",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.12.45.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.13.44.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.14.06.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.15.26.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.16.05.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.17.22.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.20.02.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.20.38.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.24.58.jpeg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas 1.jpg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas 2.jpg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas 3.jpg",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas para o Persona.docx",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Roteiro_Apresentacao_Funcoes_MSA.docx",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Roteiro_Entrevista_MSA_Equipe_Amarela.docx",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Analise_Materiais_MSA_2026.pdf",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\auditoria_41_parametros.csv",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\AUDITORIA_TECNICA_MSA.md",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Dossie_MSA_SENAI_2026.pdf",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\medicoes_697_campos.csv",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Preparacao_Entrevista_MSA_06-10-2026.pdf",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\ROTEIRO_ENTREVISTA_MSA.md",
+      "same_sha256": true
+    },
+    {
+      "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Wireframes\\O que deve conter no Dashboard.docx",
+      "same_sha256": true
+    }
+  ],
+  "drive_files": 31,
+  "drive_binary_identical_to_local": 27,
+  "drive_native_documents_read": 3,
+  "excluded_zip_count": 1,
+  "local_files": 30,
+  "audio_content_pending": true,
+  "logical_audio_sources": 1,
+  "desktop_comparison_initial": {
+    "files": 117,
+    "identical_bytes": 48,
+    "line_endings_only": 69,
+    "content_differences": 0
+  },
+  "requirements_rows": 13,
+  "optional_rows": 16,
+  "original_question_groups": 12,
+  "app_and_firebase_code_unchanged": true,
+  "continue_original_body_preserved": true,
+  "existing_untracked_files_preserved": true,
+  "git_status": [
+    " M CONTINUE_AQUI.md",
+    "?? docs/Roteiro_Apresentacao_Funcoes_MSA.docx",
+    "?? scripts/create-presentation-doc.py"
+  ],
+  "tests_observed_this_session": {
+    "command": "npm test",
+    "tests": 83,
+    "pass": 83,
+    "fail": 0,
+    "skip": 0,
+    "exit_code": 0
+  },
+  "static_observed_this_session": {
+    "command": "npm run verify:static -- --deploy",
+    "ok": true,
+    "files": 45,
+    "errors": [],
+    "exit_code": 0
+  },
+  "not_repeated_this_session": [
+    "browser e2e",
+    "Firebase emulator",
+    "live Firebase reads/writes",
+    "industrial validation"
+  ],
+  "memory_update_note": "C:\\Users\\Kauan\\.codex\\memories\\extensions\\ad_hoc\\notes\\2026-10-06T18-10-00-msa-conferencia-fontes.md",
+  "memory_note_sha256": "5161744da0083b0748ba5e94993362fad0dbdfbd2b7e6b11ecf35428881494e4",
+  "local_git_exclusion": "docs/continuidade and temporary source copies via .git/info/exclude",
+  "commit_push_deploy_or_messages_sent": false,
+  "outputs": [
+    "CONSOLIDACAO.md",
+    "ENUNCIADO_TRANSCRITO.md",
+    "evidencias\\Analise_Materiais_MSA_2026.txt",
+    "evidencias\\arquivos_drive_materializados.json",
+    "evidencias\\audio_pendencia.json",
+    "evidencias\\comparacao_checkouts.json",
+    "evidencias\\conferencia_drive_local.json",
+    "evidencias\\conferencia_extracoes_anteriores.json",
+    "evidencias\\documentacao_anterior\\2026-10-05-msa-firebase-design.md",
+    "evidencias\\documentacao_anterior\\2026-10-05-msa-firebase-implementation.md",
+    "evidencias\\documentacao_anterior\\AUDITORIA_TECNICA_MSA.md",
+    "evidencias\\documentacao_anterior\\CONTINUE_AQUI.md",
+    "evidencias\\documentacao_anterior\\CONTRATOS_FUNCIONAIS.md",
+    "evidencias\\documentacao_anterior\\ENTREGA_FUNCIONAL.md",
+    "evidencias\\documentacao_anterior\\PARAMETROS_MSA.md",
+    "evidencias\\documentacao_anterior\\README.md",
+    "evidencias\\documentacao_anterior\\ROTEIRO_ENTREVISTA_MSA.md",
+    "evidencias\\docx_01.txt",
+    "evidencias\\docx_02.txt",
+    "evidencias\\docx_03.txt",
+    "evidencias\\docx_04.txt",
+    "evidencias\\docx_05.txt",
+    "evidencias\\docx_06.txt",
+    "evidencias\\docx_07.txt",
+    "evidencias\\Dossie_MSA_SENAI_2026.txt",
+    "evidencias\\drive_documento_1.txt",
+    "evidencias\\drive_documento_2.txt",
+    "evidencias\\drive_documento_3.txt",
+    "evidencias\\indice_csv.json",
+    "evidencias\\indice_docx.json",
+    "evidencias\\indice_pdfs.json",
+    "evidencias\\indice_planilha.json",
+    "evidencias\\indice_revisao_visual.json",
+    "evidencias\\inventario_drive.json",
+    "evidencias\\inventario_local.json",
+    "evidencias\\links_originais_pdfs.json",
+    "evidencias\\manifesto_preservacao_aplicativo.json",
+    "evidencias\\planilha_Normality_test_.json",
+    "evidencias\\planilha_Selo_.json",
+    "evidencias\\Preparacao_Entrevista_MSA_06-10-2026.txt",
+    "evidencias\\recalculo_exemplo_planilha.json",
+    "evidencias\\registro_verificacao.json",
+    "evidencias\\resumo_planilha_conferido.json",
+    "evidencias\\scripts\\consolidar_fontes_msa.py",
+    "evidencias\\scripts\\finalizar_continuidade_msa.py",
+    "evidencias\\scripts\\revisar_continuidade_msa.py",
+    "FONTES_E_COBERTURA.md",
+    "LEIA_PRIMEIRO.md",
+    "PERGUNTAS_E_PENDENCIAS.md",
+    "PERGUNTAS_IMAGENS_TRANSCRITAS.md",
+    "PERGUNTAS_ORIGINAIS.txt",
+    "PROMPT_ORIGINAL_INTEGRAL.txt",
+    "SOBRE_FABIANA_ORIGINAL.txt"
+  ]
+}

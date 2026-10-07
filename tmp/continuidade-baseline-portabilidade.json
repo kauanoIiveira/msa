@@ -1,0 +1,442 @@
+[
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\index.html",
+    "sha256": "5ae193977cfe0db6be33fa242794e94087b7ff2aa32c5db1f12d53a572ac8d79"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\styles.css",
+    "sha256": "3be41c0825074ffb3f8d74834942beae71d48da7732c11603eeaa8a93f3d6129"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\assets\\msa\\msalogo.png",
+    "sha256": "4ce380bf6038dad8c22c1689e173757a2bddbed045288c3c1fcc0c643e9f1a4f"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\browser.js",
+    "sha256": "8c70feb2e3449448c9e8d056e20e1e64b55f0432145ea49f19e7301665fc3a70"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\index.js",
+    "sha256": "3ca287b575d621867fe66d93156225087168ee986e1018ff78babfacaad253b9"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\catalog\\capability-study-reference.js",
+    "sha256": "3235d9c894aa6c2d46a654642cb8b2a004e8de575d9ed736eef85d9f8d297f72"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\catalog\\capability-study.js",
+    "sha256": "1bf54020cf8bc91f34dab24f8e104baacbc2ea14d60587c903aa4d5e218e355b"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\catalog\\msa-parameters.js",
+    "sha256": "1cc0129aa26ef62ce5c917f76786264b7a60f510cb049fe444fb53aef3811d01"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\config\\firebase.js",
+    "sha256": "4e5bb75bc0e5b505fdd21744f520238daa97e920f0d2cf067797a30d22fcb45c"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\canonical.js",
+    "sha256": "0f37b1445290da1f53ea48e4c82fd841941c4dc7536545ebdc9c8f11a5ff3887"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\cep.js",
+    "sha256": "f0a52be8237d11743ff2dc41920f829c78d9da3199069698d0fed59249283cea"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\context.js",
+    "sha256": "f92221795c8bc636d278899cbf7c226e9b21f00ec91f7d1d7245390e640ca800"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\dashboard.js",
+    "sha256": "c0fa89f6e7d19de5a6cdd259fdc2bded13bf5b5b7373e4554c877e0cc8ad865b"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\errors.js",
+    "sha256": "0d1e527f3d785af9cd63fd9607a98fdfb1671e363c331e8dbba86e7f3f3fa051"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\hourly.js",
+    "sha256": "55a4423153e6db94278710026863c36e8347dcdca30ea9c86f42b20d209b50ee"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\indicators.js",
+    "sha256": "451195d7a47a3875b96736da7e5bd63075be449452c427ca2095fcf9ef52ee9e"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\limits.js",
+    "sha256": "794ea1277135a73465674c645f73a9366f0e5a765cf2aa69366f425d04579c4b"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\numbers.js",
+    "sha256": "4e79df3ee73e0971e612b4e97c27e883da2300077fc20d3c613a61419df1301d"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\review.js",
+    "sha256": "b368c092c4a41298aaa34c979b3e5044404974086891a32aeb31b5e1eb11f475"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\statistics.js",
+    "sha256": "a95118f3a8e991aa64c6a85357e8e7b967f89a18b2febe6278d58b765d203153"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\domain\\time.js",
+    "sha256": "ab95c2b29e0b89bdc5ca577d7b00b6448cc95e38abf3c84b3da306906b1928f6"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\io\\csv.js",
+    "sha256": "10802123602c5220840b97ca3fd8f7df1ae14ce1f466e75a477a0d26fc3ff59d"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\repositories\\firebase-repository.js",
+    "sha256": "6e16b994be59befbe12d86c05157ed0a8263e56a3230b7cddaf4091cfa04db10"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\repositories\\firebase-sdk-browser.js",
+    "sha256": "8cc5fdb279e310805b84bf92a99ef536b534b75521d5093cf9c2c2e4a5d35f06"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\services\\analysis.js",
+    "sha256": "56fabc0237fdbd5121d9fdfc30451eb4e750fcaac39b806b7d1780f094dc453a"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\services\\auth.js",
+    "sha256": "c82cbb7f5ef3f0bd24e25b90eaf2e1c6e16d9bff60e692b22a81ee8bef25abe4"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\services\\catalog.js",
+    "sha256": "52a8ae94b969d08f9e28b683d22311910b0b249a7540d2f561d46cdf89efd8d7"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\services\\create-msa.js",
+    "sha256": "8b2bd4f81cb37d40159c10b0b2963c9af30180341cb15b2b479a8dee58c354fa"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\services\\history.js",
+    "sha256": "f2d17508f0f3af9faf9df2bd0ddfd17a06b383b079828cd5f3b7898e82aa1c2b"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\services\\operations.js",
+    "sha256": "f91bdac83964b1e07cd4c67f3f3f86d08433126f34079297382d0513f7096efd"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\services\\registry.js",
+    "sha256": "231275ad39dcbe4344479206c2993a7e6c9583524eb3b18a2016b25fccb04dfb"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\cep.js",
+    "sha256": "7672a8dc23fc04dad434917cd7057fc3f8db9c2eb5bf3cba92b0221b5b21c7b7"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\charts.js",
+    "sha256": "2718914c0fb2c98adf5d294b106655892f8a7c873b4ea53184afacefd17fa3d0"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\consultation.js",
+    "sha256": "c82dcfc153b560b0faa90b0076627b9884dfbd18e91d0915d92042ca5dbfcb38"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\data-tools.js",
+    "sha256": "8d087407a1df436028633127fc88c64121cbaf08965853179b872d6af52e1b31"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\demo-workspace.js",
+    "sha256": "32daed3190d91fa004fd58cf04adc454f022be50df4af43b13f83ec3a4b7af74"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\format.js",
+    "sha256": "c01733d53abe396c13397fec94d9e7ea9f977964e402cda2ddc5a2355a639e0e"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\forms.js",
+    "sha256": "31ee0053a7dc987ae4e20a2234a4c5e6bed9611726df859fc747c7422e9bc300"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\hourly.js",
+    "sha256": "08061483680998b1e8a4eff47c3d725a65b3a3545c70ab21024cb9f40b9c5c9f"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\main.js",
+    "sha256": "ffd7d01fcbad5f0d60b44020bc4bd45e3503be6c83e368cff18e494dd29a3546"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\operational-workspace.js",
+    "sha256": "cc6d2ffffa9d6c8fbba212509a32fbdf8503f76c2b8dd3c1813e838e00e00692"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\preferences.js",
+    "sha256": "0a87bd082ce5a45eb5cc453d75c9cc25e79e845e7503f2cf99d1887ad4b77b05"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\simulation.js",
+    "sha256": "9d4a0aea665f15f373eb12ee75d09e685fe0a092147164e237c107a5668fdb59"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\src\\ui\\vlibras.js",
+    "sha256": "0a0e6c1cfb5be8502314fc18bc36aa9f454210564139cea7217f8c45981679be"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\chart.LICENSE",
+    "sha256": "41a84aa2caba645f966a18d9c2056b73e6d3a81d80bc0046bc0011a2634d4cce"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\chart.umd.min.js",
+    "sha256": "48444a82d4edcb5bec0f1965faacdde18d9c17db3063d042abada2f705c9f54a"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\lucide.LICENSE",
+    "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\lucide.min.js",
+    "sha256": "f828bf34002c03a37da4acecfd0cf214935c4c6c26d4bc48903457ba6c44e606"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\papaparse.LICENSE",
+    "sha256": "99aa68e4b42758b09828a46515f70369e5463458ab7a990189f641af2b8d9b4e"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\papaparse.min.js",
+    "sha256": "4d5d2d6e3282b66aafaa5e6de8ca3ae06f8d3440111ae99c6a30f6c00cfac33e"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\simple-statistics.LICENSE",
+    "sha256": "63b5b6a85bc21476ebee13febd48d0a52056a695754a73aaed1ed7eafb059f29"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\simple-statistics.mjs",
+    "sha256": "800c59ccf29bb11b4e4fdf7d247f9649fbd57abbcd66bc5de1193ecee061b9ca"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\app\\vendor\\THIRD_PARTY.md",
+    "sha256": "67a12c55112b5cba4a8f2b163c7c948f096c85cd1d6d71124455c97c087badee"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\firebase\\CONFIGURACAO.md",
+    "sha256": "ba31fb32d6e77cf5030658594a9401581ecaca2067e4271a440489df9b16db8e"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\firebase\\database.rules.json",
+    "sha256": "262a60ecf479f9e37c1bbeaf88c452645f326c6faaf44c7a60924f7ac8d0db28"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\firebase\\rules-source.mjs",
+    "sha256": "51bf6833f64aa5f53ed10dfd558bcc9710d5bf8e739b45648a836ef648b5bc05"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\cep.mjs",
+    "sha256": "57f4e302c1e1ab6c5dcfa3d4a8e3ea308bf5fa76d60d56f984c67fddef60f0c6"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\data-tools.mjs",
+    "sha256": "86cf5c4bcac666611a19208e935398dfec8b356957e47674753d9e9e4778b66a"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\entry.mjs",
+    "sha256": "3cc69566fdc45ff061f213f140bdec39bcee7cb68c3c67dabfd17333eeac32fe"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\firebase-ui.mjs",
+    "sha256": "245eb588445d57f28f04cfa8a1d8bdf8eea6eda8a952c7c7176e0ba0bbc98cfd"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\harness.html",
+    "sha256": "74297f05072a0b14852032ef71a3f1d4db088b61d7b2d1fc5905142edecf9b60"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\simulation.mjs",
+    "sha256": "df934977fd6b0c66f5c891ae5d2aa2b8ad9bbf509526374d3fb7908cd71808ea"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\smoke.mjs",
+    "sha256": "e6356d4a86b56b87a4564b4f28c0ce3b39c3b27e622485b15d8694c7f73a023b"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\ui.mjs",
+    "sha256": "bd2b4f2b98054ea3113f799bd88a65834ff5ec609d65f1e3c592552e7fb8278a"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\visual-msa.mjs",
+    "sha256": "b4f1a15a4f09e81bc6d5a2c3cf202e464e6330777ef536897609dcb29b4986c5"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\browser\\fixtures\\auth.mjs",
+    "sha256": "3fb654b9b99b7e5f61b3ed7ea60af4eb09921e9dac29c9dd3de4214a5f93dd06"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\helpers\\firebase-env.js",
+    "sha256": "cb04527b7b89097b5cd3a48ce8382f3e0b10e676a91492e7e109e039a6c2c97c"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\helpers\\fixtures.js",
+    "sha256": "60bbfef82bece5c498f23008719c1412e96aef56291b2591f98d3599903d14f5"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\helpers\\memory-repository.js",
+    "sha256": "b89edb7320475c5c59e83143ac66b09bf6c6613c8e2bd275f91366d0f2f3e708"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\auth.test.js",
+    "sha256": "c4f9ee712c1f54ba0778e428b1572639b90822d0b09263ac667c078e98f5980d"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\catalog-dashboard.test.js",
+    "sha256": "8139375bdb29a58bed9782e093ba957080f8a6962e776df43e0f84b14f86d641"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\full-flow.test.js",
+    "sha256": "2363dc8a4459d4b857cbc4c398d658ec93a3398d489e1db944b0636487e3143a"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\import.test.js",
+    "sha256": "91385cfc00825e9935201fa2e63b35cdff462cf2e6d6cf35421c09dc7f2a39ce"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\realtime.test.js",
+    "sha256": "dbf46be5ec58f262694f686c02e3005f39efa759250858509354fc9e0b8e9876"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\repository.test.js",
+    "sha256": "8334849ca6a92924cc2cc68da3bc22924aa5b62fb799a2cf0de30ec56ee39f64"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\review-race.test.js",
+    "sha256": "242600ac797fa8e480a77033e8bc5e77b846278e86d73224b080e0bd7d12ca56"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\integration\\stoppage-race.test.js",
+    "sha256": "defeb5fb790bde017e6462d8463f0f5c065892d7f950f2949b5359bb4a2e191f"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\rules\\access.test.js",
+    "sha256": "d9211677317464e26d9a9129eee4a51ff2407e129cdf32345665d19f838062ce"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\rules\\analysis.test.js",
+    "sha256": "3a3c59aa629a9c986fd9ee222a1194312825adcb5cd4dc59294ce2d1cce7b9e8"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\rules\\calendar.test.js",
+    "sha256": "e7ac1ff379511f9eefd734f5113010d08d2903c5c791d3d03aed565cbf00c0cd"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\rules\\operations.test.js",
+    "sha256": "85f38dd74372b93b518a3fff967a0c6b2a091ec8dac85cdd9e0982c6d6e90d91"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\rules\\registry.test.js",
+    "sha256": "040c255bde39cb0361566e660eb5c8d706afc729f1642adab0a390cf4a570ddd"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\analysis.test.js",
+    "sha256": "bd99d8b9fd67868ca92bfb4c3e043c9ba46a2f21651359b1280bc8eb2241fd33"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\auth-profile.test.js",
+    "sha256": "ba3421310432737b153c8e23dfdf04b54a48ccde84c96e70ec0900edac1fa883"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\cep-evidence.test.js",
+    "sha256": "37e49a838d9b811f1c6d2b7796fdca675ea10bde05377aa27d28c956331cead8"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\cep.test.js",
+    "sha256": "609bf4fc9cc720a1816d8838e0ad83a7d6ee122f04e2f7aadf511a211e2e7055"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\config.test.js",
+    "sha256": "792b5c406c7b610a78227d2628822a9f905ebe0a880fc0415f2d5102041ad84a"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\csv.test.js",
+    "sha256": "4e6ea57ab7c7e781d62b7126a891bb9966263b0eee3438dce200eb78c2924f21"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\dashboard.test.js",
+    "sha256": "97f90df3e562f4714fda184cf7a35ae0c1794ec1c7bf173401b53d9dd708e70d"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\demo-workspace.test.js",
+    "sha256": "1ed2bf6560773c6a8214c04bfe808fdde596c71443e3f1791a1b3ed441c61cbd"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\history.test.js",
+    "sha256": "5dc454ae26ccca3ad18506025e81d75860e5c06acf21870cde03c0f3d0d2de7d"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\hourly.test.js",
+    "sha256": "b1ef22b685743a84c08b8c76aea4800adcf0db997fb80693442d5b788749ffe8"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\indicators.test.js",
+    "sha256": "bdfbb25f122de03d974cba976675712df9f1f6896f319c3ad964bccb51caa4ed"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\limits.test.js",
+    "sha256": "a9d44164edd3629e4ca57a584a66d8e87e1a2f4c110f00559c9a4fabe6f6f2db"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\msa-catalog.test.js",
+    "sha256": "8638424ea9d65345067456f447f450e75d47d005c8f865041adb1beb4dc3b698"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\numbers.test.js",
+    "sha256": "381c15dc87cb7b65e910e907166480ba6677cc65ab5d90250de6efaaa85f76e1"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\operational-workspace.test.js",
+    "sha256": "2109fa5f91a33e8cb50888db460051d1483f5becc64aebafcdb2f740227e15d8"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\operations.test.js",
+    "sha256": "d5bf52d95b15fc15591994b7c5fa25aaeab89f2601899171b8f1046e2ed8ebfc"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\preferences.test.js",
+    "sha256": "0ff8a8137c9485ee81a5214fbabd35d95fd8a26aca8942a8c8bb47f5f9b23989"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\presentation-scenario.test.js",
+    "sha256": "a4513499329bd02d7ee879b9def773d44434e8769134c3a71562d88c7e5e7595"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\registry.test.js",
+    "sha256": "2a014cfdc4c79a183dac80b974c4bf34f33768367457ff648dd1976472f65b6c"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\review-regressions.test.js",
+    "sha256": "236c7d717a24012a4699ea576c586b79ce109542c1ba0707f13a46d1f7beaeda"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\session.test.js",
+    "sha256": "994d866b53e886ad34abfae0d6d7eebed8187c604925ec765ea99f1a77349d5f"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\settings-consultation.test.js",
+    "sha256": "b20e9aa836338664c212c9f8d766777beefd1027971025ab85f4ecd528d4fb45"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\simulation.test.js",
+    "sha256": "911e77bfba42f529fd1090dd41c4410943949f0bb1d6e5e2dbcdbadcc86b7c2f"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\static.test.js",
+    "sha256": "80ec23d3547eec63cef4eccd998c1cf17a0f55f6af10e9bc367d0dd41ad9735d"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\statistics.test.js",
+    "sha256": "ad228050015da1c75d007e4e32a14b8026ea98d24d2cf7fd3dc9fd8cb57545dc"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\time.test.js",
+    "sha256": "ac5782bcb0f535d57ad6c3b018ae0fe3914c3e34a6d4695726106cec3332e3d2"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\ui-format.test.js",
+    "sha256": "de43a0eb234569d3831f5934b5f4770c7cd145525716119bb8b6adc0256517ca"
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tests\\unit\\ui-forms.test.js",
+    "sha256": "23e9436375a49f6b1c9535f3e197871ceccbf8892d40c8f9e2a63db1f19f074d"
+  }
+]

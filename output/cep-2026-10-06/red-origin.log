@@ -1,0 +1,26 @@
+✖ operational queries exclude synthetic records and their reviews/corrections; presentation remains available without deletion (1.3035ms)
+✔ pagination handles date ties, filtered pages, and capped incomplete periods (10.4838ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 85.1472
+
+✖ failing tests:
+
+test at tests\unit\history.test.js:5:1
+✖ operational queries exclude synthetic records and their reviews/corrections; presentation remains available without deletion (1.3035ms)
+  Error [MsaError]: UNKNOWN_FIELD
+      at requireThat (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/app/src/domain/errors.js:5:24)
+      at knownKeys (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/app/src/domain/errors.js:12:40)
+      at validate (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/app/src/services/history.js:8:54)
+      at Object.loadPeriod (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/app/src/services/history.js:21:7)
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/history.test.js:12:20)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'UNKNOWN_FIELD',
+    field: 'dataset'
+  }

@@ -1,0 +1,105 @@
+✖ CEP blocks only the study affected by conflicting revisions and respects collection coverage (30.2627ms)
+✖ historical study refuses a specification with a different unit (3.0145ms)
+✖ historical report carries actual observation dates separately from the consultation window (3.1055ms)
+✖ an applied correction reaches the CEP series and CSV with original and used readings (3.9182ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 167.9323
+
+✖ failing tests:
+
+test at tests\unit\cep-evidence.test.js:8:1
+✖ CEP blocks only the study affected by conflicting revisions and respects collection coverage (30.2627ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + null
+  - 'revision-conflict'
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep-evidence.test.js:12:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'revision-conflict',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\unit\cep-evidence.test.js:16:1
+✖ historical study refuses a specification with a different unit (3.0145ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 0.003166315789473683
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep-evidence.test.js:18:40)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0.003166315789473683,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\unit\cep-evidence.test.js:20:1
+✖ historical report carries actual observation dates separately from the consultation window (3.1055ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '2026-10-01'
+  - '2026-08-25'
+          ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep-evidence.test.js:22:47)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '2026-10-01',
+    expected: '2026-08-25',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\unit\cep-evidence.test.js:24:1
+✖ an applied correction reaches the CEP series and CSV with original and used readings (3.9182ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'fix1'
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep-evidence.test.js:27:72)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'fix1',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

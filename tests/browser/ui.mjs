@@ -1,6 +1,7 @@
 import { createStaticServer } from "../../scripts/serve.mjs";
 import { mkdir } from "node:fs/promises";
 import assert from "node:assert/strict";
+import {installAuthFixture} from "./fixtures/auth.mjs";
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ?? "playwright"
 );
@@ -14,25 +15,11 @@ try {
     viewport: { width: 1440, height: 1000 },
   });
   page.on("pageerror", (error) => errors.push(error.message));
-  // The browser fixture is injected by Playwright only; the shipped app always uses Firebase.
-  await page.route("**/src/browser.js", (route) =>
-    route.fulfill({
-      contentType: "text/javascript",
-      body: `
-    import {openDemoWorkspace} from './ui/demo-workspace.js';
-    export function createBrowserMsa(){let client,user=null;const observers=new Set();return {
-      auth:{watchSession(callback){queueMicrotask(()=>callback(user));return()=>{};},async signIn(){client=await openDemoWorkspace();user={uid:'demo-admin',email:'adm@adm.com'};for(const fn of observers)fn({user,actor:client.actor});return {user};},async signOut(){user=null;for(const fn of observers)fn({user:null,actor:null});}},
-      session:{watchSession(callback){observers.add(callback);callback({user,actor:client?.actor??null});return()=>observers.delete(callback);},async onWorkspace(){return client.services;}},
-      repository(){return client.repo;}
-    };}
-  `,
-    }),
-  );
+  await installAuthFixture(page);
   await page.goto(url);
-  await page.locator("[data-action=connect]").first().click();
-  await page.locator("#modal [name=password]").fill("fixture-only");
-  await page.locator("#modal [type=submit]").click();
-  await page.waitForFunction(() => !document.getElementById("modal").open);
+  await page.locator('#login [name=email]').fill('test@example.com');
+  await page.locator('#login [name=password]').fill('fixture-only');
+  await page.locator('#login [type=submit]').click();
   await page.locator(".zones .zone").first().waitFor();
   assert.equal(await page.locator(".zones .zone").count(), 21);
   const pixels = await page.locator("#production-chart").evaluate((canvas) => {
@@ -84,18 +71,22 @@ try {
   assert.ok((await download).suggestedFilename().endsWith(".csv"));
   await page.locator('a[href="#registry"]').first().click();
   await page.locator('[data-action="form:registry-machine"]').click();
+  await page.locator("#modal [name=name]").fill("   ");
+  await page.locator("#modal [type=submit]").click();
+  await page.locator("#modal .form-error:not(:empty)").waitFor();
+  assert.equal(await page.locator("#modal [type=submit]").isDisabled(), false);
   await page.locator("#modal [name=name]").fill("Máquina de teste UI");
+  await page.locator("#modal [name=code]").fill("AUDIT_UI");
   await page.locator("#modal [type=submit]").click();
   await page.waitForFunction(() => !document.getElementById("modal").open);
   await page.getByText("Máquina de teste UI", { exact: true }).waitFor();
+  await page.reload();
+  await page.getByText("Máquina de teste UI", { exact: true }).waitFor();
+  assert.equal(await page.getByText("Máquina de teste UI", { exact: true }).count(), 1);
   await page.locator('a[href="#settings"]').first().click();
   await page.locator("[data-theme-choice=dark]").click();
   assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
   await page.reload();
-  await page.locator("[data-action=connect]").first().click();
-  await page.locator("#modal [name=password]").fill("fixture-only");
-  await page.locator("#modal [type=submit]").click();
-  await page.waitForFunction(() => !document.getElementById("modal").open);
   await page.locator("[data-theme-choice=dark]").waitFor();
   assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
   await page.goto(url + "#dashboard");

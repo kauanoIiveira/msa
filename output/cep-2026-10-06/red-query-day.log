@@ -1,0 +1,60 @@
+✖ operational queries exclude synthetic records and their reviews/corrections; presentation remains available without deletion (70.8842ms)
+✔ pagination handles date ties, filtered pages, and capped incomplete periods (1.0707ms)
+✔ hourly production never allocates a crossing total and preserves unknown, zero and an unfinished hour (2.6545ms)
+✔ microstoppages use explicit seconds, exclude planned/open stops and union overlapping time (0.5611ms)
+✖ hourly last entry refers only to events in the chosen day (8.0279ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 327.5492
+
+✖ failing tests:
+
+test at tests\unit\history.test.js:5:1
+✖ operational queries exclude synthetic records and their reviews/corrections; presentation remains available without deletion (70.8842ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'example',
+      'real'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/history.test.js:14:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'example', 'real' ],
+    expected: [ 'real' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\unit\hourly.test.js:18:1
+✖ hourly last entry refers only to events in the chosen day (8.0279ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 1791262800000
+  - 1791172800000
+        ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/hourly.test.js:20:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1791262800000,
+    expected: 1791172800000,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

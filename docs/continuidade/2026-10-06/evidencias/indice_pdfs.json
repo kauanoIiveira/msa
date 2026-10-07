@@ -1,0 +1,255 @@
+[
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Analise_Materiais_MSA_2026.pdf",
+    "extraction": "Analise_Materiais_MSA_2026.txt",
+    "pages": [
+      {
+        "page": 1,
+        "chars": 2034,
+        "images": 0
+      },
+      {
+        "page": 2,
+        "chars": 1655,
+        "images": 1
+      },
+      {
+        "page": 3,
+        "chars": 1535,
+        "images": 1
+      },
+      {
+        "page": 4,
+        "chars": 1637,
+        "images": 1
+      },
+      {
+        "page": 5,
+        "chars": 1525,
+        "images": 1
+      },
+      {
+        "page": 6,
+        "chars": 1708,
+        "images": 1
+      },
+      {
+        "page": 7,
+        "chars": 1700,
+        "images": 1
+      },
+      {
+        "page": 8,
+        "chars": 1560,
+        "images": 1
+      },
+      {
+        "page": 9,
+        "chars": 1661,
+        "images": 1
+      },
+      {
+        "page": 10,
+        "chars": 1528,
+        "images": 1
+      },
+      {
+        "page": 11,
+        "chars": 1785,
+        "images": 0
+      },
+      {
+        "page": 12,
+        "chars": 1396,
+        "images": 0
+      },
+      {
+        "page": 13,
+        "chars": 1348,
+        "images": 0
+      },
+      {
+        "page": 14,
+        "chars": 1705,
+        "images": 0
+      },
+      {
+        "page": 15,
+        "chars": 1824,
+        "images": 0
+      },
+      {
+        "page": 16,
+        "chars": 2209,
+        "images": 0
+      },
+      {
+        "page": 17,
+        "chars": 1610,
+        "images": 0
+      },
+      {
+        "page": 18,
+        "chars": 1681,
+        "images": 0
+      },
+      {
+        "page": 19,
+        "chars": 1871,
+        "images": 0
+      },
+      {
+        "page": 20,
+        "chars": 1850,
+        "images": 0
+      },
+      {
+        "page": 21,
+        "chars": 2247,
+        "images": 0
+      },
+      {
+        "page": 22,
+        "chars": 2389,
+        "images": 0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Dossie_MSA_SENAI_2026.pdf",
+    "extraction": "Dossie_MSA_SENAI_2026.txt",
+    "pages": [
+      {
+        "page": 1,
+        "chars": 1832,
+        "images": 0
+      },
+      {
+        "page": 2,
+        "chars": 2234,
+        "images": 0
+      },
+      {
+        "page": 3,
+        "chars": 2080,
+        "images": 0
+      },
+      {
+        "page": 4,
+        "chars": 1933,
+        "images": 0
+      },
+      {
+        "page": 5,
+        "chars": 2087,
+        "images": 0
+      },
+      {
+        "page": 6,
+        "chars": 1881,
+        "images": 0
+      },
+      {
+        "page": 7,
+        "chars": 1952,
+        "images": 0
+      },
+      {
+        "page": 8,
+        "chars": 1888,
+        "images": 0
+      },
+      {
+        "page": 9,
+        "chars": 2059,
+        "images": 0
+      },
+      {
+        "page": 10,
+        "chars": 2150,
+        "images": 0
+      },
+      {
+        "page": 11,
+        "chars": 1724,
+        "images": 0
+      },
+      {
+        "page": 12,
+        "chars": 1990,
+        "images": 0
+      },
+      {
+        "page": 13,
+        "chars": 2092,
+        "images": 0
+      },
+      {
+        "page": 14,
+        "chars": 2083,
+        "images": 0
+      },
+      {
+        "page": 15,
+        "chars": 1922,
+        "images": 0
+      },
+      {
+        "page": 16,
+        "chars": 2293,
+        "images": 0
+      },
+      {
+        "page": 17,
+        "chars": 1831,
+        "images": 0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Preparacao_Entrevista_MSA_06-10-2026.pdf",
+    "extraction": "Preparacao_Entrevista_MSA_06-10-2026.txt",
+    "pages": [
+      {
+        "page": 1,
+        "chars": 1596,
+        "images": 0
+      },
+      {
+        "page": 2,
+        "chars": 1622,
+        "images": 0
+      },
+      {
+        "page": 3,
+        "chars": 1739,
+        "images": 0
+      },
+      {
+        "page": 4,
+        "chars": 1432,
+        "images": 0
+      },
+      {
+        "page": 5,
+        "chars": 1465,
+        "images": 1
+      },
+      {
+        "page": 6,
+        "chars": 1964,
+        "images": 0
+      },
+      {
+        "page": 7,
+        "chars": 1896,
+        "images": 0
+      },
+      {
+        "page": 8,
+        "chars": 1915,
+        "images": 0
+      }
+    ]
+  }
+]

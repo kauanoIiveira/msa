@@ -1,0 +1,5 @@
+ M CONTINUE_AQUI.md
+?? docs/PESQUISA_REPAGINACAO_VISUAL_MSA.md
+?? docs/PROMPT_REPAGINACAO_VISUAL_MSA.md
+?? docs/Roteiro_Apresentacao_Funcoes_MSA.docx
+?? scripts/create-presentation-doc.py

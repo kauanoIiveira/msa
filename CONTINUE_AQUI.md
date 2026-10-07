@@ -1,5 +1,19 @@
 # Continuidade do MSA
 
+## Pacote local preparado em 06/10/2026
+
+Entrada atual para outro computador: [LEIA_PRIMEIRO.md](LEIA_PRIMEIRO.md), [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md) e [Transferência local](docs/TRANSFERENCIA_LOCAL.md). O contexto privado e as fontes foram reunidos dentro da pasta, com exclusões compartilhadas em `.gitignore`. As instruções antigas de clone abaixo são históricas: use os arquivos atuais do pacote para conservar o trabalho ainda não commitado.
+
+## Atualização funcional em 06/10/2026 — CEP e pendências
+
+Estado corrente e demonstração: [Entrega CEP e pendências](docs/ENTREGA_CEP_E_PENDENCIAS_MSA_2026-10-06.md). O sistema tem login/sessão restaurada, lateral preta nos dois temas com logo interna, CEP I-MR fase I, visão horária/microparadas manuais, importação CSV com prévia e propostas de correção. Consulta operacional exclui registros fictícios; consulta Apresentação conserva esses registros identificados e sem gravação. A planilha histórica foi extraída sem editar o original ou gravar suas leituras no Firebase. O texto abaixo é histórico de etapas anteriores.
+
+## Conferência de fontes em 06/10/2026
+
+Base local de retomada: [docs/continuidade/2026-10-06/LEIA_PRIMEIRO.md](docs/continuidade/2026-10-06/LEIA_PRIMEIRO.md). Contém o prompt original integral, revisão dos materiais locais/Drive, planilha, fotos, requisitos, perguntas já feitas, estado do código e pendências. Essa pasta contém material de análise e contatos, foi excluída localmente do Git e não acompanha um clone. A entrevista de aproximadamente 5min42s está localizada, mas ainda não foi ouvida/transcrita.
+
+O conteúdo anterior abaixo foi preservado como histórico. A afirmação de 14 dias fictícios em `msa` descreve uma etapa anterior e conflita com a atualização posterior em `docs/ENTREGA_FUNCIONAL.md`. O código atual inicia o workspace operacional `msa` sem leituras inventadas; o simulador usa dados sintéticos em memória. O estado atual do Firebase não foi consultado nesta conferência. Não apresentar os nomes, limites, ganhos financeiros ou equipamentos propostos como validação da empresa. Nesta rodada, 83 testes unitários e a verificação estática de 45 arquivos passaram.
+
 ## Abrir em outro computador
 
 Instale Git e Node.js 24 LTS. Clone a branch master e execute:

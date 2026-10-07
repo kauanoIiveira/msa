@@ -1,0 +1,67 @@
+
+> msa-yellow-team@0.1.0 test:emulator
+> node scripts/run-emulator-tests.mjs
+
+i  emulators: Starting emulators: auth, database
+i  emulators: Detected demo project ID "demo-msa", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  database: Database Emulator logging to database-debug.log
+i  Running script: "C:\Program Files\nodejs\node.exe" --test --test-concurrency=1 tests/rules/*.test.js tests/integration/*.test.js
+✔ real emulator email/password login grants no workspace until a trusted membership exists (957.58ms)
+✔ MSA catalog persists drafts without duplicates and another authorized session reads all dashboard parameters (1762.2455ms)
+✔ integrated synthetic workflow persists operations, human decision, revision and export for another session (426.6039ms)
+✔ concurrent confirmed imports deduplicate atomically and preserve source/date (222.184ms)
+✔ two authorized sessions receive scoped changes and unsubscribe cleanly (227.3659ms)
+✔ repository confines paths and reads only authenticated scoped membership (141.785ms)
+✔ concurrent engineering decisions persist only one terminal decision (251.43ms)
+✔ two RTDB clients cannot both close one stoppage (220.5517ms)
+[2026-10-06T23:37:40.698Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/members/anon failed: permission_denied 
+[2026-10-06T23:37:40.708Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/members/outsider failed: permission_denied 
+[2026-10-06T23:37:40.721Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/members/unknown failed: permission_denied 
+[2026-10-06T23:37:40.734Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/members/op/role failed: permission_denied 
+✔ membership is required and cannot be self-provisioned or elevated (151.1223ms)
+[2026-10-06T23:37:41.192Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/reviews/86060253-65de-4301-83e1-e35911697f45 failed: permission_denied 
+[2026-10-06T23:37:41.204Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/reviews/86060253-65de-4301-83e1-e35911697f45/history/0 failed: permission_denied 
+[2026-10-06T23:37:41.206Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/reviews/86060253-65de-4301-83e1-e35911697f45 failed: permission_denied 
+✔ direct writes cannot decide as operator or rewrite review history (258.1968ms)
+[2026-10-06T23:37:41.384Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/corrections/683a2bdb-079d-474f-8981-858adca6034e failed: permission_denied 
+✔ correction revision preserves context and original, and approval cannot alter the proposal (201.9294ms)
+[2026-10-06T23:37:41.797Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/targets/t failed: permission_denied 
+[2026-10-06T23:37:41.801Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/targets/t failed: permission_denied 
+[2026-10-06T23:37:41.803Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/targets/t failed: permission_denied 
+✔ direct target writes validate the calendar, including leap years (167.822ms)
+[2026-10-06T23:37:41.984Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/reviews/forgedDate failed: permission_denied 
+[2026-10-06T23:37:42.000Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/corrections/forgedDate failed: permission_denied 
+✔ review and correction dates cannot hide their linked original in a different period (193.5255ms)
+[2026-10-06T23:37:42.405Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/production/e4fe337a-c481-477f-b211-1189c51fa0f8 failed: permission_denied 
+[2026-10-06T23:37:42.407Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/production/e4fe337a-c481-477f-b211-1189c51fa0f8 failed: permission_denied 
+[2026-10-06T23:37:42.410Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/production/forged failed: permission_denied 
+[2026-10-06T23:37:42.412Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/production/forged failed: permission_denied 
+[2026-10-06T23:37:42.416Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/production/forged failed: permission_denied 
+[2026-10-06T23:37:42.418Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/production/forged failed: permission_denied 
+[2026-10-06T23:37:42.420Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/production/forged failed: permission_denied 
+[2026-10-06T23:37:42.433Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/collections/badreading failed: permission_denied 
+✔ SDK bypass cannot forge author, context, reading state, or immutable production (220.4486ms)
+[2026-10-06T23:37:42.795Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/parameterVersions/id4 failed: permission_denied 
+[2026-10-06T23:37:42.798Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/machines/id1 failed: permission_denied 
+[2026-10-06T23:37:42.800Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/machines/id1 failed: permission_denied 
+[2026-10-06T23:37:42.801Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/machines/id1 failed: permission_denied 
+[2026-10-06T23:37:42.809Z]  @firebase/database: FIREBASE WARNING: update at /workspaces/demo/machines/id1 failed: permission_denied 
+[2026-10-06T23:37:42.811Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/processes/bad failed: permission_denied 
+✔ rules enforce roles, scalar immutability, field whitelist and contexts (168.6908ms)
+[2026-10-06T23:37:42.928Z]  @firebase/database: FIREBASE WARNING: set at /workspaces/demo/products/link4/processIds/link2 failed: permission_denied 
+✔ deleting one of multiple product links cannot bypass immutable association rules (111.3672ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8628.4957
++  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  database: Stopping Database Emulator
+!  Database Emulator has exited upon receiving signal: SIGINT
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator

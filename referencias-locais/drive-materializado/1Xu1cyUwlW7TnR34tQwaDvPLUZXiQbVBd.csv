@@ -1,0 +1,698 @@
+﻿celula;data;coluna;parametro;unidade;original;tipo_excel;formato_excel;valor_interpretado;tratamento;relacao_faixa_do_arquivo
+F17;2026-08-25;F;Temp Ambiente;°C;16;n;0.00;16.0;numero;dentro
+F18;2026-08-25;F;Temp Ambiente;°C;16;n;0.00;16.0;numero;dentro
+F19;2026-08-26;F;Temp Ambiente;°C;16;n;0.00;16.0;numero;dentro
+F20;2026-08-26;F;Temp Ambiente;°C;24;n;0.00;24.0;numero;dentro
+F21;2026-08-27;F;Temp Ambiente;°C;17;n;0.00;17.0;numero;dentro
+F22;2026-08-27;F;Temp Ambiente;°C;24;n;0.00;24.0;numero;dentro
+F23;2026-08-28;F;Temp Ambiente;°C;21;n;0.00;21.0;numero;dentro
+F24;2026-08-28;F;Temp Ambiente;°C;32;n;0.00;32.0;numero;acima
+F25;2026-08-31;F;Temp Ambiente;°C;22,00;s;0.00;22.0;texto_decimal;dentro
+F26;2026-08-31;F;Temp Ambiente;°C;22,00;s;0.00;22.0;texto_decimal;dentro
+F27;2026-09-17;F;Temp Ambiente;°C;15;n;0.00;15.0;numero;dentro
+F28;2026-09-21;F;Temp Ambiente;°C;20;n;0.00;20.0;numero;dentro
+F29;2026-09-22;F;Temp Ambiente;°C;18;n;0.00;18.0;numero;dentro
+F30;2026-09-23;F;Temp Ambiente;°C;15;n;0.00;15.0;numero;dentro
+F31;2026-09-24;F;Temp Ambiente;°C;14;n;0.00;14.0;numero;dentro
+F32;2026-09-25;F;Temp Ambiente;°C;28;n;0.00;28.0;numero;dentro
+F33;2026-09-29;F;Temp Ambiente;°C;25;n;0.00;25.0;numero;dentro
+H17;2026-08-25;H;Aquecimento Z1;°C;45;n;0.00;45.0;numero;nao_avaliado
+H18;2026-08-25;H;Aquecimento Z1;°C;33;n;0.00;33.0;numero;nao_avaliado
+H19;2026-08-26;H;Aquecimento Z1;°C;47;n;0.00;47.0;numero;nao_avaliado
+H20;2026-08-26;H;Aquecimento Z1;°C;34;n;0.00;34.0;numero;nao_avaliado
+H21;2026-08-27;H;Aquecimento Z1;°C;46;n;0.00;46.0;numero;nao_avaliado
+H22;2026-08-27;H;Aquecimento Z1;°C;47;n;0.00;47.0;numero;nao_avaliado
+H23;2026-08-28;H;Aquecimento Z1;°C;35;n;0.00;35.0;numero;nao_avaliado
+H24;2026-08-28;H;Aquecimento Z1;°C;52;n;0.00;52.0;numero;nao_avaliado
+H25;2026-08-31;H;Aquecimento Z1;°C;43,00;s;0.00;43.0;texto_decimal;nao_avaliado
+H26;2026-08-31;H;Aquecimento Z1;°C;41,00;s;0.00;41.0;texto_decimal;nao_avaliado
+H27;2026-09-17;H;Aquecimento Z1;°C;45;n;0.00;45.0;numero;nao_avaliado
+H28;2026-09-21;H;Aquecimento Z1;°C;48;n;0.00;48.0;numero;nao_avaliado
+H29;2026-09-22;H;Aquecimento Z1;°C;51;n;0.00;51.0;numero;nao_avaliado
+H30;2026-09-23;H;Aquecimento Z1;°C;51;n;0.00;51.0;numero;nao_avaliado
+H31;2026-09-24;H;Aquecimento Z1;°C;45;n;0.00;45.0;numero;nao_avaliado
+H32;2026-09-25;H;Aquecimento Z1;°C;48;n;0.00;48.0;numero;nao_avaliado
+H33;2026-09-29;H;Aquecimento Z1;°C;49;n;0.00;49.0;numero;nao_avaliado
+J17;2026-08-25;J;Aquecimento Z2;°C;254;n;0.00;254.0;numero;abaixo
+J18;2026-08-25;J;Aquecimento Z2;°C;215;n;0.00;215.0;numero;abaixo
+J19;2026-08-26;J;Aquecimento Z2;°C;256;n;0.00;256.0;numero;dentro
+J20;2026-08-26;J;Aquecimento Z2;°C;257;n;0.00;257.0;numero;dentro
+J21;2026-08-27;J;Aquecimento Z2;°C;254;n;0.00;254.0;numero;abaixo
+J22;2026-08-27;J;Aquecimento Z2;°C;246;n;0.00;246.0;numero;abaixo
+J23;2026-08-28;J;Aquecimento Z2;°C;239;n;0.00;239.0;numero;abaixo
+J24;2026-08-28;J;Aquecimento Z2;°C;233;n;0.00;233.0;numero;abaixo
+J25;2026-08-31;J;Aquecimento Z2;°C;245,00;s;0.00;245.0;texto_decimal;abaixo
+J26;2026-08-31;J;Aquecimento Z2;°C;249,00;s;0.00;249.0;texto_decimal;abaixo
+J27;2026-09-17;J;Aquecimento Z2;°C;255;n;0.00;255.0;numero;dentro
+J28;2026-09-21;J;Aquecimento Z2;°C;244;n;0.00;244.0;numero;abaixo
+J29;2026-09-22;J;Aquecimento Z2;°C;243;n;0.00;243.0;numero;abaixo
+J30;2026-09-23;J;Aquecimento Z2;°C;243;n;0.00;243.0;numero;abaixo
+J31;2026-09-24;J;Aquecimento Z2;°C;247;n;0.00;247.0;numero;abaixo
+J32;2026-09-25;J;Aquecimento Z2;°C;248;n;0.00;248.0;numero;abaixo
+J33;2026-09-29;J;Aquecimento Z2;°C;250;n;0.00;250.0;numero;abaixo
+L17;2026-08-25;L;Aquecimento Z3;°C;256;n;0.00;256.0;numero;dentro
+L18;2026-08-25;L;Aquecimento Z3;°C;236;n;0.00;236.0;numero;abaixo
+L19;2026-08-26;L;Aquecimento Z3;°C;249;n;0.00;249.0;numero;abaixo
+L20;2026-08-26;L;Aquecimento Z3;°C;249;n;0.00;249.0;numero;abaixo
+L21;2026-08-27;L;Aquecimento Z3;°C;250;n;0.00;250.0;numero;abaixo
+L22;2026-08-27;L;Aquecimento Z3;°C;246;n;0.00;246.0;numero;abaixo
+L23;2026-08-28;L;Aquecimento Z3;°C;241;n;0.00;241.0;numero;abaixo
+L24;2026-08-28;L;Aquecimento Z3;°C;235;n;0.00;235.0;numero;abaixo
+L25;2026-08-31;L;Aquecimento Z3;°C;251,00;s;0.00;251.0;texto_decimal;abaixo
+L26;2026-08-31;L;Aquecimento Z3;°C;249,00;s;0.00;249.0;texto_decimal;abaixo
+L27;2026-09-17;L;Aquecimento Z3;°C;255;n;0.00;255.0;numero;dentro
+L28;2026-09-21;L;Aquecimento Z3;°C;245;n;0.00;245.0;numero;abaixo
+L29;2026-09-22;L;Aquecimento Z3;°C;246;n;0.00;246.0;numero;abaixo
+L30;2026-09-23;L;Aquecimento Z3;°C;246;n;0.00;246.0;numero;abaixo
+L31;2026-09-24;L;Aquecimento Z3;°C;252;n;0.00;252.0;numero;abaixo
+L32;2026-09-25;L;Aquecimento Z3;°C;251;n;0.00;251.0;numero;abaixo
+L33;2026-09-29;L;Aquecimento Z3;°C;252;n;0.00;252.0;numero;abaixo
+N17;2026-08-25;N;Aquecimento Z4;°C;251;n;0.00;251.0;numero;abaixo
+N18;2026-08-25;N;Aquecimento Z4;°C;235;n;0.00;235.0;numero;abaixo
+N19;2026-08-26;N;Aquecimento Z4;°C;251;n;0.00;251.0;numero;abaixo
+N20;2026-08-26;N;Aquecimento Z4;°C;250;n;0.00;250.0;numero;abaixo
+N21;2026-08-27;N;Aquecimento Z4;°C;249;n;0.00;249.0;numero;abaixo
+N22;2026-08-27;N;Aquecimento Z4;°C;244;n;0.00;244.0;numero;abaixo
+N23;2026-08-28;N;Aquecimento Z4;°C;239;n;0.00;239.0;numero;abaixo
+N24;2026-08-28;N;Aquecimento Z4;°C;235;n;0.00;235.0;numero;abaixo
+N25;2026-08-31;N;Aquecimento Z4;°C;248,00;s;0.00;248.0;texto_decimal;abaixo
+N26;2026-08-31;N;Aquecimento Z4;°C;251,00;s;0.00;251.0;texto_decimal;abaixo
+N27;2026-09-17;N;Aquecimento Z4;°C;256;n;0.00;256.0;numero;dentro
+N28;2026-09-21;N;Aquecimento Z4;°C;245;n;0.00;245.0;numero;abaixo
+N29;2026-09-22;N;Aquecimento Z4;°C;245;n;0.00;245.0;numero;abaixo
+N30;2026-09-23;N;Aquecimento Z4;°C;245;n;0.00;245.0;numero;abaixo
+N31;2026-09-24;N;Aquecimento Z4;°C;249;n;0.00;249.0;numero;abaixo
+N32;2026-09-25;N;Aquecimento Z4;°C;250;n;0.00;250.0;numero;abaixo
+N33;2026-09-29;N;Aquecimento Z4;°C;250;n;0.00;250.0;numero;abaixo
+P17;2026-08-25;P;Aquecimento Z5;°C;252;n;0.00;252.0;numero;dentro
+P18;2026-08-25;P;Aquecimento Z5;°C;242;n;0.00;242.0;numero;abaixo
+P19;2026-08-26;P;Aquecimento Z5;°C;250;n;0.00;250.0;numero;abaixo
+P20;2026-08-26;P;Aquecimento Z5;°C;250;n;0.00;250.0;numero;abaixo
+P21;2026-08-27;P;Aquecimento Z5;°C;250;n;0.00;250.0;numero;abaixo
+P22;2026-08-27;P;Aquecimento Z5;°C;245;n;0.00;245.0;numero;abaixo
+P23;2026-08-28;P;Aquecimento Z5;°C;240;n;0.00;240.0;numero;abaixo
+P24;2026-08-28;P;Aquecimento Z5;°C;235;n;0.00;235.0;numero;abaixo
+P25;2026-08-31;P;Aquecimento Z5;°C;245,00;s;0.00;245.0;texto_decimal;abaixo
+P26;2026-08-31;P;Aquecimento Z5;°C;235,00;s;0.00;235.0;texto_decimal;abaixo
+P27;2026-09-17;P;Aquecimento Z5;°C;255;n;0.00;255.0;numero;dentro
+P28;2026-09-21;P;Aquecimento Z5;°C;245;n;0.00;245.0;numero;abaixo
+P29;2026-09-22;P;Aquecimento Z5;°C;245;n;0.00;245.0;numero;abaixo
+P30;2026-09-23;P;Aquecimento Z5;°C;245;n;0.00;245.0;numero;abaixo
+P31;2026-09-24;P;Aquecimento Z5;°C;250;n;0.00;250.0;numero;abaixo
+P32;2026-09-25;P;Aquecimento Z5;°C;250;n;0.00;250.0;numero;abaixo
+P33;2026-09-29;P;Aquecimento Z5;°C;250;n;0.00;250.0;numero;abaixo
+R17;2026-08-25;R;Aquecimento Z6;°C;251;n;0.00;251.0;numero;abaixo
+R18;2026-08-25;R;Aquecimento Z6;°C;235;n;0.00;235.0;numero;abaixo
+R19;2026-08-26;R;Aquecimento Z6;°C;251;n;0.00;251.0;numero;abaixo
+R20;2026-08-26;R;Aquecimento Z6;°C;250;n;0.00;250.0;numero;abaixo
+R21;2026-08-27;R;Aquecimento Z6;°C;250;n;0.00;250.0;numero;abaixo
+R22;2026-08-27;R;Aquecimento Z6;°C;241;n;0.00;241.0;numero;abaixo
+R23;2026-08-28;R;Aquecimento Z6;°C;239;n;0.00;239.0;numero;abaixo
+R24;2026-08-28;R;Aquecimento Z6;°C;240;n;0.00;240.0;numero;abaixo
+R25;2026-08-31;R;Aquecimento Z6;°C;244,00;s;0.00;244.0;texto_decimal;abaixo
+R26;2026-08-31;R;Aquecimento Z6;°C;236,00;s;0.00;236.0;texto_decimal;abaixo
+R27;2026-09-17;R;Aquecimento Z6;°C;255;n;0.00;255.0;numero;dentro
+R28;2026-09-21;R;Aquecimento Z6;°C;249;n;0.00;249.0;numero;abaixo
+R29;2026-09-22;R;Aquecimento Z6;°C;249;n;0.00;249.0;numero;abaixo
+R30;2026-09-23;R;Aquecimento Z6;°C;249;n;0.00;249.0;numero;abaixo
+R31;2026-09-24;R;Aquecimento Z6;°C;249;n;0.00;249.0;numero;abaixo
+R32;2026-09-25;R;Aquecimento Z6;°C;249;n;0.00;249.0;numero;abaixo
+R33;2026-09-29;R;Aquecimento Z6;°C;249;n;0.00;249.0;numero;abaixo
+T17;2026-08-25;T;Aquecimento Z7;°C;265;n;0.00;265.0;numero;dentro
+T18;2026-08-25;T;Aquecimento Z7;°C;247;n;0.00;247.0;numero;abaixo
+T19;2026-08-26;T;Aquecimento Z7;°C;259;n;0.00;259.0;numero;abaixo
+T20;2026-08-26;T;Aquecimento Z7;°C;255;n;0.00;255.0;numero;abaixo
+T21;2026-08-27;T;Aquecimento Z7;°C;250;n;0.00;250.0;numero;abaixo
+T22;2026-08-27;T;Aquecimento Z7;°C;242;n;0.00;242.0;numero;abaixo
+T23;2026-08-28;T;Aquecimento Z7;°C;240;n;0.00;240.0;numero;abaixo
+T24;2026-08-28;T;Aquecimento Z7;°C;240;n;0.00;240.0;numero;abaixo
+T25;2026-08-31;T;Aquecimento Z7;°C;240,00;s;0.00;240.0;texto_decimal;abaixo
+T26;2026-08-31;T;Aquecimento Z7;°C;234,00;s;0.00;234.0;texto_decimal;abaixo
+T27;2026-09-17;T;Aquecimento Z7;°C;255;n;0.00;255.0;numero;abaixo
+T28;2026-09-21;T;Aquecimento Z7;°C;250;n;0.00;250.0;numero;abaixo
+T29;2026-09-22;T;Aquecimento Z7;°C;250;n;0.00;250.0;numero;abaixo
+T30;2026-09-23;T;Aquecimento Z7;°C;250;n;0.00;250.0;numero;abaixo
+T31;2026-09-24;T;Aquecimento Z7;°C;250;n;0.00;250.0;numero;abaixo
+T32;2026-09-25;T;Aquecimento Z7;°C;250;n;0.00;250.0;numero;abaixo
+T33;2026-09-29;T;Aquecimento Z7;°C;250;n;0.00;250.0;numero;abaixo
+V17;2026-08-25;V;Aquecimento Z8;°C;266;n;0.00;266.0;numero;dentro
+V18;2026-08-25;V;Aquecimento Z8;°C;238;n;0.00;238.0;numero;abaixo
+V19;2026-08-26;V;Aquecimento Z8;°C;259;n;0.00;259.0;numero;abaixo
+V20;2026-08-26;V;Aquecimento Z8;°C;256;n;0.00;256.0;numero;abaixo
+V21;2026-08-27;V;Aquecimento Z8;°C;250;n;0.00;250.0;numero;abaixo
+V22;2026-08-27;V;Aquecimento Z8;°C;243;n;0.00;243.0;numero;abaixo
+V23;2026-08-28;V;Aquecimento Z8;°C;241;n;0.00;241.0;numero;abaixo
+V24;2026-08-28;V;Aquecimento Z8;°C;240;n;0.00;240.0;numero;abaixo
+V25;2026-08-31;V;Aquecimento Z8;°C;240,00;s;0.00;240.0;texto_decimal;abaixo
+V26;2026-08-31;V;Aquecimento Z8;°C;234,00;s;0.00;234.0;texto_decimal;abaixo
+V27;2026-09-17;V;Aquecimento Z8;°C;255;n;0.00;255.0;numero;abaixo
+V28;2026-09-21;V;Aquecimento Z8;°C;250;n;0.00;250.0;numero;abaixo
+V29;2026-09-22;V;Aquecimento Z8;°C;250;n;0.00;250.0;numero;abaixo
+V30;2026-09-23;V;Aquecimento Z8;°C;250;n;0.00;250.0;numero;abaixo
+V31;2026-09-24;V;Aquecimento Z8;°C;250;n;0.00;250.0;numero;abaixo
+V32;2026-09-25;V;Aquecimento Z8;°C;250;n;0.00;250.0;numero;abaixo
+V33;2026-09-29;V;Aquecimento Z8;°C;250;n;0.00;250.0;numero;abaixo
+X17;2026-08-25;X;Aquecimento Z9;°C;93;n;0.00;93.0;numero;nao_avaliado
+X18;2026-08-25;X;Aquecimento Z9;°C;83;n;0.00;83.0;numero;nao_avaliado
+X19;2026-08-26;X;Aquecimento Z9;°C;91;n;0.00;91.0;numero;nao_avaliado
+X20;2026-08-26;X;Aquecimento Z9;°C;92;n;0.00;92.0;numero;nao_avaliado
+X21;2026-08-27;X;Aquecimento Z9;°C;80;n;0.00;80.0;numero;nao_avaliado
+X22;2026-08-27;X;Aquecimento Z9;°C;92;n;0.00;92.0;numero;nao_avaliado
+X23;2026-08-28;X;Aquecimento Z9;°C;88;n;0.00;88.0;numero;nao_avaliado
+X24;2026-08-28;X;Aquecimento Z9;°C;76;n;0.00;76.0;numero;nao_avaliado
+X25;2026-08-31;X;Aquecimento Z9;°C;88,00;s;0.00;88.0;texto_decimal;nao_avaliado
+X26;2026-08-31;X;Aquecimento Z9;°C;89,00;s;0.00;89.0;texto_decimal;nao_avaliado
+X27;2026-09-17;X;Aquecimento Z9;°C;92;n;0.00;92.0;numero;nao_avaliado
+X28;2026-09-21;X;Aquecimento Z9;°C;94;n;0.00;94.0;numero;nao_avaliado
+X29;2026-09-22;X;Aquecimento Z9;°C;97;n;0.00;97.0;numero;nao_avaliado
+X30;2026-09-23;X;Aquecimento Z9;°C;97;n;0.00;97.0;numero;nao_avaliado
+X31;2026-09-24;X;Aquecimento Z9;°C;91;n;0.00;91.0;numero;nao_avaliado
+X32;2026-09-25;X;Aquecimento Z9;°C;93;n;0.00;93.0;numero;nao_avaliado
+X33;2026-09-29;X;Aquecimento Z9;°C;91;n;0.00;91.0;numero;nao_avaliado
+Z17;2026-08-25;Z;Aquecimento Z10;°C;87;n;0.00;87.0;numero;nao_avaliado
+Z18;2026-08-25;Z;Aquecimento Z10;°C;101;n;0.00;101.0;numero;nao_avaliado
+Z19;2026-08-26;Z;Aquecimento Z10;°C;87;n;0.00;87.0;numero;nao_avaliado
+Z20;2026-08-26;Z;Aquecimento Z10;°C;91;n;0.00;91.0;numero;nao_avaliado
+Z21;2026-08-27;Z;Aquecimento Z10;°C;116;n;0.00;116.0;numero;nao_avaliado
+Z22;2026-08-27;Z;Aquecimento Z10;°C;92;n;0.00;92.0;numero;nao_avaliado
+Z23;2026-08-28;Z;Aquecimento Z10;°C;87;n;0.00;87.0;numero;nao_avaliado
+Z24;2026-08-28;Z;Aquecimento Z10;°C;107;n;0.00;107.0;numero;nao_avaliado
+Z25;2026-08-31;Z;Aquecimento Z10;°C;93,00;s;0.00;93.0;texto_decimal;nao_avaliado
+Z26;2026-08-31;Z;Aquecimento Z10;°C;98,00;s;0.00;98.0;texto_decimal;nao_avaliado
+Z27;2026-09-17;Z;Aquecimento Z10;°C;96;n;0.00;96.0;numero;nao_avaliado
+Z28;2026-09-21;Z;Aquecimento Z10;°C;101;n;0.00;101.0;numero;nao_avaliado
+Z29;2026-09-22;Z;Aquecimento Z10;°C;99;n;0.00;99.0;numero;nao_avaliado
+Z30;2026-09-23;Z;Aquecimento Z10;°C;99;n;0.00;99.0;numero;nao_avaliado
+Z31;2026-09-24;Z;Aquecimento Z10;°C;99;n;0.00;99.0;numero;nao_avaliado
+Z32;2026-09-25;Z;Aquecimento Z10;°C;102;n;0.00;102.0;numero;nao_avaliado
+Z33;2026-09-29;Z;Aquecimento Z10;°C;101;n;0.00;101.0;numero;nao_avaliado
+AB17;2026-08-25;AB;Aquecimento Z11;°C;249;n;0.00;249.0;numero;abaixo
+AB18;2026-08-25;AB;Aquecimento Z11;°C;239;n;0.00;239.0;numero;abaixo
+AB19;2026-08-26;AB;Aquecimento Z11;°C;250;n;0.00;250.0;numero;dentro
+AB20;2026-08-26;AB;Aquecimento Z11;°C;250;n;0.00;250.0;numero;dentro
+AB21;2026-08-27;AB;Aquecimento Z11;°C;250;n;0.00;250.0;numero;dentro
+AB22;2026-08-27;AB;Aquecimento Z11;°C;249;n;0.00;249.0;numero;abaixo
+AB23;2026-08-28;AB;Aquecimento Z11;°C;250;n;0.00;250.0;numero;dentro
+AB24;2026-08-28;AB;Aquecimento Z11;°C;250;n;0.00;250.0;numero;dentro
+AB25;2026-08-31;AB;Aquecimento Z11;°C;249,00;s;0.00;249.0;texto_decimal;abaixo
+AB26;2026-08-31;AB;Aquecimento Z11;°C;255,00;s;0.00;255.0;texto_decimal;dentro
+AB27;2026-09-17;AB;Aquecimento Z11;°C;255;n;0.00;255.0;numero;dentro
+AB28;2026-09-21;AB;Aquecimento Z11;°C;255;n;0.00;255.0;numero;dentro
+AB29;2026-09-22;AB;Aquecimento Z11;°C;255;n;0.00;255.0;numero;dentro
+AB30;2026-09-23;AB;Aquecimento Z11;°C;255;n;0.00;255.0;numero;dentro
+AB31;2026-09-24;AB;Aquecimento Z11;°C;255;n;0.00;255.0;numero;dentro
+AB32;2026-09-25;AB;Aquecimento Z11;°C;255;n;0.00;255.0;numero;dentro
+AB33;2026-09-29;AB;Aquecimento Z11;°C;255;n;0.00;255.0;numero;dentro
+AD17;2026-08-25;AD;Aquecimento Z12;°C;260;n;0.00;260.0;numero;dentro
+AD18;2026-08-25;AD;Aquecimento Z12;°C;248;n;0.00;248.0;numero;abaixo
+AD19;2026-08-26;AD;Aquecimento Z12;°C;260;n;0.00;260.0;numero;dentro
+AD20;2026-08-26;AD;Aquecimento Z12;°C;260;n;0.00;260.0;numero;dentro
+AD21;2026-08-27;AD;Aquecimento Z12;°C;260;n;0.00;260.0;numero;dentro
+AD22;2026-08-27;AD;Aquecimento Z12;°C;259;n;0.00;259.0;numero;abaixo
+AD23;2026-08-28;AD;Aquecimento Z12;°C;261;n;0.00;261.0;numero;dentro
+AD24;2026-08-28;AD;Aquecimento Z12;°C;260;n;0.00;260.0;numero;dentro
+AD25;2026-08-31;AD;Aquecimento Z12;°C;259,00;s;0.00;259.0;texto_decimal;abaixo
+AD26;2026-08-31;AD;Aquecimento Z12;°C;255,00;s;0.00;255.0;texto_decimal;abaixo
+AD27;2026-09-17;AD;Aquecimento Z12;°C;255;n;0.00;255.0;numero;abaixo
+AD28;2026-09-21;AD;Aquecimento Z12;°C;255;n;0.00;255.0;numero;abaixo
+AD29;2026-09-22;AD;Aquecimento Z12;°C;256;n;0.00;256.0;numero;abaixo
+AD30;2026-09-23;AD;Aquecimento Z12;°C;256;n;0.00;256.0;numero;abaixo
+AD31;2026-09-24;AD;Aquecimento Z12;°C;261;n;0.00;261.0;numero;dentro
+AD32;2026-09-25;AD;Aquecimento Z12;°C;262;n;0.00;262.0;numero;dentro
+AD33;2026-09-29;AD;Aquecimento Z12;°C;261;n;0.00;261.0;numero;dentro
+AF17;2026-08-25;AF;Aquecimento Z13;°C;260;n;0.00;260.0;numero;dentro
+AF18;2026-08-25;AF;Aquecimento Z13;°C;251;n;0.00;251.0;numero;abaixo
+AF19;2026-08-26;AF;Aquecimento Z13;°C;259;n;0.00;259.0;numero;abaixo
+AF20;2026-08-26;AF;Aquecimento Z13;°C;260;n;0.00;260.0;numero;dentro
+AF21;2026-08-27;AF;Aquecimento Z13;°C;260;n;0.00;260.0;numero;dentro
+AF22;2026-08-27;AF;Aquecimento Z13;°C;260;n;0.00;260.0;numero;dentro
+AF23;2026-08-28;AF;Aquecimento Z13;°C;270;n;0.00;270.0;numero;dentro
+AF24;2026-08-28;AF;Aquecimento Z13;°C;270;n;0.00;270.0;numero;dentro
+AF25;2026-08-31;AF;Aquecimento Z13;°C;269,00;s;0.00;269.0;texto_decimal;dentro
+AF26;2026-08-31;AF;Aquecimento Z13;°C;264,00;s;0.00;264.0;texto_decimal;dentro
+AF27;2026-09-17;AF;Aquecimento Z13;°C;255;n;0.00;255.0;numero;abaixo
+AF28;2026-09-21;AF;Aquecimento Z13;°C;94;n;0.00;94.0;numero;abaixo
+AF29;2026-09-22;AF;Aquecimento Z13;°C;255;n;0.00;255.0;numero;abaixo
+AF30;2026-09-23;AF;Aquecimento Z13;°C;255;n;0.00;255.0;numero;abaixo
+AF31;2026-09-24;AF;Aquecimento Z13;°C;260;n;0.00;260.0;numero;dentro
+AF32;2026-09-25;AF;Aquecimento Z13;°C;260;n;0.00;260.0;numero;dentro
+AF33;2026-09-29;AF;Aquecimento Z13;°C;260;n;0.00;260.0;numero;dentro
+AH17;2026-08-25;AH;Aquecimento Z14;°C;251;n;0.00;251.0;numero;abaixo
+AH18;2026-08-25;AH;Aquecimento Z14;°C;241;n;0.00;241.0;numero;abaixo
+AH19;2026-08-26;AH;Aquecimento Z14;°C;263;n;0.00;263.0;numero;dentro
+AH20;2026-08-26;AH;Aquecimento Z14;°C;263;n;0.00;263.0;numero;dentro
+AH21;2026-08-27;AH;Aquecimento Z14;°C;262;n;0.00;262.0;numero;dentro
+AH22;2026-08-27;AH;Aquecimento Z14;°C;252;n;0.00;252.0;numero;abaixo
+AH23;2026-08-28;AH;Aquecimento Z14;°C;267;n;0.00;267.0;numero;acima
+AH24;2026-08-28;AH;Aquecimento Z14;°C;270;n;0.00;270.0;numero;acima
+AH25;2026-08-31;AH;Aquecimento Z14;°C;265,00;s;0.00;265.0;texto_decimal;dentro
+AH26;2026-08-31;AH;Aquecimento Z14;°C;271,00;s;0.00;271.0;texto_decimal;acima
+AH27;2026-09-17;AH;Aquecimento Z14;°C;267;n;0.00;267.0;numero;acima
+AH28;2026-09-21;AH;Aquecimento Z14;°C;101;n;0.00;101.0;numero;abaixo
+AH29;2026-09-22;AH;Aquecimento Z14;°C;253;n;0.00;253.0;numero;abaixo
+AH30;2026-09-23;AH;Aquecimento Z14;°C;253;n;0.00;253.0;numero;abaixo
+AH31;2026-09-24;AH;Aquecimento Z14;°C;258;n;0.00;258.0;numero;dentro
+AH32;2026-09-25;AH;Aquecimento Z14;°C;261;n;0.00;261.0;numero;dentro
+AH33;2026-09-29;AH;Aquecimento Z14;°C;261;n;0.00;261.0;numero;dentro
+AJ17;2026-08-25;AJ;Aquecimento Z15;°C;269;n;0.00;269.0;numero;abaixo
+AJ18;2026-08-25;AJ;Aquecimento Z15;°C;251;n;0.00;251.0;numero;abaixo
+AJ19;2026-08-26;AJ;Aquecimento Z15;°C;270;n;0.00;270.0;numero;dentro
+AJ20;2026-08-26;AJ;Aquecimento Z15;°C;266;n;0.00;266.0;numero;abaixo
+AJ21;2026-08-27;AJ;Aquecimento Z15;°C;260;n;0.00;260.0;numero;abaixo
+AJ22;2026-08-27;AJ;Aquecimento Z15;°C;254;n;0.00;254.0;numero;abaixo
+AJ23;2026-08-28;AJ;Aquecimento Z15;°C;270;n;0.00;270.0;numero;dentro
+AJ24;2026-08-28;AJ;Aquecimento Z15;°C;270;n;0.00;270.0;numero;dentro
+AJ25;2026-08-31;AJ;Aquecimento Z15;°C;269,00;s;0.00;269.0;texto_decimal;abaixo
+AJ26;2026-08-31;AJ;Aquecimento Z15;°C;270,00;s;0.00;270.0;texto_decimal;dentro
+AJ27;2026-09-17;AJ;Aquecimento Z15;°C;285;n;0.00;285.0;numero;acima
+AJ28;2026-09-21;AJ;Aquecimento Z15;°C;255;n;0.00;255.0;numero;abaixo
+AJ29;2026-09-22;AJ;Aquecimento Z15;°C;280;n;0.00;280.0;numero;dentro
+AJ30;2026-09-23;AJ;Aquecimento Z15;°C;280;n;0.00;280.0;numero;dentro
+AJ31;2026-09-24;AJ;Aquecimento Z15;°C;280;n;0.00;280.0;numero;dentro
+AJ32;2026-09-25;AJ;Aquecimento Z15;°C;280;n;0.00;280.0;numero;dentro
+AJ33;2026-09-29;AJ;Aquecimento Z15;°C;280;n;0.00;280.0;numero;dentro
+AL17;2026-08-25;AL;Aquecimento Z16;°C;269;n;0.00;269.0;numero;abaixo
+AL18;2026-08-25;AL;Aquecimento Z16;°C;248;n;0.00;248.0;numero;abaixo
+AL19;2026-08-26;AL;Aquecimento Z16;°C;268;n;0.00;268.0;numero;abaixo
+AL20;2026-08-26;AL;Aquecimento Z16;°C;265;n;0.00;265.0;numero;abaixo
+AL21;2026-08-27;AL;Aquecimento Z16;°C;260;n;0.00;260.0;numero;abaixo
+AL22;2026-08-27;AL;Aquecimento Z16;°C;256;n;0.00;256.0;numero;abaixo
+AL23;2026-08-28;AL;Aquecimento Z16;°C;273;n;0.00;273.0;numero;dentro
+AL24;2026-08-28;AL;Aquecimento Z16;°C;270;n;0.00;270.0;numero;dentro
+AL25;2026-08-31;AL;Aquecimento Z16;°C;269,00;s;0.00;269.0;texto_decimal;abaixo
+AL26;2026-08-31;AL;Aquecimento Z16;°C;268,00;s;0.00;268.0;texto_decimal;abaixo
+AL27;2026-09-17;AL;Aquecimento Z16;°C;285;n;0.00;285.0;numero;acima
+AL28;2026-09-21;AL;Aquecimento Z16;°C;255;n;0.00;255.0;numero;abaixo
+AL29;2026-09-22;AL;Aquecimento Z16;°C;280;n;0.00;280.0;numero;dentro
+AL30;2026-09-23;AL;Aquecimento Z16;°C;280;n;0.00;280.0;numero;dentro
+AL31;2026-09-24;AL;Aquecimento Z16;°C;280;n;0.00;280.0;numero;dentro
+AL32;2026-09-25;AL;Aquecimento Z16;°C;280;n;0.00;280.0;numero;dentro
+AL33;2026-09-29;AL;Aquecimento Z16;°C;280;n;0.00;280.0;numero;dentro
+AN17;2026-08-25;AN;Aquecimento Z17;°C;271;n;0.00;271.0;numero;dentro
+AN18;2026-08-25;AN;Aquecimento Z17;°C;244;n;0.00;244.0;numero;abaixo
+AN19;2026-08-26;AN;Aquecimento Z17;°C;269;n;0.00;269.0;numero;abaixo
+AN20;2026-08-26;AN;Aquecimento Z17;°C;265;n;0.00;265.0;numero;abaixo
+AN21;2026-08-27;AN;Aquecimento Z17;°C;260;n;0.00;260.0;numero;abaixo
+AN22;2026-08-27;AN;Aquecimento Z17;°C;255;n;0.00;255.0;numero;abaixo
+AN23;2026-08-28;AN;Aquecimento Z17;°C;274;n;0.00;274.0;numero;dentro
+AN24;2026-08-28;AN;Aquecimento Z17;°C;275;n;0.00;275.0;numero;dentro
+AN25;2026-08-31;AN;Aquecimento Z17;°C;274,00;s;0.00;274.0;texto_decimal;dentro
+AN26;2026-08-31;AN;Aquecimento Z17;°C;268,00;s;0.00;268.0;texto_decimal;abaixo
+AN27;2026-09-17;AN;Aquecimento Z17;°C;274;n;0.00;274.0;numero;dentro
+AN28;2026-09-21;AN;Aquecimento Z17;°C;280;n;0.00;280.0;numero;dentro
+AN29;2026-09-22;AN;Aquecimento Z17;°C;280;n;0.00;280.0;numero;dentro
+AN30;2026-09-23;AN;Aquecimento Z17;°C;280;n;0.00;280.0;numero;dentro
+AN31;2026-09-24;AN;Aquecimento Z17;°C;280;n;0.00;280.0;numero;dentro
+AN32;2026-09-25;AN;Aquecimento Z17;°C;280;n;0.00;280.0;numero;dentro
+AN33;2026-09-29;AN;Aquecimento Z17;°C;280;n;0.00;280.0;numero;dentro
+AP17;2026-08-25;AP;Aquecimento Z18;°C;76;n;0.00;76.0;numero;nao_avaliado
+AP18;2026-08-25;AP;Aquecimento Z18;°C;72;n;0.00;72.0;numero;nao_avaliado
+AP19;2026-08-26;AP;Aquecimento Z18;°C;73;n;0.00;73.0;numero;nao_avaliado
+AP20;2026-08-26;AP;Aquecimento Z18;°C;77;n;0.00;77.0;numero;nao_avaliado
+AP21;2026-08-27;AP;Aquecimento Z18;°C;74;n;0.00;74.0;numero;nao_avaliado
+AP22;2026-08-27;AP;Aquecimento Z18;°C;78;n;0.00;78.0;numero;nao_avaliado
+AP23;2026-08-28;AP;Aquecimento Z18;°C;74;n;0.00;74.0;numero;nao_avaliado
+AP24;2026-08-28;AP;Aquecimento Z18;°C;74;n;0.00;74.0;numero;nao_avaliado
+AP25;2026-08-31;AP;Aquecimento Z18;°C;76,00;s;0.00;76.0;texto_decimal;nao_avaliado
+AP26;2026-08-31;AP;Aquecimento Z18;°C;79,00;s;0.00;79.0;texto_decimal;nao_avaliado
+AP27;2026-09-17;AP;Aquecimento Z18;°C;74;n;0.00;74.0;numero;nao_avaliado
+AP28;2026-09-21;AP;Aquecimento Z18;°C;79;n;0.00;79.0;numero;nao_avaliado
+AP29;2026-09-22;AP;Aquecimento Z18;°C;78;n;0.00;78.0;numero;nao_avaliado
+AP30;2026-09-23;AP;Aquecimento Z18;°C;78;n;0.00;78.0;numero;nao_avaliado
+AP31;2026-09-24;AP;Aquecimento Z18;°C;74;n;0.00;74.0;numero;nao_avaliado
+AP32;2026-09-25;AP;Aquecimento Z18;°C;77;n;0.00;77.0;numero;nao_avaliado
+AP33;2026-09-29;AP;Aquecimento Z18;°C;77;n;0.00;77.0;numero;nao_avaliado
+AR17;2026-08-25;AR;Aquecimento Z19;°C;280;n;0.00;280.0;numero;abaixo
+AR18;2026-08-25;AR;Aquecimento Z19;°C;264;n;0.00;264.0;numero;abaixo
+AR19;2026-08-26;AR;Aquecimento Z19;°C;283;n;0.00;283.0;numero;abaixo
+AR20;2026-08-26;AR;Aquecimento Z19;°C;283;n;0.00;283.0;numero;abaixo
+AR21;2026-08-27;AR;Aquecimento Z19;°C;285;n;0.00;285.0;numero;dentro
+AR22;2026-08-27;AR;Aquecimento Z19;°C;281;n;0.00;281.0;numero;abaixo
+AR23;2026-08-28;AR;Aquecimento Z19;°C;280;n;0.00;280.0;numero;abaixo
+AR24;2026-08-28;AR;Aquecimento Z19;°C;275;n;0.00;275.0;numero;abaixo
+AR25;2026-08-31;AR;Aquecimento Z19;°C;272,00;s;0.00;272.0;texto_decimal;abaixo
+AR26;2026-08-31;AR;Aquecimento Z19;°C;270,00;s;0.00;270.0;texto_decimal;abaixo
+AR27;2026-09-17;AR;Aquecimento Z19;°C;262;n;0.00;262.0;numero;abaixo
+AR28;2026-09-21;AR;Aquecimento Z19;°C;270;n;0.00;270.0;numero;abaixo
+AR29;2026-09-22;AR;Aquecimento Z19;°C;270;n;0.00;270.0;numero;abaixo
+AR30;2026-09-23;AR;Aquecimento Z19;°C;270;n;0.00;270.0;numero;abaixo
+AR31;2026-09-24;AR;Aquecimento Z19;°C;269;n;0.00;269.0;numero;abaixo
+AR32;2026-09-25;AR;Aquecimento Z19;°C;271;n;0.00;271.0;numero;abaixo
+AR33;2026-09-29;AR;Aquecimento Z19;°C;269;n;0.00;269.0;numero;abaixo
+AT17;2026-08-25;AT;Aquecimento Z20;°C;296;n;0.00;296.0;numero;abaixo
+AT18;2026-08-25;AT;Aquecimento Z20;°C;278;n;0.00;278.0;numero;abaixo
+AT19;2026-08-26;AT;Aquecimento Z20;°C;304;n;0.00;304.0;numero;dentro
+AT20;2026-08-26;AT;Aquecimento Z20;°C;302;n;0.00;302.0;numero;dentro
+AT21;2026-08-27;AT;Aquecimento Z20;°C;300;n;0.00;300.0;numero;dentro
+AT22;2026-08-27;AT;Aquecimento Z20;°C;306;n;0.00;306.0;numero;dentro
+AT23;2026-08-28;AT;Aquecimento Z20;°C;306;n;0.00;306.0;numero;dentro
+AT24;2026-08-28;AT;Aquecimento Z20;°C;310;n;0.00;310.0;numero;dentro
+AT25;2026-08-31;AT;Aquecimento Z20;°C;309,00;s;0.00;309.0;texto_decimal;dentro
+AT26;2026-08-31;AT;Aquecimento Z20;°C;305,00;s;0.00;305.0;texto_decimal;dentro
+AT27;2026-09-17;AT;Aquecimento Z20;°C;304;n;0.00;304.0;numero;dentro
+AT28;2026-09-21;AT;Aquecimento Z20;°C;307;n;0.00;307.0;numero;dentro
+AT29;2026-09-22;AT;Aquecimento Z20;°C;308;n;0.00;308.0;numero;dentro
+AT30;2026-09-23;AT;Aquecimento Z20;°C;308;n;0.00;308.0;numero;dentro
+AT31;2026-09-24;AT;Aquecimento Z20;°C;307;n;0.00;307.0;numero;dentro
+AT32;2026-09-25;AT;Aquecimento Z20;°C;309;n;0.00;309.0;numero;dentro
+AT33;2026-09-29;AT;Aquecimento Z20;°C;307;n;0.00;307.0;numero;dentro
+AV17;2026-08-25;AV;Aquecimento Z21;°C;298;n;0.00;298.0;numero;abaixo
+AV18;2026-08-25;AV;Aquecimento Z21;°C;278;n;0.00;278.0;numero;abaixo
+AV19;2026-08-26;AV;Aquecimento Z21;°C;304;n;0.00;304.0;numero;abaixo
+AV20;2026-08-26;AV;Aquecimento Z21;°C;304;n;0.00;304.0;numero;abaixo
+AV21;2026-08-27;AV;Aquecimento Z21;°C;305;n;0.00;305.0;numero;abaixo
+AV22;2026-08-27;AV;Aquecimento Z21;°C;297;n;0.00;297.0;numero;abaixo
+AV23;2026-08-28;AV;Aquecimento Z21;°C;299;n;0.00;299.0;numero;abaixo
+AV24;2026-08-28;AV;Aquecimento Z21;°C;310;n;0.00;310.0;numero;dentro
+AV25;2026-08-31;AV;Aquecimento Z21;°C;299,00;s;0.00;299.0;texto_decimal;abaixo
+AV26;2026-08-31;AV;Aquecimento Z21;°C;303,00;s;0.00;303.0;texto_decimal;abaixo
+AV27;2026-09-17;AV;Aquecimento Z21;°C;296;n;0.00;296.0;numero;abaixo
+AV28;2026-09-21;AV;Aquecimento Z21;°C;308;n;0.00;308.0;numero;abaixo
+AV29;2026-09-22;AV;Aquecimento Z21;°C;305;n;0.00;305.0;numero;abaixo
+AV30;2026-09-23;AV;Aquecimento Z21;°C;303;n;0.00;303.0;numero;abaixo
+AV31;2026-09-24;AV;Aquecimento Z21;°C;306;n;0.00;306.0;numero;abaixo
+AV32;2026-09-25;AV;Aquecimento Z21;°C;309;n;0.00;309.0;numero;abaixo
+AV33;2026-09-29;AV;Aquecimento Z21;°C;307;n;0.00;307.0;numero;abaixo
+AX17;2026-08-25;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX18;2026-08-25;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX19;2026-08-26;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX20;2026-08-26;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX21;2026-08-27;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX22;2026-08-27;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX23;2026-08-28;AX;Medida do Passo;mm;410;n;0.00;410.0;numero;abaixo
+AX24;2026-08-28;AX;Medida do Passo;mm;415;n;0.00;415.0;numero;dentro
+AX25;2026-08-31;AX;Medida do Passo;mm;415,00;s;0.00;415.0;texto_decimal;dentro
+AX26;2026-08-31;AX;Medida do Passo;mm;415,00;s;0.00;415.0;texto_decimal;dentro
+AX27;2026-09-17;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX28;2026-09-21;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX29;2026-09-22;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX30;2026-09-23;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX31;2026-09-24;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX32;2026-09-25;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AX33;2026-09-29;AX;Medida do Passo;mm;412;n;0.00;412.0;numero;dentro
+AZ17;2026-08-25;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ18;2026-08-25;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ19;2026-08-26;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ20;2026-08-26;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ21;2026-08-27;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ22;2026-08-27;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ23;2026-08-28;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ24;2026-08-28;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ25;2026-08-31;AZ;Velocidade do Passo;%;19,00;s;0.00;19.0;texto_decimal;dentro
+AZ26;2026-08-31;AZ;Velocidade do Passo;%;19,00;s;0.00;19.0;texto_decimal;dentro
+AZ27;2026-09-17;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ28;2026-09-21;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ29;2026-09-22;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ30;2026-09-23;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ31;2026-09-24;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ32;2026-09-25;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+AZ33;2026-09-29;AZ;Velocidade do Passo;%;19;n;0.00;19.0;numero;dentro
+BB17;2026-08-25;BB;Tempo de Vacuo;seg;70;n;0.00;70.0;numero;abaixo
+BB18;2026-08-25;BB;Tempo de Vacuo;seg;85;n;0.00;85.0;numero;dentro
+BB19;2026-08-26;BB;Tempo de Vacuo;seg;85;n;0.00;85.0;numero;dentro
+BB20;2026-08-26;BB;Tempo de Vacuo;seg;75;n;0.00;75.0;numero;dentro
+BB21;2026-08-27;BB;Tempo de Vacuo;seg;70;n;0.00;70.0;numero;abaixo
+BB22;2026-08-27;BB;Tempo de Vacuo;seg;75;n;0.00;75.0;numero;dentro
+BB23;2026-08-28;BB;Tempo de Vacuo;seg;75;n;0.00;75.0;numero;dentro
+BB24;2026-08-28;BB;Tempo de Vacuo;seg;90;n;0.00;90.0;numero;acima
+BB25;2026-08-31;BB;Tempo de Vacuo;seg;95,00;s;0.00;95.0;texto_decimal;acima
+BB26;2026-08-31;BB;Tempo de Vacuo;seg;85,00;s;0.00;85.0;texto_decimal;dentro
+BB27;2026-09-17;BB;Tempo de Vacuo;seg;90;n;0.00;90.0;numero;acima
+BB28;2026-09-21;BB;Tempo de Vacuo;seg;90;n;0.00;90.0;numero;acima
+BB29;2026-09-22;BB;Tempo de Vacuo;seg;80;n;0.00;80.0;numero;dentro
+BB30;2026-09-23;BB;Tempo de Vacuo;seg;80;n;0.00;80.0;numero;dentro
+BB31;2026-09-24;BB;Tempo de Vacuo;seg;90;n;0.00;90.0;numero;acima
+BB32;2026-09-25;BB;Tempo de Vacuo;seg;90;n;0.00;90.0;numero;acima
+BB33;2026-09-29;BB;Tempo de Vacuo;seg;85;n;0.00;85.0;numero;dentro
+BD17;2026-08-25;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD18;2026-08-25;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD19;2026-08-26;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD20;2026-08-26;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD21;2026-08-27;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD22;2026-08-27;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD23;2026-08-28;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD24;2026-08-28;BD;Tempo de Resfriamento;seg;35;n;0.00;35.0;numero;dentro
+BD25;2026-08-31;BD;Tempo de Resfriamento;seg;35,00;s;0.00;35.0;texto_decimal;dentro
+BD26;2026-08-31;BD;Tempo de Resfriamento;seg;35,00;s;0.00;35.0;texto_decimal;dentro
+BD27;2026-09-17;BD;Tempo de Resfriamento;seg;20;n;0.00;20.0;numero;abaixo
+BD28;2026-09-21;BD;Tempo de Resfriamento;seg;15;n;0.00;15.0;numero;abaixo
+BD29;2026-09-22;BD;Tempo de Resfriamento;seg;15;n;0.00;15.0;numero;abaixo
+BD30;2026-09-23;BD;Tempo de Resfriamento;seg;15;n;0.00;15.0;numero;abaixo
+BD31;2026-09-24;BD;Tempo de Resfriamento;seg;15;n;0.00;15.0;numero;abaixo
+BD32;2026-09-25;BD;Tempo de Resfriamento;seg;15;n;0.00;15.0;numero;abaixo
+BD33;2026-09-29;BD;Tempo de Resfriamento;seg;15;n;0.00;15.0;numero;abaixo
+BF17;2026-08-25;BF;Tempo destacar;seg;0,8;s;0.00;0.8;texto_decimal;dentro
+BF18;2026-08-25;BF;Tempo destacar;seg;0,8;s;0.00;0.8;texto_decimal;dentro
+BF19;2026-08-26;BF;Tempo destacar;seg;0,8;s;0.00;0.8;texto_decimal;dentro
+BF20;2026-08-26;BF;Tempo destacar;seg;0,8;s;0.00;0.8;texto_decimal;dentro
+BF21;2026-08-27;BF;Tempo destacar;seg;0,8;s;0.00;0.8;texto_decimal;dentro
+BF22;2026-08-27;BF;Tempo destacar;seg;0,8;s;0.00;0.8;texto_decimal;dentro
+BF23;2026-08-28;BF;Tempo destacar;seg;0,8;s;0.00;0.8;texto_decimal;dentro
+BF24;2026-08-28;BF;Tempo destacar;seg;0,9;s;0.00;0.9;texto_decimal;dentro
+BF25;2026-08-31;BF;Tempo destacar;seg;0,9;s;0.00;0.9;texto_decimal;dentro
+BF26;2026-08-31;BF;Tempo destacar;seg;0,90;s;0.00;0.9;texto_decimal;dentro
+BF27;2026-09-17;BF;Tempo destacar;seg;0.9;n;0.00;0.9;numero;dentro
+BF28;2026-09-21;BF;Tempo destacar;seg;0.9;n;0.00;0.9;numero;dentro
+BF29;2026-09-22;BF;Tempo destacar;seg;0.9;n;0.00;0.9;numero;dentro
+BF30;2026-09-23;BF;Tempo destacar;seg;0.9;n;0.00;0.9;numero;dentro
+BF31;2026-09-24;BF;Tempo destacar;seg;0.9;n;0.00;0.9;numero;dentro
+BF32;2026-09-25;BF;Tempo destacar;seg;0.9;n;0.00;0.9;numero;dentro
+BF33;2026-09-29;BF;Tempo destacar;seg;0.9;n;0.00;0.9;numero;dentro
+BH17;2026-08-25;BH;Tempo Contra molde;seg;75;n;0.00;75.0;numero;nao_avaliado
+BH18;2026-08-25;BH;Tempo Contra molde;seg;90;n;0.00;90.0;numero;nao_avaliado
+BH19;2026-08-26;BH;Tempo Contra molde;seg;90;n;0.00;90.0;numero;nao_avaliado
+BH20;2026-08-26;BH;Tempo Contra molde;seg;80;n;0.00;80.0;numero;nao_avaliado
+BH21;2026-08-27;BH;Tempo Contra molde;seg;75;n;0.00;75.0;numero;nao_avaliado
+BH22;2026-08-27;BH;Tempo Contra molde;seg;80;n;0.00;80.0;numero;nao_avaliado
+BH23;2026-08-28;BH;Tempo Contra molde;seg;80;n;0.00;80.0;numero;nao_avaliado
+BH24;2026-08-28;BH;Tempo Contra molde;seg;95;n;0.00;95.0;numero;nao_avaliado
+BH25;2026-08-31;BH;Tempo Contra molde;seg;100,00;s;0.00;100.0;texto_decimal;nao_avaliado
+BH26;2026-08-31;BH;Tempo Contra molde;seg;90,00;s;0.00;90.0;texto_decimal;nao_avaliado
+BH27;2026-09-17;BH;Tempo Contra molde;seg;95;n;0.00;95.0;numero;nao_avaliado
+BH28;2026-09-21;BH;Tempo Contra molde;seg;95;n;0.00;95.0;numero;nao_avaliado
+BH29;2026-09-22;BH;Tempo Contra molde;seg;85;n;0.00;85.0;numero;nao_avaliado
+BH30;2026-09-23;BH;Tempo Contra molde;seg;85;n;0.00;85.0;numero;nao_avaliado
+BH31;2026-09-24;BH;Tempo Contra molde;seg;95;n;0.00;95.0;numero;nao_avaliado
+BH32;2026-09-25;BH;Tempo Contra molde;seg;95;n;0.00;95.0;numero;nao_avaliado
+BH33;2026-09-29;BH;Tempo Contra molde;seg;90;n;0.00;90.0;numero;nao_avaliado
+BJ17;2026-08-25;BJ;Tempo prensa corte;seg;10;n;0.00;10.0;numero;dentro
+BJ18;2026-08-25;BJ;Tempo prensa corte;seg;10;n;0.00;10.0;numero;dentro
+BJ19;2026-08-26;BJ;Tempo prensa corte;seg;10;n;0.00;10.0;numero;dentro
+BJ20;2026-08-26;BJ;Tempo prensa corte;seg;10;n;0.00;10.0;numero;dentro
+BJ21;2026-08-27;BJ;Tempo prensa corte;seg;10;n;0.00;10.0;numero;dentro
+BJ22;2026-08-27;BJ;Tempo prensa corte;seg;10;n;0.00;10.0;numero;dentro
+BJ23;2026-08-28;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ24;2026-08-28;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ25;2026-08-31;BJ;Tempo prensa corte;seg;11,00;s;0.00;11.0;texto_decimal;dentro
+BJ26;2026-08-31;BJ;Tempo prensa corte;seg;11,00;s;0.00;11.0;texto_decimal;dentro
+BJ27;2026-09-17;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ28;2026-09-21;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ29;2026-09-22;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ30;2026-09-23;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ31;2026-09-24;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ32;2026-09-25;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BJ33;2026-09-29;BJ;Tempo prensa corte;seg;11;n;0.00;11.0;numero;dentro
+BL17;2026-08-25;BL;Tempo de esteira saida;seg;28;n;0.00;28.0;numero;dentro
+BL18;2026-08-25;BL;Tempo de esteira saida;seg;28;n;0.00;28.0;numero;dentro
+BL19;2026-08-26;BL;Tempo de esteira saida;seg;28;n;0.00;28.0;numero;dentro
+BL20;2026-08-26;BL;Tempo de esteira saida;seg;28;n;0.00;28.0;numero;dentro
+BL21;2026-08-27;BL;Tempo de esteira saida;seg;28;n;0.00;28.0;numero;dentro
+BL22;2026-08-27;BL;Tempo de esteira saida;seg;28;n;0.00;28.0;numero;dentro
+BL23;2026-08-28;BL;Tempo de esteira saida;seg;28;n;0.00;28.0;numero;dentro
+BL24;2026-08-28;BL;Tempo de esteira saida;seg;30;n;0.00;30.0;numero;dentro
+BL25;2026-08-31;BL;Tempo de esteira saida;seg;30,00;s;0.00;30.0;texto_decimal;dentro
+BL26;2026-08-31;BL;Tempo de esteira saida;seg;30,00;s;0.00;30.0;texto_decimal;dentro
+BL27;2026-09-17;BL;Tempo de esteira saida;seg;35;n;0.00;35.0;numero;acima
+BL28;2026-09-21;BL;Tempo de esteira saida;seg;35;n;0.00;35.0;numero;acima
+BL29;2026-09-22;BL;Tempo de esteira saida;seg;35;n;0.00;35.0;numero;acima
+BL30;2026-09-23;BL;Tempo de esteira saida;seg;35;n;0.00;35.0;numero;acima
+BL31;2026-09-24;BL;Tempo de esteira saida;seg;35;n;0.00;35.0;numero;acima
+BL32;2026-09-25;BL;Tempo de esteira saida;seg;35;n;0.00;35.0;numero;acima
+BL33;2026-09-29;BL;Tempo de esteira saida;seg;35;n;0.00;35.0;numero;acima
+BN17;2026-08-25;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN18;2026-08-25;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN19;2026-08-26;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN20;2026-08-26;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN21;2026-08-27;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN22;2026-08-27;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN23;2026-08-28;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN24;2026-08-28;BN;Retardo de Passo;seg;1;n;0.00;1.0;numero;dentro
+BN25;2026-08-31;BN;Retardo de Passo;seg;1,00;s;0.00;1.0;texto_decimal;dentro
+BN26;2026-08-31;BN;Retardo de Passo;seg;1,00;s;0.00;1.0;texto_decimal;dentro
+BN27;2026-09-17;BN;Retardo de Passo;seg;2;n;0.00;2.0;numero;dentro
+BN28;2026-09-21;BN;Retardo de Passo;seg;2;n;0.00;2.0;numero;dentro
+BN29;2026-09-22;BN;Retardo de Passo;seg;2;n;0.00;2.0;numero;dentro
+BN30;2026-09-23;BN;Retardo de Passo;seg;2;n;0.00;2.0;numero;dentro
+BN31;2026-09-24;BN;Retardo de Passo;seg;2;n;0.00;2.0;numero;dentro
+BN32;2026-09-25;BN;Retardo de Passo;seg;2;n;0.00;2.0;numero;dentro
+BN33;2026-09-29;BN;Retardo de Passo;seg;2;n;0.00;2.0;numero;dentro
+BP17;2026-08-25;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP18;2026-08-25;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP19;2026-08-26;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP20;2026-08-26;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP21;2026-08-27;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP22;2026-08-27;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP23;2026-08-28;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP24;2026-08-28;BP;Retardo de Mesa;seg;0,1;s;0.00;0.1;texto_decimal;dentro
+BP25;2026-08-31;BP;Retardo de Mesa;seg;0,10;s;0.00;0.1;texto_decimal;dentro
+BP26;2026-08-31;BP;Retardo de Mesa;seg;0,10;s;0.00;0.1;texto_decimal;dentro
+BP27;2026-09-17;BP;Retardo de Mesa;seg;0.1;n;0.00;0.1;numero;dentro
+BP28;2026-09-21;BP;Retardo de Mesa;seg;0.1;n;0.00;0.1;numero;dentro
+BP29;2026-09-22;BP;Retardo de Mesa;seg;0.1;n;0.00;0.1;numero;dentro
+BP30;2026-09-23;BP;Retardo de Mesa;seg;0.1;n;0.00;0.1;numero;dentro
+BP31;2026-09-24;BP;Retardo de Mesa;seg;0.1;n;0.00;0.1;numero;dentro
+BP32;2026-09-25;BP;Retardo de Mesa;seg;0.1;n;0.00;0.1;numero;dentro
+BP33;2026-09-29;BP;Retardo de Mesa;seg;0.1;n;0.00;0.1;numero;dentro
+BR17;2026-08-25;BR;Retardo de Vacuo;seg;4;n;0.00;4.0;numero;dentro
+BR18;2026-08-25;BR;Retardo de Vacuo;seg;4;n;0.00;4.0;numero;dentro
+BR19;2026-08-26;BR;Retardo de Vacuo;seg;4;n;0.00;4.0;numero;dentro
+BR20;2026-08-26;BR;Retardo de Vacuo;seg;4;n;0.00;4.0;numero;dentro
+BR21;2026-08-27;BR;Retardo de Vacuo;seg;4;n;0.00;4.0;numero;dentro
+BR22;2026-08-27;BR;Retardo de Vacuo;seg;4;n;0.00;4.0;numero;dentro
+BR23;2026-08-28;BR;Retardo de Vacuo;seg;4;n;0.00;4.0;numero;dentro
+BR24;2026-08-28;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BR25;2026-08-31;BR;Retardo de Vacuo;seg;5,00;s;0.00;5.0;texto_decimal;dentro
+BR26;2026-08-31;BR;Retardo de Vacuo;seg;5,00;s;0.00;5.0;texto_decimal;dentro
+BR27;2026-09-17;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BR28;2026-09-21;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BR29;2026-09-22;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BR30;2026-09-23;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BR31;2026-09-24;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BR32;2026-09-25;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BR33;2026-09-29;BR;Retardo de Vacuo;seg;5;n;0.00;5.0;numero;dentro
+BT17;2026-08-25;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT18;2026-08-25;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT19;2026-08-26;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT20;2026-08-26;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT21;2026-08-27;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT22;2026-08-27;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT23;2026-08-28;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT24;2026-08-28;BT;Retardo de resfriamento;seg;4;n;0.00;4.0;numero;dentro
+BT25;2026-08-31;BT;Retardo de resfriamento;seg;4,00;s;0.00;4.0;texto_decimal;dentro
+BT26;2026-08-31;BT;Retardo de resfriamento;seg;4,00;s;0.00;4.0;texto_decimal;dentro
+BT27;2026-09-17;BT;Retardo de resfriamento;seg;7;n;0.00;7.0;numero;acima
+BT28;2026-09-21;BT;Retardo de resfriamento;seg;30;n;0.00;30.0;numero;acima
+BT29;2026-09-22;BT;Retardo de resfriamento;seg;30;n;0.00;30.0;numero;acima
+BT30;2026-09-23;BT;Retardo de resfriamento;seg;30;n;0.00;30.0;numero;acima
+BT31;2026-09-24;BT;Retardo de resfriamento;seg;30;n;0.00;30.0;numero;acima
+BT32;2026-09-25;BT;Retardo de resfriamento;seg;30;n;0.00;30.0;numero;acima
+BT33;2026-09-29;BT;Retardo de resfriamento;seg;30;n;0.00;30.0;numero;acima
+BV17;2026-08-25;BV;Retardo destacar;seg;2;n;0.00;2.0;numero;dentro
+BV18;2026-08-25;BV;Retardo destacar;seg;2;n;0.00;2.0;numero;dentro
+BV19;2026-08-26;BV;Retardo destacar;seg;2;n;0.00;2.0;numero;dentro
+BV20;2026-08-26;BV;Retardo destacar;seg;2;n;0.00;2.0;numero;dentro
+BV21;2026-08-27;BV;Retardo destacar;seg;2;n;0.00;2.0;numero;dentro
+BV22;2026-08-27;BV;Retardo destacar;seg;2;n;0.00;2.0;numero;dentro
+BV23;2026-08-28;BV;Retardo destacar;seg;2;n;0.00;2.0;numero;dentro
+BV24;2026-08-28;BV;Retardo destacar;seg;1;n;0.00;1.0;numero;abaixo
+BV25;2026-08-31;BV;Retardo destacar;seg;1,00;s;0.00;1.0;texto_decimal;abaixo
+BV26;2026-08-31;BV;Retardo destacar;seg;1,00;s;0.00;1.0;texto_decimal;abaixo
+BV27;2026-09-17;BV;Retardo destacar;seg;3;n;0.00;3.0;numero;dentro
+BV28;2026-09-21;BV;Retardo destacar;seg;3;n;0.00;3.0;numero;dentro
+BV29;2026-09-22;BV;Retardo destacar;seg;3;n;0.00;3.0;numero;dentro
+BV30;2026-09-23;BV;Retardo destacar;seg;3;n;0.00;3.0;numero;dentro
+BV31;2026-09-24;BV;Retardo destacar;seg;3;n;0.00;3.0;numero;dentro
+BV32;2026-09-25;BV;Retardo destacar;seg;3;n;0.00;3.0;numero;dentro
+BV33;2026-09-29;BV;Retardo destacar;seg;3;n;0.00;3.0;numero;dentro
+BX17;2026-08-25;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX18;2026-08-25;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX19;2026-08-26;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX20;2026-08-26;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX21;2026-08-27;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX22;2026-08-27;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX23;2026-08-28;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX24;2026-08-28;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX25;2026-08-31;BX;Retardo Contra Molde;seg;1,5;s;0.00;1.5;texto_decimal;dentro
+BX26;2026-08-31;BX;Retardo Contra Molde;seg;1,50;s;0.00;1.5;texto_decimal;dentro
+BX27;2026-09-17;BX;Retardo Contra Molde;seg;1;n;0.00;1.0;numero;abaixo
+BX28;2026-09-21;BX;Retardo Contra Molde;seg;1;n;0.00;1.0;numero;abaixo
+BX29;2026-09-22;BX;Retardo Contra Molde;seg;1;n;0.00;1.0;numero;abaixo
+BX30;2026-09-23;BX;Retardo Contra Molde;seg;1;n;0.00;1.0;numero;abaixo
+BX31;2026-09-24;BX;Retardo Contra Molde;seg;1.5;n;0.00;1.5;numero;dentro
+BX32;2026-09-25;BX;Retardo Contra Molde;seg;1.5;n;0.00;1.5;numero;dentro
+BX33;2026-09-29;BX;Retardo Contra Molde;seg;1.5;n;0.00;1.5;numero;dentro
+BZ17;2026-08-25;BZ;Retardo Prensa Corte;seg;9,5;s;0.00;9.5;texto_decimal;dentro
+BZ18;2026-08-25;BZ;Retardo Prensa Corte;seg;9,5;s;0.00;9.5;texto_decimal;dentro
+BZ19;2026-08-26;BZ;Retardo Prensa Corte;seg;9,5;s;0.00;9.5;texto_decimal;dentro
+BZ20;2026-08-26;BZ;Retardo Prensa Corte;seg;9,5;s;0.00;9.5;texto_decimal;dentro
+BZ21;2026-08-27;BZ;Retardo Prensa Corte;seg;9,5;s;0.00;9.5;texto_decimal;dentro
+BZ22;2026-08-27;BZ;Retardo Prensa Corte;seg;9,5;s;0.00;9.5;texto_decimal;dentro
+BZ23;2026-08-28;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ24;2026-08-28;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ25;2026-08-31;BZ;Retardo Prensa Corte;seg;11,00;s;0.00;11.0;texto_decimal;dentro
+BZ26;2026-08-31;BZ;Retardo Prensa Corte;seg;11,00;s;0.00;11.0;texto_decimal;dentro
+BZ27;2026-09-17;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ28;2026-09-21;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ29;2026-09-22;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ30;2026-09-23;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ31;2026-09-24;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ32;2026-09-25;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+BZ33;2026-09-29;BZ;Retardo Prensa Corte;seg;11;n;0.00;11.0;numero;dentro
+CB17;2026-08-25;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB18;2026-08-25;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB19;2026-08-26;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB20;2026-08-26;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB21;2026-08-27;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB22;2026-08-27;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB23;2026-08-28;CB;Retardo disco corte;seg;8;n;0.00;8.0;numero;dentro
+CB24;2026-08-28;CB;Retardo disco corte;seg;8;n;0.00;8.0;numero;dentro
+CB25;2026-08-31;CB;Retardo disco corte;seg;8,00;s;0.00;8.0;texto_decimal;dentro
+CB26;2026-08-31;CB;Retardo disco corte;seg;8,00;s;0.00;8.0;texto_decimal;dentro
+CB27;2026-09-17;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB28;2026-09-21;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB29;2026-09-22;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB30;2026-09-23;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB31;2026-09-24;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB32;2026-09-25;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CB33;2026-09-29;CB;Retardo disco corte;seg;7;n;0.00;7.0;numero;dentro
+CD17;2026-08-25;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD18;2026-08-25;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD19;2026-08-26;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD20;2026-08-26;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD21;2026-08-27;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD22;2026-08-27;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD23;2026-08-28;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD24;2026-08-28;CD;Retardo esteria saida;seg;0,5;s;0.00;0.5;texto_decimal;dentro
+CD25;2026-08-31;CD;Retardo esteria saida;seg;0,50;s;0.00;0.5;texto_decimal;dentro
+CD26;2026-08-31;CD;Retardo esteria saida;seg;0,50;s;0.00;0.5;texto_decimal;dentro
+CD27;2026-09-17;CD;Retardo esteria saida;seg;0.5;n;0.00;0.5;numero;dentro
+CD28;2026-09-21;CD;Retardo esteria saida;seg;0.5;n;0.00;0.5;numero;dentro
+CD29;2026-09-22;CD;Retardo esteria saida;seg;0.5;n;0.00;0.5;numero;dentro
+CD30;2026-09-23;CD;Retardo esteria saida;seg;0.5;n;0.00;0.5;numero;dentro
+CD31;2026-09-24;CD;Retardo esteria saida;seg;0.5;n;0.00;0.5;numero;dentro
+CD32;2026-09-25;CD;Retardo esteria saida;seg;0.5;n;0.00;0.5;numero;dentro
+CD33;2026-09-29;CD;Retardo esteria saida;seg;0.5;n;0.00;0.5;numero;dentro
+CF17;2026-08-25;CF;Pressão Ar;bar;;n;0.00;;ausente;nao_avaliado
+CF18;2026-08-25;CF;Pressão Ar;bar;;n;0.00;;ausente;nao_avaliado
+CF19;2026-08-26;CF;Pressão Ar;bar;;n;0.00;;ausente;nao_avaliado
+CF20;2026-08-26;CF;Pressão Ar;bar;;n;0.00;;ausente;nao_avaliado
+CF21;2026-08-27;CF;Pressão Ar;bar;;n;0.00;;ausente;nao_avaliado
+CF22;2026-08-27;CF;Pressão Ar;bar;;n;0.00;;ausente;nao_avaliado
+CF23;2026-08-28;CF;Pressão Ar;bar;;n;0.00;;ausente;nao_avaliado
+CF24;2026-08-28;CF;Pressão Ar;bar;6,6;s;0.00000;6.6;texto_decimal;nao_avaliado
+CF25;2026-08-31;CF;Pressão Ar;bar;6,6;s;0.00000;6.6;texto_decimal;nao_avaliado
+CF26;2026-08-31;CF;Pressão Ar;bar;6,60;s;0.0;6.6;texto_decimal;nao_avaliado
+CF27;2026-09-17;CF;Pressão Ar;bar;6.6;n;0.00;6.6;numero;nao_avaliado
+CF28;2026-09-21;CF;Pressão Ar;bar;6.6;n;0.00;6.6;numero;nao_avaliado
+CF29;2026-09-22;CF;Pressão Ar;bar;6.6;n;0.00;6.6;numero;nao_avaliado
+CF30;2026-09-23;CF;Pressão Ar;bar;6.6;n;0.00;6.6;numero;nao_avaliado
+CF31;2026-09-24;CF;Pressão Ar;bar;6.8;n;0.00;6.8;numero;nao_avaliado
+CF32;2026-09-25;CF;Pressão Ar;bar;6.6;n;0.00;6.6;numero;nao_avaliado
+CF33;2026-09-29;CF;Pressão Ar;bar;6.6;n;0.00;6.6;numero;nao_avaliado
+CH17;2026-08-25;CH;Vacuo;mm/Hg;;n;0.00;;ausente;nao_avaliado
+CH18;2026-08-25;CH;Vacuo;mm/Hg;;n;0.00;;ausente;nao_avaliado
+CH19;2026-08-26;CH;Vacuo;mm/Hg;;n;0.00;;ausente;nao_avaliado
+CH20;2026-08-26;CH;Vacuo;mm/Hg;;n;0.00;;ausente;nao_avaliado
+CH21;2026-08-27;CH;Vacuo;mm/Hg;;n;0.00;;ausente;nao_avaliado
+CH22;2026-08-27;CH;Vacuo;mm/Hg;;n;0.00;;ausente;nao_avaliado
+CH23;2026-08-28;CH;Vacuo;mm/Hg;;n;0.00;;ausente;nao_avaliado
+CH24;2026-08-28;CH;Vacuo;mm/Hg;-600;n;0.00;-600.0;numero;nao_avaliado
+CH25;2026-08-31;CH;Vacuo;mm/Hg;-300,00;s;0.00;-300.0;texto_decimal;nao_avaliado
+CH26;2026-08-31;CH;Vacuo;mm/Hg;-340,00;s;0.00;-340.0;texto_decimal;nao_avaliado
+CH27;2026-09-17;CH;Vacuo;mm/Hg;-540;n;0.00;-540.0;numero;nao_avaliado
+CH28;2026-09-21;CH;Vacuo;mm/Hg;-560;n;0.00;-560.0;numero;nao_avaliado
+CH29;2026-09-22;CH;Vacuo;mm/Hg;-540;n;0.00;-540.0;numero;nao_avaliado
+CH30;2026-09-23;CH;Vacuo;mm/Hg;-540;n;0.00;-540.0;numero;nao_avaliado
+CH31;2026-09-24;CH;Vacuo;mm/Hg;-550;n;0.00;-550.0;numero;nao_avaliado
+CH32;2026-09-25;CH;Vacuo;mm/Hg;-570;n;0.00;-570.0;numero;nao_avaliado
+CH33;2026-09-29;CH;Vacuo;mm/Hg;-550;n;0.00;-550.0;numero;nao_avaliado

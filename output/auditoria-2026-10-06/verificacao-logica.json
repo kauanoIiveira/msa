@@ -1,0 +1,34 @@
+{
+  "t22": {
+    "removed": [
+      "machines/0ef22ff7-8a0f-400e-afd6-ae4da921a962",
+      "processes/6c44c09f-5ef4-4051-84e7-c9d59bc14034"
+    ],
+    "remainingMachines": [
+      "T20"
+    ],
+    "otherDataUnchanged": true
+  },
+  "lotDetail": {
+    "latestLot": "B",
+    "pickedLot": "A",
+    "pickedMean": 100.5,
+    "correctMean": 200.5,
+    "chartPointsWithCurrentFilter": 4,
+    "correctChartPoints": 2
+  },
+  "draftCapability": {
+    "genericCp": 40,
+    "dashboardCp": null
+  },
+  "setpoint": {
+    "cp": 40,
+    "nature": "setpoint"
+  },
+  "syntheticLiveCounts": {
+    "collections": 28,
+    "production": 56,
+    "losses": 94,
+    "stoppages": 29
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "source": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\T20A03(EN)5 - Capability study senai.xlsx",
+  "sheet": "Selo ",
+  "range": "BF17:BF33",
+  "n": 17,
+  "native_count": 7,
+  "text_count": 10,
+  "frequency": {
+    "0.8": 7,
+    "0.9": 10
+  },
+  "mean": 0.8588235294117648,
+  "population_sigma": 0.04921529567847502,
+  "cp_arithmetic": 0.3386481059780782,
+  "cpk_arithmetic": 0.2788866755113584,
+  "homologated": false,
+  "note": "Recálculo independente de exemplo, não homologação industrial; entradas originais não alteradas.",
+  "fields_with_unit_seg": [
+    "BB9",
+    "BD9",
+    "BF9",
+    "BH9",
+    "BJ9",
+    "BL9",
+    "BN9",
+    "BP9",
+    "BR9",
+    "BT9",
+    "BV9",
+    "BX9",
+    "BZ9",
+    "CB9",
+    "CD9"
+  ],
+  "count_fields_with_unit_seg": 15
+}

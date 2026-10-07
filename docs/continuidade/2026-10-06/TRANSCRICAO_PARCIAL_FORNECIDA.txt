@@ -1,0 +1,30 @@
+ Todos esses dados lançado manual, e aí vai um técnico de processo, pega todo esse material, lança na planilha ou lança na, no Power BI que a gente tem lá, e eu consigo ver como que tá o comportamento da máquina do, do dia anterior pra trás. Mas eu quero ver em tempo real. Então, por exemplo, eu tô na minha mesa lá, como que tá a máquina, a gente chama ela de NHPL.
+
+Como que tá a NHPL? Abrir lá no sistema e ver se o hora a hora, ela tem que cumprir duzentos e noventa peças por hora. Então lá no meu sistema fala: "Pô, nessa hora ela cumpriu duzentos e oitenta". Eu já consigo ter um termômetro se eu tenho que descer na linha ou não pra, pra resolver o problema. Certo. É, sobre outra questão, a gente queria saber da questão da coleta de dados que foi, é, pela, pelas, pelas informações que a gente teve, que eles são obtidos a partir de fotografias do IHM, da tela do, da interface homem e máquina.
+
+A gente queria saber de quanto em quanto tempo é realizado essas fotografias e se a empresa ela já dispõe de sensores ou equipamentos IoT, que seriam recursos que poderia automatizar justamente essa coleta, que ainda é muito repetitiva. Sim, esse equipamento tem, tá? Esse recurso, tem várias IHMs. A gente já chamou uma empresa pra fazer, é, esse trabalho que vocês tão fazendo, mas a gente deixou isso congelado, porque a gente acredita nesse projeto de vocês, então eu tô com muita expectativa aí na sexta-feira de encontrar um projeto muito bom de vocês, né?
+
+É, existe sim, tem possibilidade. Essa máquina ela é semiautomática, então ela tem muitos sensores, né? É, o que não deu pra fazer ainda é essa, é, interface. Certo. Tá? Não deu pra fazer ainda, mas tem possibilidade de fazer essa interface. E outra pergunta, desculpa. É sobre a visualização dessa interface, se também a empresa dispõe de, é, celulares ou tablets pra, pros funcionários conseguirem analisar em tempo real.
+
+Hã, a gestão e liderança tem. Certo. Celular corporativo e computador. O operador não tem. Hã, acho interessante eles terem um tablet na linha lá pra ver. Mas o que eu acho melhor seria uma coleta automática da máquina, né? Mas se não, não tiver essa condição, e eles terem facilidade de encontrar os dados do próprio operador, ao invés da gente pegar tudo, levar pra uma mesa e ir digitando, que pode ter erros também.
+
+Perfeito. Mas cê fez uma outra pergunta que eu não respondi. É, sobre a... IoT O IoT tem, sensores tem. De quanto tempo é fotografado? Ah, de quanto tempo é fotografado? Eles me mandam no, no Teams, é, uma vez por dia, tá? Porque essa máquina, por enquanto, ela tá trabalhando só o primeiro turno, mas a ideia pro ano que vem é ela trabalhar dois turnos.
+
+Então o volume de, de demanda dela vai ser muito grande. Então o que que acontece? A gente precisa ter uma máquina redondinha, diminuir as, as perdas, os desperdícios, pra que a gente consiga atender esse volume pro ano que vem. Certo. É, outra pergunta que eu tenho é em relação também, é, a gente consegue ver pelas imagens se tem indicadores que também são muito manuais, como o manômetro e o vacuômetro.
+
+Se também, é, disponibilizaria-- as, a empresa tem à disposição sensores pra conseguir, é, pegar esses dados e não necessitar também da fotografia. Acho que hoje não tem um... Hoje não tem. Certo. Hoje é aquele manômetro, é, mesmo, que, que eu mostrei na foto. Eu acho que pode ter a sugestão de uma nova tecnologia ali pra substituí-los.
+
+Certo. E agora falando um pouco mais sobre a senhora, é, o que que a senhora, como, é, funcionária da empresa, é, sente mais necessidade atualmente, é, nesse processo? Tipo, a, o que que a senhora vê mais, é, em estado crítico que precisaria solucionar primeiramente e as principais necessidades e empecilhos que a senhora tem operando com essa máquina?
+
+Essa máquina, ela tem muitos problemas de parada de linha, downtimes, é, em função de sensores que são m-- ela é semiautomática, muito sensível, né? Então alguns sensores eles param, alguns têm enro-- a linha enrosca. Então a, as paradas maiores a gente con-- até consegue, é, entender e coletar os dados. O problema são as microparadas, que ao longo do dia, elas somadas, elas começam a afetar bastante a produtividade.
+
+Então- E o desperdício alonga. O desperdício. Fabiana, oito e cinquenta. Tá bom. É hora de interromper? É. É? Pessoal, o que que cês vão fazer? Com o pouco contato que cês tiveram, vocês vão se reorganizar, ver se precisa mais pergunta, nós vamos elaborar as perguntas, mandar pra Fabiana e responde por WhatsApp pra vocês, tá bom?
+
+A gente tem esse tempinho, o primeiro contato tá aqui, organiza o que faltou e a gente manda pra ela. E quinta-feira eu volto. Aí eu volto pra gente conversar um pouquinho mais, tá? Acredito em vocês, no trabalho de vocês, tô com bastante expectativa aí sexta-feira de, de encontrar uma solução bem legal pra isso, tá bom?
+
+Certo. Boa sorte. Obrigada. O prazer é todo meu.
+
+
+
+
+pode ser que seja essa a transcrição a cima, não garanto 100% de certeza e eu também comecei a gravar apenas após a metade da reunião, não sei se da pra extrair algo disso.

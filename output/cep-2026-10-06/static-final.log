@@ -1,0 +1,9 @@
+
+> msa-yellow-team@0.1.0 verify:static
+> node scripts/verify-static.mjs --deploy
+
+{
+  "ok": true,
+  "files": 53,
+  "errors": []
+}

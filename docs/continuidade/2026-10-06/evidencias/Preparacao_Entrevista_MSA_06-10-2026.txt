@@ -1,0 +1,306 @@
+--- PAGINA 1 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+1
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+01 / A entrevista que define o MVP
+MSA / SENAI | 06 de outubro de 2026
+Roteiro de levantamento, com evidências dos materiais recebidos.
+O objetivo da reunião
+Entender como uma coleta vira uma decisão, identificar necessidades não explícitas e combinar um piloto
+verificável. Amanhã não é a apresentação final do protótipo.
+"Estudamos os materiais e queremos validar o fluxo com vocês. O que uma solução realmente útil
+precisa mudar no dia a dia, além do que já está escrito no desafio?"
+Cinco perguntas essenciais
+1. Prioridade: qual problema precisa melhorar primeiro, o que falta no desafio e como reconheceremos
+sucesso?
+2. Caso real: contem a última coleta e liberação, do operador à Engenharia, incluindo divergências e
+retrabalho.
+3. Piloto: qual máquina, processo, produto e receita devemos usar? Quais materiais representam o
+mesmo fluxo?
+4. Regras: quais campos são ajuste ou medição; quem aprova unidades, limites, método de análise e
+liberação?
+5. Viabilidade: em qual aparelho/rede será usado, qual acesso é permitido e o que deve ser demonstrado
+ao final?
+Como usar o tempo
+Duração
+Foco
+15 min
+Cinco perguntas, um exemplo BF e confirmação das decisões.
+30 min
+3 contexto + 7 fluxo + 8 regras + 7 produção/uso + 5 fechamento.
+45 min
+Acrescentar exceções e viabilidade de acesso com TI/manutenção.
+Uma pessoa conduz, uma registra, uma acompanha o tempo. Confirmar antes se fotos/anotações são permitidas. Começar
+verificando se o XLSX é uma cópia didática ou o método operacional real.
+
+
+--- PAGINA 2 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+2
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+02 / Uma evidência para levar
+Tempo destacar | aba Selo, coluna BF | exemplo de até 90 segundos.
+Material auditado
+Quantidade
+Parâmetros / coletas
+41 / 17
+Campos preenchidos / possíveis
+683 / 697
+Números / textos numéricos
+562 / 121 (17,7% dos preenchidos)
+Resumos comparáveis verificados
+224 / 224 coincidem com o cálculo sobre os números
+nativos
+O que muda em BF17:BF33
+Grandeza
+Somente números nativos
+17 valores interpretados
+Valores utilizados
+7 números: todos 0,9
+7 em 0,8 + 10 em 0,9
+Média (s)
+0,9
+0,8588235294
+Desvio populacional
+(s)
+Zero matemático; resíduo salvo ~1,11e-16
+0,0492152957
+Cp / Cpk aritméticos
+~1,50 x 10^14 / -0,3333
+0,3386 / 0,2789
+A fórmula de referência ignora textos decimais. Nas linhas 25 e 26, as 41 entradas de cada coleta são
+texto: duas coletas inteiras de 31/08 ficam fora dos resumos. As fontes não foram alteradas.
+"Como vocês querem validar vírgula/ponto e mostrar quais observações entraram na análise? Esses
+tempos são setpoints ou valores realmente medidos?"
+A conclusão correta
+O Cp gigantesco vem de divisão por resíduo numérico em dados constantes. Não é qualidade
+extraordinária. Interpretar os textos mostra uma diferença aritmética, mas não homologa um estudo de
+capacidade.
+Todos os 17 valores de BF estão na faixa cadastrada 0,8:0,9 s. Estar dentro dessa faixa não demonstra, sozinho, capacidade
+futura. Não afirmar que a máquina é incapaz ou que o processo industrial está errado.
+Base: XLSX, BF17:BF33 e BF69:BF75. Microsoft: STDEVP e tratamento de textos em referências.
+
+
+--- PAGINA 3 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+3
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+03 / Regras antes dos indicadores
+Perguntas para Engenharia / qualidade. Não automatizar um limite ambíguo.
+Evidência na cópia
+O que confirmar
+BH10:BH11 = 80 / 75 s
+Limites trocados, receita diferente ou outra semântica? Não inverter
+sozinho.
+Z1, Z9, Z10, Z18 com 0 / 0
+Zona inativa, regra especial ou limite não cadastrado?
+Pressão 6,5 bar; vácuo -600 mm/Hg; outro limite
+vazio
+Regra unilateral? Qual desigualdade, unidade e referência?
+AZ, BP e CD constantes
+Setpoint ou medição? Resolução/precisão? Não dividir por zero.
+CF17 / CH17 vazios, mas 10 registros posteriores
+O resumo deve procurar dados válidos, não depender da primeira
+linha.
+Normalidade: pedir um caso completo
+Na aba de teste, B10:B1009 está vazio; n=0. K5 é um resultado literal e AC tem 1.000 células numéricas
+sem fórmula para a CDF reversa. O OK de G93 é texto, sem ligação calculada com o teste. A cópia não
+comprova normalidade automática.
+"O teste é feito aqui ou em outro software? Podem fornecer dados, método, resultado e decisão de um
+estudo validado pela Engenharia?"
+O protocolo que falta definir
+Característica de qualidade versus ajuste; frequência e subgrupos; estabilidade; estimador de sigma;
+normalidade; dados suficientes; arredondamento; limites por receita; regra de exclusão e responsável
+técnico. A meta 1,33 aparece em U6: confirmar sua aplicabilidade.
+Não trocar STDEVP por STDEV e chamar isso de correção completa. Não confundir limite de especificação com limite estatístico
+de controle. A decisão de liberação precisa de regra, contexto e responsável.
+Referências: NIST: capacidade; NIST: Anderson-Darling; Minitab: variação dentro e global.
+
+
+--- PAGINA 4 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+4
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+04 / O contexto muda a leitura
+Os registros mudam entre agosto e setembro. O motivo ainda não foi informado.
+0
+10
+20
+30
+40
+s
+25/08
+31/08
+17/09
+29/09
+BD | Tempo de Resfriamento
+BT | Retardo resfriamento
+Eixo horizontal: ordem das 17 coletas, não tempo proporcional. Os textos decimais foram interpretados para incluir as duas linhas
+de 31/08. Fonte: BD17:BD33 e BT17:BT33.
+Período
+Resfriamento BD
+Retardo BT
+10 coletas de agosto
+35 s
+4 s
+17/09
+20 s
+7 s
+6 coletas seguintes
+15 s
+30 s
+Faixa cadastrada
+35:36 s
+4:5 s
+"O que mudou? Produto, receita, condição da máquina ou forma de registrar? Como aquecimento e
+setup são separados de produção estável?"
+Outros sinais para contextualizar
+Em 21/09, Z13 registra 94 °C e Z14, 101 °C, abaixo dos demais registros dessas colunas. A foto de
+aquecimento mostra duas colunas coloridas e valores muito diferentes; a legenda e a fase precisam ser
+confirmadas. Não apagar observações por parecerem estranhas.
+Material, espessura, % Scrap e lote estão vazios nas 17 linhas. Não há horário, operador ou receita em
+cada coleta. Sem essas chaves, não é defensável juntar tudo como um único processo estável.
+Pergunta sobre o histórico
+"Quando um limite ou receita muda, os dados antigos continuam ligados à versão original? Quem
+registra a mudança e decide quando é necessária nova análise/liberação?"
+
+
+--- PAGINA 5 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+5
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+05 / Produção, paradas e perdas
+Perguntas para operação / liderança. As fotos mostram mais de uma fonte e contexto.
+Trecho do Pitch Board de 01/10. Realizado legível: 72 + 216 + 180 + 144 + 180 + 72 + 108 + 180 = 1.152 peças. Planejado
+parcialmente ambíguo; não foi calculado percentual de atingimento.
+Contagem: o denominador precisa existir
+A IHM Vacuum Center mostra 18 ciclos; outra tela, zero aprovadas/reprovadas. Confirmar peças por
+ciclo/cavidades, período, reset e se 'produzido' é bruto ou bom. Zero na foto não significa zero no turno;
+campo vazio não significa zero confirmado.
+Parada: um episódio, vários sinais
+A tela Siemens apresenta seis alarmes. Alarmes próximos podem ser da mesma parada. Perguntar qual
+sinal marca início/fim, como tratar estação versus linha, setup, pausas planejadas, pequenas paradas,
+sobreposição e motivo ainda desconhecido.
+Perdas: não misturar unidades
+O formulário de 28/09 registra 0,200 kg. Não subtrair kg de peças nem calcular percentual sem produção
+válida. Separar perda de material, refugo e retrabalho, evitando dupla contagem.
+"Podem mostrar uma parada encerrada e um apontamento de perda, com início/fim, motivo, unidade e
+ligação à ordem/produto? Quem corrige um registro incompleto?"
+Fontes: fotos 12.13.44, 12.14.06, 12.17.22 e 12.20.02. Observações manuscritas ambíguas permanecem pendentes de
+confirmação.
+
+
+--- PAGINA 6 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+6
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+06 / Uso real e acesso permitido
+Perguntas para operador, manutenção e TI. A integração deve respeitar a operação.
+Onde o sistema será usado?
+"Tablet compartilhado, celular ou computador? Há rede no posto? Quem se identifica e o que precisa
+funcionar quando a conexão cai?"
+Confirmar permissões de operador/liderança/Engenharia; tempo disponível para apontamento;
+necessidade de correção auditada; sincronização sem duplicar; resolução de conflito; acesso ao histórico;
+retenção, backup e suporte.
+O que podemos ler, sem interferir no controle?
+As fotos mostram Siemens e KVIEW, mas não comprovam protocolo ou API. Pedir modelos exatos, tags
+autorizadas, exportações/históricos existentes, arquitetura de rede e responsável pela liberação de acesso
+somente leitura.
+"Já existe exportação ou integração autorizada? Para o MVP, a empresa prefere leitura direta, arquivo
+importado ou entrada digital validada? Quem acompanha o teste?"
+Unidade e origem são parte do dado
+Na foto do manômetro, a escala parece kgf/cm², mas está parcialmente encoberta; a planilha usa bar. Se
+confirmado, 6,6 kgf/cm² = 6,472389 bar. É um exemplo condicional, não prova de desvio. Confirmar
+instrumento, unidade, referência, sentido do vácuo, resolução e calibração.
+Conversão: NIST, fatores de unidades. Leitura da foto é aproximada e não substitui medição.
+OCR: revisão, não aprovação automática
+Confirmar se fotos industriais podem ser armazenadas ou enviadas à nuvem. Uma leitura precisa de
+campo, unidade, evidência e revisão quando ambígua. Guardar valor original e alteração; nunca liberar
+produção só porque o OCR conseguiu ler uma tela.
+Promessa defensável
+Demonstrar o fluxo com entrada validada/importação é viável sem confirmar acesso ao CLP. OCR e
+coleta direta podem ser diferenciais se houver autorização, exemplos e tempo para validá-los. Não
+prometer comandos de máquina.
+
+
+--- PAGINA 7 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+7
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+07 / O que entra no MVP
+Recomendação provisória: confirmar com MSA/SENAI, não tratar sugestões como requisitos
+aprovados.
+O mínimo escrito no desafio
+Cadastros de máquina/processo/produto e parâmetros; limites/metas; registro digital; quantidade e
+período; paradas com duração/motivo; refugos/perdas/motivo; armazenamento estruturado; vínculos;
+histórico; dashboard; desvios visuais; fluxo demonstrado por protótipo. São 13 itens mínimos
+identificados nas imagens.
+Os opcionais são escolhas, não uma obrigação de fazer tudo
+OCR, CLP/IHM, IoT, QR, três tipos de alertas, análise de motivos, liberação pela Engenharia e seu
+histórico, mobile, tempo real, comparação, exportação, IA e API. Confirmar quais diferenciais têm peso na
+avaliação.
+Um fluxo prioritário para validar
+Etapa
+Decisão a combinar
+1. Identificar
+Máquina > processo > produto/receita/ordem, conforme o piloto.
+2. Registrar
+Valores, unidade, origem, autor, instante e versão do limite.
+3. Validar
+Separar inválido/ausente, desvio e estudo não avaliável.
+4. Analisar
+Histórico temporal e fila de análise, sem misturar condições.
+5. Decidir
+Objeto liberado, responsável, justificativa e registro da decisão.
+"O objeto liberado é máquina, receita, início de produção, ordem ou lote? Quem pode aprovar? O que
+exige nova análise? Que exceção precisa existir?"
+Aceite: exemplos que vocês podem combinar
+Vírgula/ponto equivalentes; vazio não vira zero; primeira linha vazia não esconde dados; limite invertido
+bloqueia avaliação; desvio zero é explicado; receita nova preserva histórico; reset não gera quantidade
+negativa; alarmes não multiplicam uma parada; correção fica rastreável.
+Não adicionar OEE/IA só para impressionar. Antes, validar dados e definições. Economia e ROI dependem de baseline medido,
+não de percentuais inventados.
+
+
+--- PAGINA 8 ---
+MSA / SENAI | Preparação da entrevista | análise em 05/10/2026
+8
+EVIDÊNCIAS > PERGUNTAS > DECISÕES
+08 / Sair com decisões, não suposições
+Últimos minutos: repetir o entendimento e registrar o que ficou pendente.
+"Para confirmar: o piloto será ____, o fluxo prioritário será ____, a Engenharia validará ____, e
+demonstraremos ____ até ____. O que entendemos errado ou deixamos de fora?"
+Decisão
+Resposta / responsável / prazo
+Dor prioritária e sucesso
+___________________________________
+___________________________________
+Máquina / produto / receita-piloto
+___________________________________
+___________________________________
+Campos, unidades e limites
+___________________________________
+___________________________________
+Análise e liberação
+___________________________________
+___________________________________
+Quantidade, paradas e perdas
+___________________________________
+___________________________________
+Usuários / aparelhos / offline / acesso
+___________________________________
+___________________________________
+Escopo, diferencial e aceite final
+___________________________________
+___________________________________
+Exemplo de dados / próxima validação
+___________________________________
+___________________________________
+Pedir um exemplo anonimizado completo
+Coleta com contexto, receita/limites, parada encerrada, perda, estudo e decisão. Confirmar prazo final,
+duração da demonstração, critérios/pesos de avaliação e se dados importados/simulados identificados
+são aceitos.
+Pendência precisa de dono e prazo. Não transformar resposta ausente em requisito inventado.
+Material de apoio: AUDITORIA_TECNICA_MSA.md; auditoria_41_parametros.csv; medicoes_697_campos.csv;
+ROTEIRO_ENTREVISTA_MSA.md (editável). Auditoria em 05/10/2026, sobre a cópia recebida. Dois PDFs anteriores e nove fotos
+foram revisados. Arquivos de origem preservados; cálculos não equivalem a homologação industrial.

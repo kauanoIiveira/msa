@@ -1,0 +1,458 @@
+﻿{
+    "preparado_para":  "Retomada local em 07/10/2026",
+    "gerado_utc":  "2026-10-06T23:46:28.8763650Z",
+    "aviso":  "Arquivos originais copiados sem edicao. Notas e contagens antigas descrevem sua epoca; ler LEIA_PRIMEIRO.md da raiz para o estado corrente.",
+    "arquivos":  [
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Lista de Materiais e ganho de produção.docx",
+                         "destino":  "referencias-locais/materiais/Lista de Materiais e ganho de produção.docx",
+                         "bytes":  10135,
+                         "sha256":  "8bb6f3551b0e78e25229d72902ed6e9855b3b3b816490bb03d79876fdb6c6a9a"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Desafio\\Desafio Frente.jpg",
+                         "destino":  "referencias-locais/materiais/Desafio/Desafio Frente.jpg",
+                         "bytes":  189240,
+                         "sha256":  "9bed630b77eb234987f283b41006bc2a5be9edfe60e4f348b37c1409c31c9522"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Desafio\\Desafio verso.jpg",
+                         "destino":  "referencias-locais/materiais/Desafio/Desafio verso.jpg",
+                         "bytes":  142422,
+                         "sha256":  "f3c9946423dba29c46102bb5448f415ec858093a95c11389da20c2d65c8881ca"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Gravação de Voz\\Gravação Fabiana.m4a",
+                         "destino":  "referencias-locais/materiais/Gravação de Voz/Gravação Fabiana.m4a",
+                         "bytes":  2873295,
+                         "sha256":  "02e4c22f7da8b59b7863064fefe14daf5165b909c2d42b94d81a9129f705bc19"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Matriz de Prioridade\\Captura de tela 2026-10-06 102815.png",
+                         "destino":  "referencias-locais/materiais/Matriz de Prioridade/Captura de tela 2026-10-06 102815.png",
+                         "bytes":  85700,
+                         "sha256":  "c4512ba073884d4910e7ade6bfedc4b639d95ecab29ece6233a38be40149057b"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\T20A03(EN)5 - Capability study senai.xlsx",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/T20A03(EN)5 - Capability study senai.xlsx",
+                         "bytes":  324603,
+                         "sha256":  "6a030b82f7dc32c6bd05a43a426344c72683fad61495aab70dbc13406ea11c8e"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.12.45.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.12.45.jpeg",
+                         "bytes":  104976,
+                         "sha256":  "81c222018524dc25f3b24dd36dfd34ad62fe8fda7fcba5dde0dc310e3a5b203d"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.13.44.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.13.44.jpeg",
+                         "bytes":  160257,
+                         "sha256":  "98711020a3f8bfe4fab62336db1093cca661e1a384b5d7f102da47cca8c71d34"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.14.06.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.14.06.jpeg",
+                         "bytes":  132209,
+                         "sha256":  "f762f803d6db9ee7aa7c89cbed2695435c44279420e86e4aad9ae7b12e8d1db0"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.15.26.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.15.26.jpeg",
+                         "bytes":  152017,
+                         "sha256":  "7f79fd7ca85a7f56c6e847cb544f8dbf1df7e85fe34b8426952cd48ca3fbde2e"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.16.05.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.16.05.jpeg",
+                         "bytes":  191170,
+                         "sha256":  "d6cce69a3771576e7c43b223fbc85d38094151350575d7fca9eceb7afc6c0580"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.17.22.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.17.22.jpeg",
+                         "bytes":  139806,
+                         "sha256":  "63999a28d69d1d0e2353d997fac6750a881938ef9bd590c0c23897f63d431e67"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.20.02.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.20.02.jpeg",
+                         "bytes":  162561,
+                         "sha256":  "dfb7575b1bc0100720c2e8c45dcef361bdf1974f156cc165c1327cd1619428e5"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.20.38.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.20.38.jpeg",
+                         "bytes":  111440,
+                         "sha256":  "8df5831a65e3fafb2d0b5525eed628330381e61341f936b99a7be38bce61f492"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\WhatsApp Image 2026-10-05 at 12.24.58.jpeg",
+                         "destino":  "referencias-locais/materiais/MSA - Material Fornecido/WhatsApp Image 2026-10-05 at 12.24.58.jpeg",
+                         "bytes":  151500,
+                         "sha256":  "a3a119d2d39a7cf1307cb827cac3dd7757876292bcfee36c52020bffea2ce392"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas 1.jpg",
+                         "destino":  "referencias-locais/materiais/Perguntas para o Persona/Perguntas 1.jpg",
+                         "bytes":  112068,
+                         "sha256":  "cfa162a599b9156fe69a9e3bcd6b35c77b4f4d8fc3a3b6ee3e3f93a391bd5378"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas 2.jpg",
+                         "destino":  "referencias-locais/materiais/Perguntas para o Persona/Perguntas 2.jpg",
+                         "bytes":  80666,
+                         "sha256":  "e8f779918659741a7601b25829cb3e80748bd0ca16fb95432f18f536ef70b36f"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas 3.jpg",
+                         "destino":  "referencias-locais/materiais/Perguntas para o Persona/Perguntas 3.jpg",
+                         "bytes":  42245,
+                         "sha256":  "96c4f1aa15d15659414f6eb192e3162ca13b1a64d39a537a7a616f6a9c08edfd"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas para o Persona.docx",
+                         "destino":  "referencias-locais/materiais/Perguntas para o Persona/Perguntas para o Persona.docx",
+                         "bytes":  9599,
+                         "sha256":  "0c4f2bd2c9f933d1dbcb54f4520c4952bd7cff6484855d109f1c20ce34055f1c"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Roteiro_Apresentacao_Funcoes_MSA.docx",
+                         "destino":  "referencias-locais/materiais/Perguntas para o Persona/Roteiro_Apresentacao_Funcoes_MSA.docx",
+                         "bytes":  41284,
+                         "sha256":  "07ff9bdd4400faab0f0bece1313108d910c46e67143f3505180e5f24b8babf71"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Roteiro_Entrevista_MSA_Equipe_Amarela.docx",
+                         "destino":  "referencias-locais/materiais/Perguntas para o Persona/Roteiro_Entrevista_MSA_Equipe_Amarela.docx",
+                         "bytes":  40683,
+                         "sha256":  "4ff6da4b0b2ca836f4db8ead264469e91ce2fb7b69145e0aafd0d6b0aa8c4ec4"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Analise_Materiais_MSA_2026.pdf",
+                         "destino":  "referencias-locais/materiais/Rascunhos Persona/Analise_Materiais_MSA_2026.pdf",
+                         "bytes":  1765529,
+                         "sha256":  "79bfa06906ee6ab76088f5877356fd9b9977afb984820c6f9a9f34b16022c3c8"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\auditoria_41_parametros.csv",
+                         "destino":  "referencias-locais/materiais/Rascunhos Persona/auditoria_41_parametros.csv",
+                         "bytes":  10157,
+                         "sha256":  "67f09ca6f61348d5c264c75959f3b61a3c03d203bda9b68194e90f4c0a372e5c"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\AUDITORIA_TECNICA_MSA.md",
+                         "destino":  "referencias-locais/materiais/Rascunhos Persona/AUDITORIA_TECNICA_MSA.md",
+                         "bytes":  70874,
+                         "sha256":  "3999572378a2e6f3810129f9f3a0571d53adc7a0693200e4b297b1236c01808f"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Dossie_MSA_SENAI_2026.pdf",
+                         "destino":  "referencias-locais/materiais/Rascunhos Persona/Dossie_MSA_SENAI_2026.pdf",
+                         "bytes":  119481,
+                         "sha256":  "fc9772b642f8196dd2457ba187826cb08239496683e77409614e9fd5587e09a9"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\medicoes_697_campos.csv",
+                         "destino":  "referencias-locais/materiais/Rascunhos Persona/medicoes_697_campos.csv",
+                         "bytes":  50481,
+                         "sha256":  "8545193a272ec0f3698d8b2728755302936b515b5ecfa192dd4d11aeec6c9e38"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\Preparacao_Entrevista_MSA_06-10-2026.pdf",
+                         "destino":  "referencias-locais/materiais/Rascunhos Persona/Preparacao_Entrevista_MSA_06-10-2026.pdf",
+                         "bytes":  5342732,
+                         "sha256":  "a77d34489929be2d5d25b4adff1da8b2f29f4255d436ce656a7d8dd9cd779fd2"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\ROTEIRO_ENTREVISTA_MSA.md",
+                         "destino":  "referencias-locais/materiais/Rascunhos Persona/ROTEIRO_ENTREVISTA_MSA.md",
+                         "bytes":  7963,
+                         "sha256":  "ffc769950bbf3824ef01e2ccc154073c0f95947f88104cd4fa2100e3903bffd7"
+                     },
+                     {
+                         "grupo":  "Materiais fornecidos e documentos da equipe",
+                         "origem":  "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Wireframes\\O que deve conter no Dashboard.docx",
+                         "destino":  "referencias-locais/materiais/Wireframes/O que deve conter no Dashboard.docx",
+                         "bytes":  7603,
+                         "sha256":  "685e8b94e9a6f96cf0dc4190f8406c3e0d12cbda5dfdc292866adae6cc728024"
+                     },
+                     {
+                         "grupo":  "Identidade MSA",
+                         "origem":  "C:\\Users\\Kauan\\Pictures\\msalogos\\MSA.png",
+                         "destino":  "referencias-locais/logos/MSA.png",
+                         "bytes":  3949,
+                         "sha256":  "b5147631a5b9e5764dc4ca38af546426d43832793773b1c8b21592e1e19c7369"
+                     },
+                     {
+                         "grupo":  "Identidade MSA",
+                         "origem":  "C:\\Users\\Kauan\\Pictures\\msalogos\\msalogo.png",
+                         "destino":  "referencias-locais/logos/msalogo.png",
+                         "bytes":  14549,
+                         "sha256":  "4ce380bf6038dad8c22c1689e173757a2bddbed045288c3c1fcc0c643e9f1a4f"
+                     },
+                     {
+                         "grupo":  "Identidade MSA",
+                         "origem":  "C:\\Users\\Kauan\\Pictures\\msalogos\\msanobg.png",
+                         "destino":  "referencias-locais/logos/msanobg.png",
+                         "bytes":  12382,
+                         "sha256":  "c75ce02ba3cfeab8fbdbed790e3d4193327a27b6e53799ec1a174a21bf9fb26a"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\10XvyLHDkWOPovaVPf53DbSZkNgF8qkW7.jpg",
+                         "destino":  "referencias-locais/drive-materializado/10XvyLHDkWOPovaVPf53DbSZkNgF8qkW7.jpg",
+                         "bytes":  112068,
+                         "sha256":  "cfa162a599b9156fe69a9e3bcd6b35c77b4f4d8fc3a3b6ee3e3f93a391bd5378"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1afOgd8FEnnPYkwDAwQe955IsVo_UTDb2.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1afOgd8FEnnPYkwDAwQe955IsVo_UTDb2.jpg",
+                         "bytes":  162561,
+                         "sha256":  "dfb7575b1bc0100720c2e8c45dcef361bdf1974f156cc165c1327cd1619428e5"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1aqDHOMP_NNzVf2h3GFqdrmykYb9YDtOQ.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1aqDHOMP_NNzVf2h3GFqdrmykYb9YDtOQ.jpg",
+                         "bytes":  191170,
+                         "sha256":  "d6cce69a3771576e7c43b223fbc85d38094151350575d7fca9eceb7afc6c0580"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1CnueE4t-OXRyMojEemM8mQ1920XgSkHf.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1CnueE4t-OXRyMojEemM8mQ1920XgSkHf.jpg",
+                         "bytes":  142422,
+                         "sha256":  "f3c9946423dba29c46102bb5448f415ec858093a95c11389da20c2d65c8881ca"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1F8j6O0RLUr1SHkNkFz9yWjDAezQe1C7E.docx",
+                         "destino":  "referencias-locais/drive-materializado/1F8j6O0RLUr1SHkNkFz9yWjDAezQe1C7E.docx",
+                         "bytes":  40683,
+                         "sha256":  "4ff6da4b0b2ca836f4db8ead264469e91ce2fb7b69145e0aafd0d6b0aa8c4ec4"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1FBXP2oCnmLFYx-mhn5EkuDNOBVLC9B0n.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1FBXP2oCnmLFYx-mhn5EkuDNOBVLC9B0n.jpg",
+                         "bytes":  152017,
+                         "sha256":  "7f79fd7ca85a7f56c6e847cb544f8dbf1df7e85fe34b8426952cd48ca3fbde2e"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1fvn-GhPI3SFa_0B-md-XIIpFOZDDk2c5.md",
+                         "destino":  "referencias-locais/drive-materializado/1fvn-GhPI3SFa_0B-md-XIIpFOZDDk2c5.md",
+                         "bytes":  70874,
+                         "sha256":  "3999572378a2e6f3810129f9f3a0571d53adc7a0693200e4b297b1236c01808f"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1goFAtpEj9G--2Bbf89hqp99nKDgkLr0X.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1goFAtpEj9G--2Bbf89hqp99nKDgkLr0X.jpg",
+                         "bytes":  132209,
+                         "sha256":  "f762f803d6db9ee7aa7c89cbed2695435c44279420e86e4aad9ae7b12e8d1db0"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1gR3G3IngpmjkdtxDLxduEfyq6ptZZQB0.pdf",
+                         "destino":  "referencias-locais/drive-materializado/1gR3G3IngpmjkdtxDLxduEfyq6ptZZQB0.pdf",
+                         "bytes":  119481,
+                         "sha256":  "fc9772b642f8196dd2457ba187826cb08239496683e77409614e9fd5587e09a9"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1iHCg91ifMdorluj-IysAouHJHlfF6_19.m4a",
+                         "destino":  "referencias-locais/drive-materializado/1iHCg91ifMdorluj-IysAouHJHlfF6_19.m4a",
+                         "bytes":  2873295,
+                         "sha256":  "02e4c22f7da8b59b7863064fefe14daf5165b909c2d42b94d81a9129f705bc19"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1IzDVfJOETqEVzxtDgp5y7GZwnd_AQ2gt.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1IzDVfJOETqEVzxtDgp5y7GZwnd_AQ2gt.jpg",
+                         "bytes":  189240,
+                         "sha256":  "9bed630b77eb234987f283b41006bc2a5be9edfe60e4f348b37c1409c31c9522"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1jO67WDTTle_bhwRtMnELNmAqNwPEtgW1.xlsx",
+                         "destino":  "referencias-locais/drive-materializado/1jO67WDTTle_bhwRtMnELNmAqNwPEtgW1.xlsx",
+                         "bytes":  324603,
+                         "sha256":  "6a030b82f7dc32c6bd05a43a426344c72683fad61495aab70dbc13406ea11c8e"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1lgoUaIU9XN3t3m4KTT9RiDGY5wRWLWB6.m4a",
+                         "destino":  "referencias-locais/drive-materializado/1lgoUaIU9XN3t3m4KTT9RiDGY5wRWLWB6.m4a",
+                         "bytes":  2873295,
+                         "sha256":  "02e4c22f7da8b59b7863064fefe14daf5165b909c2d42b94d81a9129f705bc19"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1m53V_myd1TSydlo2lkrKAxfgZfYQm4-0.png",
+                         "destino":  "referencias-locais/drive-materializado/1m53V_myd1TSydlo2lkrKAxfgZfYQm4-0.png",
+                         "bytes":  85700,
+                         "sha256":  "c4512ba073884d4910e7ade6bfedc4b639d95ecab29ece6233a38be40149057b"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1mHpWhK-rgzxyT3RrPx0uOHY0oDlbeJ-R.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1mHpWhK-rgzxyT3RrPx0uOHY0oDlbeJ-R.jpg",
+                         "bytes":  111440,
+                         "sha256":  "8df5831a65e3fafb2d0b5525eed628330381e61341f936b99a7be38bce61f492"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1mM4IU0LpDJNA51Rg7YmsBLYxSxVgxKuh.md",
+                         "destino":  "referencias-locais/drive-materializado/1mM4IU0LpDJNA51Rg7YmsBLYxSxVgxKuh.md",
+                         "bytes":  7963,
+                         "sha256":  "ffc769950bbf3824ef01e2ccc154073c0f95947f88104cd4fa2100e3903bffd7"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1NkEx7TFAp7HNzFMvWh2gB1Kc1BC5hJAD.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1NkEx7TFAp7HNzFMvWh2gB1Kc1BC5hJAD.jpg",
+                         "bytes":  104976,
+                         "sha256":  "81c222018524dc25f3b24dd36dfd34ad62fe8fda7fcba5dde0dc310e3a5b203d"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1nzNUeXdNc7eD-gPf2Ue1QyELheoG6mnX.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1nzNUeXdNc7eD-gPf2Ue1QyELheoG6mnX.jpg",
+                         "bytes":  80666,
+                         "sha256":  "e8f779918659741a7601b25829cb3e80748bd0ca16fb95432f18f536ef70b36f"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1Pokc66zMvT_zBesDfTJYpCWN1IbFjjm1.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1Pokc66zMvT_zBesDfTJYpCWN1IbFjjm1.jpg",
+                         "bytes":  151500,
+                         "sha256":  "a3a119d2d39a7cf1307cb827cac3dd7757876292bcfee36c52020bffea2ce392"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1qz8z37lv_k2YVGcWhKNM-T-4YcLeBWNb.pdf",
+                         "destino":  "referencias-locais/drive-materializado/1qz8z37lv_k2YVGcWhKNM-T-4YcLeBWNb.pdf",
+                         "bytes":  5342732,
+                         "sha256":  "a77d34489929be2d5d25b4adff1da8b2f29f4255d436ce656a7d8dd9cd779fd2"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1SLb2rJUTPAtkYPYx5g-0ytHugbHkyN8U.docx",
+                         "destino":  "referencias-locais/drive-materializado/1SLb2rJUTPAtkYPYx5g-0ytHugbHkyN8U.docx",
+                         "bytes":  41284,
+                         "sha256":  "07ff9bdd4400faab0f0bece1313108d910c46e67143f3505180e5f24b8babf71"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1UB2dO42dJ8J_GUtNXBjBURMP9U0rTk2B.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1UB2dO42dJ8J_GUtNXBjBURMP9U0rTk2B.jpg",
+                         "bytes":  139806,
+                         "sha256":  "63999a28d69d1d0e2353d997fac6750a881938ef9bd590c0c23897f63d431e67"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1ws2Tm9PqJy09YosVy20QBcedJXOgk9DP.pdf",
+                         "destino":  "referencias-locais/drive-materializado/1ws2Tm9PqJy09YosVy20QBcedJXOgk9DP.pdf",
+                         "bytes":  1765529,
+                         "sha256":  "79bfa06906ee6ab76088f5877356fd9b9977afb984820c6f9a9f34b16022c3c8"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1Xu1cyUwlW7TnR34tQwaDvPLUZXiQbVBd.csv",
+                         "destino":  "referencias-locais/drive-materializado/1Xu1cyUwlW7TnR34tQwaDvPLUZXiQbVBd.csv",
+                         "bytes":  50481,
+                         "sha256":  "8545193a272ec0f3698d8b2728755302936b515b5ecfa192dd4d11aeec6c9e38"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1ZKStQXI_AqXXiXRAe443d141T3LY7F4P.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1ZKStQXI_AqXXiXRAe443d141T3LY7F4P.jpg",
+                         "bytes":  42245,
+                         "sha256":  "96c4f1aa15d15659414f6eb192e3162ca13b1a64d39a537a7a616f6a9c08edfd"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1zt66Uia1G8iRuhGcV2WSXY7eRi50MZOO.jpg",
+                         "destino":  "referencias-locais/drive-materializado/1zt66Uia1G8iRuhGcV2WSXY7eRi50MZOO.jpg",
+                         "bytes":  160257,
+                         "sha256":  "98711020a3f8bfe4fab62336db1093cca661e1a384b5d7f102da47cca8c71d34"
+                     },
+                     {
+                         "grupo":  "Copias do Drive preservadas por ID",
+                         "origem":  "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\tmp\\continuidade-drive\\1_Mx5oJtzSN51-kW5ar-aIR2c7HalIt7H.csv",
+                         "destino":  "referencias-locais/drive-materializado/1_Mx5oJtzSN51-kW5ar-aIR2c7HalIt7H.csv",
+                         "bytes":  10157,
+                         "sha256":  "67f09ca6f61348d5c264c75959f3b61a3c03d203bda9b68194e90f4c0a372e5c"
+                     },
+                     {
+                         "grupo":  "PDF local",
+                         "origem":  "C:\\Users\\Kauan\\Downloads\\Analise_Materiais_MSA_2026.pdf",
+                         "destino":  "referencias-locais/pdfs-adicionais/Analise_Materiais_MSA_2026.pdf",
+                         "bytes":  1765529,
+                         "sha256":  "79bfa06906ee6ab76088f5877356fd9b9977afb984820c6f9a9f34b16022c3c8"
+                     },
+                     {
+                         "grupo":  "PDF local",
+                         "origem":  "C:\\Users\\Kauan\\Downloads\\Dossie_MSA_SENAI_2026.pdf",
+                         "destino":  "referencias-locais/pdfs-adicionais/Dossie_MSA_SENAI_2026.pdf",
+                         "bytes":  119481,
+                         "sha256":  "fc9772b642f8196dd2457ba187826cb08239496683e77409614e9fd5587e09a9"
+                     },
+                     {
+                         "grupo":  "Pedido original do usuario",
+                         "origem":  "C:\\Users\\Kauan\\.codex\\attachments\\989777ab-36cb-43d2-9933-7404448bbfb0\\Texto colado.txt",
+                         "destino":  "referencias-locais/contexto-historico/PEDIDO_ORIGINAL_ANEXADO.txt",
+                         "bytes":  21440,
+                         "sha256":  "a7192631e6239288c3fe38e89078b0ccb10725846310c97dee2dcd014069fa2e"
+                     },
+                     {
+                         "grupo":  "Nota historica de contexto",
+                         "origem":  "C:\\Users\\Kauan\\.codex\\memories\\extensions\\ad_hoc\\notes\\2026-10-06T18-10-00-msa-conferencia-fontes.md",
+                         "destino":  "referencias-locais/contexto-historico/2026-10-06-fontes-e-continuidade.md",
+                         "bytes":  4625,
+                         "sha256":  "5161744da0083b0748ba5e94993362fad0dbdfbd2b7e6b11ecf35428881494e4"
+                     },
+                     {
+                         "grupo":  "Nota historica de contexto",
+                         "origem":  "C:\\Users\\Kauan\\.codex\\memories\\extensions\\ad_hoc\\notes\\2026-10-06T18-41-25-msa-entrevista-parcial.md",
+                         "destino":  "referencias-locais/contexto-historico/2026-10-06-entrevista-parcial.md",
+                         "bytes":  3300,
+                         "sha256":  "8b082c895f50dac09c95fe0403d72d11fc58331b7c7f168e9b51aee55609fcd5"
+                     }
+                 ],
+    "fontes_nao_encontradas":  [
+
+                               ]
+}

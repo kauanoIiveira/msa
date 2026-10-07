@@ -1,0 +1,2 @@
+﻿id;eventDate;context.machineId;context.processId;context.productId;createdBy;quantity;basis;startedAt;endedAt
+aec6884d-0da1-4b65-a7ab-26ac9dfce83a;2026-10-06;a05e9be2-1387-4dde-8e8b-3bb1a8f61602;555a6b07-4af1-4cee-8168-91352495029a;428ea8cd-7280-40c6-91e3-1e4f09f8fa31;simulation-admin;120;gross;1791318000000;1791321600000

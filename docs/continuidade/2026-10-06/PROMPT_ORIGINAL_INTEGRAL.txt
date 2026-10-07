@@ -1,0 +1,194 @@
+# Continuidade do projeto MSA Brasil | Desafio de Ideias SENAI 2026
+
+## 1. Projeto já iniciado e missão desta etapa
+
+Estamos dando continuidade a um projeto que JÁ COMEÇAMOS A TRABALHAR juntos. Já tivemos interações com o Codex, fizemos análises, extraímos informações de uma planilha e iniciamos o protótipo do sistema web. Você pode ter parte desse contexto no histórico ou na memória local. Recupere o que estiver disponível, confira com as fontes e com o estado atual do projeto e preserve as decisões que já tomamos. Identifique lacunas quando não conseguir recuperar alguma interação.
+
+Participamos do Desafio de Ideias SENAI 2026 para a MSA Brasil, MSA - The Safety Company, uma empresa real que apresentou um problema real. Queremos desenvolver uma solução web viável, útil para a empresa e demonstrável no desafio. O objetivo da equipe é ganhar o Desafio de Ideias SENAI 2026 com uma solução bem fundamentada e uma apresentação que comprove seu valor.
+
+Sua missão agora é reconstruir e consolidar o conhecimento do projeto: compreender o problema, examinar o material fornecido, recuperar o raciocínio anterior, conhecer o sistema que já existe e registrar esse conhecimento na memória local e na documentação do projeto. Use essa base para preparar a continuidade da resolução do problema e da prototipação. Conclua essa análise e o registro do conhecimento antes de implementar mudanças no sistema que ainda não tenham sido solicitadas.
+
+## 2. Preservação integral das informações
+
+O bloco <contexto_original_integral>, no fim deste prompt, contém TODO o texto original que forneci. Ele faz parte deste pedido e deve ser lido até o fim. Preserve-o integralmente como referência, incluindo o contexto do desafio, o SOBRE da Fabiana, todos os parágrafos, hashtags, siglas, contatos, a saudação, todas as perguntas, a lista de dispositivos, o agradecimento, os links e os caminhos.
+
+Mantenha o SOBRE e o bloco “Perguntas feitas:” literalmente como foram enviados. Você pode organizar análises ao redor deles, mas não reescreva, corrija, encurte, substitua ou omita esses trechos. Preserve também as perguntas que localizar nos materiais e no histórico. Se propuser novas perguntas depois, identifique-as como novas e mantenha as perguntas anteriores intactas.
+
+Trate as perguntas enviadas à Fabiana como perguntas já feitas. Só registre uma resposta como confirmada quando encontrar uma fonte que a sustente. A menção a 21 zonas, à planilha de selos, à linha de abafadores, a andon, a CLP/IHM, a integrações e aos dispositivos listados não confirma, por si só, a configuração do piloto, a disponibilidade dos equipamentos ou uma decisão de escopo.
+
+Preserve o nome Fabiana Stoicov e sua apresentação como Coordenadora de Engenharia Industrial da MSA - The Safety Company. Use o SOBRE como contexto fornecido sobre ela. Caso encontre diferenças entre esse perfil e outras fontes, registre a diferença e a origem de cada informação, sem alterar o texto original nem atribuir toda a experiência descrita à operação atual da MSA.
+
+Mantenha os links e caminhos exatamente como fornecidos. Se um endereço não estiver acessível ou uma pasta tiver outro nome no disco, registre a situação e o caminho encontrado; mantenha também o endereço original. Aproveite as fontes acessíveis enquanto resolve as pendências.
+
+## 3. Fontes, prioridade e ordem de leitura
+
+Fontes originais:
+
+- Drive: https://drive.google.com/drive/folders/1wj03b32ZzVM-7Tj53Dh2VYi_4KI7X9LL?usp=sharing
+- Material local: C:\Users\Kauan\Desktop\Grupo Amarelo - MSA Brasil
+- Projeto local já existente: C:\Users\Kauan\Desktop\msa-master
+- GitHub: https://github.com/kauanoIiveira/msa
+- Rascunhos de persona: C:\Users\Kauan\Desktop\Grupo Amarelo - MSA Brasil\Rascunhos Persona
+
+Confirme o diretório em que a sessão está aberta e identifique qual checkout contém o trabalho atual. Se houver mais de uma cópia do projeto, compare o estado e registre a relação entre elas antes de escolher onde guardar a documentação. Preserve o trabalho local e as decisões anteriores; não suponha que a cópia do Desktop, o checkout da sessão e o GitHub estão sincronizados.
+
+Faça um inventário do conteúdo das pastas e do Drive. Use os arquivos locais disponíveis e complemente a análise com o Drive para alcançar todo o material fornecido. Analise TODO o conteúdo, com a única exclusão já solicitada: o .zip do protótipo do MVP que está no Drive. Examine o protótipo pelo projeto local e pelo GitHub. Essa exclusão não se estende aos outros materiais nem a outros arquivos compactados que contenham fontes relevantes.
+
+Dê prioridade às fontes abaixo, sem deixar de analisar as demais:
+
+1. **Subpasta “Desafio”.** Este é o foco principal para compreender o problema proposto. Examine as duas fotos da folha entregue pelos organizadores do Desafio de Ideias SENAI 2026. Leia as imagens, transcreva o enunciado e os requisitos e confira a transcrição com as fotos. Preserve detalhes, restrições e critérios de avaliação. Indique qualquer trecho ilegível. Use esse material para orientar a análise, considerando que a folha não contém todas as informações.
+
+2. **Subpasta “Gravação de Voz”.** Localize a gravação da breve entrevista de aproximadamente cinco minutos com a Fabiana. Ouça e transcreva o áudio com os recursos disponíveis. Preserve termos técnicos, exemplos e ressalvas; associe os pontos relevantes a marcações de tempo quando possível. Registre trechos inaudíveis ou identificação incerta de quem fala. Cruze a entrevista com o enunciado e com as outras fontes. Se não conseguir processar o áudio, registre essa pendência e continue com os demais materiais.
+
+3. **“Material Fornecido pela empresa”.** Analise a planilha, as fotos da máquina, as imagens que explicam como algumas coisas funcionam e os demais arquivos fornecidos pela MSA. Já extraímos informações dessa planilha anteriormente: procure a extração, as anotações e a análise anteriores, recupere o raciocínio e confira os resultados com o arquivo de origem. Examine todas as abas, campos, unidades, fórmulas, observações, parâmetros, limites e registros relevantes. Nas fotos, leia as informações visíveis e identifique o que elas permitem concluir sobre a máquina e o processo. Associe as conclusões ao arquivo, à aba/célula ou à imagem de origem e marque qualquer interpretação incerta.
+
+4. **Documentação em C:\Users\Kauan\Desktop\msa-master\docs.** Leia os documentos, análises, requisitos, anotações, decisões, roteiros e outros arquivos que já registramos. Cruze essa documentação com o código e as fontes da empresa. Identifique o que ainda corresponde ao estado atual, o que mudou e o que depende de confirmação.
+
+5. **C:\Users\Kauan\Desktop\Grupo Amarelo - MSA Brasil\Rascunhos Persona.** Leia o conteúdo completo para compreender usuários, papéis, tarefas, necessidades e dificuldades considerados pela equipe. Preserve o caráter de rascunho quando faltar validação. Relacione essas informações ao fluxo real descrito pela empresa e ao sistema existente.
+
+6. **Sistema web existente.** Examine C:\Users\Kauan\Desktop\msa-master e https://github.com/kauanoIiveira/msa, considerando também o checkout atual da sessão quando houver. Leia a documentação de entrada e continuidade, a estrutura do projeto e os arquivos necessários para entender telas, funcionalidades, fluxos, cadastros, dados, integrações, simulações e limitações. Registre o que já está implementado e o que foi apenas planejado. Preserve a distinção entre dados reais, referências, rascunhos e dados de teste. Aproveite o que já construímos e identifique mudanças necessárias com base no problema.
+
+7. **Restante do conteúdo.** Analise os outros documentos, PDFs, planilhas, fotos, áudios e arquivos de apoio. Registre a origem das cópias e eventuais diferenças de versão. A prioridade dada à pasta “Desafio” orienta a ordem de leitura; o levantamento deve cobrir todo o material incluído neste pedido.
+
+## 4. Como consolidar o entendimento
+
+Reconstrua o raciocínio do projeto a partir das evidências e das decisões anteriores. Separe fatos confirmados, declarações da empresa, decisões da equipe, hipóteses, propostas, rascunhos e pendências. Registre divergências entre fontes e versões em vez de escolher silenciosamente uma delas.
+
+Explique o problema real, quem o enfrenta, em qual processo ocorre, como as pessoas trabalham hoje, quais informações usam e quais dificuldades a solução precisa resolver. Relacione cada requisito ao enunciado, à entrevista, aos materiais da empresa ou a uma decisão anterior identificada.
+
+Para cada grupo das perguntas já feitas à Fabiana, procure respostas nos materiais e no histórico. Registre a fonte, o que ela responde e o que continua sem resposta. Preserve o texto das perguntas quando as reproduzir. Inclua as questões sobre prioridades, piloto, fluxo completo, coleta automática, acesso e alternativas de coleta, receitas e indicadores, contadores de produção, paradas/refugos/perdas, condições de uso, aprovação do MVP, andon e disponibilidade dos dispositivos listados.
+
+Compare os requisitos e necessidades com o sistema atual. Identifique funcionalidades existentes, lacunas, dependências e pontos que precisam de validação. Fundamente prioridades no problema da MSA e nos critérios do desafio. Quando depender de uma resposta da Fabiana, de um equipamento ou de acesso a uma interface, registre essa dependência. Indique alternativas que possam ser demonstradas, mantendo explícito o que ainda precisa ser confirmado pela empresa.
+
+Mantenha um registro de cobertura dos materiais: caminho ou link, tipo de arquivo, estado de leitura, informações extraídas, relação com o projeto e pendências. Para referências específicas, use página, aba/célula, foto ou marcação de tempo quando disponíveis. Aponte arquivos que não conseguiu ler e o motivo. Não declare análise completa enquanto houver fontes relevantes pendentes sem identificação.
+
+## 5. Memória local e documentação de continuidade
+
+Autorizo explicitamente que você registre na memória local o conhecimento deste projeto, as decisões anteriores recuperadas, as fontes, os caminhos, os vínculos entre materiais, os requisitos confirmados, as hipóteses e as pendências. Use o mecanismo de memória disponível no seu ambiente e respeite suas instruções de gravação. Se ele exigir notas de atualização em uma pasta específica, grave essas notas pelo procedimento permitido.
+
+Mantenha também uma base de conhecimento durável na documentação do checkout identificado como atual. Reutilize e complemente os registros existentes, preservando seu conteúdo e histórico. Guarde este prompt completo, com o contexto original integral, como referência. Organize a análise com um índice de fontes e um ponto de retomada para que possamos continuar em outra sessão sem perder o contexto.
+
+Inclua nos registros: objetivo e contexto do desafio; problema e processo; requisitos e evidências; perfil da Fabiana e perguntas originais; respostas localizadas e pendências; extrações da planilha; informações das fotos e do áudio; personas e grau de validação; decisões anteriores; estado atual do sistema; diferenças entre cópias; prioridades e próximo passo recomendado. Preserve os detalhes nos documentos de referência mesmo que a nota de memória precise ser concisa.
+
+Confira os arquivos depois de gravá-los. Na entrega, informe os caminhos exatos dos registros criados ou atualizados e o que cada um contém. Diferencie o que gravou pelo mecanismo de memória local do que salvou na documentação do projeto. Se algum mecanismo não estiver disponível, informe a limitação e preserve o conhecimento em arquivos locais. Só afirme que leu, transcreveu ou salvou algo depois de verificar a execução.
+
+## 6. Entrega desta etapa e forma de trabalhar
+
+Conduza a leitura e a consolidação até concluir o trabalho possível com as fontes disponíveis. Resolva as escolhas rotineiras usando o contexto; peça esclarecimentos quando uma lacuna impedir uma conclusão necessária. Enquanto houver material independente que possa analisar, continue trabalhando.
+
+Ao terminar, entregue em português:
+
+- O entendimento do problema e dos requisitos, com as fontes que o sustentam.
+- O estado do projeto existente e as decisões anteriores recuperadas.
+- O registro de materiais analisados e das pendências de leitura ou acesso.
+- As respostas encontradas para as perguntas da Fabiana e as questões ainda abertas.
+- Os caminhos dos registros de memória e documentação que efetivamente salvou.
+- A recomendação do próximo passo para continuar a solução e a prototipação do sistema web, com as dependências necessárias.
+
+Mantenha a explicação no chat clara e objetiva, com o detalhamento completo nos registros locais. Nosso foco é compreender o problema da MSA com precisão e dar continuidade ao trabalho já iniciado, com uma solução que a equipe consiga defender, demonstrar e validar no Desafio de Ideias SENAI 2026.
+
+## 7. Contexto original integral, preservado literalmente
+
+Leia e mantenha todo o conteúdo abaixo. As instruções anteriores acrescentam a ordem de trabalho e as orientações complementares deste pedido; este bloco preserva todas as informações do texto de origem.
+
+<contexto_original_integral>
+Estou participando de um desafio de ideias pro SENAI 2026, a empresa não é fictícia, é real; MSA Brasil
+O desafio proposto é: eles dão um problema real que eles estão tendo dentro da empresa e a equipe produz uma solução viável.
+
+Vou te enviar um drive que tem todo o conteúdo passado até agora, quero passar todo o raciocínio do projeto até agora para que a memória e linha de raciocínio estejam intactas e perfeitas aqui para dar melhor continuidade.
+Dentro do drive, tenha principalmente o foco nas subpastas do drive "Desafio", onde são duas fotos tiradas de uma folha que os organizadores do Desafio de Ideias do SENAI 2026 nos entregaram com uma boa direção do problema da empresa (obviamente não tem tudo, ainda teve uma breve entrevista de 5 minutos que está na subpasta "Gravação de Voz") e enviamos perguntas para a pessoa que poderá nos direcionar melhor: Fabiana Stoicov, Coordenadora de Engenharia Industrial da empresa MSA - The Safety Company. Aqui está um SOBRE ela que talvez possa ajudar, referente a ela dentro da MSA:
+Sou Coordenadora Técnica de Processos de Produção de peças automotivas destinadas ao conforto térmico e sonoro do cliente final. 
+Supervisora de Produção e Qualidade e Especialista em Excelência Operacional, com forte atuação em liderança de equipes.
+Engenheira Química, Especialista em Processos Químicos de Pintura automotiva anticorrosivo e acabamento final.
+  
+Vasta experiência nacional e internacional em Multinacionais nos segmentos de plásticos, metalurgia, automotiva e automobilística, com mais de 25 anos atuando em cargos de Liderança e especialista com foco em Engenharia de Processos, Pintura Automotiva, Produção, Qualidade e Lean Manufacturing / VAVE (Engenharia e Análise de Valor). 
+  
+Em Lean Manufacturing e Excelência Operacional posso destacar resultados financeiros comprovados de 50% acima do budget, por meio da implementação de ações e workshops de Hoshin, VAVE, SMED, TPM, Line Balance, VSM,  projetos 6 Sigma, SW (Trabalho Padronizado) e 5S.
+  
+Como Especialista em Pintura automotiva minhas expertises são em processos de Fosfatização, Pintura E-coat e Calafetação de carrocerias e redução do Índice de Air Leakage e Infiltração de água, aplicação de Primer e Base, melhoria na performance de pintura interna do veículo evitando corrosão.
+  
+Em Qualidade tenho ampla competência em Sistemas de Qualidade, Auditorias e Gestão de Fornecedores, Análises químicas e físicas em Laboratório e  Ferramentas da qualidade destacando: APQP , PPAP, FMEA,  CEP,  8D,  Ishikawa ,QRQC, MLEAN,  TIMES,  Black Belt Projetos 6 sigma
+   
+Histórico comprovado de redução de custos, aumento de produtividade, melhoria da qualidade e eficiência energética, atuando em ambientes industriais complexos e multinacionais. Vivência em workshops internacionais e projetos alinhados às diretrizes de qualidade, sustentabilidade e segurança.
+  
+#Coordenação e Supervisão Industrial (Peças Automotivas)
+#Engenharia Química, Processos Industriais e Produção
+#Pintura Automotiva (Montadoras)
+#Lean Manufacturing
+#Melhoria Contínua
+#Black Belt
+#Gestão da Qualidade
+#Auditorias (IATF, ISO 9001, ISO 14001, ISO 45001, VDA 6.3)
+#Gestão de Equipes e Liderança Operacional
+#Desenvolvimento e Qualificação de Fornecedores
+#Indicadores de Performance (KPIs).
+
+Whatsapp : (12) 99630-4505
+e-mail: fddas@hotmail.com
+
+
+
+
+
+
+
+
+
+
+Perguntas feitas:
+Olá, Fabiana! Nossa equipe está fechando o escopo do sistema para o desafio. Analisamos os materiais e gostaríamos de esclarecer algumas questões para entregar um MVP útil e demonstrável.
+
+Quais resultados devemos priorizar?
+Além dos requisitos mínimos do enunciado, quais três resultados fariam mais diferença para a MSA? Por exemplo: reduzir transcrição, acelerar a análise da Engenharia ou identificar melhor as perdas. Como vocês avaliam essas dificuldades hoje?
+
+Qual será o processo piloto?
+Quais máquina, produto e receita devemos usar como referência para desenvolver e testar? A máquina com 21 zonas corresponde à planilha de selos? Devemos demonstrar também a linha de abafadores ou concentrar o piloto em um processo?
+
+Qual fluxo completo o sistema deve atender?
+Do registro dos dados até a análise e eventual liberação, quais etapas precisam acontecer, quem participa e qual informação cada pessoa precisa receber? Quais decisões exigem aprovação da Engenharia?
+
+Quais dados estão realmente disponíveis para coleta automática?
+O equipamento disponibiliza temperaturas medidas e ajustadas, pressão, vácuo, contadores, estados e alarmes? Quais informações existem somente em instrumentos analógicos, papel ou apontamentos do operador?
+
+Qual forma de coleta podemos implementar e demonstrar no desafio?
+Existe acesso autorizado para leitura do CLP/IHM, exportação de arquivos ou histórico disponível? Quem pode confirmar os equipamentos e interfaces? Se a integração não estiver disponível a tempo, qual alternativa seria aceitável: importação de arquivo, OCR ou registro digital?
+
+Qual referência devemos usar para validar os parâmetros e calcular os indicadores?
+Há uma versão aprovada de receitas, limites e metas? Como tratar zonas desativadas e leituras durante aquecimento ou setup? Para Cp/Cpk, qual método, frequência de coleta e quantidade de amostras a Engenharia adota?
+
+Como transformar os contadores em produção correta?
+Quantas peças correspondem a cada ciclo? Como são identificadas aprovadas e reprovadas? Quando os contadores reiniciam e como devemos relacioná-los a produto, ordem e turno?
+
+
+Como registrar e classificar paradas, refugos e perdas?
+Quais categorias vocês utilizam? O que define início e fim de uma parada? Quais motivos podem vir dos alarmes e quais precisam de confirmação humana? Como são obtidas as quantidades de refugo e a perda de material em kg?
+
+Em quais condições o sistema será utilizado?
+Será usado em computador, tablet ou celular? Existe rede disponível junto às máquinas? Há restrições de instalação, armazenamento ou acesso que precisamos considerar? Quais situações devem gerar um alerta e para quem?
+
+O que devemos demonstrar para vocês considerarem o MVP aprovado?
+Quais casos precisam funcionar de ponta a ponta? Vocês podem disponibilizar exemplos autorizados de dados, fotos e ocorrências, além de indicar alguém para validar o protótipo? Qual melhoria podemos medir para comprovar o resultado?
+
+A empresa já dispõe de um sistema andon? Como ocorre a visualização física das falhas e interrupções das máquinas? Existe um problema nesse sentido, e se sim, a agilidade de perceber as interrupções é um dos principais?
+
+A empresa tem disponível estes dispositivos, sensores e indutores?
+- Módulo IoT Concentrador (ESP32 / CLP IoT) - 1un.
+- Transdutor de Pressão Industrial (0–10 bar) - 1un.
+- Transdutor de Vácuo Industrial (0 a -1 bar) - 1un.
+- Módulo de Leitura Térmica (RS-485 / Modbus) -  1un.
+- Sensores Indutivos / Acopladores Digitais - 4un.
+
+
+Agradecemos pelo apoio! Com essas respostas, conseguiremos fechar as prioridades e desenvolver uma demonstração alinhada às necessidades da MSA.
+
+
+
+
+
+
+Analise TODO o conteúdo do Drive, exceto o .zip que é o protótipo do MVP do sistema que estará no GitHub e salvo localmente em "C:\Users\Kauan\Desktop\msa-master", que será melhor pra você absorver.
+Drive: https://drive.google.com/drive/folders/1wj03b32ZzVM-7Tj53Dh2VYi_4KI7X9LL?usp=sharing ou já locamente tudo em "C:\Users\Kauan\Desktop\Grupo Amarelo - MSA Brasil"
+GitHub: https://github.com/kauanoIiveira/msa
+
+
+</contexto_original_integral>

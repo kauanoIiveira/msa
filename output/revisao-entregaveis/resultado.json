@@ -1,0 +1,113 @@
+{
+  "ok": true,
+  "steps": [
+    {
+      "name": "Entrada sem registros e sem permissão de escrita anônima",
+      "ok": true
+    },
+    {
+      "name": "Simulação iniciada pelo botão do produto, sem fixture injetada",
+      "ok": true
+    },
+    {
+      "name": "Cadastro machines: Máquina da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro processes: Processo da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro products: Produto da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro parameters: Temperatura da revisão",
+      "ok": true
+    },
+    {
+      "name": "Faixa invertida rejeitada na interface",
+      "ok": true
+    },
+    {
+      "name": "Limite aprovado de exemplo registrado (sem homologação industrial)",
+      "ok": true
+    },
+    {
+      "name": "Cadastro reasons: Parada da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro reasons: Refugo da revisão",
+      "ok": true
+    },
+    {
+      "name": "Cadastro reasons: Material da revisão",
+      "ok": true
+    },
+    {
+      "name": "Contexto selecionado: máquina → processo → produto",
+      "ok": true
+    },
+    {
+      "name": "Meta de produção registrada para o contexto",
+      "ok": true
+    },
+    {
+      "name": "Coleta digital decimal e desvio visual da regra aprovada",
+      "ok": true
+    },
+    {
+      "name": "Produção com quantidade, base e período registrada",
+      "ok": true
+    },
+    {
+      "name": "Parada iniciada e encerrada, motivo e duração de 10 minutos",
+      "ok": true
+    },
+    {
+      "name": "Refugo em peças e perda de material em kg, ambos com motivo",
+      "ok": true
+    },
+    {
+      "name": "Histórico collections: 1 registros do contexto",
+      "ok": true
+    },
+    {
+      "name": "Histórico production: 1 registros do contexto",
+      "ok": true
+    },
+    {
+      "name": "Histórico stoppages: 1 registros do contexto",
+      "ok": true
+    },
+    {
+      "name": "Histórico losses: 2 registros do contexto",
+      "ok": true
+    },
+    {
+      "name": "Detalhe preserva máquina, processo e produto",
+      "ok": true
+    },
+    {
+      "name": "Coleta enviada à Engenharia, análise iniciada e decisão justificada",
+      "ok": true
+    },
+    {
+      "name": "Dashboard atualiza produção120/parada10min/refugo4,17%, gráficos e meta não atingida",
+      "ok": true
+    },
+    {
+      "name": "Exportação CSV do período/contexto pela interface",
+      "ok": true
+    },
+    {
+      "name": "Encerrar simulação devolve estado operacional sem alterações",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "blockedRemoteWrites": 0,
+  "fromDate": "2026-10-06",
+  "network": "nenhuma escrita remota; somente dados sintéticos em memória"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "base": "/",
+    "ok": true,
+    "n": 17,
+    "cp": 0.33864810597807815,
+    "cpk": 0.2788866755113583,
+    "firebaseModule": true,
+    "catalogCount": 41,
+    "dashboardCount": 41
+  },
+  {
+    "base": "/msa-test/",
+    "ok": true,
+    "n": 17,
+    "cp": 0.33864810597807815,
+    "cpk": 0.2788866755113583,
+    "firebaseModule": true,
+    "catalogCount": 41,
+    "dashboardCount": 41
+  }
+]

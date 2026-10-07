@@ -1,0 +1,287 @@
+{
+  "parameters": 41,
+  "collections": 17,
+  "fields": {
+    "number": 562,
+    "text": 121,
+    "missing": 14
+  },
+  "dates": [
+    "2026-08-25 00:00:00",
+    "2026-08-25 00:00:00",
+    "2026-08-26 00:00:00",
+    "2026-08-26 00:00:00",
+    "2026-08-27 00:00:00",
+    "2026-08-27 00:00:00",
+    "2026-08-28 00:00:00",
+    "2026-08-28 00:00:00",
+    "31/08/2026",
+    "31/08/2026",
+    "2026-09-17 00:00:00",
+    "2026-09-21 00:00:00",
+    "2026-09-22 00:00:00",
+    "2026-09-23 00:00:00",
+    "2026-09-24 00:00:00",
+    "2026-09-25 00:00:00",
+    "2026-09-29 00:00:00"
+  ],
+  "limits": {
+    "F9": {
+      "name": "Temp Ambiente",
+      "lower": 13,
+      "upper": 30,
+      "unit": "°C"
+    },
+    "H9": {
+      "name": "Aquecimento Z1",
+      "lower": 0,
+      "upper": 0,
+      "unit": "°C"
+    },
+    "J9": {
+      "name": "Aquecimento Z2",
+      "lower": 255,
+      "upper": 265,
+      "unit": "°C"
+    },
+    "L9": {
+      "name": "Aquecimento Z3",
+      "lower": 255,
+      "upper": 265,
+      "unit": "°C"
+    },
+    "N9": {
+      "name": "Aquecimento Z4",
+      "lower": 252,
+      "upper": 262,
+      "unit": "°C"
+    },
+    "P9": {
+      "name": "Aquecimento Z5",
+      "lower": 252,
+      "upper": 262,
+      "unit": "°C"
+    },
+    "R9": {
+      "name": "Aquecimento  Z6",
+      "lower": 252,
+      "upper": 262,
+      "unit": "°C"
+    },
+    "T9": {
+      "name": "Aquecimento   Z7",
+      "lower": 265,
+      "upper": 275,
+      "unit": "°C"
+    },
+    "V9": {
+      "name": "Aquecimento   Z8",
+      "lower": 265,
+      "upper": 275,
+      "unit": "°C"
+    },
+    "X9": {
+      "name": "Aquecimento  Z9",
+      "lower": 0,
+      "upper": 0,
+      "unit": "°C"
+    },
+    "Z9": {
+      "name": "Aquecimento Z10",
+      "lower": 0,
+      "upper": 0,
+      "unit": "°C"
+    },
+    "AB9": {
+      "name": "Aquecimento  Z11",
+      "lower": 250,
+      "upper": 260,
+      "unit": "°C"
+    },
+    "AD9": {
+      "name": "Aquecimento   Z12",
+      "lower": 260,
+      "upper": 270,
+      "unit": "°C"
+    },
+    "AF9": {
+      "name": "Aquecimento  Z13",
+      "lower": 260,
+      "upper": 270,
+      "unit": "°C"
+    },
+    "AH9": {
+      "name": "Aquecimento Z14",
+      "lower": 255,
+      "upper": 265,
+      "unit": "°C"
+    },
+    "AJ9": {
+      "name": "Aquecimento Z15",
+      "lower": 270,
+      "upper": 280,
+      "unit": "°C"
+    },
+    "AL9": {
+      "name": "Aquecimento Z16",
+      "lower": 270,
+      "upper": 280,
+      "unit": "°C"
+    },
+    "AN9": {
+      "name": "Aquecimento Z17",
+      "lower": 270,
+      "upper": 280,
+      "unit": "°C"
+    },
+    "AP9": {
+      "name": "Aquecimento Z18",
+      "lower": 0,
+      "upper": 0,
+      "unit": "°C"
+    },
+    "AR9": {
+      "name": "Aquecimento Z19",
+      "lower": 285,
+      "upper": 295,
+      "unit": "°C"
+    },
+    "AT9": {
+      "name": "Aquecimento Z20",
+      "lower": 300,
+      "upper": 310,
+      "unit": "°C"
+    },
+    "AV9": {
+      "name": "Aquecimento Z21",
+      "lower": 310,
+      "upper": 320,
+      "unit": "°C"
+    },
+    "AX9": {
+      "name": "Medida do Passo",
+      "lower": 412,
+      "upper": 415,
+      "unit": "mm"
+    },
+    "AZ9": {
+      "name": "Velocidade do Passo",
+      "lower": 19,
+      "upper": 20,
+      "unit": "%"
+    },
+    "BB9": {
+      "name": "Tempo de Vacuo",
+      "lower": 75,
+      "upper": 85,
+      "unit": "seg"
+    },
+    "BD9": {
+      "name": "Tempo de Resfriamento",
+      "lower": 35,
+      "upper": 36,
+      "unit": "seg"
+    },
+    "BF9": {
+      "name": "Tempo destacar",
+      "lower": 0.8,
+      "upper": 0.9,
+      "unit": "seg"
+    },
+    "BH9": {
+      "name": "Tempo Contra molde",
+      "lower": 80,
+      "upper": 75,
+      "unit": "seg"
+    },
+    "BJ9": {
+      "name": "Tempo prensa corte",
+      "lower": 10,
+      "upper": 15,
+      "unit": "seg"
+    },
+    "BL9": {
+      "name": "Tempo de esteira saida",
+      "lower": 28,
+      "upper": 30,
+      "unit": "seg"
+    },
+    "BN9": {
+      "name": "Retardo de Passo",
+      "lower": 1,
+      "upper": 2,
+      "unit": "seg"
+    },
+    "BP9": {
+      "name": "Retardo de Mesa ",
+      "lower": 0.1,
+      "upper": 1,
+      "unit": "seg"
+    },
+    "BR9": {
+      "name": "Retardo de Vacuo",
+      "lower": 4,
+      "upper": 5,
+      "unit": "seg"
+    },
+    "BT9": {
+      "name": "Retardo de resfriamento",
+      "lower": 4,
+      "upper": 5,
+      "unit": "seg"
+    },
+    "BV9": {
+      "name": "Retardo destacar",
+      "lower": 2,
+      "upper": 5,
+      "unit": "seg"
+    },
+    "BX9": {
+      "name": "Retardo Contra Molde",
+      "lower": 1.5,
+      "upper": 5,
+      "unit": "seg"
+    },
+    "BZ9": {
+      "name": "Retardo Prensa Corte",
+      "lower": 9.5,
+      "upper": 15,
+      "unit": "seg"
+    },
+    "CB9": {
+      "name": "Retardo disco corte",
+      "lower": 7,
+      "upper": 9,
+      "unit": "seg"
+    },
+    "CD9": {
+      "name": "Retardo esteria saida",
+      "lower": 0.5,
+      "upper": 1,
+      "unit": "seg"
+    },
+    "CF9": {
+      "name": "Pressão Ar",
+      "lower": "6,5",
+      "upper": null,
+      "unit": "bar"
+    },
+    "CH9": {
+      "name": "Vacuo",
+      "lower": -600,
+      "upper": null,
+      "unit": "mm/Hg"
+    }
+  },
+  "formula_samples": {
+    "BF69": "=IF(BF17=\"\",\"\",MIN(BF17:BF67))",
+    "BF71": "=IF(BF17=\"\",\"\",AVERAGE(BF17:BF67))",
+    "BF72": "=IF(BF17=\"\",\"\",STDEVP(BF17:BF67))",
+    "BF73": "=IF(BF17=\"\",\"\",(BF11-BF10)/6/BF72)",
+    "BF74": "=IF(BF17=\"\",\"\",MIN(((BF11-BF71)/3/BF72),((BF71-BF10)/3/BF72)))",
+    "BH10": 80,
+    "BH11": 75,
+    "U6": 1.33,
+    "G93": "OK"
+  }
+}

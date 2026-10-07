@@ -1,0 +1,35 @@
+✔ hourly production never allocates a crossing total and preserves unknown, zero and an unfinished hour (3.2123ms)
+✔ microstoppages use explicit seconds, exclude planned/open stops and union overlapping time (0.5363ms)
+✔ hourly last entry refers only to events in the chosen day (0.2235ms)
+✖ hourly conflicts do not reuse original quantities or stoppage times as resolved values (1.7009ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 130.5734
+
+✖ failing tests:
+
+test at tests\unit\hourly.test.js:22:1
+✖ hourly conflicts do not reuse original quantities or stoppage times as resolved values (1.7009ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  100 !== null
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/hourly.test.js:24:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 100,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

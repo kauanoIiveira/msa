@@ -1,4 +1,5 @@
 import {assertId,knownKeys,requireThat} from './errors.js';
+export const contextKey=context=>JSON.stringify(Object.entries(context??{}).sort(([a],[b])=>a.localeCompare(b)));
 export function assertContext(context,{machines,processes,products}) {
   knownKeys(context,['machineId','processId','productId','recipe','lot','order','shift']);
   for(const field of ['machineId','processId','productId']) assertId(context[field],field);

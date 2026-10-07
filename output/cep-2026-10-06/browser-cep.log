@@ -1,0 +1,30 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /0,86/. Input:
+
+'Conferência da planilha\n' +
+  '\n' +
+  'Recalculado com números e números em texto: média 0,858824 seg · desvio populacional 0,049215.\n' +
+  '\n' +
+  'Este é o cálculo de dispersão global usado como comparação com STDEVP, não o σ dentro da carta I-MR. Cp/Cpk do estudo acima dependem dos requisitos indicados.\n' +
+  '\n' +
+  'Fórmulas e resultados salvos na fonte'
+
+    at file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/browser/cep.mjs:16:93 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'Conferência da planilha\n' +
+    '\n' +
+    'Recalculado com números e números em texto: média 0,858824 seg · desvio populacional 0,049215.\n' +
+    '\n' +
+    'Este é o cálculo de dispersão global usado como comparação com STDEVP, não o σ dentro da carta I-MR. Cp/Cpk do estudo acima dependem dos requisitos indicados.\n' +
+    '\n' +
+    'Fórmulas e resultados salvos na fonte',
+  expected: /0,86/,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

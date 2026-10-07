@@ -1,45 +1,88 @@
-import assert from "node:assert/strict";
-import { createStaticServer } from "../../scripts/serve.mjs";
+import assert from 'node:assert/strict';
+import {createStaticServer} from '../../scripts/serve.mjs';
+import {installAuthFixture} from './fixtures/auth.mjs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {mkdir} from 'node:fs/promises';
-const { chromium } = await import(
-  process.env.PLAYWRIGHT_MODULE ?? "playwright"
-);
-const server = await createStaticServer({ port: 0 }),
-  browser = await chromium.launch({ headless: true });
+const {chromium}=await import(process.env.PLAYWRIGHT_MODULE??'playwright');
+const server=await createStaticServer({port:0}),browser=await chromium.launch({headless:true});
+const url=`http://127.0.0.1:${server.address().port}/`;
 try {
-  const page = await browser.newPage();
-  await page.goto(`http://127.0.0.1:${server.address().port}/`);
-  await page.locator(".zones .zone").first().waitFor({ timeout: 5000 });
-  assert.equal(await page.locator("#login").count(), 0);
-  assert.equal(await page.locator(".zones .zone").count(), 21);
-  assert.doesNotMatch(
-    await page.locator("body").innerText(),
-    /prot[oó]tipo|demonstra[çc][aã]o|Desafio de Ideias|sint[eé]tico/i,
-  );
-  assert.ok(
-    (await page.locator(".metric").first().innerText()).includes("Sem dados"),
-  );
-  await page.locator("[data-action=connect]").first().click();
-  await page.locator("#modal[open] [name=password]").waitFor();
-  assert.equal(await page.locator(".login-rail").count(), 0);
-  await page.locator('[data-action=close-modal]').first().click();
-  await mkdir('output/ui',{recursive:true});
-  await page.setViewportSize({width:1440,height:900});
-  await page.screenshot({path:'output/ui/operational-empty-desktop.png',fullPage:true});
-  await page.setViewportSize({width:390,height:844});
-  await page.screenshot({path:'output/ui/operational-empty-mobile.png',fullPage:true,animations:'disabled'});
-  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  const page=await browser.newPage(),errors=[];
+  page.on('pageerror',error=>errors.push(error.message));
+  await installAuthFixture(page,{empty:true});
+  await page.goto(url+'#parameters');
+  await page.locator('#login').waitFor({timeout:5000});
+  assert.equal(await page.locator('.rail').count(),0);
+  assert.equal(await page.locator('#login [name=email]').inputValue(),'');
+  await page.locator('#login [name=email]').fill('test@example.com');
+  await page.locator('#login [name=password]').fill('invalid');
+  await page.locator('[data-action=password]').click();
+  assert.equal(await page.locator('#login [name=password]').getAttribute('type'),'text');
+  const busy = await page.locator('#login').evaluate(form=>{form.requestSubmit();form.requestSubmit();return {busy:form.getAttribute('aria-busy'),disabled:form.querySelector('[type=submit]').disabled};});
+  assert.deepEqual(busy,{busy:'true',disabled:true});
+  await page.getByText('E-mail ou senha incorretos.',{exact:true}).waitFor();
+  assert.equal(await page.evaluate(()=>window.authFixtureCalls),1);
+  assert.equal(await page.locator('#login [name=email]').inputValue(),'test@example.com');
+  assert.equal(await page.locator('#login [name=password]').inputValue(),'invalid');
+  assert.equal(await page.locator('#login [type=submit]').isDisabled(),false);
+  await page.locator('#login [name=password]').fill('fixture-only');
+  await page.locator('#login [name=password]').press('Enter');
+  await page.locator('#parameter-results').waitFor();
+  await page.locator('.avatar').click();
+  await page.evaluate(()=>{window.fixturePopover=document.getElementById('account-popover');});
+  await page.waitForFunction(()=>document.getElementById('account-popover')!==window.fixturePopover);
+  assert.equal(await page.locator('#account-popover').isVisible(),true,'Atualização de dados conserva o card da conta aberto');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('.page-heading h1').innerText(),'Parâmetros');
+  assert.equal(await page.evaluate(()=>window.authFixtureWorkspace),'msa');
+  await page.reload();
+  await page.locator('#parameter-results').waitFor();
+  assert.equal(await page.locator('#login').count(),0);
+  await page.locator('a[href="#dashboard"]').first().click();
+  await page.locator('.zones .zone').first().waitFor();
+  assert.equal(await page.locator('.zones .zone').count(),21);
+  assert.ok((await page.locator('.metric').first().innerText()).includes('Sem dados'));
+  assert.equal(await page.locator('[data-action="form:collection"]').count(),0);
+  await page.locator('[data-action=simulate]').click();
+  await page.locator('#modal [type=submit]').click();
+  await page.locator('.simulation-notice').waitFor();
+  await page.locator('.avatar').click();
+  await page.getByRole('button',{name:'Sair da simulação',exact:true}).click();
+  await page.locator('.metric .missing-value').first().waitFor();
+  assert.equal(await page.locator('.avatar').innerText(),'TV');
+  assert.equal(await page.locator('.rail [data-action=logout]').count(),0);
+  assert.equal(await page.locator('#account-popover').isVisible(),false);
+  await page.locator('.avatar').click();
+  await page.locator('#account-popover').waitFor();
+  assert.equal(await page.locator('.avatar').getAttribute('aria-expanded'),'true');
+  assert.ok((await page.locator('#account-popover').innerText()).includes('Teste Visual'));
+  assert.ok((await page.locator('#account-popover').innerText()).includes('test@example.com'));
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#account-popover').isVisible(),false);
+  assert.equal(await page.locator('.avatar').evaluate(el=>el===document.activeElement),true);
+  await page.locator('.avatar').click();
+  await page.locator('.page-heading h1').click();
+  assert.equal(await page.locator('#account-popover').isVisible(),false);
+  await page.locator('.avatar').click();
+  await page.locator('#account-popover a[href="#settings"]').click();
+  await page.locator('#profile-form').waitFor();
+  await page.locator('.avatar').click();
+  await page.locator('[data-action=logout]').click();
+  await page.locator('#login').waitFor();
   await page.route('http://127.0.0.1:5173/**',async route=>{
     const response=await route.fetch({url:route.request().url().replace(':5173',`:${server.address().port}`)});
     await route.fulfill({response});
   });
-  await page.goto(pathToFileURL(resolve('index.html')).href);
-  await page.locator('.zones .zone').first().waitFor();
-  assert.equal(page.url(),'http://127.0.0.1:5173/#dashboard');
-  console.log("Direct dashboard entry: OK");
-} finally {
-  await browser.close();
-  await new Promise((resolve) => server.close(resolve));
-}
+  await page.goto(pathToFileURL(resolve('index.html')).href+'#parameters');
+  await page.locator('#login').waitFor();
+  assert.equal(page.url(),'http://127.0.0.1:5173/#parameters');
+  await page.reload();
+  await page.locator('#login').waitFor();
+  await page.locator('[data-action=simulate]').click();
+  await page.locator('#modal [type=submit]').click();
+  await page.locator('.simulation-notice').waitFor();
+  await page.locator('[data-action=end-simulation]').click();
+  await page.locator('#login').waitFor();
+  assert.deepEqual(errors,[]);
+  console.log('Login, erro preservado, Enter, sessão restaurada, saída, perfil de leitura, vazio e retorno da simulação: OK (fixture em memória)');
+} finally {await browser.close();await new Promise(resolve=>server.close(resolve));}

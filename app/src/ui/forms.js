@@ -9,12 +9,12 @@ const parameters=(registries,context)=>active(registries,'parameters').filter(ro
 const metricUnits={producedPieces:'pieces',stopMinutes:'minutes',rejectedPieces:'pieces',lossKg:'kg'};
 const kindLabels={stop:'Parada',reject:'Refugo',material:'Perda de material',rework:'Retrabalho'};
 const field=(label,control,full=false)=>`<label class="field${full?' full':''}"><span>${escape(label)}</span>${control}</label>`;
-const input=(name,value='',{type='text',required=true,maxLength,inputMode}={})=>`<input type="${escape(type)}" name="${escape(name)}" value="${escape(value)}"${required?' required':''}${maxLength?` maxlength="${maxLength}"`:''}${inputMode?` inputmode="${escape(inputMode)}"`:''}>`;
+const input=(name,value='',{type='text',required=true,maxLength,inputMode}={})=>`<input type="${escape(type)}" name="${escape(name)}" value="${escape(value)}"${type==='datetime-local'?' step="1"':''}${required?' required':''}${maxLength?` maxlength="${maxLength}"`:''}${inputMode?` inputmode="${escape(inputMode)}"`:''}>`;
 const option=(value,label,selected)=>`<option value="${escape(value)}"${selected?' selected':''}>${escape(label)}</option>`;
 const select=(name,choices,value='',{placeholder=true,required=true}={})=>`<select name="${escape(name)}"${required?' required':''}>${placeholder?option('','Selecione',value===''):''}${choices.map(([id,label])=>option(id,label,id===value)).join('')}</select>`;
 const registrySelect=(name,kind,registries,value)=>select(name,active(registries,kind).map(row=>[row.id,row.name]),value);
 const localDateTime=value=>{
-  const instant=typeof value==='number'?value:Date.now();return new Date(instant-3*3600000).toISOString().slice(0,16);
+  const instant=typeof value==='number'?value:Date.now();return new Date(instant-3*3600000).toISOString().slice(0,19);
 };
 const ruleLabel=rule=>rule?.kind==='range'?`${rule.lower} a ${rule.upper}`:rule?.kind==='lower'?`Mínimo ${rule.lower}`:rule?.kind==='upper'?`Máximo ${rule.upper}`:'Limite pendente';
 const versionLabel=version=>`${version.status==='approved'?'Aprovado':'Rascunho'} · ${version.nature==='setpoint'?'Setpoint':'Medição'} · ${ruleLabel(version.rule)} ${version.unit??''}`;
@@ -56,7 +56,7 @@ export function formMarkup(kind,{registries={},context={},record={},catalog=[]}=
   return `<div class="form-grid">${content}</div>`;
 }
 
-function saoPauloInstant(value,field) {
+export function saoPauloInstant(value,field) {
   const match=typeof value==='string'&&value.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?$/);
   requireThat(match&&Number(match[2])<24&&Number(match[3])<60&&Number(match[4]??0)<60,'INVALID_TIME',field);
   try {validateDate(match[1]);} catch {throw new MsaError('INVALID_TIME','INVALID_TIME',field);}

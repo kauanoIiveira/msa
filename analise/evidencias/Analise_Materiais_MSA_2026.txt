@@ -1,0 +1,1269 @@
+--- PAGINA 1 ---
+DESAFIO SENAI 2026 | MSA SAFETY BRAZIL
+O que os materiais revelam sobre o desafio
+Análise de nove fotos e da planilha de estudo de capacidade. Documento de apoio à equipe participante, preparado em
+05/10/2026; não é uma validação oficial da Engenharia da MSA.
+O foco da proposta deve ser transformar dados dispersos em registros confiáveis, com
+contexto de produção e análise verificável. As fotos mostram controles digitais nas máquinas, mas
+apontamentos em papel e cálculos em Excel ainda dependem de transcrição e conferência.
+Evidência concreta
+Implicação para a solução
+IHM com 21 zonas de aquecimento; estudo com 41
+parâmetros
+Cadastro configurável de parâmetros, unidades, modos e
+receitas.
+Linha de abafadores com 14 estações e alarmes
+por estação
+Hierarquia linha/estação e histórico de eventos com início e
+fim.
+Pitch Board e formulários de defeitos/perda de
+laminado
+Apontamento digital de produção, setup, paradas e perdas.
+Objetivo Cpk de 1,33 explícito na planilha
+Meta configurada com método estatístico aprovado pela
+Engenharia.
+Texto em campos numéricos, limites inconsistentes
+e normalidade sem entradas
+Validação dos dados antes de exibir conclusões e liberar
+produção.
+Dois contextos observados
+Selos: planilha “Selo V GARD HP”, formulário “Selo VGHP e MARKV” e equipamento com
+aquecimento/vácuo. A relação exata entre esses registros e a máquina fotografada precisa ser
+confirmada.
+Abafadores: tela com produto PN 10190358 e linha de 14 estações. Não se deve presumir que essa
+linha utiliza os mesmos parâmetros ou limites da planilha de selos.
+Como ler este relatório
+Os dados legíveis são separados das interpretações. Leituras de ponteiros são aproximadas; códigos
+manuscritos e números desfocados não são tratados como transcrições definitivas. Resultados do
+Excel são descritos como resultados salvos da cópia recebida, sem certificar a capacidade real do
+processo.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+1 / 22
+
+
+--- PAGINA 2 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 1 | Painel principal, receitas e ciclos
+O que está visível
+IHM KVIEW em painel identificado com Vacuum Center. Menu
+com “Forno”, “Manual”, “Receita”, “Seletoras”, “Tempos”,
+“Ciclo” e “Retardos”. “Contador de Ciclos”: 18. Botões de tela
+“INICIAR” e “PARAR”.
+Comandos e instrumentos
+Botões físicos de emergência/rearme, vácuo e sobe/desce forno;
+manômetro e vacuômetro. A foto mostra a organização do
+comando, não identifica o controlador ou o protocolo de
+comunicação.
+Interpretação
+O equipamento utiliza aquecimento, vácuo e sequência
+temporizada. Isso é compatível com um processo de
+conformação; o nome técnico exato e a associação ao produto
+devem ser confirmados pela MSA.
+Fonte: foto enviada, identificada pelo horário 12:12:45. A data de envio não comprova a data da operação.
+O que extrair para o banco de dados
+Máquina; produto; receita e versão; modo manual/automático; estado do ciclo; contador; horário da
+coleta; operador; foto original e parâmetros confirmados. O contador precisa de regra para reinício,
+troca de produto e conversão de ciclos em peças.
+18 ciclos não significam necessariamente 18 peças. É necessário conhecer peças por
+ciclo/cavidades, rejeições e escopo do contador. A foto também não informa a duração desses ciclos.
+Aplicação no protótipo
+Cadastrar a máquina e suas receitas. Permitir entrada digital com fotografia como evidência. OCR
+pode sugerir valores de uma tela conhecida, mantendo confirmação humana e rastreabilidade da
+leitura.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+2 / 22
+
+
+--- PAGINA 3 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 2 | Pitch Board e perdas operacionais
+Identificação legível
+Quadro “PITCH BOARD”, data 01/10/2026, 1º turno. Campos
+para linha/célula, setor, produto, descrição, ordem e total
+produzido. O código manuscrito aparenta 10190357; confirmar
+antes de cadastrá-lo.
+Estrutura do apontamento
+Plano, realizado, acumulado, sucata e operadores real/ideal.
+Mapeamento do dia em minutos: produção, parada programada,
+anomalia e setup. Há vários registros com 6 operadores reais e 5
+ideais.
+Produção observada
+As oito quantidades preenchidas somam 1.152, coerentes com
+o último acumulado legível. É um registro parcial do quadro, não
+um total diário validado. Sucata em branco não significa zero.
+Fonte: foto enviada, identificada pelo horário 12:13:44. A data de envio não comprova a data da operação.
+Registro
+Realizado
+Acumulado
+1
+72
+72
+2
+216
+288
+3
+180
+468
+4
+144
+612
+5
+180
+792
+6
+72
+864
+7
+108
+972
+8
+180
+1152
+Comentários: parada frequente na estação 10; falha na estação 100; tampa do molde colocada manualmente; setup
+às 10:00; troca de produto; início às 10:40; almoço às 11:30; parada às 12:40 com problema na estação 60.
+Se 10:40 for a retomada após o setup iniciado às 10:00, o setup durou 40 minutos. A parada das 12:40 não tem fim
+legível. Não há dados suficientes para calcular OEE ou cumprimento exato da meta; o plano manuscrito também requer
+conferência.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+3 / 22
+
+
+--- PAGINA 4 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 3 | Alarmes pendentes por estação
+Tela observada
+Siemens SIMATIC HMI, “Modo Manual Estação - E030”, janela
+“Alarmes Pendentes”. Campos de número, estação, hora e
+descrição.
+Valor do registro
+A máquina já apresenta eventos classificados por estação. A
+solução pode organizar essa informação em um histórico e
+relacioná-la a paradas e ações, após confirmar o acesso aos
+dados.
+Limite da evidência
+Há horários em PM, mas a data do evento e a configuração do
+relógio não estão comprovadas. Uma lista de alarmes pendentes
+não fornece, sozinha, a duração da parada nem sua causa raiz.
+Fonte: foto enviada, identificada pelo horário 12:14:06. A data de envio não comprova a data da operação.
+Nº
+Estação
+Hora exibida
+Descrição legível
+279
+Geral
+11:50:55 PM
+Botão de Emergência Pressionado na Estação 20
+53
+E040
+11:49:16 PM
+Falha de Avanço - C1 Elevador
+40
+E030
+11:49:12 PM
+Falha de Recuo - C2 Stop
+332
+E030
+11:49:08 PM
+Porta de Segurança Aberta na Estação 30
+333
+E040
+11:49:08 PM
+Porta de Segurança Aberta na Estação 40
+356
+Geral
+7:29:19 PM
+Pressão de Ar Fora do Especificado
+Um episódio de parada pode gerar vários alarmes. O MVP deve distinguir alarme, episódio de
+parada e motivo confirmado. Somar cada alarme como uma nova parada pode inflar o indicador.
+Campos recomendados: código; estação; início; fim; reconhecimento; estado; origem; episódio associado; motivo
+confirmado e ação executada. A sequência temporal ajuda a investigar; não prova causalidade.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+4 / 22
+
+
+--- PAGINA 5 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 4 | Estações e dispositivos nas proteções
+O que é legível
+Estrutura de máquina com portas/proteções e numeração de
+estações. A estação 040 aparece em destaque; 050, 060 e 070
+estão visíveis mais adiante.
+Dispositivos destacados
+Os círculos verdes apontam dispositivos amarelos junto às
+proteções. A aparência é compatível com dispositivos de
+intertravamento, mas modelo, função e ligação não podem ser
+determinados pela fotografia.
+Ligação com os alarmes
+É plausível relacionar essas proteções às mensagens de “Porta
+de Segurança Aberta” da IHM. A associação exata de cada
+dispositivo a uma estação deve ser confirmada com a
+manutenção.
+Fonte: foto enviada, identificada pelo horário 12:15:26. A data de envio não comprova a data da operação.
+O que muda na proposta
+O cadastro deve descer ao nível da estação. Um campo genérico “máquina parou” perde informações
+úteis para priorizar manutenção e investigar ocorrências recorrentes.
+A integração proposta é para acompanhar estados e eventos já disponibilizados pela
+máquina. O projeto não precisa comandar, modificar ou contornar o circuito de segurança para cumprir
+o desafio.
+Dados úteis
+Linha, estação, componente associado, tipo de evento, momento da ocorrência e motivo confirmado.
+Um Pareto deve mostrar minutos de parada e frequência por estação, com tratamento de eventos
+simultâneos.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+5 / 22
+
+
+--- PAGINA 6 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 5 | Painel elétrico e integração futura
+O que se observa
+Painel elétrico com equipamentos Siemens, módulos, bornes e
+fiação. Aparecem identificações do tipo KSEG3 a KSEG7 em
+componentes amarelos e um conector do tipo D-sub.
+O que isso permite inferir
+Há uma infraestrutura de automação que pode ser investigada
+para coleta direta de dados. A identificação das funções
+depende do projeto elétrico, do modelo do controlador e da
+configuração instalada.
+O que não está demonstrado
+Não é possível confirmar por esta imagem a disponibilidade de
+OPC UA, Modbus, PROFINET, PROFIBUS, MQTT ou uma API. A cor
+dos cabos e a marca dos equipamentos não comprovam
+compatibilidade.
+Fonte: foto enviada, identificada pelo horário 12:16:05. A data de envio não comprova a data da operação.
+Perguntas técnicas para a manutenção
+Qual é o modelo exato do controlador/IHM? Existe projeto e lista de tags? Alarmes e contadores podem
+ser exportados? Qual interface está habilitada? Existe ponto de leitura autorizado? Como o relógio e os
+reinícios dos contadores são tratados?
+Escolha prática para o desafio
+Entregar o MVP com formulário digital, importação e evidência fotográfica. Demonstrar o contrato de
+integração com dados simulados claramente identificados. Fazer a coleta direta como evolução,
+depois de confirmar acesso, equipamento e protocolo.
+Evitar prometer “conectar em qualquer máquina”. O material permite defender uma arquitetura
+preparada para integração, mas ainda não permite escolher um protocolo ou dimensionar hardware real.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+6 / 22
+
+
+--- PAGINA 7 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 6 | Linha de abafadores com 14 estações
+Produto e controles
+IHM Siemens SIMATIC. “Produto Atual”: PN 10190358 - ABAF
+ALTO, TIPO14. Comandos de tela Start (F1), Pause (F2) e Stop
+(F3), com indicação de 2 s.
+Estações visíveis
+Estações 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 e
+140; mais “Linha Geral”. São 14 estações identificadas.
+Estados na foto
+20, 30 e 40 aparecem em vermelho como “Posto em
+Emergência”. 10 e 50 a 140 aparecem em verde como “Posto
+Pronto”. “Linha Geral” também está verde, apesar das três
+estações em vermelho.
+Fonte: foto enviada, identificada pelo horário 12:17:22. A data de envio não comprova a data da operação.
+Contadores e interpretação
+A tela apresenta Aprovadas: 0 e Reprovadas: 0. Isso descreve a foto e não comprova produção
+diária zero. É preciso saber se os contadores são por lote, receita, ordem, turno ou reinício.
+“Linha Geral” verde não deve ser traduzido automaticamente como produção liberada. A
+semântica dos estados precisa ser documentada. Prontidão de uma estação, alarme e aprovação de
+qualidade são conceitos diferentes.
+Aplicação no sistema
+Cadastro de produto/PN, linha e estações; painel de estados; produção aprovada/reprovada por
+período; regras de delta e reinício dos contadores; contexto de ordem e turno. O PN exibido na IHM
+não deve ser associado automaticamente ao código manuscrito do Pitch Board.
+A linha de abafadores precisa de sua própria configuração. Não há evidência suficiente para aplicar a ela os limites do
+estudo “Selo V GARD HP”.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+7 / 22
+
+
+--- PAGINA 8 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 7 | Refugos e perda de laminado
+Fonte: foto enviada, horário do arquivo 12:20:02.
+Formulários intitulados “Coleta de dados Selo VGHP e MARKV”. Há campos para data, turno, “Selo
+Rompido”, “Selo Enrugado”, “Perda de Laminado KG” e “Outros”. Dois formulários superiores estão
+preenchidos e os demais aparecem em branco.
+Campo
+Formulário esquerdo
+Formulário direito
+Data
+28/09/2026
+29/09/2026
+Turno
+1º turno marcado
+1º turno marcado
+Perda de laminado
+0,200 kg legível
+sem valor legível
+Outros
+anotação manuscrita a confirmar
+“S/espuma” legível; significado a
+confirmar
+Selo rompido/enrugado
+campos sem quantidade legível
+campos sem quantidade legível
+Extração para a solução
+Criar categorias padronizadas de defeito, preservando a descrição original quando houver
+abreviações. Associar evento a produto, máquina, ordem, turno, lote e responsável. Registrar perdas
+de material com unidade, separadas da quantidade de peças refugadas.
+0,200 kg corresponde a 200 g, mas não a 200 peças. Refugo em peças e perda em massa
+precisam de indicadores próprios. Campo em branco deve ser marcado como não informado até
+confirmação, sem virar zero automaticamente.
+A foto não fornece total produzido nem material consumido por produto. Não permite calcular percentual de refugo ou
+rendimento de laminado. “S/espuma” pode ser uma categoria útil, mas a interpretação deve ser aprovada pela área.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+8 / 22
+
+
+--- PAGINA 9 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 8 | Aquecimento com 21 zonas
+O que é visível
+Outra tela da IHM KVIEW, com identificação de zonas Z1 a Z21,
+valores em °C e duas colunas coloridas. “AQUECIMENTO”
+aparece em estado ON. Há indicação gráfica dos instrumentos
+de pressão e vácuo no painel.
+Relação com a planilha
+O estudo também contém 21 parâmetros de aquecimento. Essa
+correspondência estrutural é forte, mas a identificação da
+máquina, do produto, da receita e da data precisa ser
+confirmada.
+Limite de leitura
+As colunas amarela e verde sugerem valor ajustado e valor
+medido. A legenda não está legível; essa interpretação não é
+uma confirmação. Não é confiável transcrever todos os números
+pequenos da foto.
+Fonte: foto enviada, identificada pelo horário 12:20:38. A data de envio não comprova a data da operação.
+Dados que fazem diferença
+Guardar separadamente: valor ajustado, valor medido, unidade, zona, receita, versão, estado da zona
+e fase da máquina. Uma zona desativada ou o aquecimento inicial exige interpretação distinta da
+produção estabilizada.
+Uma diferença entre ajuste e temperatura medida, durante aquecimento, não basta para
+concluir defeito. A análise precisa conhecer o modo, o momento da coleta e o critério técnico de
+estabilidade.
+Uso de OCR
+Começar por uma tela e um enquadramento conhecidos. Exigir vínculo explícito entre rótulo e valor,
+sinal, separador decimal e unidade. Quando a imagem estiver desfocada, registrar pendência para
+revisão em vez de gerar um número por aproximação.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+9 / 22
+
+
+--- PAGINA 10 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Foto 9 | Pressão e vácuo em instrumentos analógicos
+Fonte: foto enviada, horário do arquivo 12:24:58.
+Instrumento
+O que a foto permite ler
+Cuidados no uso
+Manômetro
+Escala preta de 0 a 14 e vermelha até 200. Ponteiro
+perto de 6,5 a 6,6 na escala preta. A unidade preta
+aparenta kgf/cm², parcialmente encoberta.
+Confirmar unidade no instrumento; não
+registrar esse número como bar sem
+conversão validada.
+Vacuômetro
+Escala preta de 0 a -760 mmHg; escala vermelha em
+inHg. Ponteiro aproximadamente entre -350 e -360
+mmHg.
+Leitura aproximada; preservar sinal e
+referência de pressão. Não comparar
+diretamente com outro momento/receita.
+São instrumentos identificados com Vacuum Center. As leituras são estimativas visuais, sujeitas a resolução, reflexo,
+ângulo e posição do ponteiro. Não substituem coleta operacional confirmada ou verificação metrológica.
+Relação com o Excel
+A planilha usa “Pressão Ar” em bar e “Vacuo” em mm/Hg. O sistema precisa de unidade de origem,
+unidade padronizada e regra de conversão. Para vácuo, confirmar se o limite define intensidade
+mínima de vácuo ou limite numérico de pressão relativa.
+OCR de caracteres não resolve, sozinho, a leitura de um ponteiro. O MVP pode começar com
+entrada manual confirmada. Leitura automática do mostrador é uma evolução de visão computacional
+que exige calibração e validação próprias.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+10 / 22
+
+
+--- PAGINA 11 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Estrutura, período e finalidade
+Arquivo analisado: T20A03(EN)5 - Capability study senai(1).xlsx. Duas abas visíveis: “Selo ” e
+“Normality test ”; os nomes internos têm um espaço final. A cópia de origem foi apenas lida e
+permaneceu sem edição.
+Elemento
+Conteúdo identificado
+Título
+MSA - Capability study - Parâmetros de Processo Selo V-Gard
+Finalidade no cabeçalho
+Coleta de dados para melhor definição de parâmetros OMS
+Produto
+Selo V GARD HP
+Data no cabeçalho
+25/08/2026
+Meta de capacidade
+Objetivo Cpk = 1,33, célula U6
+Parâmetros
+41 colunas de características; numeração original salta o nº 23
+Registros de coleta
+17 linhas preenchidas, de 25/08/2026 a 29/09/2026
+Faixa usada nas fórmulas
+Linhas 17 a 67; linhas 34 a 67 sem medições
+Contexto não preenchido
+Material, espessura, % scrap e lote nas 17 linhas
+Datas das coletas
+Duas coletas por dia em 25, 26, 27, 28 e 31/08; uma em 17, 21, 22, 23, 24, 25 e 29/09. As duas linhas
+de 31/08 contêm datas e medições armazenadas como texto. Não há um horário por coleta suficiente
+para vincular as fotografias a essas linhas.
+O que ela não fornece
+A planilha não traz os registros completos de produção por ordem/turno, duração de paradas e
+motivos do Pitch Board. Os campos de lote/material/scrap estão vazios. Assim, ainda não permite
+concluir qual parâmetro causou um defeito ou uma parada.
+A expressão “melhor definição de parâmetros OMS” sugere um estudo exploratório.
+Confirmar com a Engenharia o significado de OMS e se os limites são provisórios ou já aprovados. Não
+apresentar esses valores como especificações definitivas sem validação.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+11 / 22
+
+
+--- PAGINA 12 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Cadastro completo de limites térmicos
+Transcrição dos limites registrados no arquivo. Estes valores não foram corrigidos. Temperaturas em
+°C. “0 / 0” é reproduzido como evidência e requer esclarecimento técnico.
+Coluna
+Parâmetro
+Mínimo
+Máximo
+Observação
+F
+Temp Ambiente
+13
+30
+H
+Aquecimento Z1
+0
+0
+Confirmar zona inativa/limite pendente
+J
+Aquecimento Z2
+255
+265
+L
+Aquecimento Z3
+255
+265
+N
+Aquecimento Z4
+252
+262
+P
+Aquecimento Z5
+252
+262
+R
+Aquecimento Z6
+252
+262
+T
+Aquecimento Z7
+265
+275
+V
+Aquecimento Z8
+265
+275
+X
+Aquecimento Z9
+0
+0
+Confirmar zona inativa/limite pendente
+Z
+Aquecimento Z10
+0
+0
+Confirmar zona inativa/limite pendente
+AB
+Aquecimento Z11
+250
+260
+AD
+Aquecimento Z12
+260
+270
+AF
+Aquecimento Z13
+260
+270
+AH
+Aquecimento Z14
+255
+265
+AJ
+Aquecimento Z15
+270
+280
+AL
+Aquecimento Z16
+270
+280
+AN
+Aquecimento Z17
+270
+280
+AP
+Aquecimento Z18
+0
+0
+Confirmar zona inativa/limite pendente
+AR
+Aquecimento Z19
+285
+295
+AT
+Aquecimento Z20
+300
+310
+AV
+Aquecimento Z21
+310
+320
+São 21 zonas, mais temperatura ambiente. Os limites de uma receita não devem ser aplicados automaticamente a
+outras máquinas/produtos. Limites de especificação também não são, por definição, limites estatísticos de controle de
+uma carta CEP.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+12 / 22
+
+
+--- PAGINA 13 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Movimento, tempos, pressão e vácuo
+Complemento dos 41 parâmetros. Os nomes foram apenas padronizados em espaços; unidade e
+limites são os do arquivo. “seg” significa segundos.
+Col.
+Parâmetro
+Unidade
+Mínimo
+Máximo
+Observação
+AX
+Medida do Passo
+mm
+412
+415
+AZ
+Velocidade do Passo
+%
+19
+20
+BB
+Tempo de Vacuo
+seg
+75
+85
+BD
+Tempo de Resfriamento
+seg
+35
+36
+BF
+Tempo destacar
+seg
+0,8
+0,9
+BH
+Tempo Contra molde
+seg
+80
+75
+Mínimo maior que máximo
+BJ
+Tempo prensa corte
+seg
+10
+15
+BL
+Tempo de esteira saida
+seg
+28
+30
+BN
+Retardo de Passo
+seg
+1
+2
+BP
+Retardo de Mesa
+seg
+0,1
+1
+BR
+Retardo de Vacuo
+seg
+4
+5
+BT
+Retardo de resfriamento
+seg
+4
+5
+BV
+Retardo destacar
+seg
+2
+5
+BX
+Retardo Contra Molde
+seg
+1,5
+5
+BZ
+Retardo Prensa Corte
+seg
+9,5
+15
+CB
+Retardo disco corte
+seg
+7
+9
+CD
+Retardo esteria saida
+seg
+0,5
+1
+CF
+Pressão Ar
+bar
+6,5
+não
+informado
+Limite unilateral/pendente
+CH
+Vacuo
+mm/Hg
+-600
+não
+informado
+Limite unilateral/pendente
+Não inverter automaticamente os limites de “Tempo Contra molde”. O arquivo registra mínimo
+80 e máximo 75. A Engenharia deve confirmar a intenção e registrar a revisão. Pressão e vácuo podem
+ter especificações unilaterais, que exigem regra própria.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+13 / 22
+
+
+--- PAGINA 14 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Valores como texto alteram os resultados
+As fórmulas de média e desvio consideram os números das referências de células, mas ignoram
+números armazenados como texto. Essa característica do Excel é documentada pela Microsoft [R2]. Na
+cópia recebida, o problema aparece em várias colunas.
+Exemplo
+Registros
+preenchidos
+Números usados
+Valores como
+texto
+Maioria das características
+17
+15
+2
+Tempo destacar (BF)
+17
+7
+10
+Retardo de Mesa (BP)
+17
+7
+10
+Retardo Contra Molde (BX)
+17
+7
+10
+Retardo esteira saída (CD)
+17
+7
+10
+Retardo Prensa Corte (BZ)
+17
+9
+8
+Pressão Ar (CF)
+10
+7
+3
+Vácuo (CH)
+10
+8
+2
+Um exemplo reproduzível: “Tempo destacar”
+A coluna BF tem 17 valores preenchidos: 7 números iguais a 0,9 e 10 entradas textuais. Os textos
+incluem valores 0,8 e 0,9. A planilha ignora os textos e calcula sobre os 7 números iguais. O desvio
+salvo fica quase zero por arredondamento numérico, gerando Cp ≈ 1,50 × 10¹⁴. Esse resultado não é
+evidência de capacidade excepcional.
+Cálculo demonstrativo, não validação do processo
+Resultado
+Convertendo os 17 valores textuais/números para números, sem alterar a origem
+7 valores de 0,8 e 10 valores de
+0,9
+Média com os 17 registros
+0,8588 s
+Desvio populacional com os 17 registros
+0,0492 s
+Mesmo método aritmético e limites 0,8 a 0,9
+Cp ≈ 0,339; Cpk ≈ 0,279
+A diferença vem da qualidade da entrada. Essa recomputação mostra o efeito dos tipos de dados,
+mas ainda exige validação de amostragem, limites, estabilidade, medição e método estatístico para
+virar uma conclusão de capacidade.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+14 / 22
+
+
+--- PAGINA 15 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Limites, lacunas e mudanças de condição
+Evidência no arquivo
+Consequência
+Tratamento proposto
+Tempo Contra molde: mínimo 80, máximo
+75
+Faixa invertida; Cp negativo não é
+interpretação válida de capacidade.
+Pendência para Engenharia; impedir
+análise conclusiva até revisão.
+Z1, Z9, Z10 e Z18: limites 0 / 0
+Faixa de especificação sem largura.
+Confirmar se são zonas inativas,
+referência incompleta ou critério
+diferente.
+Velocidade do Passo, Retardo Prensa Corte
+e Retardo esteira saída
+Resultados salvos #DIV/0! nas linhas
+de Cp, Cpk e status.
+Tratar desvio nulo e amostra efetiva;
+não exibir infinito como aprovação.
+Pressão Ar e Vácuo: primeira linha vazia,
+dados posteriores presentes
+Resumo fica vazio por verificar
+somente a primeira célula.
+Contar registros válidos da janela
+inteira; aceitar limites unilaterais
+validados.
+Mudanças de valores que merecem investigação
+Parâmetro
+Registros anteriores
+Registros posteriores
+Tempo de Resfriamento
+35 s nos registros de agosto
+20 s em 17/09; 15 s de 21 a 29/09
+Retardo de resfriamento
+4 s nos registros de agosto
+7 s em 17/09; 30 s de 21 a 29/09
+Aquecimento Z13 / Z14
+Valores predominantemente na
+ordem de 250-270 °C
+Em 21/09: 94 °C e 101 °C
+São mudanças nos registros, não causas demonstradas. Podem representar outra receita, ajuste,
+aquecimento inicial, mudança operacional ou erro de coleta. O arquivo não fornece contexto suficiente
+para escolher uma explicação.
+Separar condições comparáveis antes de calcular. Identificar receita, versão, fase da máquina e
+origem do valor. Não excluir registros incômodos nem misturar condições diferentes sem uma regra
+técnica documentada.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+15 / 22
+
+
+--- PAGINA 16 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Cp, Cpk e normalidade precisam de método
+Como o arquivo calcula
+Os resumos usam MIN, MAX, AVERAGE e STDEVP sobre cada coluna, de 17 a 67. Depois calculam Cp
+= (máximo - mínimo) / (6 × desvio) e Cpk pelo menor afastamento da média aos limites, dividido por 3
+× desvio. O status compara Cpk com a meta 1,33.
+A conferência independente reproduziu os valores salvos das fórmulas não degeneradas, usando os
+mesmos números e o desvio populacional. Isso confirma a aritmética da cópia, não a adequação do
+estudo. O Excel não foi editado nem recalibrado.
+Um exemplo real da diferença entre Cp e Cpk
+Tempo prensa corte (BJ): limites 10 a 15 s; média numérica 10,6 s; Cp ≈ 1,70 e Cpk ≈ 0,41. A
+dispersão parece pequena frente à faixa, mas a média está muito perto do limite inferior. Esses são
+resultados salvos com 15 números e 2 textos ignorados; não substituem a validação do estudo.
+A aba de normalidade na cópia recebida
+“Normality test” apresenta uma estrutura com A², correção A²* e risco alfa de 5%. O intervalo de
+entrada B10:B1009 está vazio. A contagem AE6 é zero, K5 contém uma constante 6,8125 e H5/H7
+retornam #DIV/0!. Há também erros #VALUE! na área de fórmulas sem dados.
+Na aba “Selo”, G93 contém um “OK” digitado, sem fórmula ligando-o à aba do teste. Portanto, essa
+cópia não fornece evidência calculada para confirmar normalidade. Um teste feito em outro arquivo
+não pode ser descartado, mas não está demonstrado aqui.
+Questão estatística para a Engenharia
+STDEVP calcula dispersão populacional do conjunto. No uso convencional, Cp/Cpk usam uma
+estimativa de variação dentro de subgrupos e Pp/Ppk usam variação global; é preciso definir o plano e
+a nomenclatura aplicáveis [R3-R4]. Trocar uma função por outra, isoladamente, não resolve a
+amostragem.
+Definir também estabilidade, distribuição, resolução da medição e condições de coleta. Parâmetros
+ajustados da máquina e medições de uma característica do produto têm usos distintos. O MVP deve
+mostrar método, período e amostra efetiva junto de cada índice.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+16 / 22
+
+
+--- PAGINA 17 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Resultados salvos: ambiente e aquecimento
+Tabela de auditoria da cópia recebida. “N/T” = quantidade de células numéricas / textuais
+preenchidas. Valores arredondados; “NOK” é o status armazenado no arquivo, não um parecer
+independente sobre o produto.
+Col.
+Parâmetro
+N/T
+Cp salvo
+Cpk salvo
+Status
+F
+Temp Ambiente
+15/2
+0,540
+0,449
+NOK
+H
+Aquecimento Z1
+15/2
+0,000
+-2,530
+NOK
+J
+Aquecimento Z2
+15/2
+0,159
+-0,299
+NOK
+L
+Aquecimento Z3
+15/2
+0,279
+-0,432
+NOK
+N
+Aquecimento Z4
+15/2
+0,285
+-0,327
+NOK
+P
+Aquecimento Z5
+15/2
+0,332
+-0,337
+NOK
+R
+Aquecimento Z6
+15/2
+0,311
+-0,307
+NOK
+T
+Aquecimento Z7
+15/2
+0,257
+-0,762
+NOK
+V
+Aquecimento Z8
+15/2
+0,232
+-0,703
+NOK
+X
+Aquecimento Z9
+15/2
+0,000
+-5,217
+NOK
+Z
+Aquecimento Z10
+15/2
+0,000
+-4,200
+NOK
+AB
+Aquecimento Z11
+15/2
+0,396
+0,116
+NOK
+AD
+Aquecimento Z12
+15/2
+0,470
+-0,163
+NOK
+AF
+Aquecimento Z13
+15/2
+0,040
+-0,091
+NOK
+AH
+Aquecimento Z14
+15/2
+0,042
+-0,057
+NOK
+AJ
+Aquecimento Z15
+15/2
+0,157
+0,000
+NOK
+AL
+Aquecimento Z16
+15/2
+0,153
+-0,002
+NOK
+AN
+Aquecimento Z17
+15/2
+0,158
+0,036
+NOK
+AP
+Aquecimento Z18
+15/2
+0,000
+-11,905
+NOK
+AR
+Aquecimento Z19
+15/2
+0,235
+-0,510
+NOK
+AT
+Aquecimento Z20
+15/2
+0,217
+0,151
+NOK
+AV
+Aquecimento Z21
+15/2
+0,218
+-0,351
+NOK
+Zonas com limites 0/0 e entradas sem contexto precisam de tratamento específico. Um Cpk negativo pode ocorrer
+quando a média ultrapassa um limite, mas sua interpretação pressupõe limites válidos, valores corretos e condições de
+análise adequadas.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+17 / 22
+
+
+--- PAGINA 18 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Planilha | Resultados salvos: demais parâmetros
+Col.
+Parâmetro
+N/T
+Cp salvo
+Cpk salvo
+Status
+AX
+Medida do Passo
+15/2
+0,538
+0,024
+NOK
+AZ
+Velocidade do Passo
+15/2
+#DIV/0!
+#DIV/0!
+#DIV/0!
+BB
+Tempo de Vacuo
+15/2
+0,230
+0,138
+NOK
+BD
+Tempo de Resfriamento
+15/2
+0,017
+-0,309
+NOK
+BF
+Tempo destacar
+7/10
+1,501e+14
+-0,333
+NOK
+BH
+Tempo Contra molde
+15/2
+-0,115
+-0,551
+NOK
+BJ
+Tempo prensa corte
+15/2
+1,701
+0,408
+NOK
+BL
+Tempo de esteira saida
+15/2
+0,098
+-0,137
+NOK
+BN
+Retardo de Passo
+15/2
+0,334
+0,312
+NOK
+BP
+Retardo de Mesa
+7/10
+1,081e+16
+-0,333
+NOK
+BR
+Retardo de Vacuo
+15/2
+0,334
+0,312
+NOK
+BT
+Retardo de resfriamento
+15/2
+0,013
+-0,254
+NOK
+BV
+Retardo destacar
+15/2
+0,818
+0,218
+NOK
+BX
+Retardo Contra Molde
+7/10
+2,358
+-0,385
+NOK
+BZ
+Retardo Prensa Corte
+9/8
+#DIV/0!
+#DIV/0!
+#DIV/0!
+CB
+Retardo disco corte
+15/2
+0,981
+0,131
+NOK
+CD
+Retardo esteria saida
+7/10
+#DIV/0!
+#DIV/0!
+#DIV/0!
+CF
+Pressão Ar
+7/3
+sem cálculo
+sem cálculo
+vazio
+CH
+Vacuo
+8/2
+sem cálculo
+sem cálculo
+vazio
+Resumo armazenado: 36 “NOK”, 3 erros de divisão por zero e 2 resultados vazios. Os 36 “NOK” não
+podem ser apresentados como prova de 36 processos defeituosos: há limites inconsistentes, textos
+ignorados e mudanças de condição sem identificação.
+Em “Retardo de Mesa”, números repetidos e arredondamento também produzem Cp da ordem de 10¹⁶. Em “Pressão Ar”
+e “Vácuo”, a condição que testa a primeira linha vazia impede o resumo, embora existam medições posteriores. Para
+essas grandezas, definir se o limite é unilateral antes de escolher o índice.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+18 / 22
+
+
+--- PAGINA 19 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Proposta | Um modelo que serve aos dois contextos
+A proposta “Nexo Produção” pode manter uma base comum, com parâmetros e telas configurados por
+processo. O material sugere começar por um produto/máquina de selos e demonstrar também
+apontamentos da linha de abafadores, sem presumir que sejam a mesma operação.
+Registro
+Campos essenciais extraídos do material
+Contexto de produção
+Máquina/linha, estação, PN/produto, ordem, receita e versão, lote/material, turno,
+operador e fase da máquina.
+Parâmetro
+Nome, zona, tipo ajustado/medido, unidade, valor, origem, momento de captura, foto e
+confirmação.
+Regra de especificação
+Limites, direção/unilateralidade, meta Cpk, zona ativa, vigência e responsável pela
+aprovação.
+Produção
+Período, plano, total, aprovadas, reprovadas; escopo e reinício de contadores; peças por
+ciclo.
+Parada e setup
+Início/fim, estação, motivo, categoria, produto antes/depois, alarmes associados e ação.
+Refugo/perda
+Categoria, quantidade, unidade, produto/lote, origem e motivo confirmado.
+Análise/liberação
+Janela, método, n efetivo, validações, decisão, responsável, justificativa e histórico.
+Regras que evitam repetir os problemas da planilha
+Normalizar vírgula decimal de forma explícita; preservar valor original; diferenciar zero, ausência e não
+aplicável; validar unidade e sinal; conferir mínimo/máximo; detectar desvio nulo; informar n efetivo;
+exigir receita/fase para comparar; registrar toda revisão de limite ou dado.
+O diferencial é mostrar por que uma análise está pendente. “Imagem ilegível”, “limite invertido”,
+“unidade não confirmada”, “janela sem amostras válidas” e “método aguardando validação” são
+estados úteis para a operação e a Engenharia.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+19 / 22
+
+
+--- PAGINA 20 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Proposta | MVP e demonstração que atendem ao
+enunciado
+Entregável mínimo
+Demonstração concreta
+Cadastro de máquina/processo/produto
+Uma máquina de selos e uma linha de abafadores com estações.
+Cadastro de parâmetros
+Importação assistida dos 41 parâmetros, com unidade e contexto.
+Limites/metas
+Cpk 1,33; pendência ao tentar aprovar mínimo maior que máximo.
+Registro digital
+Coleta manual, foto anexada e valores confirmados; OCR como opção.
+Produção e período
+Pitch Board digital; acumulado recalculado a partir dos registros.
+Paradas/duração/motivo
+Registrar setup e ocorrência por estação, com início e fim.
+Refugos/perdas/motivos
+Selo rompido/enrugado e laminado em kg com categoria validada.
+Organização e armazenamento
+Base estruturada com regras de validação.
+Associação dos registros
+Vínculo com máquina, produto, ordem e estação aplicável.
+Histórico
+Consultar coleta original, revisão, eventos e responsável.
+Dashboard
+Plano/realizado, paradas por minutos, defeitos e parâmetros.
+Identificação visual de desvio
+Separar fora de limite, dado pendente e análise válida.
+Protótipo funcional
+Executar o fluxo inteiro, incluindo análise pela Engenharia.
+Roteiro sugerido para a banca
+1. Selecionar máquina, produto e receita. 2. Registrar coleta com fotografia. 3. Conferir OCR/entrada.
+4. Demonstrar uma pendência real de qualidade dos dados. 5. Apontar produção, perda e parada por
+estação. 6. Abrir dashboard e histórico. 7. Mostrar a Engenharia analisando e registrando a decisão.
+Usar dados reais autorizados ou exemplos sintéticos identificados. Não apresentar integração industrial, precisão de
+OCR ou validação estatística como implementadas sem demonstrá-las.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+20 / 22
+
+
+--- PAGINA 21 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Proposta | Validação, indicadores e perguntas à MSA
+O que medir no piloto
+Indicador
+Como avaliar sem inventar ganhos
+Tempo de registro/conferência
+Medir o mesmo fluxo antes e depois; comparar mediana e total.
+Qualidade do registro
+Percentual com campos essenciais completos, unidade correta e sem
+retrabalho.
+Tempo até análise
+Do registro confirmado à decisão da Engenharia.
+Cobertura de perdas/paradas
+Eventos com motivo e duração / eventos registrados.
+OCR, se implementado
+Acerto por campo confirmado e taxa de revisão/rejeição por tela.
+Rastreabilidade
+Conseguir reconstruir uma coleta, a regra vigente e a decisão.
+OEE só deve entrar se houver tempo planejado, tempo operacional, ciclo ideal e totais/bons com
+definições consistentes. As fotos, sozinhas, não fornecem todos esses insumos. Não prometer
+percentuais de redução ou economia sem linha de base.
+Perguntas prioritárias para a Engenharia e a produção
+1. Quais máquinas/produtos devem ser o piloto? A IHM de aquecimento corresponde à planilha de
+selos?
+2. O que significa OMS e qual é a situação de aprovação dos limites?
+3. Z1, Z9, Z10 e Z18 são zonas inativas? Como representá-las?
+4. Qual é o limite correto de Tempo Contra molde?
+5. As colunas da IHM são ajuste e medição? Como identificar fase estabilizada?
+6. Houve revisão de receita nos tempos de resfriamento em setembro?
+7. Qual é a direção de aceitação do vácuo e a unidade real do manômetro?
+8. Qual plano amostral/método sustentará Cp/Cpk e a meta 1,33?
+9. Como se definem aprovado, reprovado, ciclo e reinício de contadores?
+10. Como classificar “S/espuma” e as intervenções manuais?
+11. Como alarmes se relacionam a episódios de parada?
+12. Qual controlador/interface/lista de tags está disponível para leitura?
+13. Quem pode revisar parâmetros e liberar produção?
+Proposta para apresentar: “Transformamos fotos, apontamentos e planilhas em registros rastreáveis.
+Antes de calcular indicadores, o sistema confere valor, unidade, receita, limites e amostra. Produção
+acompanha as perdas; a Engenharia analisa os dados e registra a decisão.”
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+21 / 22
+
+
+--- PAGINA 22 ---
+ANÁLISE DO MATERIAL DISPONIBILIZADO
+Fontes, critérios e próximos passos
+Materiais da empresa utilizados
+Nove fotos enviadas, identificadas pelos horários 12:12:45, 12:13:44, 12:14:06, 12:15:26, 12:16:05,
+12:17:22, 12:20:02, 12:20:38 e 12:24:58. Planilha “T20A03(EN)5 - Capability study senai(1).xlsx”.
+Enunciado do Desafio de Ideias MSA do Brasil das duas fotos enviadas anteriormente.
+Empresa informada pelo participante: MSA Safety Brazil. Endereço informado: Av. Roberto Gordon,
+138, Vila Nogueira, Diadema - SP, 09990-901. O endereço é contexto fornecido pelo usuário e não é
+um requisito técnico do MVP.
+Referências primárias consultadas
+[R1] MSA Safety Brasil - site oficial: br.msasafety.com. Consultado para contexto institucional. O site não documenta os
+equipamentos ou processos específicos destas fotos.
+[R2] Microsoft Support - STDEVP function: documentação da função STDEVP. Confirma o desvio populacional e o
+tratamento de texto em referências.
+[R3] Minitab Support - Normal Capability Sixpack, Within capability: documentação de capacidade dentro dos subgrupos.
+[R4] Minitab Support - Normal Capability Sixpack, Overall capability: documentação de capacidade global.
+Critérios e limites da análise
+O exame da planilha incluiu células, tipos, fórmulas e resultados salvos. Os cálculos não degenerados
+foram conferidos por cálculo independente com a mesma seleção numérica e desvio populacional. Não
+houve alteração do XLSX nem certificação de desempenho do processo.
+As fotografias registram situações pontuais. Não fornecem um histórico completo de produção,
+configuração do controlador, calibração dos instrumentos ou vínculo inequívoco entre todas as
+máquinas/produtos. Ausência de preenchimento não foi convertida em zero.
+O site oficial foi acessado. Os perfis de Instagram e LinkedIn informados não ficaram acessíveis na
+consulta; não foram usados como evidência de posts, máquinas ou resultados empresariais.
+Próximo trabalho concreto
+Validar as perguntas prioritárias com a MSA; fechar o piloto; criar a configuração dos parâmetros;
+implementar o registro e a análise com rastreabilidade; medir o fluxo atual; testar com uma coleta real
+autorizada. Esta análise orienta o projeto, mas não constitui um MVP já implementado.
+DESAFIO SENAI 2026 | ANÁLISE PARA A EQUIPE PARTICIPANTE
+MSA Safety Brazil | Material fornecido pela empresa e conferência independente
+22 / 22

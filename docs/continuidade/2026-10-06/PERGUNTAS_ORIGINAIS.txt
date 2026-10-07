@@ -1,0 +1,51 @@
+Perguntas feitas:
+Olá, Fabiana! Nossa equipe está fechando o escopo do sistema para o desafio. Analisamos os materiais e gostaríamos de esclarecer algumas questões para entregar um MVP útil e demonstrável.
+
+Quais resultados devemos priorizar?
+Além dos requisitos mínimos do enunciado, quais três resultados fariam mais diferença para a MSA? Por exemplo: reduzir transcrição, acelerar a análise da Engenharia ou identificar melhor as perdas. Como vocês avaliam essas dificuldades hoje?
+
+Qual será o processo piloto?
+Quais máquina, produto e receita devemos usar como referência para desenvolver e testar? A máquina com 21 zonas corresponde à planilha de selos? Devemos demonstrar também a linha de abafadores ou concentrar o piloto em um processo?
+
+Qual fluxo completo o sistema deve atender?
+Do registro dos dados até a análise e eventual liberação, quais etapas precisam acontecer, quem participa e qual informação cada pessoa precisa receber? Quais decisões exigem aprovação da Engenharia?
+
+Quais dados estão realmente disponíveis para coleta automática?
+O equipamento disponibiliza temperaturas medidas e ajustadas, pressão, vácuo, contadores, estados e alarmes? Quais informações existem somente em instrumentos analógicos, papel ou apontamentos do operador?
+
+Qual forma de coleta podemos implementar e demonstrar no desafio?
+Existe acesso autorizado para leitura do CLP/IHM, exportação de arquivos ou histórico disponível? Quem pode confirmar os equipamentos e interfaces? Se a integração não estiver disponível a tempo, qual alternativa seria aceitável: importação de arquivo, OCR ou registro digital?
+
+Qual referência devemos usar para validar os parâmetros e calcular os indicadores?
+Há uma versão aprovada de receitas, limites e metas? Como tratar zonas desativadas e leituras durante aquecimento ou setup? Para Cp/Cpk, qual método, frequência de coleta e quantidade de amostras a Engenharia adota?
+
+Como transformar os contadores em produção correta?
+Quantas peças correspondem a cada ciclo? Como são identificadas aprovadas e reprovadas? Quando os contadores reiniciam e como devemos relacioná-los a produto, ordem e turno?
+
+
+Como registrar e classificar paradas, refugos e perdas?
+Quais categorias vocês utilizam? O que define início e fim de uma parada? Quais motivos podem vir dos alarmes e quais precisam de confirmação humana? Como são obtidas as quantidades de refugo e a perda de material em kg?
+
+Em quais condições o sistema será utilizado?
+Será usado em computador, tablet ou celular? Existe rede disponível junto às máquinas? Há restrições de instalação, armazenamento ou acesso que precisamos considerar? Quais situações devem gerar um alerta e para quem?
+
+O que devemos demonstrar para vocês considerarem o MVP aprovado?
+Quais casos precisam funcionar de ponta a ponta? Vocês podem disponibilizar exemplos autorizados de dados, fotos e ocorrências, além de indicar alguém para validar o protótipo? Qual melhoria podemos medir para comprovar o resultado?
+
+A empresa já dispõe de um sistema andon? Como ocorre a visualização física das falhas e interrupções das máquinas? Existe um problema nesse sentido, e se sim, a agilidade de perceber as interrupções é um dos principais?
+
+A empresa tem disponível estes dispositivos, sensores e indutores?
+- Módulo IoT Concentrador (ESP32 / CLP IoT) - 1un.
+- Transdutor de Pressão Industrial (0–10 bar) - 1un.
+- Transdutor de Vácuo Industrial (0 a -1 bar) - 1un.
+- Módulo de Leitura Térmica (RS-485 / Modbus) -  1un.
+- Sensores Indutivos / Acopladores Digitais - 4un.
+
+
+Agradecemos pelo apoio! Com essas respostas, conseguiremos fechar as prioridades e desenvolver uma demonstração alinhada às necessidades da MSA.
+
+
+
+
+
+

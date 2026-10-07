@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';import {mkdir,readFile} from 'node:fs/promises';import {createStaticServer} from '../../scripts/serve.mjs';import Papa from 'papaparse';
+const {chromium}=await import(process.env.PLAYWRIGHT_MODULE??'playwright');
+const server=await createStaticServer({port:0}),browser=await chromium.launch({headless:true}),url=`http://127.0.0.1:${server.address().port}/`;
+await mkdir('output/cep-2026-10-06/visual',{recursive:true});
+try {
+  const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(url);await page.locator('#login').waitFor();await page.locator('[data-action=simulate]').click();
+  await page.locator('#modal [name=scenario]').selectOption('cep-stable');await page.locator('#modal [type=submit]').click();
+  await page.locator('.simulation-notice').waitFor();await page.locator('.rail a[href="#cep"]').click();await page.locator('#cep-chart').waitFor();
+  assert.equal(await page.locator('.rail .workspace-logo').count(),1);assert.equal(await page.locator('.topbar .workspace-logo').count(),0);
+  assert.match(await page.locator('#cep-results').innerText(),/60 leituras válidas/);assert.match(await page.locator('#cep-results').innerText(),/Cp/);
+  assert.notEqual(await page.locator('[data-cep-index=cp]').innerText(),'Sem dados');
+  const download=page.waitForEvent('download');await page.locator('[data-action=cep-export]').click();assert.match((await download).suggestedFilename(),/cep.*csv$/);
+  await page.screenshot({path:'output/cep-2026-10-06/visual/cep-stable-light.png',fullPage:true});
+  await page.locator('#cep-source').selectOption('workbook');await page.locator('#cep-results').waitFor();
+  assert.match(await page.locator('#cep-results').innerText(),/17 leituras válidas/);assert.match(await page.locator('#cep-comparison').innerText(),/0,858824/);
+  assert.equal(await page.locator('#cep-source-rows tbody tr').count(),17);assert.match(await page.locator('#cep-results').innerText(),/não aprovad/i);
+  await page.screenshot({path:'output/cep-2026-10-06/visual/cep-workbook-light.png',fullPage:true});
+  const historicalDownload=page.waitForEvent('download');await page.locator('[data-action=cep-export]').click();await(await historicalDownload).saveAs('output/cep-2026-10-06/historical-report.csv');
+  const report=Papa.parse(await readFile('output/cep-2026-10-06/historical-report.csv','utf8'),{delimiter:';',header:true}).data[0];assert.equal(report.fromDate,'2026-08-25');assert.equal(report.toDate,'2026-09-29');
+  await page.locator('#cep-source').selectOption('system');await page.locator('[data-action^="version:"]').click();
+  await page.locator('#modal [name=unit]').fill('ms');await page.locator('#modal [name=nature]').selectOption('measurement');await page.locator('#modal [name=status]').selectOption('approved');await page.locator('#modal [name=ruleKind]').selectOption('range');await page.locator('#modal [name=lower]').fill('800');await page.locator('#modal [name=upper]').fill('900');
+  await page.locator('#modal [type=submit]').click();await page.waitForFunction(()=>!document.getElementById('modal').open);await page.locator('#cep-source').selectOption('workbook');
+  const incompatible=await page.locator('[data-cep=versionId] option').evaluateAll(options=>options.find(o=>/\bms\b/.test(o.textContent))?.value);assert.ok(incompatible);await page.locator('[data-cep=versionId]').selectOption(incompatible);
+  assert.match(await page.locator('#cep-results').innerText(),/unidade da referência difere/);assert.equal(await page.locator('[data-cep-index=cp]').innerText(),'Sem dados');assert.equal(await page.locator('#cep-chart').evaluate(canvas=>Chart.getChart(canvas).options.scales.y.title.text),'seg');
+  assert.equal(await page.locator('#cep-chart').evaluate(canvas=>Chart.getChart(canvas).data.datasets.some(d=>d.label.includes('especificação'))),false);await page.locator('[data-cep=versionId]').selectOption('');
+  await page.locator('a[href="#settings"]').first().click();await page.locator('[data-theme-choice=dark]').click();await page.locator('.rail a[href="#cep"]').click();
+  await page.locator('#cep-chart').waitFor();await page.screenshot({path:'output/cep-2026-10-06/visual/cep-workbook-dark.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await page.waitForFunction(()=>document.querySelector('.rail').getBoundingClientRect().right<=0);
+  await page.screenshot({path:'output/cep-2026-10-06/visual/cep-workbook-mobile.png',fullPage:true,animations:'disabled'});
+  await page.goto(url+'#operations');await page.locator('[data-tab=hourly]').click();await page.locator('#hourly-date').waitFor();
+  assert.match(await page.locator('#page').innerText(),/Microparadas/);assert.match(await page.locator('#page').innerText(),/não alocad/i);
+  assert.deepEqual(errors,[]);console.log(JSON.stringify({ok:true,errors}));
+}finally{await browser.close();await new Promise(r=>server.close(r));}

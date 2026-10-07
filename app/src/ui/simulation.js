@@ -17,6 +17,8 @@ export const simulationCases = [
   {id:'constant',name:'Dispersão zero'},
   {id:'insufficient',name:'Amostra insuficiente'},
   {id:'engineering',name:'Análise pela Engenharia'},
+  {id:'cep-stable',name:'CEP · estudo estável com 60 medições'},
+  {id:'cep-unstable',name:'CEP · sinal de instabilidade'},
 ];
 
 export async function openSimulation(caseId,{papa=globalThis.Papa,now=Date.now}={}) {
@@ -53,6 +55,17 @@ export async function openSimulation(caseId,{papa=globalThis.Papa,now=Date.now}=
   const passo=parameters.find(p=>p.code==='MSA_AX');
   const collections=Object.values(data.collections).sort((a,b)=>a.occurredAt-b.occurredAt);
   const last=collections.at(-1),reading=last.readings[passo.id];
+  if(caseId.startsWith('cep-')) {
+    const bf=parameters.find(p=>p.code==='MSA_BF'),versionId=last.readings[bf.id].versionId;
+    const reference=[49.6,47.6,49.9,51.3,47.8,51.2,52.6,52.4,53.6,52.1];
+    data.collections={};data.reviews={};data.corrections={};
+    const day=eventDate(now()),start=Date.parse(day+'T08:00:00-03:00');
+    for(let i=0;i<60;i++) {
+      const id='simulation-cep-'+i,value=caseId==='cep-unstable'&&i===59?0.97:Number((0.85+(reference[i%10]-50.81)*0.004).toFixed(5));
+      data.collections[id]={id,context,origin:'demo',createdBy:actor.uid,createdAt:now(),eventDate:day,timePrecision:'instant',occurredAt:start+i*300000,
+        source:{file:'simulacao-local',sheet:caseId,row:i+1},readings:{[bf.id]:{parameterId:bf.id,versionId,status:'valid',value,raw:String(value)}}};
+    }
+  }
   if(caseId==='outside'){reading.raw='415.3';reading.value=415.3;}
   if(caseId==='missing'){reading.raw='';reading.value=null;reading.status='missing';}
   if(caseId==='invalid'){reading.raw='erro';reading.value=null;reading.status='invalid';}

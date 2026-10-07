@@ -1,12 +1,16 @@
 # MSA Yellow Team
 
+Para retomar com o pacote local completo, comece por [LEIA_PRIMEIRO.md](LEIA_PRIMEIRO.md), use [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md) e siga o [guia de transferência](docs/TRANSFERENCIA_LOCAL.md). Os originais e o contexto privado agora acompanham a cópia local; partes antigas deste documento permanecem como histórico.
+
 Base funcional para o desafio MSA/SENAI. HTML/CSS/JavaScript modular e Firebase Authentication + Realtime Database. Sem framework de interface ou servidor de producao.
 
 ## Estado Atual
 
 Para continuar em outro computador, leia [CONTINUE_AQUI.md](CONTINUE_AQUI.md). Roteiro de tres paginas para a entrevista de 20 minutos: [Roteiro_Entrevista_MSA_Equipe_Amarela.docx](docs/Roteiro_Entrevista_MSA_Equipe_Amarela.docx).
 
-O dashboard inclui "Simular cenario", com 11 ocasioes isoladas em memoria. Usa os mesmos servicos de validacao, indicadores e estatistica; nao grava no Firebase. "Voltar aos registros" restaura o contexto operacional. Media, desvio populacional e Cp/Cpk usam as amostras sinteticas do cenario, nao copiam medias reais da fabrica. Simulacoes e apontamentos operacionais sao distintos.
+Entrega corrente: [CEP e pendências](docs/ENTREGA_CEP_E_PENDENCIAS_MSA_2026-10-06.md). Inclui CEP I-MR fase I e Cp/Cpk/Pp/Ppk condicionados aos requisitos do estudo, referência histórica da planilha com proveniência, visão por hora, microparadas manuais em segundos, CSV com prévia e correções rastreáveis. Consulta Operacional exclui `origin: demo`; Apresentação conserva os dados fictícios identificados e sem ações de gravação.
+
+O dashboard inclui "Simular cenário", com 13 casos isolados em memória, incluindo CEP estável/instável. Usa os mesmos serviços de validação, indicadores e estatística; não grava no Firebase. "Voltar aos registros" restaura o contexto operacional. Os índices usam as amostras do cenário e não representam resultados da fábrica.
 
 Interface funcional com login, dashboard, 41 parametros, graficos, apontamentos, Engenharia, historico, cadastros e configuracoes. Temas claro/escuro/sistema persistentes e VLibras opcional. Funcoes de limites versionados, correcoes rastreaveis, indicadores, comparacoes e CSV continuam nos servicos. QR, OCR, IoT/CLP e IA nao foram entregues.
 
@@ -41,9 +45,9 @@ Smoke test de modulos no navegador: `node tests/browser/smoke.mjs`, com Playwrig
 npm start
 ```
 
-Abra http://127.0.0.1:5173, diretamente no dashboard. O `index.html` na raiz do repositorio tambem direciona ao sistema: aberto pelo Windows, usa o servidor local em 5173; servido pela raiz do repositorio, redireciona para `app/index.html`. E necessario manter `npm start` ativo para abrir pelo Windows.
+Abra http://127.0.0.1:5173/. O `index.html` na raiz do repositório também direciona ao sistema: aberto pelo Windows, usa o servidor local em 5173; servido pela raiz do repositório, redireciona para `app/index.html`. É necessário manter `npm start` ativo para abrir pelo Windows. Login ou dashboard dependem da sessão restaurada.
 
-O dashboard abre sem tela de login. Para consultar/gravar dados privados, use "Conectar ao Firebase", com `adm@adm.com` e a senha temporaria definida no chat. A sessao e restaurada automaticamente nas proximas visitas. Nenhuma senha foi incorporada ao codigo; nao existe acesso anonimo ao banco nem tela de cadastro. Troque a senha antes de disponibilizar publicamente.
+Sem sessão, o sistema mostra o login; com sessão restaurada, abre o dashboard. Use as credenciais autorizadas do workspace para consultar/gravar dados privados. Nenhuma senha foi incorporada ao código; não existe acesso anônimo ao banco nem tela de cadastro. O simulador pode ser aberto pelo login.
 
 O ambiente operacional usa `/workspaces/msa`, separado de `/workspaces/demo`. Em 05/10, o usuario autorizou preencher `msa` com um cenario ficticio de 14 dias: T20, dois produtos, 41 parametros, 28 coletas, 56 apontamentos de producao, 29 paradas, 94 registros de perdas, quatro analises, quatro metas e uma correcao pendente. A origem ficticia permanece nos registros (`origin: demo`, `source.file: cenario-ficticio-c26`). Os nomes e as quantidades desse cenario nao comprovam a operacao real da empresa. Aquecimento, contramolde e vacuo continuam pendentes de esclarecimento; as 18 versoes aprovadas do cenario nao equivalem a homologacao industrial.
 

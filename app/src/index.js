@@ -12,3 +12,6 @@ export {createMsaServices,createAuthenticatedMsa} from './services/create-msa.js
 export {createCsvService,stableImportId} from './io/csv.js';
 export {getMsaParameterCatalog} from './catalog/msa-parameters.js';
 export {buildDashboard} from './domain/dashboard.js';
+export {analyzeCep,selectParameterStudy} from './domain/cep.js';
+export {buildHourly} from './domain/hourly.js';
+export {getCapabilityStudy} from './catalog/capability-study.js';

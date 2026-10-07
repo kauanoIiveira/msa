@@ -4,6 +4,13 @@ import {buildIndicators,comparePeriods,effectiveRecords} from '../../app/src/dom
 const context={machineId:'m',processId:'p',productId:'q'};
 const prod={id:'p',context,eventDate:'2026-10-05',quantity:100,basis:'gross',startedAt:100,endedAt:200};
 const losses=[{context,eventDate:'2026-10-05',kind:'reject',unit:'pieces',amount:2,reasonId:'r'},{context,eventDate:'2026-10-05',kind:'material',unit:'kg',amount:0.2,reasonId:'k'}];
+test('all indicator consumers reject draft and setpoint capability equally',()=>{
+  const collections=Array.from({length:30},(_,i)=>({context,readings:{f:{parameterId:'f',versionId:'v',status:'valid',value:i%2?50.1:49.9}}}));
+  for(const patch of [{status:'draft',nature:'measurement'},{status:'approved',nature:'setpoint'}]) {
+    const r=buildIndicators({collections,parameterVersions:{v:{rule:{kind:'range',lower:40,upper:60},...patch}}},{from:0,to:300,complete:true});
+    assert.equal(r.statistics[0].cp,null);assert.equal(r.statistics[0].cpk,null);
+  }
+});
 test('keeps kg separate, requires a valid denominator and distinguishes absent amounts',()=>{
   const r=buildIndicators({production:[prod],losses,stoppages:[],collections:[],targets:[]},{from:0,to:300,complete:true});
   assert.equal(r.totals.grossPieces,100);assert.equal(r.totals.lossKg,0.2);assert.equal(r.totals.rejectPercent,2);assert.equal(r.totals.goodPieces,null);assert.equal(r.alerts.length,0);

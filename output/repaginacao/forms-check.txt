@@ -1,0 +1,1 @@
+{"ok":true,"parameters":41,"zones":21,"canvasPaintedPixels":90623,"errors":[]}

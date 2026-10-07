@@ -1,5 +1,18 @@
 # Contratos Funcionais
 
+## Atualização CEP e consulta em 06/10/2026
+
+Estado e limitações: [Entrega CEP e pendências](ENTREGA_CEP_E_PENDENCIAS_MSA_2026-10-06.md).
+
+- Queries de history/getIndicators/getDashboard aceitam `dataset: 'operational' | 'presentation' | 'all'`; operacional exclui operações `origin: demo`, incluindo análises/correções pelos registros originais vinculados. Sem `dataset`, mantém a consulta geral para compatibilidade.
+- `history.loadPeriod()` inclui `coverage` por tipo de registro, além de `complete`, `excludedPresentationCount`, notas e registros efetivos. Cobertura de coletas e conflitos do grupo governam capacidade; indisponibilidade de produção não relacionada não decide o CEP.
+- `analyzeCep(samples,{version,minSamples=25,sequenceConfirmed=true,complete=true,sourceUnit=null})` retorna I-MR fase I, dispersões dentro/global, sinais, contagens e Cp/Cpk/Pp/Ppk com requisitos explícitos. Amostras usam status/value e podem sinalizar `revisionConflict`. `complete` declara cobertura da série entregue, não aprovação industrial. `sourceUnit` impede referência em outra unidade sem conversão explícita. `normalityVerified` e `homologated` permanecem false.
+- Estatísticas dos indicadores usam CEP para capacidade; a dispersão descritiva legada continua populacional ou pelo `sigmaMethod` solicitado. `capabilityReason` explica a indisponibilidade. `summarizeReadings()` permanece utilitário matemático para comparações e não decide aprovação.
+- Séries efetivas preservam `originalId`, `correctionId`, `originalRaw` e `revisionConflict`; a identificação da revisão acompanha o relatório. `selectParameterStudy(dashboard,parameter)` seleciona contexto completo e versão da última leitura.
+- `buildHourly(data,{date,now,target,microStopSeconds})` não rateia apontamentos entre horas, preserva ausência/zero, não fecha déficit da hora corrente e une microparadas por máquina. Conflitos são explicitados e não entram como valores resolvidos.
+
+Os contratos anteriores abaixo permanecem aplicáveis salvo as atualizações explícitas acima. O workspace da interface corrente é `msa`; `demo` no exemplo seguinte serve para testes.
+
 ## Entrada Web
 
 ```html

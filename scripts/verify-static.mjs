@@ -2,6 +2,7 @@ import {readdir,readFile,access} from 'node:fs/promises';
 import {resolve,relative,dirname,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {parse} from 'acorn';
+import {createHash} from 'node:crypto';
 export async function verifyStatic(root,{requireIndex=false}={}) {
   root=resolve(root);const errors=[];let files=0;
   async function visit(dir) {
@@ -9,6 +10,8 @@ export async function verifyStatic(root,{requireIndex=false}={}) {
       const path=resolve(dir,entry.name),name=relative(root,path);
       if(entry.isSymbolicLink()) {errors.push(`symlink:${name}`);continue;}
       if(entry.isDirectory()) {await visit(path);continue;}files++;
+      // Exact approved brand asset. Industrial documents and all other binary artifacts stay blocked.
+      if(name.replaceAll('\\','/')==='assets/msa/msalogo.png'&&createHash('sha256').update(await readFile(path)).digest('hex')==='4ce380bf6038dad8c22c1689e173757a2bddbed045288c3c1fcc0c643e9f1a4f') continue;
       if(/\.(pdf|xlsx?|csv|jpe?g|png|zip|env)$/i.test(entry.name)) errors.push(`non-code-artifact:${name}`);
       const text=await readFile(path,'utf8');
       if(/(?:file:\/\/|(?:^|[\s"'(])[A-Za-z]:[\\/]|BEGIN (?:RSA )?PRIVATE KEY|private_key\s*[=:]|serviceAccountKey)/m.test(text)) errors.push(`unsafe-content:${name}`);

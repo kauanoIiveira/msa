@@ -1,0 +1,62 @@
+✔ I-MR reproduces the NIST ten-batch example and distinguishes within from overall dispersion (2.3661ms)
+✖ missing/invalid readings break moving ranges; constants and insufficient samples never produce infinite capability (2.8458ms)
+✔ draft references, setpoints, unilateral bounds and unverified chronology cannot yield bilateral capability (0.3211ms)
+✔ signals use the I and MR control limits, and unstable processes do not receive capability indices (0.2772ms)
+✔ detail selection uses the latest full context, not the first group of its version (10.5558ms)
+✖ supplied workbook keeps 17 rows, numeric text and blanks, and reproduces the corrected BF population deviation (2.0306ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 4
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 131.0271
+
+✖ failing tests:
+
+test at tests\unit\cep.test.js:14:1
+✖ missing/invalid readings break moving ranges; constants and insufficient samples never produce infinite capability (2.8458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'insufficient-sample'
+  - 'zero-dispersion'
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:18:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'insufficient-sample',
+    expected: 'zero-dispersion',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\unit\cep.test.js:39:1
+✖ supplied workbook keeps 17 rows, numeric text and blanks, and reproduces the corrected BF population deviation (2.0306ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '31/08/2026'
+  - '2026-08-31'
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Documents/ChatGPT/Desafio%20de%20Ideias/tests/unit/cep.test.js:42:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '31/08/2026',
+    expected: '2026-08-31',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

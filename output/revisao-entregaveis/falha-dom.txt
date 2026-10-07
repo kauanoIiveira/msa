@@ -1,0 +1,47 @@
+Ir para o conteúdo
+Dashboard
+Parâmetros
+Apontamentos
+Engenharia
+Histórico
+Cadastros
+Configurações
+Sair
+FD
+Apontamentos
+
+Exportar
+T20
+Máquina da revisão
+Processo da revisão
+Produto da revisão
+Últimos 7 dias
+Últimos 14 dias
+Hoje
+Últimos 30 dias
+Personalizado
+Simulação local · Processo dentro dos limites. Alterações não vão para o Firebase.
+Voltar aos registros
+Produção
+Paradas
+Perdas
+0 registros · Perdas
+Novo registro
+Data	Registro	Informação	Ações
+Nenhum registro neste período.
+Operação confirmada.
+Registrar perda
+Tipo
+Refugo
+Perda de material
+Retrabalho
+Unidade
+Peças
+Quilogramas
+Quantidade
+Motivo
+Dimensão fora da especificação
+Refugo da revisão
+
+Cancelar
+Salvar

@@ -3,6 +3,7 @@ import {evaluateReading} from './limits.js';
 import {summarizeReadings} from './statistics.js';
 import {normalizeCorrection} from './review.js';
 import {requireThat} from './errors.js';
+import {analyzeCep} from './cep.js';
 const sumKnown=(rows,key)=>rows.length?rows.reduce((n,r)=>n+r[key],0):null;
 const contextKey=context=>JSON.stringify(Object.entries(context??{}).sort(([a],[b])=>a.localeCompare(b)));
 function ranking(rows,key,unit) {
@@ -20,12 +21,13 @@ export function effectiveRecords(type,rows,corrections=[]) {
     if(revisions.length>1) {conflicts.push({recordId:row.id,correctionIds:revisions.map(r=>r.id)});return {...row,revisionConflict:true};}
     if(!revisions.length) return structuredClone(row);
     const correction=revisions[0],replacement=correction.replacement;
-    return {...row,...replacement,...(type==='collections'?{readings:{...row.readings,...replacement.readings}}:{}),originalId:row.id,correctionId:correction.id};
+    return {...row,...replacement,...(type==='collections'?{readings:{...row.readings,...replacement.readings},originalReadings:structuredClone(row.readings)}:{}),originalId:row.id,correctionId:correction.id};
   });return {items,conflicts};
 }
 export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}={}) {
   requireThat(Number.isSafeInteger(from)&&Number.isSafeInteger(to)&&from>=0&&to>from,'INVALID_PERIOD');
   const notes=[],alerts=[],series=[],groups=new Map();
+  const collectionsComplete=data.coverage?.collections??complete===true;
   const production=data.production??[],losses=data.losses??[],stoppages=data.stoppages??[],collections=data.collections??[];
   const included=production.filter(p=>p.startedAt>=from&&p.endedAt<=to);
   if(production.some(p=>p.startedAt<to&&p.endedAt>from&&!included.includes(p))) {notes.push('production-crosses-period-no-proration');complete=false;}
@@ -45,11 +47,18 @@ export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}
       const version=data.parameterVersions?.[reading.versionId];const result=evaluateReading(reading,version);
       if(result.severity!=='none') alerts.push({kind:result.severity==='data'?'data':'parameter',collectionId:col.id,parameterId:reading.parameterId,...result});
       const key=`${contextKey(col.context)}|${reading.parameterId}|${reading.versionId}`;
-      const group=groups.get(key)??{context:col.context,parameterId:reading.parameterId,versionId:reading.versionId,readings:[]};group.readings.push(reading);groups.set(key,group);
-      series.push({collectionId:col.id,eventDate:col.eventDate,occurredAt:col.occurredAt??null,timePrecision:col.timePrecision,context:col.context,parameterId:reading.parameterId,versionId:reading.versionId,value:reading.value??null,status:reading.status,state:result.state});
+      const group=groups.get(key)??{context:col.context,parameterId:reading.parameterId,versionId:reading.versionId,readings:[]};group.readings.push({...reading,revisionConflict:col.revisionConflict??false,occurredAt:col.occurredAt,timePrecision:col.timePrecision,eventDate:col.eventDate});groups.set(key,group);
+      series.push({collectionId:col.id,eventDate:col.eventDate,occurredAt:col.occurredAt??null,timePrecision:col.timePrecision,context:col.context,parameterId:reading.parameterId,versionId:reading.versionId,raw:reading.raw??null,originalRaw:col.originalReadings?.[reading.parameterId]?.raw??reading.raw??null,originalId:col.originalId??col.id,correctionId:col.correctionId??null,revisionConflict:col.revisionConflict??false,origin:col.origin,source:col.source,value:reading.value??null,status:reading.status,state:col.revisionConflict?'revision-conflict':result.state});
     }
   }
-  const statistics=[...groups.values()].map(g=>({...g,readings:undefined,...summarizeReadings(g.readings,{sigmaMethod,rule:data.parameterVersions?.[g.versionId]?.rule})}));
+  const statistics=[...groups.values()].map(g=>{
+    const version=data.parameterVersions?.[g.versionId];
+    const ordered=[...g.readings].sort((a,b)=>(a.occurredAt??0)-(b.occurredAt??0));
+    const sequenceConfirmed=ordered.every((r,i)=>r.timePrecision==='instant'&&Number.isSafeInteger(r.occurredAt)&&(!i||r.occurredAt>ordered[i-1].occurredAt));
+    const cep=analyzeCep(ordered,{version,sequenceConfirmed,complete:collectionsComplete});
+    const trustedReadings=g.readings.map(r=>r.revisionConflict?{...r,status:'invalid',value:null}:r);
+    return {...g,readings:undefined,...summarizeReadings(trustedReadings,{sigmaMethod,rule:version?.rule}),cp:cep.cp,cpk:cep.cpk,pp:cep.pp,ppk:cep.ppk,nConflicted:cep.nConflicted,capabilityReason:cep.reason,cep,unit:version?.unit??null,nature:version?.nature??null,versionStatus:version?.status??null};
+  });
   const closed=stoppages.filter(s=>s.endedAt!=null&&s.startedAt<to&&s.endedAt>from).map(s=>({...s,minutes:(Math.min(s.endedAt,to)-Math.max(s.startedAt,from))/60000}));
   const reasonRanking={stopMinutes:ranking(closed,'minutes','minutes'),rejectedPieces:ranking(rejected,'amount','pieces'),lossKg:ranking(mass,'amount','kg'),reworkPieces:ranking(rework,'amount','pieces'),reworkKg:ranking(reworkMass,'amount','kg')};
   for(const target of (data.targets??[]).filter(t=>t.active)) {

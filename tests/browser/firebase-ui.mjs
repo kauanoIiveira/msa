@@ -8,6 +8,7 @@ assert.ok(
   process.env.MSA_TEST_PASSWORD,
   "MSA_TEST_PASSWORD is required; never stored in this file.",
 );
+assert.ok(process.env.MSA_TEST_EMAIL,"MSA_TEST_EMAIL is required; never stored in this file.");
 const server = await createStaticServer({ port: 0 }),
   browser = await chromium.launch({ headless: true }),
   errors = [];
@@ -17,18 +18,10 @@ try {
   });
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
-  await page.locator(".zones .zone").first().waitFor();
-  assert.equal(await page.locator("#login").count(), 0);
-  await page.locator("[data-action=connect]").first().click();
-  await page
-    .locator("#modal [name=password]")
-    .fill(process.env.MSA_TEST_PASSWORD);
-  await page.locator("#modal [type=submit]").click();
-  await page.waitForFunction(
-    () => !document.getElementById("modal").open,
-    {},
-    { timeout: 60000 },
-  );
+  await page.locator('#login').waitFor();
+  await page.locator('#login [name=email]').fill(process.env.MSA_TEST_EMAIL);
+  await page.locator('#login [name=password]').fill(process.env.MSA_TEST_PASSWORD);
+  await page.locator('#login [type=submit]').click();
   await page.locator("[data-action=logout]").waitFor({ timeout: 60000 });
   assert.equal(await page.locator(".zones .zone").count(), 21);
   await page.reload();
@@ -127,9 +120,9 @@ try {
   assert.equal(await page.locator("#vlibras-toggle").isChecked(), false);
   assert.equal(await page.evaluate(() => !!window.VLibrasWidget), false);
   await page.locator("[data-action=logout]").click();
-  await page.locator("[data-action=connect]").first().waitFor();
+  await page.locator("#login").waitFor();
   await page.reload();
-  await page.locator("[data-action=connect]").first().waitFor();
+  await page.locator("#login").waitFor();
   assert.deepEqual(errors, []);
   console.log(
     JSON.stringify({

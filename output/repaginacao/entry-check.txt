@@ -1,0 +1,1 @@
+Login, erro preservado, Enter, sessão restaurada, saída, perfil de leitura, vazio e retorno da simulação: OK (fixture em memória)

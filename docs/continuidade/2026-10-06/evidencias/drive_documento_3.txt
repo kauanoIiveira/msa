@@ -1,0 +1,30 @@
+﻿Perguntas Fundamentais para a Entrevista com o Persona
+1. Operação no Chão de Fábrica (Substituição do Pitch Board e Ficha de Papel)
+1. Migração do Pitch Board: Hoje os operadores anotam no Pitch Board observações detalhadas (ex.: "Problema na rosca 60", "Setup / Troca de produto"). No novo sistema, como essas observações devem ser categorizadas? Teremos uma lista fechada de justificativas de parada ou o operador continuará digitando textos livres?
+(Riquelme)
+2. Registro de Defeitos e Sucata: Vimos na ficha de coleta do Selo VGHP/MARKV que o refugo é anotado por tipo (Selo Rompido, Selo Enrugado, Sem Espuma) e o refugo de laminado é registrado em KG. No MVP, o operador pesará e digitará esse valor no sistema ou a contagem será por peças descartadas?
+(Kauan)
+3. Leitura dos Manômetros Analógicos: Existem relógios analógicos (manômetro e vacuômetro) no painel da máquina. A ideia é que o operador tire foto dessas leituras para OCR, digite os valores manualmente no tablet/sistema, ou esses dados futuramente virão de sensores/IoT?
+(Samuel)
+2. Monitoramento de Máquinas, IHMs e Alarmes
+4. Mapeamento de Estações (Estações 10 a 140): A IHM Siemens monitora diversas estações individuais. O sistema precisa registrar falhas e paradas detalhadas por estação (ex.: "Estação 30 - Porta Aberta" / "Estação 40 - Falha de Avanço") ou basta o registro macro do tempo de parada da máquina/linha como um todo?
+(Bia)
+5. Captura por Foto/OCR das IHMs: Para a captura por foto das telas (IHM KVIEW ou Siemens), qual é a frequência esperada dessa foto (ex.: a cada setup, a cada mudança de hora/turno, ou quando ocorre um desvio)?
+(Maria)
+6. Integração Automação x Foto: O painel elétrico possui CLP Siemens. Há possibilidade de extração direta de dados via rede/CLP para o MVP, ou o foco total inicial deve ser na interface digital (Tablet/Web) operada manualmente ou por OCR?
+(Riquelme)
+3. Engenharia de Processo, Limites e Capabilidade (Cp e Cpk)
+7. Monitoramento dos 40+ Parâmetros de Processo: A planilha de capabilidade do Selo V-Gard acompanha mais de 40 parâmetros (21 Zonas de Aquecimento Z1 a Z21, Tempos de Vácuo, Retardos, Pressão, etc.). A Engenharia deseja cadastrar os limites Mínimo e Máximo de todos esses parâmetros no sistema para validação automática?
+(Kauan)
+8. Disparo de Alertas e Recálculo de Cp/Cpk: Com qual frequência a Engenharia precisa que os índices Cp e Cpk sejam recalculados no dashboard? Se uma zona de temperatura (ex.: Z5) ou o tempo de vácuo sair da tolerância configurada, qual deve ser o alerta gerado (alerta visual na tela, notificação por e-mail, bloqueio do lote)?
+(Samuel)
+9. Fluxo de Liberação da Engenharia: Quando um parâmetro fica fora da tolerância, a máquina/lote entra automaticamente no status "Aguardando Análise"? Quem tem a alçada (Engenharia/Qualidade) para alterar o status para "Aprovado" ou "Não Aprovado" no sistema?
+(Bia)
+4. Visão de Gestão, Dashboards e Relatórios
+10. Comparativos de Desempenho: Quais comparações no dashboard são mais críticas para a gestão na rotina diária? (Ex.: Comparar Eficiência/CPK entre o 1º, 2º e 3º Turnos; comparar o desempenho da linha para o produto ABAF ALTO TIPO 14 vs. outros produtos?).
+(Maria)
+11. Exportação de Relatórios: Que tipo de relatório a Engenharia/Qualidade precisa exportar (PDF/Excel) para auditagens ou reuniões diárias de acompanhamento?
+(Riquelme)
+5. Escopo e Restrições Técnicas do MVP
+12. Hardware no Chão de Fábrica: Como os operadores utilizarão a solução no dia a dia? Haverá tablets fixos por máquina/célula, um smartphone por operador ou um terminal central?
+(Samuel)

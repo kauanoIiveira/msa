@@ -1,0 +1,17 @@
+{
+  "fontes_preservadas_por_sha256": 12,
+  "resumos_numericos_comparados": 224,
+  "resumos_coincidentes": 224,
+  "BF_verificacao_independente_Decimal": {
+    "media": "0.8588235294117647058823529411764705882353",
+    "desvio_populacional": "0.04921529567847503223401011916383455819955",
+    "cp_aritmetico": "0.3386481059780781979911648675797187457068",
+    "cpk_aritmetico": "0.2788866755113585159927240085950624964645"
+  },
+  "csv_parametros": 41,
+  "csv_campos": 697,
+  "parametros_no_relatorio": 41,
+  "paginas_pdf": 8,
+  "texto_e_imagens_dentro_das_margens": true,
+  "observacao": "Verificacao estrutural/numerica; a inspecao visual das paginas renderizadas e realizada separadamente."
+}

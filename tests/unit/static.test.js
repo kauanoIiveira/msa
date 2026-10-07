@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,writeFile,mkdir,rm} from 'node:fs/promises';
+import {mkdtemp,writeFile,mkdir,rm,copyFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {verifyStatic} from '../../scripts/verify-static.mjs';
@@ -13,4 +13,13 @@ test('static artifact rejects industrial evidence, missing imports, credentials 
   await writeFile(join(dir,'src','entry.js'),"import './missing.js';");assert.equal((await verifyStatic(dir)).ok,false);
   await writeFile(join(dir,'src','entry.js'),'const private_key="secret";');assert.equal((await verifyStatic(dir)).ok,false);
   await writeFile(join(dir,'src','entry.js'),'export const url="https://example.com";');assert.equal((await verifyStatic(dir)).ok,true);
+});
+test('static artifact permits only the verified MSA brand image and keeps other binary sources blocked',async t=>{
+  const dir=await mkdtemp(join(tmpdir(),'msa-brand-'));t.after(()=>rm(dir,{recursive:true,force:true}));
+  await mkdir(join(dir,'assets','msa'),{recursive:true});
+  const logo=join(dir,'assets','msa','msalogo.png');
+  await copyFile('app/assets/msa/msalogo.png',logo);
+  assert.equal((await verifyStatic(dir)).ok,true);
+  await writeFile(logo,'unexpected binary');
+  assert.equal((await verifyStatic(dir)).ok,false);
 });

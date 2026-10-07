@@ -1,0 +1,64 @@
+﻿Todos os indicadores presentes nas máquinas (que deverão ser incluídos no Dashboard):
+
+
+* Temp Ambiente | Mín. tolerância: 13 | Máx. tolerância: 30 | Unidade: °C
+
+
+*  Medida do Passo | Mín. tolerância: 412 | Máx. tolerância: 415 | Unidade: mm
+
+
+*  Aquecimento Z1-Z21 (tirar dúvidas com a Persona sobre este indicador)
+
+
+*  Velocidade do Passo | Mín. tolerância: 19 | Máx. tolerância: 20 | Unidade: %
+
+
+*  Tempo de Vácuo | Mín. tolerância: 75 | Máx. tolerância: 85 | Unidade: seg
+
+
+*  Tempo de Resfriamento | Mín. tolerância: 35 | Máx. tolerância: 36 | Unidade: seg
+
+
+*  Tempo destacar | Mín. tolerância: 0,8 | Máx. tolerância: 0,9 | Unidade: seg
+
+
+*  Tempo Contra molde | Mín. tolerância: 80 | Máx. tolerância: 75 | Unidade: seg (sic na planilha)
+
+
+*  Tempo prensa corte | Mín. tolerância: 10 | Máx. tolerância: 15 | Unidade: seg
+
+
+*  Tempo de esteira saída | Mín. tolerância: 28 | Máx. tolerância: 30 | Unidade: seg
+
+
+*  Retardo de Passo | Mín. tolerância: 1 | Máx. tolerância: 2 | Unidade: seg
+
+
+*  Retardo de Mesa | Mín. tolerância: 0,1 | Máx. tolerância: 1 | Unidade: seg
+
+
+*  Retardo de Vácuo | Mín. tolerância: 4 | Máx. tolerância: 5 | Unidade: seg
+
+
+*  Retardo de resfriamento | Mín. tolerância: 4 | Máx. tolerância: 5 | Unidade: seg
+
+
+*  Retardo destacar | Mín. tolerância: 2 | Máx. tolerância: 5 | Unidade: seg
+
+
+*  Retardo Contra Molde | Mín. tolerância: 1,5 | Máx. tolerância: 5 | Unidade: seg
+
+
+*  Retardo Prensa Corte | Mín. tolerância: 9,5 | Máx. tolerância: 15 | Unidade: seg
+
+
+*  Retardo disco corte | Mín. tolerância: 7 | Máx. tolerância: 9 | Unidade: seg
+
+
+*  Retardo esteira saída | Mín. tolerância: 0,5 | Máx. tolerância: 1 | Unidade: seg
+
+
+*  Pressão Ar | Mín. tolerância: 6,5 | Máx. tolerância: não especificado | Unidade: bar
+
+
+*  Vácuo | Mín. tolerância: -600 | Máx. tolerância: não especificado | Unidade: mm/Hg

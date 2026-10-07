@@ -1,0 +1,247 @@
+[
+  {
+    "path": "app/index.html",
+    "sha256_current": "e167aa50c5aecb9b4796e529c6992ca2300d2fb13e404a072f34adb344829875",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/browser.js",
+    "sha256_current": "8c70feb2e3449448c9e8d056e20e1e64b55f0432145ea49f19e7301665fc3a70",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/catalog/msa-parameters.js",
+    "sha256_current": "1cc0129aa26ef62ce5c917f76786264b7a60f510cb049fe444fb53aef3811d01",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/config/firebase.js",
+    "sha256_current": "4e5bb75bc0e5b505fdd21744f520238daa97e920f0d2cf067797a30d22fcb45c",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/canonical.js",
+    "sha256_current": "0f37b1445290da1f53ea48e4c82fd841941c4dc7536545ebdc9c8f11a5ff3887",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/context.js",
+    "sha256_current": "3025b740a3eba53f16a5b4997c941801362418a9f6d3d61e5b17bd8aa42c2408",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/dashboard.js",
+    "sha256_current": "c0fa89f6e7d19de5a6cdd259fdc2bded13bf5b5b7373e4554c877e0cc8ad865b",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/errors.js",
+    "sha256_current": "0d1e527f3d785af9cd63fd9607a98fdfb1671e363c331e8dbba86e7f3f3fa051",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/indicators.js",
+    "sha256_current": "907d0333234cf79aa50d2ef890537eb6c2528e263f2c85580b431b442a855370",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/limits.js",
+    "sha256_current": "794ea1277135a73465674c645f73a9366f0e5a765cf2aa69366f425d04579c4b",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/numbers.js",
+    "sha256_current": "4e79df3ee73e0971e612b4e97c27e883da2300077fc20d3c613a61419df1301d",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/review.js",
+    "sha256_current": "b368c092c4a41298aaa34c979b3e5044404974086891a32aeb31b5e1eb11f475",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/statistics.js",
+    "sha256_current": "a95118f3a8e991aa64c6a85357e8e7b967f89a18b2febe6278d58b765d203153",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/domain/time.js",
+    "sha256_current": "ab95c2b29e0b89bdc5ca577d7b00b6448cc95e38abf3c84b3da306906b1928f6",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/index.js",
+    "sha256_current": "5b6818f1b06f596dd1f5a91fc3fbf5137ff6281a98b3acd1e1d0c5d225efb0c0",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/io/csv.js",
+    "sha256_current": "10802123602c5220840b97ca3fd8f7df1ae14ce1f466e75a477a0d26fc3ff59d",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/repositories/firebase-repository.js",
+    "sha256_current": "6e16b994be59befbe12d86c05157ed0a8263e56a3230b7cddaf4091cfa04db10",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/repositories/firebase-sdk-browser.js",
+    "sha256_current": "8cc5fdb279e310805b84bf92a99ef536b534b75521d5093cf9c2c2e4a5d35f06",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/services/analysis.js",
+    "sha256_current": "56fabc0237fdbd5121d9fdfc30451eb4e750fcaac39b806b7d1780f094dc453a",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/services/auth.js",
+    "sha256_current": "c82cbb7f5ef3f0bd24e25b90eaf2e1c6e16d9bff60e692b22a81ee8bef25abe4",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/services/catalog.js",
+    "sha256_current": "52a8ae94b969d08f9e28b683d22311910b0b249a7540d2f561d46cdf89efd8d7",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/services/create-msa.js",
+    "sha256_current": "8b2bd4f81cb37d40159c10b0b2963c9af30180341cb15b2b479a8dee58c354fa",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/services/history.js",
+    "sha256_current": "5bb6fa17aad2dabf2e3ddd52cfdf3a0f5139f9a1ff49ca73736d5a3a49d6bb06",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/services/operations.js",
+    "sha256_current": "f91bdac83964b1e07cd4c67f3f3f86d08433126f34079297382d0513f7096efd",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/services/registry.js",
+    "sha256_current": "231275ad39dcbe4344479206c2993a7e6c9583524eb3b18a2016b25fccb04dfb",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/charts.js",
+    "sha256_current": "6045b2da228070c6f8e9db1a8abde00aef1f1b0b601f454c0a600e47053265bb",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/consultation.js",
+    "sha256_current": "c82dcfc153b560b0faa90b0076627b9884dfbd18e91d0915d92042ca5dbfcb38",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/demo-workspace.js",
+    "sha256_current": "32daed3190d91fa004fd58cf04adc454f022be50df4af43b13f83ec3a4b7af74",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/format.js",
+    "sha256_current": "26a68d7496517595155a753f8308351ab3b3a581645a3110ab91e5604adc5278",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/forms.js",
+    "sha256_current": "7082107be3cdba432d434fcce03a7f14586a8f3080a3577673e88281c8485b6a",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/main.js",
+    "sha256_current": "5b455aca49c6c62e4e62aa6b5ab43f21f828cce75603100b3007576a121f502b",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/operational-workspace.js",
+    "sha256_current": "cc6d2ffffa9d6c8fbba212509a32fbdf8503f76c2b8dd3c1813e838e00e00692",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/preferences.js",
+    "sha256_current": "0a87bd082ce5a45eb5cc453d75c9cc25e79e845e7503f2cf99d1887ad4b77b05",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/simulation.js",
+    "sha256_current": "52cc89fcc89ac71395a9262ee8e6403aebc35ef356469bf63c4914c4692a26f5",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/src/ui/vlibras.js",
+    "sha256_current": "0a0e6c1cfb5be8502314fc18bc36aa9f454210564139cea7217f8c45981679be",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/styles.css",
+    "sha256_current": "5122d3c70b475826af22253a8e9e7835c4f615b08e0e1608b9103cefe3031983",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/THIRD_PARTY.md",
+    "sha256_current": "67a12c55112b5cba4a8f2b163c7c948f096c85cd1d6d71124455c97c087badee",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/chart.LICENSE",
+    "sha256_current": "41a84aa2caba645f966a18d9c2056b73e6d3a81d80bc0046bc0011a2634d4cce",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/chart.umd.min.js",
+    "sha256_current": "48444a82d4edcb5bec0f1965faacdde18d9c17db3063d042abada2f705c9f54a",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/lucide.LICENSE",
+    "sha256_current": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/lucide.min.js",
+    "sha256_current": "f828bf34002c03a37da4acecfd0cf214935c4c6c26d4bc48903457ba6c44e606",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/papaparse.LICENSE",
+    "sha256_current": "99aa68e4b42758b09828a46515f70369e5463458ab7a990189f641af2b8d9b4e",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/papaparse.min.js",
+    "sha256_current": "4d5d2d6e3282b66aafaa5e6de8ca3ae06f8d3440111ae99c6a30f6c00cfac33e",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/simple-statistics.LICENSE",
+    "sha256_current": "63b5b6a85bc21476ebee13febd48d0a52056a695754a73aaed1ed7eafb059f29",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "app/vendor/simple-statistics.mjs",
+    "sha256_current": "800c59ccf29bb11b4e4fdf7d247f9649fbd57abbcd66bc5de1193ecee061b9ca",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "firebase/CONFIGURACAO.md",
+    "sha256_current": "ba31fb32d6e77cf5030658594a9401581ecaca2067e4271a440489df9b16db8e",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "firebase/database.rules.json",
+    "sha256_current": "262a60ecf479f9e37c1bbeaf88c452645f326c6faaf44c7a60924f7ac8d0db28",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "firebase/rules-source.mjs",
+    "sha256_current": "51bf6833f64aa5f53ed10dfd558bcc9710d5bf8e739b45648a836ef648b5bc05",
+    "same_content_as_desktop": true
+  },
+  {
+    "path": "index.html",
+    "sha256_current": "d49e5bf5ace665b7f38edcf1093cdf11d8aaf0649e1629b1c4384219450775fa",
+    "same_content_as_desktop": true
+  }
+]

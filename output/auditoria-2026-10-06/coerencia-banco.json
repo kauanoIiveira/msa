@@ -1,0 +1,18 @@
+{
+  "checkedCounts": {
+    "collections": 28,
+    "corrections": 1,
+    "losses": 94,
+    "machines": 1,
+    "parameterVersions": 59,
+    "parameters": 41,
+    "processes": 1,
+    "production": 56,
+    "products": 2,
+    "reasons": 9,
+    "reviews": 4,
+    "stoppages": 29,
+    "targets": 4
+  },
+  "linkOrLimitIssues": []
+}

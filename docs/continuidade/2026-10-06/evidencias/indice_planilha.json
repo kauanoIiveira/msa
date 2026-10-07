@@ -1,0 +1,50 @@
+[
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\MSA - Material Fornecido\\T20A03(EN)5 - Capability study senai.xlsx",
+    "sha256": "6a030b82f7dc32c6bd05a43a426344c72683fad61495aab70dbc13406ea11c8e",
+    "sheets": [
+      {
+        "name": "Selo ",
+        "max_row": 310,
+        "max_column": 87,
+        "nonempty": 5001,
+        "formulas": 3910,
+        "merged": [
+          "G93:J93",
+          "D19:D20",
+          "A93:F93",
+          "A7:X7",
+          "I6:M6",
+          "A2:X2",
+          "E5:G5",
+          "O5:S5",
+          "D21:D22",
+          "D23:D24",
+          "O6:S6",
+          "D25:D26",
+          "A1:X1",
+          "I5:M5",
+          "U5:X5",
+          "U6:X6",
+          "E6:G6"
+        ],
+        "extraction": "planilha_Selo_.json"
+      },
+      {
+        "name": "Normality test ",
+        "max_row": 1209,
+        "max_column": 37,
+        "nonempty": 8022,
+        "formulas": 6005,
+        "merged": [
+          "A1:K1",
+          "H7:K7",
+          "AH8:AJ8"
+        ],
+        "extraction": "planilha_Normality_test_.json"
+      }
+    ],
+    "defined_names": "{}",
+    "external_links": 0
+  }
+]

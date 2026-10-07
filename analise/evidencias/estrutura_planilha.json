@@ -1,0 +1,62 @@
+{
+  "source": "C:\\Users\\Kauan\\Desktop\\MSA\\T20A03(EN)5 - Capability study senai.xlsx",
+  "calculation": "<openpyxl.workbook.properties.CalcProperties object>\nParameters:\ncalcId=191028, calcMode=None, fullCalcOnLoad=True, refMode=None, iterate=None, iterateCount=None, iterateDelta=None, fullPrecision=None, calcCompleted=None, calcOnSave=None, concurrentCalc=None, concurrentManualCount=None, forceFullCalc=None",
+  "defined_names": {},
+  "sheets": [
+    {
+      "name": "Selo ",
+      "state": "visible",
+      "dimensions": "A1:CI310",
+      "cells": 5001,
+      "formula_count": 3910,
+      "cache_errors": {
+        "#DIV/0!": 9
+      },
+      "merged": [
+        "G93:J93",
+        "D19:D20",
+        "A93:F93",
+        "A7:X7",
+        "I6:M6",
+        "A2:X2",
+        "E5:G5",
+        "O5:S5",
+        "D21:D22",
+        "D23:D24",
+        "O6:S6",
+        "D25:D26",
+        "A1:X1",
+        "I5:M5",
+        "U5:X5",
+        "U6:X6",
+        "E6:G6"
+      ],
+      "hidden_rows": [],
+      "hidden_cols": [],
+      "validation": "<openpyxl.worksheet.datavalidation.DataValidationList object>\nParameters:\ndisablePrompts=None, xWindow=None, yWindow=None, count=1, dataValidation=[<openpyxl.worksheet.datavalidation.DataValidation object>\nParameters:\nsqref=<MultiCellRange [G93 U6]>, showDropDown=False, showInputMessage=True, showErrorMessage=True, allowBlank=True, errorTitle=None, error=None, promptTitle=None, prompt=' - ', type='list', errorStyle=None, imeMode=None, operator=None, formula1='#REF!', formula2=None]",
+      "tables": [],
+      "charts": 0
+    },
+    {
+      "name": "Normality test ",
+      "state": "visible",
+      "dimensions": "A1:AK1209",
+      "cells": 8022,
+      "formula_count": 6005,
+      "cache_errors": {
+        "#DIV/0!": 2,
+        "#VALUE!": 2000
+      },
+      "merged": [
+        "A1:K1",
+        "H7:K7",
+        "AH8:AJ8"
+      ],
+      "hidden_rows": [],
+      "hidden_cols": [],
+      "validation": "<openpyxl.worksheet.datavalidation.DataValidationList object>\nParameters:\ndisablePrompts=None, xWindow=None, yWindow=None, count=0, dataValidation=[]",
+      "tables": [],
+      "charts": 0
+    }
+  ]
+}

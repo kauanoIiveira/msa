@@ -1,0 +1,63 @@
+﻿1. Lista de Materiais e Recursos (Por Máquina / Injetora)
+Recurso / Dispositivo
+	Qtd.
+	Finalidade Principal
+	Custo Unitário (R()
+	Custo Total (R))
+	Módulo IoT Concentrador (ESP32 / CLP IoT)
+	1 un.
+	Processar dados das 21 zonas térmicas e tempos, transmitindo ao dashboard em tempo real.
+	R$ 2.200,00
+	R$ 2.200,00
+	Transdutor de Pressão Industrial (0–10 bar)
+	1 un.
+	Leitura contínua da pressão de ar comprimido.
+	R$ 650,00
+	R$ 650,00
+	Transdutor de Vácuo Industrial (0 a -1 bar)
+	1 un.
+	Leitura analógica contínua da sucção de vácuo em mmHg.
+	R$ 750,00
+	R$ 750,00
+	Módulo de Leitura Térmica (RS-485 / Modbus)
+	1 un.
+	Comunicação direta com os controladores das 21 zonas de aquecimento e sensor ambiente.
+	R$ 1.100,00
+	R$ 1.100,00
+	Sensores Indutivos / Acopladores Digitais
+	4 un.
+	Cronometragem automática dos 17 tempos, passos e ciclo do processo.
+	R$ 225,00
+	R$ 900,00
+	Botoneira de Apontamento Andon IP65
+	1 un.
+	Registro manual de motivos de paradas, setup e refugos de materiais.
+	R$ 350,00
+	R$ 350,00
+	Torre de Sinalização LED 24V
+	1 un.
+	Alerta visual direto no chão de fábrica (Verde = Ok, Amarelo = Ajuste, Vermelho = Parada/Alarme).
+	R$ 500,00
+	R$ 500,00
+	Serviços de Instalação, Tags e Calibração
+	1 lote
+	Mão de obra de infraestrutura elétrica, mapeamento de memória do CLP e aferição de sensores.
+	R$ 1.800,00
+	R$ 1.800,00
+	VALOR TOTAL POR MÁQUINA
+	--
+	Instrumentação completa para monitoramento automático dos 41 parâmetros
+	--
+	R$ 8.250,00
+	2. Ganho Real e Impacto Operacional (Intuitivo para Apresentação)
+A. Redução do MTTR (Tempo Médio de Reparo e Ajuste)
+* Antes (Sem Monitoramento IoT): O operador percebe o defeito no produto final  Tenta identificar manualmente qual das 21 zonas de temperatura ou pressão oscilou  Procura a manutenção. (Tempo perdido: 30 a 45 minutos por evento).
+* Depois (Com Andon IoT): O sistema detecta a oscilação de temperatura (ex: Zona Z13 fora do limite) ou queda de vácuo no primeiro segundo de alteração e emite um alerta imediato.
+* Ganho Real: Redução de 40% a 60% no MTTR, atuando na causa raiz antes de gerar refugo maciço de peças.
+B. ROI e Payback Simplificado
+$$\text{Investimento Inicial (R\$ 8.250 / máquina)} \longrightarrow \text{Economia Mensal (R\$ 2.200 a R\$ 3.800 / mês)} \longrightarrow \text{Payback em 2,2 a 3,8 Meses}$$
+   * Ganhos Diretos:
+   1. Aumento de Produção (+5% OEE): Recuperação de tempo parado por micro-paradas não registradas.
+   2. Eliminação de Refugo de Matéria-Prima: Redução de perdas por peças queimadas, enrugadas ou com falha de vácuo.
+   3. Confiabilidade de Dados: Fim dos erros de transcrição em planilhas ou cálculos de  incorretos.
+      * Retorno em 1 Ano: ROI de +220% a +450% (para cada R$ 1,00 investido na máquina, a empresa recupera entre R$ 3,20 e R$ 5,50 em eficiência operacional).

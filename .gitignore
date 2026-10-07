@@ -5,9 +5,20 @@ node_modules/
 firebase-debug.log
 database-debug.log
 auth-debug.log
-analise/
-entrega/
-output/
 .env*
 !.env.example
 coverage/
+
+# Publicacao integral dos materiais do projeto autorizada em 06/10/2026.
+# Conserva fora do Git apenas ambientes instalados e temporarios de teste.
+**/node_modules/
+**/.git/
+**/.runtime/
+**/.superpowers/
+**/__pycache__/
+*.pyc
+*.pyo
+Thumbs.db
+.DS_Store
+/tmp/transferencia-verificacao-*/
+/tmp/restauracao-git-verificacao-*/

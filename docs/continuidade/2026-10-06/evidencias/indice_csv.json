@@ -1,0 +1,50 @@
+[
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\auditoria_41_parametros.csv",
+    "rows": 41,
+    "fields": [
+      "coluna",
+      "parametro",
+      "unidade",
+      "minimo_arquivo",
+      "maximo_arquivo",
+      "numeros_originais",
+      "textos_decimais",
+      "ausentes",
+      "n_interpretado",
+      "media_salva",
+      "media_interpretada",
+      "desvio_pop_salvo",
+      "desvio_pop_interpretado",
+      "desvio_amostral_interpretado",
+      "cp_salvo",
+      "cp_aritmetico_interpretado",
+      "cpk_salvo",
+      "cpk_aritmetico_interpretado",
+      "status_salvo",
+      "histograma_contagem_salva",
+      "observacoes"
+    ],
+    "sha256": "67f09ca6f61348d5c264c75959f3b61a3c03d203bda9b68194e90f4c0a372e5c",
+    "matches_checkout": true
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Rascunhos Persona\\medicoes_697_campos.csv",
+    "rows": 697,
+    "fields": [
+      "celula",
+      "data",
+      "coluna",
+      "parametro",
+      "unidade",
+      "original",
+      "tipo_excel",
+      "formato_excel",
+      "valor_interpretado",
+      "tratamento",
+      "relacao_faixa_do_arquivo"
+    ],
+    "sha256": "8545193a272ec0f3698d8b2728755302936b515b5ecfa192dd4d11aeec6c9e38",
+    "matches_checkout": true
+  }
+]

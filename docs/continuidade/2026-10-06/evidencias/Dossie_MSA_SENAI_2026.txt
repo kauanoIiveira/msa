@@ -1,0 +1,838 @@
+--- PAGINA 1 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+1
+DESAFIO DE IDEIAS · MSA DO BRASIL / 01
+Da coleta à decisão
+Dossiê de análise e proposta para o desafio da MSA do Brasil no SENAI 2026.
+Recomendação central
+Criar um sistema de produção rastreável que vincule cada coleta à máquina, ao produto e ao
+período, confira os dados, sinalize desvios e registre a decisão da Engenharia.
+O que a equipe precisa demonstrar
+As fotos exigem um MVP funcional: uma versão pequena que permita executar o fluxo
+principal. O núcleo recomendado é cadastro, coleta digital, produção, paradas, refugos e perdas,
+histórico, indicadores e alertas visuais. O diferencial é mostrar a origem de cada informação e
+acompanhar a análise até sua decisão.
+Sugestão de nome provisório: Nexo Produção. É um nome para a proposta da equipe; não
+representa um produto oficial da MSA nem uma marca aprovada pela empresa.
+Como usar este dossiê
+Parte
+Conteúdo
+2 a 4
+Extração das fotos: contexto, 13 requisitos mínimos e 16 opcionais.
+5 a 8
+Diagnóstico, alternativas, fluxo, telas e estrutura dos dados.
+9 a 10
+Indicadores, CEP, Cp e Cpk, com exemplo didático.
+11 a 14
+Verificação do MVP, demonstração, impacto e evolução.
+15 a 17
+Perguntas para a MSA, defesa da proposta, pitch e fontes.
+Base e limites da análise
+O enunciado é a fonte dos requisitos. A pesquisa pública confirma o contexto de produtos de
+segurança da MSA Safety e seu contato brasileiro em Diadema. A ligação entre essa operação e a
+unidade participante deve ser confirmada com o SENAI. Não foram fornecidos dados internos,
+máquinas, especificações, orçamento, prazo ou critérios de pontuação. As recomendações são
+uma proposta para validar com a empresa.
+Fontes: fotos IMG_3319.jpeg e IMG_3320.jpeg; MSA Safety, Company Overview e Contate-nos. Links completos
+na página 17.
+
+
+--- PAGINA 2 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+2
+DESAFIO DE IDEIAS · MSA DO BRASIL / 02
+O que as fotos dizem
+Transcrição do contexto e leitura do que o desafio exige.
+Desafio - transcrição
+A MSA do Brasil realiza atualmente a coleta e verificação de informações de produção por meio
+de processos parcialmente manuais.
+Parâmetros das máquinas são registrados por fotografias da IHM (Interface Homem-Máquina) e
+posteriormente transcritos para planilhas de Excel. Além desses parâmetros, informações
+importantes do processo, como quantidade produzida, paradas de máquina, tempo de parada,
+motivos das paradas, refugos e perdas de produção, precisam ser registradas e consolidadas
+para análise.
+A Engenharia utiliza esses dados para verificar limites mínimos e máximos, acompanhar o
+desempenho produtivo e realizar análises de Controle Estatístico de Processo (CEP), incluindo
+indicadores como Cp e Cpk, apoiando a tomada de decisão e a liberação da produção.
+Pergunta central - transcrição
+Como podemos tornar a coleta, organização e análise dos dados de produção mais ágil,
+confiável e visual, reduzindo atividades manuais e facilitando a tomada de decisão?
+Resultado esperado - transcrição
+Ao final do desafio, a equipe deverá apresentar um MVP (Produto Mínimo Viável) funcional
+capaz de demonstrar a evolução do processo atual:
+A segunda foto termina essa frase com dois-pontos. Não há continuação legível depois dela na imagem
+enviada. Se existir outra parte do enunciado, ela poderá acrescentar condições.
+Termos para entender a conversa com a empresa
+IHM: tela pela qual uma pessoa acompanha ou opera a máquina. CLP: controlador lógico
+programável, equipamento que executa a lógica de controle. OCR: leitura de texto e números
+em uma imagem. CEP: acompanhamento estatístico da variação do processo. Refugo: produto
+rejeitado. API: interface para sistemas trocarem dados.
+Informações que as fotos não fornecem
+Não constam prazo, composição da equipe, duração da apresentação, tecnologias permitidas,
+pesos da avaliação, protocolos das máquinas ou valores de metas. Os parâmetros e produtos
+específicos também não são identificados. Não é possível afirmar qual máquina, linha ou produto
+está envolvido.
+
+
+--- PAGINA 3 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+3
+DESAFIO DE IDEIAS · MSA DO BRASIL / 03
+Os 13 requisitos mínimos
+A primeira linha com marcador introduz a lista; os 13 itens seguintes são
+requisitos.
+Nº
+Texto do enunciado
+Como demonstrar
+01
+Cadastro de máquinas, processos e/ou produtos;
+Criar um cadastro e usá-lo em um registro
+real da demonstração.
+02
+Cadastro dos parâmetros e dados de produção a
+serem monitorados;
+Mostrar nome, unidade, origem e frequência
+de um parâmetro.
+03
+Definição de limites ou metas para os indicadores
+aplicáveis;
+Configurar limites e uma meta; mostrar sua
+aplicação.
+04
+Registro digital dos dados coletados;
+Salvar uma coleta e abri-la novamente.
+05
+Registro de produção, incluindo quantidade
+produzida e período;
+Registrar quantidade e intervalo de início e
+fim.
+06
+Registro de paradas de máquina, duração e motivo;
+Registrar início, fim e motivo; calcular a
+duração.
+07
+Registro de refugos, perdas e seus respectivos
+motivos;
+Registrar refugo e perda com unidade e
+motivo.
+08
+Organização e armazenamento estruturado das
+informações;
+Persistir dados com campos e vínculos
+definidos.
+09
+Associação dos registros à máquina, processo ou
+produto;
+Filtrar o histórico pelo vínculo cadastrado.
+10
+Histórico dos dados coletados para consulta e
+análise;
+Consultar registros de períodos distintos.
+11
+Dashboard com indicadores e gráficos de
+acompanhamento;
+Atualizar indicadores com o novo registro.
+12
+Identificação visual de desvios, parâmetros fora dos
+limites ou situações críticas;
+Exibir um desvio, seu limite e a evidência.
+13
+Demonstração do fluxo funcional da solução por meio
+de um protótipo.
+Executar da coleta à consulta e análise.
+Decisão de escopo
+Implementar todos os requisitos mínimos em uma máquina piloto e um produto ou processo.
+Um MVP pequeno pode demonstrar o fluxo completo sem cadastrar toda a fábrica.
+O enunciado cita Cp e Cpk no contexto da Engenharia. Inclua a análise ou uma demonstração
+estatística verificável onde ela for aplicável, e explique quando os dados ainda não permitem
+uma conclusão.
+
+
+--- PAGINA 4 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+4
+DESAFIO DE IDEIAS · MSA DO BRASIL / 04
+Os 16 diferenciais opcionais
+Transcrição integral da lista e prioridade sugerida para a equipe.
+Nº
+Texto do enunciado
+Prioridade
+01
+Leitura automática de dados por OCR a partir de fotos da IHM;
+Após o núcleo
+02
+Coleta automática de dados diretamente de máquinas, CLPs ou IHMs;
+Evolução
+03
+Uso de dispositivos IoT para coleta de dados de produção;
+Evolução
+04
+Identificação de máquinas, produtos ou ordens por QR Code;
+Priorizar
+05
+Alertas automáticos para parâmetros fora dos limites;
+Priorizar
+06
+Alertas para Cp, Cpk ou outros indicadores abaixo das metas estabelecidas;
+Se aplicável
+07
+Alertas para excesso de paradas, refugos ou perdas de produção;
+Após o núcleo
+08
+Classificação e análise dos principais motivos de parada e refugo;
+Priorizar
+09
+Fluxo digital de análise e liberação pela Engenharia, com status como
+aguardando análise, em análise, aprovado e não aprovado;
+Priorizar
+10
+Histórico de análises, ocorrências e liberações;
+Priorizar
+11
+Acesso à solução por tablet ou smartphone;
+Priorizar
+12
+Dashboards e indicadores atualizados em tempo real;
+Após o núcleo
+13
+Comparação entre máquinas, produtos, turnos ou períodos;
+Após o núcleo
+14
+Exportação automática de relatórios e indicadores;
+Após o núcleo
+15
+Uso de Inteligência Artificial para identificação de padrões, tendências ou
+anomalias;
+Evolução
+16
+API ou possibilidade de integração futura com outros sistemas da empresa.
+Prever no desenho
+A coluna de prioridade é uma recomendação, não uma regra da banca. Primeiro, complete e
+verifique o núcleo. OCR depende de fotos reais e de um teste de leitura. Integração industrial
+depende do equipamento e do acesso disponíveis.
+Texto de abertura da foto: “Como diferenciais, as equipes poderão propor uma ou mais das seguintes
+funcionalidades:”. Os opcionais não são uma exigência de implementar tudo.
+
+
+--- PAGINA 5 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+5
+DESAFIO DE IDEIAS · MSA DO BRASIL / 05
+Diagnóstico e alternativas
+O objetivo é diminuir o trabalho de registro e aumentar a confiança da decisão.
+Fato observado nas fotos
+Hipótese a verificar no piloto
+Fotografar e depois transcrever para Excel.
+Há retrabalho e oportunidade de erros de transcrição.
+Consolidar produção, paradas, refugos e
+perdas.
+A visão do período demora ou depende de várias fontes.
+Engenharia verifica limites e libera produção.
+A evidência e a decisão podem ficar dispersas.
+Pedido de agilidade, confiança e visualização.
+Existe valor em registrar o dado uma vez e reutilizá-lo.
+As hipóteses são plausíveis, mas as fotos não quantificam erros, atrasos ou perdas. A equipe
+deve medir o processo atual antes de afirmar uma economia ou uma redução de refugo.
+Três caminhos possíveis
+Caminho
+Ponto forte
+Dependência ou limite
+Coleta digital com
+formulário
+Permite fechar o fluxo obrigatório
+cedo.
+Ainda exige digitação; validar o
+esforço de uso.
+Coleta assistida por foto +
+conferência
+Aproveita o hábito atual e preserva
+a evidência.
+OCR e layouts de tela precisam ser
+testados.
+Integração direta com as
+máquinas
+Pode reduzir o esforço de coleta
+recorrente.
+Exige conhecer máquinas, interfaces
+e permissões.
+Caminho recomendado
+Começar pelo formulário digital com foto anexada e contexto automático por QR Code.
+Acrescentar OCR após verificar o núcleo. Preparar a mesma estrutura para receber dados de
+máquina futuramente.
+Quem ganha com a solução
+Operador: menos campos repetidos e registro simples de ocorrências. Engenharia: limites,
+medições e evidências reunidos por máquina e lote. Gestão: acompanhamento do volume, das
+perdas e dos motivos recorrentes. Equipe do desafio: uma demonstração curta com começo,
+meio, fim e erros tratados.
+Recorte inicial
+Uma máquina, um processo ou produto, um período de produção e poucos parâmetros
+relevantes, definidos pela MSA. Esse recorte permite demonstrar os cadastros e a associação dos
+registros, mantendo a possibilidade de ampliar depois.
+
+
+--- PAGINA 6 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+6
+DESAFIO DE IDEIAS · MSA DO BRASIL / 06
+Como o Nexo Produção funciona
+Toda coleta percorre um fluxo de identificação, conferência, análise e decisão.
+Etapa
+Comportamento proposto
+1. Identificar
+QR Code abre a máquina; operador seleciona produto, ordem ou lote e turno.
+2. Coletar
+Formulário recebe valores e foto. OCR, quando testado, sugere preenchimento.
+3. Conferir
+Verificar unidade, campo, valor e evidência. Campos ilegíveis ficam pendentes.
+4. Registrar produção
+Salvar quantidade, período, paradas, refugo e perda com seus motivos.
+5. Analisar
+Atualizar histórico e gráficos; comparar com limites e metas vigentes.
+6. Tratar desvios
+Abrir uma ocorrência vinculada à coleta e atribuir responsável.
+7. Decidir
+Engenharia registra análise, decisão, justificativa e eventuais ações.
+Duas situações que precisam ser separadas
+Erro ou dúvida de leitura: a foto está ruim ou o valor sugerido não corresponde ao que
+aparece nela. Pedir conferência, nova foto ou preenchimento manual. Desvio real: o valor está
+confirmado e excede o limite de processo. Preservar esse valor e abrir a ocorrência; não
+descartá-lo por estar fora da faixa.
+Status de análise e liberação
+Aguardando análise → Em análise → Aprovado ou Não aprovado. A decisão exige o perfil
+de Engenharia e justificativa. Uma alteração posterior em dado relevante reabre a análise.
+Registrar quem decidiu, quando e sobre qual versão dos dados.
+Diferencial de confiança
+Ao clicar em um alerta, a Engenharia vê a foto original, o valor confirmado, a máquina, o lote, o
+horário, o limite vigente e as correções. O painel conduz à evidência e ao responsável pela
+ação.
+O aplicativo apoia o procedimento de liberação da empresa. No MVP, ele não altera parâmetros
+da máquina e não autoriza automaticamente a produção por causa de uma cor no painel.
+
+
+--- PAGINA 7 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+7
+DESAFIO DE IDEIAS · MSA DO BRASIL / 07
+As telas do MVP
+Seis áreas simples cobrem o trabalho de quem registra, analisa e decide.
+Tela
+Elementos essenciais
+Cadastros
+Máquina, processo, produto, parâmetros, unidades, limites, metas e motivos
+padronizados.
+Nova coleta
+Contexto da máquina/lote, horário da coleta, foto, valores e confirmação de
+leitura.
+Produção e ocorrências
+Quantidade e período; parada com início/fim; refugo e perda com quantidade,
+unidade e motivo.
+Painel de
+acompanhamento
+Filtros; produção total e boa; refugo; tempo parado; desvios; dados pendentes
+e atualização.
+Análise da Engenharia
+Medições, especificação, fotos, ocorrências, histórico, status e justificativa de
+decisão.
+Histórico e relatório
+Busca por máquina/produto/lote/período; origem do dado; correções e
+decisões; exportação posterior.
+Interface para o chão de fábrica
+• Mostrar a máquina e o lote no topo para evitar registro no contexto errado.
+• Usar poucos campos, seleções padronizadas e botões grandes; preencher automaticamente o
+contexto conhecido.
+• Permitir iniciar e encerrar uma parada sem estimar sua duração de memória.
+• Usar cor junto com texto e ícone: regular, atenção, desvio confirmado e dado pendente.
+• Exibir data da última atualização. Dado antigo ou ausente precisa de um estado próprio.
+Perfis propostos
+Operação: coleta e registro de eventos. Engenharia: limites, análise e decisão. Gestão:
+consulta. Administração: cadastros e acessos. No protótipo, demonstre ao menos o vínculo
+entre o perfil e a permissão de aprovar.
+Uso sem conexão
+Se o piloto exigir coleta sem rede, prever fila local, indicação de “pendente de envio” e
+confirmação após sincronização. Usar um identificador único por registro para impedir
+duplicação. A aprovação central deve considerar apenas dados recebidos e conferidos. Sem esse
+recurso implementado, declare que o MVP exige conexão.
+
+
+--- PAGINA 8 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+8
+DESAFIO DE IDEIAS · MSA DO BRASIL / 08
+Estrutura dos dados
+As relações entre os registros tornam o histórico consultável e os cálculos
+reproduzíveis.
+Registro
+Campos recomendados
+Máquina / processo /
+produto
+Identificador, nome, relação entre cadastros e estado ativo.
+Parâmetro e especificação
+Nome, unidade, tipo de dado, categoria, limites, meta, revisão e vigência.
+Ordem / lote / contexto
+Máquina, produto/processo, lote ou ordem, turno e intervalo.
+Coleta e medição
+Horário observado e registrado, valor, unidade, origem, foto, confirmação e
+responsável.
+Produção
+Intervalo, quantidade total, quantidade boa e categorias de destinação.
+Parada
+Início, fim, duração, motivo, classificação e responsável pelo registro.
+Refugo / perda
+Quantidade, unidade, motivo, vínculo à produção e ocorrência.
+Alerta / análise / decisão
+Regra, evidência, responsável, status, justificativa e revisão analisada.
+Histórico de alterações
+Autor, horário, valor anterior, valor novo e motivo da correção.
+Regras que evitam dados enganosos
+• Guardar o valor lido e o confirmado. Uma correção não apaga a origem.
+• Distinguir valor real medido, ajuste programado da máquina e característica de qualidade do
+produto.
+• Aceitar somente início anterior ao fim; evitar somar duas vezes paradas sobrepostas.
+• Definir se o contador da máquina é acumulado ou por período; tratar reinício e virada do
+contador.
+• Separar peças, kg, litros e outras unidades. Não somar perdas de unidades diferentes.
+• Definir a relação entre produto bom, refugo e retrabalho para não contar a mesma peça duas
+vezes.
+• Aplicar a versão de limite vigente na coleta; uma revisão futura não reescreve silenciosamente
+a história.
+Um campo em branco indica ausência. Zero é um valor informado. Só a conferência determina
+qual deles corresponde ao processo.
+
+
+--- PAGINA 9 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+9
+DESAFIO DE IDEIAS · MSA DO BRASIL / 09
+Indicadores para agir
+Cada indicador deve ter uma pergunta, um cálculo e uma decisão associada.
+Indicador
+Cálculo ou exibição
+Uso
+Produção
+Quantidade por intervalo; total e boa
+separados.
+Acompanhar volume e entrega.
+Taxa de refugo
+Refugo / total produzido × 100, no mesmo
+contexto.
+Priorizar qualidade e motivos.
+Tempo parado
+Soma dos intervalos sem duplicar
+sobreposição.
+Identificar tempo perdido.
+Pareto de paradas
+Motivos ordenados por minutos; percentual
+acumulado.
+Priorizar a maior contribuição.
+Pareto de refugo
+Motivos ordenados por peças rejeitadas.
+Verificar defeitos recorrentes.
+Perda de material
+Quantidade por motivo e unidade; custo se
+validado.
+Acompanhar material perdido.
+Desvios
+Valor confirmado, limite, horário e contexto.
+Abrir análise de ocorrência.
+Qualidade do
+registro
+Dados pendentes, ausentes, corrigidos e
+recentes.
+Avaliar a confiança do painel.
+Análise da
+Engenharia
+Pendências, status e tempo até a decisão.
+Acompanhar a fila de trabalho.
+Exemplo didático de um período
+Em um período simulado: 1.000 peças produzidas, incluindo 30 refugadas, sem retrabalho e
+sem outras destinações. Resultado: 970 peças boas e 3% de refugo. Uma parada de 09h10 a
+09h25 equivale a 15 minutos. Uma perda de 2 kg aparece em kg, separada da contagem de
+peças.
+Gráficos de acompanhamento e CEP
+Um gráfico temporal com mínimo e máximo permite acompanhar especificações. Uma carta de
+controle avalia estabilidade e precisa de um método adequado aos dados. Seus limites
+estatísticos são distintos dos limites de especificação definidos pela Engenharia. Um painel pode
+exibir ambos, identificados claramente.
+Referência técnica: NIST, What are Control Charts? A equipe deve acordar o plano de amostragem e o tipo de
+carta com a Engenharia.
+OEE pode ser uma evolução se houver tempo planejado, ciclo ideal e quantidades válidas. As
+fotos não fornecem esses elementos; não invente um percentual de eficiência para preencher o
+painel.
+
+
+--- PAGINA 10 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+10
+DESAFIO DE IDEIAS · MSA DO BRASIL / 10
+Cp e Cpk sem confusão
+Uma demonstração estatística precisa deixar explícitos os dados e as condições
+de cálculo.
+Cp compara a largura da especificação com a dispersão do processo. Cpk considera também a
+distância da média ao limite mais próximo. Na análise usual de capacidade, utilizar a estimativa
+apropriada de variação dentro dos subgrupos; a dispersão global é usada em Pp/Ppk. [NIST;
+Minitab]
+Fórmulas para especificação bilateral
+Cp = (LSE - LIE) / (6 × σ)
+Cpk = mínimo [(LSE - média) / (3 × σ); (média - LIE) / (3 × σ)]
+LSE e LIE: limites superior e inferior de especificação.
+σ: desvio-padrão do processo, estimado pelo método acordado.
+Exemplo calculado - totalmente simulado
+Considere uma característica dimensional com LIE = 9,80 mm e LSE = 10,20 mm. Assuma
+dados apropriados e σ = 0,04 mm. São valores didáticos, não uma especificação da MSA.
+Situação
+Cp
+Cpk
+Média = 10,00 mm
+0,40 / 0,24 = 1,67
+mínimo (0,20 / 0,12; 0,20 / 0,12) = 1,67
+Média = 10,12 mm
+0,40 / 0,24 = 1,67
+mínimo (0,08 / 0,12; 0,32 / 0,12) = 0,67
+No segundo cenário, a dispersão é a mesma e a média se aproxima do limite superior. A ação
+sugerida para investigação é diferente daquela de um processo com variação excessiva. Os
+valores não constituem uma decisão de liberação.
+Condições para a análise
+• Definir a característica medida, sua especificação e o plano de amostragem. Um ajuste
+programado da IHM não prova a capacidade dimensional do produto.
+• Avaliar estabilidade, distribuição e adequação das medições. A formulação usual pressupõe
+normalidade. Dados escassos ou dependentes exigem cautela.
+• A quantidade mínima, o método e a meta devem ser acordados com a Engenharia. Uma
+referência como 1,33 não é uma meta universal nem uma meta conhecida da MSA.
+• Mostrar “dados insuficientes” ou “análise não validada” quando cabível. Dispersão zero não
+deve virar capacidade infinita aprovada.
+Fontes: NIST, What is Process Capability?; Minitab, Potential (within) capability e Overall capability. Cálculos do
+exemplo elaborados para este dossiê.
+
+
+--- PAGINA 11 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+11
+DESAFIO DE IDEIAS · MSA DO BRASIL / 11
+Como verificar o MVP
+Critérios para conferir uma futura implementação antes de apresentá-la.
+Estes critérios são um plano de verificação. Este dossiê não afirma que um aplicativo já foi
+construído ou testado.
+Situação de teste
+Resultado esperado
+Criar máquina, produto e parâmetro
+O registro usa os cadastros e mantém suas relações.
+Salvar coleta e reabrir o sistema
+O dado persiste e pode ser consultado.
+Imagem com leitura clara
+Foto e valor confirmado ficam vinculados.
+Leitura ilegível ou divergente
+O campo fica pendente e aceita conferência.
+Valor verdadeiro fora da especificação
+O valor é preservado e gera desvio identificado.
+Produção com refugo e perda
+Total, boa, taxa e unidades ficam consistentes.
+Parada cruzando um período/turno
+A duração é atribuída aos intervalos corretos.
+Paradas sobrepostas
+O indicador de tempo não duplica o intervalo.
+Limite atualizado
+O histórico mantém a revisão da coleta anterior.
+Dados ausentes ou antigos
+O painel informa pendência ou desatualização.
+Análise sem amostragem adequada
+Cp/Cpk não recebem status conclusivo.
+Tentativa de aprovar por operador
+A permissão impede a decisão de Engenharia.
+Correção após decisão
+A revisão e a necessidade de reanálise aparecem.
+Envio duplicado, se houver sincronização
+Um identificador evita duplicar a coleta.
+Uma prova para cada requisito
+Use a página 3 como checklist e associe cada requisito a uma tela, registro ou ação
+demonstrada. Uma captura bonita comprova aparência; executar o fluxo comprova
+comportamento. Guarde um vídeo curto da versão verificada para contingência, identificando
+quando for reprodução.
+
+
+--- PAGINA 12 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+12
+DESAFIO DE IDEIAS · MSA DO BRASIL / 12
+Demonstração para a banca
+Roteiro sugerido de cinco minutos, ajustável ao tempo autorizado pelo SENAI.
+Tempo
+Ação
+Mensagem que a banca observa
+0:00-0:40
+Explicar o processo descrito e abrir os cadastros.
+A equipe entendeu o problema e
+definiu o contexto.
+0:40-1:30
+Abrir a máquina por QR e salvar uma coleta com
+foto.
+A coleta vira informação digital
+vinculada.
+1:30-2:15
+Registrar 1.000 peças, 30 refugos, perda e uma
+parada.
+Todos os dados obrigatórios entram no
+mesmo fluxo.
+2:15-3:05
+Salvar uma leitura real de 248 °C numa faixa
+simulada de 210 a 240 °C.
+Um desvio é preservado e aparece com
+evidência.
+3:05-4:05
+Abrir histórico, Pareto e os cenários de Cp/Cpk.
+A equipe sabe interpretar e verificar os
+dados.
+4:05-5:00
+Engenharia registra análise, decisão e
+justificativa.
+A informação chega a uma decisão
+rastreável.
+Cenários separados para não confundir a banca
+Exemplo de OCR, se implementado: a imagem mostra 237, mas a extração sugere 273. O
+operador compara com a foto e corrige; ambas as versões ficam registradas. A correção não
+pode ser feita só porque 273 está fora do limite.
+Exemplo de desvio: outra imagem mostra realmente 248. A Engenharia recebe uma
+ocorrência. A temperatura ilustra um parâmetro de máquina; a dimensão da página 10 ilustra
+uma característica para capacidade. São demonstrações distintas.
+Transparência da demonstração
+Marcar fotos fabricadas e medições de teste como “SIMULADO”. Declarar quais funções
+operam, quais dependem de conferência e quais são evolução. Integração com CLP só pode
+ser apresentada como real se efetivamente realizada.
+Preparação prática
+Ensaiar com o dispositivo e a resolução da apresentação. Deixar os dados preparados e também
+criar pelo menos um registro ao vivo. Conferir persistência e permissões. Ter uma versão
+demonstrável sem depender de acesso à rede industrial ou de serviço indisponível na hora.
+
+
+--- PAGINA 13 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+13
+DESAFIO DE IDEIAS · MSA DO BRASIL / 13
+Como demonstrar impacto
+Trocar estimativas genéricas por medições comparáveis do processo atual e do
+protótipo.
+Métrica do piloto
+Como medir
+Tempo por coleta concluída
+Cronometrar do início ao dado conferido e disponível; incluir
+correções.
+Erro de transcrição
+Campos divergentes / campos verificados; usar uma referência
+revisada.
+Qualidade do OCR, se incluído
+Acertos, campos não lidos e correções por layout e condição de foto.
+Cobertura dos registros
+Registros completos / registros esperados, segundo o plano de coleta.
+Tempo para localizar evidência
+Buscar a mesma máquina, lote e período nas duas formas de trabalho.
+Tempo de análise
+Medir da disponibilização do dado completo até a decisão.
+Refugo e paradas
+Comparar períodos equivalentes; separar efeito do sistema e outras
+mudanças.
+Exemplo de tempo economizado - hipotético
+Suponha 200 coletas por dia, com 90 segundos por coleta no método atual e 30 segundos
+no novo fluxo completo. A diferença é 60 segundos por coleta:
+Conta ilustrativa
+200 × 60 = 12.000 segundos por dia = 3 horas e 20 minutos.
+Em 20 dias de operação: 66 horas e 40 minutos por mês.
+Esses números não foram medidos na MSA. Use-os apenas para explicar a fórmula. A economia
+precisa incluir fotografia, confirmação, correções e sincronização quando aplicáveis. Tempo
+liberado representa capacidade de trabalho; não é automaticamente uma redução de
+desembolso.
+Viabilidade econômica
+Benefício potencial de tempo = horas liberadas × valor da hora validado pela empresa.
+Acrescentar redução de materiais apenas depois de evidenciada. Subtrair implantação,
+treinamento, manutenção, infraestrutura e eventuais licenças. Se existir benefício líquido mensal
+positivo, retorno simples = investimento inicial / benefício líquido mensal.
+Definir metas com a empresa depois da medição inicial. O primeiro ganho demonstrável tende a
+ser a organização, a consulta e o registro; uma queda de refugo depende das ações corretivas
+tomadas a partir da análise.
+
+
+--- PAGINA 14 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+14
+DESAFIO DE IDEIAS · MSA DO BRASIL / 14
+Escopo e evolução
+Priorizar por dependência e valor, sem presumir o prazo ou a habilidade técnica
+da equipe.
+Etapa
+Entrega
+Condição para avançar
+Núcleo obrigatório
+Cadastros, limites, coleta com foto, produção,
+ocorrências, persistência, histórico e painel.
+Os 13 requisitos mínimos são
+demonstráveis.
+Diferenciais de
+confiança
+QR, análise de motivos, rastreabilidade e fluxo
+de Engenharia.
+O usuário consegue chegar
+do alerta à decisão.
+Coleta assistida por
+OCR
+Um layout de IHM testado, sugestões e
+conferência.
+A medição de leitura justifica
+o esforço.
+Expansão industrial
+Interfaces de máquina, integrações e análise
+avançada.
+Acesso, qualidade dos dados
+e benefício validados.
+Arquitetura conceitual
+Interface de coleta em celular/tablet/computador → serviço de validação e regras →
+armazenamento estruturado → consultas, indicadores e decisões. Fotos e histórico se vinculam
+aos registros. Todas as entradas, inclusive uma futura leitura automática, precisam usar o
+mesmo contexto e as mesmas regras.
+Uma futura integração pode usar OPC UA se o equipamento e a infraestrutura oferecerem esse
+recurso. A OPC Foundation descreve esse padrão para interoperabilidade industrial; a
+compatibilidade das máquinas da MSA não foi informada. [OPC Foundation]
+Divisão de responsabilidades
+Dividir o trabalho entre entendimento do processo, fluxo de registro, indicadores e
+demonstração. Uma pessoa pode assumir várias funções, conforme o tamanho da equipe.
+Riscos e respostas propostas
+• Prazo curto: completar o núcleo e poucos diferenciais verificáveis.
+• Sem acesso à máquina: protótipo com evidência e dados simulados claramente marcados;
+integração como evolução.
+• OCR inconsistente: manter formulário e foto, testar um layout, aceitar conferência e nova
+captura.
+• Uso difícil: testar o fluxo com um operador e reduzir campos repetidos.
+• Dados internos: acordar onde podem ser armazenados e quem pode acessar; para a banca,
+usar dados autorizados ou simulados.
+
+
+--- PAGINA 15 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+15
+DESAFIO DE IDEIAS · MSA DO BRASIL / 15
+Perguntas para a MSA e o SENAI
+As respostas transformam uma boa proposta em um piloto adequado à
+operação real.
+A tecnologia de implementação deve ser escolhida depois de conhecer as habilidades da equipe
+e o ambiente permitido. O requisito decisivo é salvar, consultar e demonstrar o fluxo
+funcionando.
+As seis perguntas que mais mudam a solução
+• Qual máquina e qual produto/processo devem ser o primeiro piloto? Quais parâmetros
+importam para a decisão?
+• Os valores da IHM são medições reais ou valores de ajuste? De onde vêm as medições usadas
+hoje no Cp/Cpk?
+• Podemos receber fotos autorizadas da IHM, uma planilha anonimizada e os limites com suas
+unidades?
+• Como a Engenharia libera a produção e quais pendências impedem essa decisão?
+• Qual o prazo, o tempo de apresentação e a rubrica oficial do desafio? Há restrições de
+tecnologia?
+• A equipe pode usar celular, computador, rede local e dados reais? Quem valida a proposta na
+empresa?
+Perguntas operacionais complementares
+Tema
+O que esclarecer
+Coleta atual
+Frequência, quantidade de registros, tempo por registro e responsáveis.
+Máquinas
+Modelos, telas, protocolos, acesso de leitura e necessidade de instalação.
+Produção
+Contador acumulado/período, lotes, turnos, reinícios e retrabalho.
+Paradas e perdas
+Motivos padronizados, unidades, eventos simultâneos e paradas planejadas.
+CEP
+Características, amostragem, cartas usadas, método do desvio-padrão e metas.
+Ambiente
+Conectividade, sistemas existentes, política de dados e permissões.
+Adoção
+Treinamento, responsável pelo cadastro, suporte e correção de dados.
+Próximo passo prático
+Antes de ampliar a ideia, obtenha um exemplo autorizado do processo atual e acompanhe uma
+coleta completa. Use esse exemplo para escolher campos, testar o protótipo e comparar o
+esforço antes e depois.
+
+
+--- PAGINA 16 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+16
+DESAFIO DE IDEIAS · MSA DO BRASIL / 16
+Defesa da proposta
+O argumento deve conectar cada funcionalidade ao problema descrito pela
+empresa.
+Pergunta possível da
+banca
+Resposta que a equipe deve poder sustentar
+Por que essa solução?
+Porque reúne coleta, contexto, limites, evidência e decisão no fluxo
+solicitado.
+O que há de diferencial?
+Acesso da ocorrência à evidência, correções rastreáveis e análise
+registrada pela Engenharia.
+E se o OCR errar?
+O valor é uma sugestão; a foto e a conferência permitem corrigir ou deixar
+pendente.
+Quanto a MSA economiza?
+Ainda depende do piloto. Mostrar métricas, medição inicial e método de
+cálculo.
+Como escala?
+O cadastro e as relações permitem ampliar máquinas/produtos e adicionar
+entradas automáticas.
+Isso substitui a Engenharia?
+A Engenharia mantém os critérios e a decisão; o sistema organiza
+evidências e pendências.
+Pitch sugerido para a proposta
+“Hoje, o desafio da MSA envolve fotografar telas de máquinas, transcrever informações e reunir
+dados de produção, paradas, refugos e perdas para a Engenharia analisar. Nossa proposta é o
+Nexo Produção: um fluxo digital que liga cada informação à máquina, ao produto e ao período em
+que foi coletada.
+O operador identifica o contexto, registra os dados e preserva a foto como evidência. O sistema
+organiza o histórico, mostra os principais motivos de perda e sinaliza valores fora dos limites. A
+Engenharia acessa a ocorrência, verifica os dados e registra sua análise e decisão.
+O diferencial é a rastreabilidade de ponta a ponta, incluindo a origem do dado e suas correções.
+Começamos com um piloto pequeno e um fluxo completo. OCR e integração de máquina evoluem
+conforme os testes e o acesso disponíveis. Nosso impacto será avaliado por tempo de registro,
+qualidade dos dados e velocidade de consulta e análise.”
+Adapte o discurso à versão implementada. Só use “nosso MVP faz” para funções executadas e verificadas.
+Acrescente resultados medidos depois do piloto.
+Estrutura sugerida da apresentação
+1. Problema comprovado pelo enunciado. 2. Exemplo do processo atual. 3. Proposta e usuário. 4.
+Demonstração do MVP. 5. Qualidade dos dados e análise. 6. Medição de impacto e viabilidade. 7.
+Piloto e próximos passos.
+
+
+--- PAGINA 17 ---
+Proposta de trabalho da equipe | 05/10/2026 | Dados de exemplo são simulados
+17
+DESAFIO DE IDEIAS · MSA DO BRASIL / 17
+Fontes e distinção de evidências
+Consulta realizada em 05/10/2026. Links oficiais para aprofundar a proposta.
+Enunciado: fotos IMG_3319.jpeg e IMG_3320.jpeg enviadas por Kauan. São a fonte da
+transcrição e dos requisitos. A busca pública não localizou uma página específica confiável desse
+desafio que acrescentasse regras de avaliação.
+MSA Safety - Company Overview
+Contexto de produtos de segurança e compromisso declarado com qualidade.
+Abrir fonte oficial
+MSA Safety Brasil - Contate-nos
+Contato da operação brasileira em Diadema, São Paulo.
+Abrir fonte oficial
+NIST - What is Process Capability?
+Definições, fórmulas e pressupostos usuais de capacidade.
+Abrir fonte oficial
+NIST - What are Control Charts?
+Estabilidade e limites de controle.
+Abrir fonte oficial
+Minitab - Potential (within) capability
+Interpretação de Cp/Cpk e variação dentro de subgrupos.
+Abrir fonte oficial
+Minitab - Overall capability
+Distinção da variação global e de Pp/Ppk.
+Abrir fonte oficial
+Tesseract - Improving the quality of the output
+Qualidade de imagem, inclinação, ruído e limitações da leitura OCR.
+Abrir fonte oficial
+OPC Foundation - Unified Architecture
+Referência para avaliar uma futura integração industrial.
+Abrir fonte oficial
+O que é fato, hipótese e proposta
+Fato: os requisitos transcritos e o contexto público atribuído às fontes. Hipótese: retrabalho,
+frequência de erros e demora, ainda sem medição. Proposta: nome, telas, regras, prioridades,
+arquitetura, teste e demonstração. Simulação: quantidades, temperaturas, dimensões e cálculo
+de economia usados como exemplos.
+O relatório é uma base de trabalho para a equipe. O desenho final deve ser validado com a
+operação e com as regras oficiais do desafio.

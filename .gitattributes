@@ -1,0 +1,7 @@
+# Preserva os bytes das fontes e evidencias, inclusive os hashes de proveniencia.
+referencias-locais/** -text
+docs/continuidade/** -text
+analise/** -text
+entrega/** -text
+output/** -text
+tmp/** -text

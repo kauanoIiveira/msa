@@ -14,7 +14,7 @@ export function createStaticServer({port=5173,base='/',testHarness=false}={}) {
       const rel=relative(root,file);
       if(!harness&&(rel.startsWith('..')||!rel)) {res.writeHead(403).end();return;}
       if(!(await stat(file)).isFile()) {res.writeHead(404).end();return;}
-      const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css'};
+      const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.png':'image/png'};
       res.writeHead(200,{'Content-Type':`${types[extname(file)]??'text/plain'}; charset=utf-8`,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(await readFile(file));
     } catch {res.writeHead(404).end();}
   });

@@ -1,0 +1,44 @@
+[
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Lista de Materiais e ganho de produção.docx",
+    "extraction": "docx_01.txt",
+    "chars": 2725,
+    "media": []
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Perguntas para o Persona.docx",
+    "extraction": "docx_02.txt",
+    "chars": 3567,
+    "media": []
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Roteiro_Apresentacao_Funcoes_MSA.docx",
+    "extraction": "docx_03.txt",
+    "chars": 9581,
+    "media": []
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Perguntas para o Persona\\Roteiro_Entrevista_MSA_Equipe_Amarela.docx",
+    "extraction": "docx_04.txt",
+    "chars": 6968,
+    "media": []
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Desktop\\Grupo Amarelo - MSA Brasil\\Wireframes\\O que deve conter no Dashboard.docx",
+    "extraction": "docx_05.txt",
+    "chars": 1795,
+    "media": []
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\docs\\Roteiro_Apresentacao_Funcoes_MSA.docx",
+    "extraction": "docx_06.txt",
+    "chars": 9581,
+    "media": []
+  },
+  {
+    "path": "C:\\Users\\Kauan\\Documents\\ChatGPT\\Desafio de Ideias\\docs\\Roteiro_Entrevista_MSA_Equipe_Amarela.docx",
+    "extraction": "docx_07.txt",
+    "chars": 6968,
+    "media": []
+  }
+]

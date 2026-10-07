@@ -1,0 +1,21 @@
+✔ I-MR reproduces the NIST ten-batch example and distinguishes within from overall dispersion (2.0315ms)
+✔ missing/invalid readings break moving ranges; constants and insufficient samples never produce infinite capability (1.6515ms)
+✔ draft references, setpoints, unilateral bounds and unverified chronology cannot yield bilateral capability (0.2735ms)
+✔ signals use the I and MR control limits, and unstable processes do not receive capability indices (0.5933ms)
+✔ detail selection uses the latest full context, not the first group of its version (8.2794ms)
+✔ supplied workbook keeps 17 rows, numeric text and blanks, and reproduces the corrected BF population deviation (1.6955ms)
+✔ hourly production never allocates a crossing total and preserves unknown, zero and an unfinished hour (2.2298ms)
+✔ microstoppages use explicit seconds, exclude planned/open stops and union overlapping time (0.4995ms)
+✔ all indicator consumers reject draft and setpoint capability equally (14.4452ms)
+✔ keeps kg separate, requires a valid denominator and distinguishes absent amounts (0.5409ms)
+✔ unions downtime per machine and does not attribute overlapping time to a single cause (0.4079ms)
+✔ approved correction overlays preserve original readings and flag concurrent alternative revisions (0.4067ms)
+✔ targets need an exact complete reporting window and comparisons compute compatible deltas (68.9969ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 186.8993
