@@ -1,6 +1,10 @@
 # Publicação dos exemplos MSA
 
-O resumo `carga-preview.json` desta entrega foi preparado **localmente a partir do backup privado**. Não comprova autenticação atual, deploy de regras nem carga na nuvem. `carga-verificacao.json` deve ser produzido somente depois da carga verificada pelo CLI. Não há esse arquivo nesta etapa.
+O pacote base foi publicado no Firebase `msayellowteam/workspaces/msa` pelo cliente autenticado. `carga-preview.json` registra a prévia autenticada sem conflitos; `carga-verificacao.json` comprova a publicação e a releitura de 1.744 entradas em uma segunda sessão. Foram criados 1.744 registros e realizadas 43 transições de estado; a repetição criou zero registros. Memberships e dados externos ao pacote foram preservados. As duas sessões usam a mesma conta autorizada; não se afirma aprovação por outra pessoa nem teste em dois computadores.
+
+Manifesto base: `presentation_20261008_v1`. SHA-256 das entradas: `dc278bc4ef7684a32bfc901787f8324d6b2ac48613fea1636f6ef706145b001d`. Prévia: `cea76ccf0f27b70e82ea02d9903e6f37a8ed6294f53d65f2ec0c4342cced9545`. `regras-verificacao.json` comprova as regras efetivamente publicadas nesta carga; versões locais posteriores ainda exigem verificação/publicação própria.
+
+A orientação posterior do usuário prioriza várias máquinas e a coleta/apresentação dos dados. A próxima carga será uma revisão aditiva do manifesto base, preservando o pacote e sem novos refinamentos exclusivos de T20/zonas.
 
 ## Procedimento do controlador
 
