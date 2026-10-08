@@ -25,7 +25,7 @@ export function projectWorkspaceMetrics(state,{now=state.asOf??Date.now()}={}) {
   const live=state.client?.mode==='live',gap=(state.liveCoverage?.gaps??[]).some(g=>g.from<through&&g.to>s.from);
   const pending=state.period.coverage?.stoppages!==true||classified.some(x=>!x.classification||(!live&&x.stop.endedAt==null)||x.stop.revisionConflict||x.classification.stopFingerprint!==stableStringify([x.stop.startedAt,x.stop.endedAt??null,x.stop.correctionId??null])||x.classification.category==='outside-plan'&&plan&&productiveWindows(plan).some(w=>x.stop.startedAt<w.endedAt&&(x.stop.endedAt??through)>w.startedAt));
   const loss=plan?productiveWindows(plan).reduce((sum,w)=>sum+unionSeconds(classified.filter(x=>x.classification?.category==='availability').map(x=>x.stop),Math.max(s.from,w.startedAt),Math.min(through,w.endedAt)),0):null;
-  const inspection=technical.filter(r=>r.kind==='inspection'&&r.intervalId===s.intervalId).at(-1);
+  const inspection=technical.filter(r=>r.kind==='inspection'&&r.intervalId===s.intervalId).sort((a,b)=>(a.createdAt??0)-(b.createdAt??0)||String(a.id??'').localeCompare(String(b.id??''))).at(-1);
   const rows=(state.period.effective?.production??[]).filter(r=>r.intervalId===s.intervalId);
   const trusted=inspection?.productionFingerprint===stableStringify(rows.map(r=>[r.id,r.quantity,r.correctionId??null]).sort((a,b)=>a[0].localeCompare(b[0])));
   const result=calculateOee({plannedSeconds:planned,runSeconds:pending?null:planned-loss,idealSeconds:crosses?null:ref?.idealSeconds,total:s.grossPieces,firstPassGood:trusted?inspection.firstPassGood:null,complete:s.state==='final'&&state.period.nhplComplete===true});

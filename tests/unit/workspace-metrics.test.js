@@ -18,3 +18,10 @@ test('legacy inspection coverage requires its current production fingerprint',()
  assert.equal(projectWorkspaceMetrics(legacy).reliability.mtbf.value,3000);
  assert.equal(projectWorkspaceMetrics({...legacy,period:{...legacy.period,effective:{...legacy.period.effective,production:[{...production[0],quantity:101}]}}}).reliability.mtbf.value,null);
 });
+test('legacy inspection coverage follows the newest inspection even when array order is reversed',()=>{
+ const production=[{id:'gross',intervalId:'interval',basis:'gross',quantity:100}],fingerprint=stableStringify([['gross',100,null]]);
+ const older={id:'inspection-a-old',kind:'inspection',context,intervalId:'interval',createdAt:100,firstPassGood:90,historyComplete:true,productionFingerprint:fingerprint};
+ const newer={id:'inspection-z-new',kind:'inspection',context,intervalId:'interval',createdAt:200,firstPassGood:90,historyComplete:false,productionFingerprint:fingerprint};
+ const legacy={...state,client:{mode:'scenario'},period:{...state.period,coverageWitnesses:[],effective:{...state.period.effective,production}},technical:[...state.technical,newer,older]};
+ assert.equal(projectWorkspaceMetrics(legacy).reliability.mtbf.value,null);
+});
