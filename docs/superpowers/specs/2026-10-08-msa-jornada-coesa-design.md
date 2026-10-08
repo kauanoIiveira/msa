@@ -170,3 +170,7 @@ Interfaces completas, testes e nomes de arquivo estão nos três planos derivado
 Três entregas independentes e integráveis: (1) contexto/fonte/dados/cobertura; (2) operação e coordenação; (3) indicadores/BI/Excel/acabamento integrado. O plano índice registra a cobertura total e o gate final. Recomenda-se executar na conversa atual, sequencialmente, por causa dos contratos e da publicação Firebase compartilhados.
 
 O usuário aprovou a proposta e os três planos, incluindo as reformulações visuais básicas e a compatibilidade com GitHub Pages. Autorização para preencher com exemplos já foi concedida; não solicitar novamente a escolha real/simulado. A implementação está em andamento. A sessão administradora e o backup privado da base e das regras foram verificados na retomada; a preparação local não deve ser apresentada como publicação.
+
+## Alteração de escopo autorizada — apresentação essencial
+
+Em 08/10/2026 o usuário aprovou o corte descrito em `../plans/2026-10-08-msa-jornada-coesa.md`, mantendo máquinas/Firebase, coleta/indicadores/UI, CSV BI, paradas e validação/Pages. Os demais módulos novos ficam adiados. T20/Z1–Z21 não orienta as próximas alterações; preservar dados e funções existentes. A nova execução é detalhada em `../plans/2026-10-08-msa-entrega-essencial.md`.

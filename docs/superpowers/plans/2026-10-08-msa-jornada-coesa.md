@@ -90,3 +90,11 @@ Dependências: plano 2 depende dos contratos/contexto do plano 1; plano 3 depend
 ## Auto-revisão dos planos
 
 Cobertura: a matriz inclui todas as páginas/cargos observados do MSE fora das duas exclusões e conserva diferenciais do MSA. Interfaces comuns estão na spec; cada tarefa acrescenta assinaturas e consumidores. Casos de borda do Review Focus possuem testes designados. Não há tarefa de redesenho cosmético isolado nem teste que apenas conte classes CSS. Os testes verificam vínculos, cálculo, eventos e jornada; QA visual verifica layout. O preenchimento só acontece após backup/prévia e testes das permissões existentes. O maior risco continua sendo a validação do Firebase real; está como gate de entrega, não como resultado presumido.
+
+## Corte autorizado — 08/10/2026, apresentação essencial
+
+O usuário aprovou manter somente: várias máquinas preenchidas no Firebase; coleta/indicadores e clareza visual; CSV BI com % Scrap; apresentação de paradas/falhas/reparos; validação final e compatibilidade GitHub Pages. Solicitou meta de 30 minutos, economia de tokens e abandonar o foco histórico em T20/Z1–Z21. A meta não autoriza declarar verificações não executadas.
+
+Adiados: ampliação da avaliação/segregação/destinação de lotes; ocorrências/investigação; equipe/presença/alocação; passagem de turno; alertas/som; novo Excel de capacidade; nova conferência/consolidação; foto. Preservar funcionalidades e dados atuais sem rollback. Planos anteriores ficam como referência de escopo futuro, não como obrigação desta entrega.
+
+Execução restante: finalizar plano1 Task7 já iniciado, depois `2026-10-08-msa-entrega-essencial.md`. Esse documento prevalece sobre os gates dos planos anteriores que exigiam os módulos agora adiados. Não publicar no GitHub sem autorização pertinente; compatibilidade com Pages continua obrigatória.
