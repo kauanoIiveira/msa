@@ -2,7 +2,7 @@ import {patchSnapshot} from './snapshot-dom.js';
 import {productionContextCard} from './production-context-card.js';
 import {initialSelection} from './production-selection.js';
 import {parametersPage,visibleParameters} from './parameters-page.js';
-import {equipmentPage,equipmentView} from './equipment-page.js';
+import {equipmentPage,equipmentView,equipmentHistoryQuery} from './equipment-page.js';
 import {createProductionJourney} from './production-journey.js';
 import {requireThat} from '../domain/errors.js';
 import {saoPauloInstant} from './forms.js';
@@ -1009,7 +1009,7 @@ async function action(action) {
   }
   if(action.startsWith('equipment-history:')){
     const id=action.slice(18),row=equipmentView({catalog:state.registries,events:state.equipmentEvents}).find(r=>r.id===id),record=Object.values(state.equipmentEvents?.collections??{}).find(r=>row?.conflictedRecordIds.includes(r.id));
-    if(!record)return;const day=shiftAt(record.occurredAt).operationalDate;applyQuery({context:record.context,fromDate:day,toDate:day,shift:'all'});state.route='history';state.tab.history='collections';modal.close();history.replaceState(null,'','#history');await refresh();return;
+    if(!record)return;applyQuery(equipmentHistoryQuery(record));state.route='history';state.tab.history='collections';modal.close();history.replaceState(null,'','#history');await refresh();return;
   }
   if(action.startsWith('equipment-detail:')){
     const id=action.slice(17),row=equipmentView({catalog:state.registries,events:state.equipmentEvents}).find(r=>r.id===id);
