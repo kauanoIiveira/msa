@@ -68,20 +68,21 @@ async function verifyPersisted(snapshot,manifest,repo,actor){
  const validation=await validatePresentationDataset(snapshot,manifest);requireThat(validation.ok,'VERIFICATION_FAILED');
  const diagnostics=await validatePresentationProjection(createMsaServices({repo,actor}),manifest,validation.metricsByContext);requireThat(!diagnostics.length,'VERIFICATION_FAILED');
 }
-export async function publish({preview,expectedHash,repo,actor}){
+export async function publish({preview,expectedHash,repo,actor,onProgress}){
  assertRole(actor,['admin']);requireThat(same(actor,preview.actor),'ACTOR_CHANGED');
  const {previewHash,...body}=preview;requireThat(expectedHash===previewHash&&await contentHash(body)===previewHash,'PREVIEW_HASH_MISMATCH');
  requireThat(preview.format===1&&!preview.conflicts.length&&preview.manifest.entries.length>0,'INVALID_PREVIEW');
  requireThat(await contentHash(preview.baselineSnapshot)===preview.backupHash,'BACKUP_HASH_MISMATCH');
  const current=await preflight(preview,repo),existingManifest=current.presentationManifests?.[preview.manifest.id];
  const manifest={...preview.manifest,state:'published',createdAt:repo.timestamp(),entryCount:preview.manifest.entries.length,entriesHash:await datasetHash(preview.manifest.entries),previewHash,backupHash:preview.backupHash};
- if(existingManifest){requireThat(await datasetHash(existingManifest)===await datasetHash(manifest),'MANIFEST_CONFLICT');await verifyPersisted(current,manifest,repo,actor);return {created:0,updated:0,existing:preview.intents.length,conflicts:[],manifestId:manifest.id};}
+ if(existingManifest){requireThat(await datasetHash(existingManifest)===await datasetHash(manifest),'MANIFEST_CONFLICT');await verifyPersisted(current,manifest,repo,actor);await onProgress?.({state:'published',manifestId:manifest.id,completed:preview.intents.length,total:preview.intents.length,created:0,updated:0,existing:preview.intents.length});return {created:0,updated:0,existing:preview.intents.length,conflicts:[],manifestId:manifest.id};}
  const stage=await isolated(preview.baselineSnapshot,()=>repo.timestamp());let cursor=0,created=0,updated=0,existing=0;
+ const notify=state=>onProgress?.({state,manifestId:manifest.id,completed:created+updated+existing,total:preview.intents.length,created,updated,existing});
  async function write(kind,path,next){
   const intent=preview.intents[cursor++];requireThat(intent&&intent.kind===kind&&intent.path===path&&await datasetHash(intent.after)===await datasetHash(next),'INTENT_MISMATCH');
   const scope={scope:manifestEntryScope(path)},live=await repo.get(path),liveHash=await datasetHash(manifestEntryValue(live,scope));
   const later=preview.intents.slice(cursor-1).filter(i=>i.path===path);
-  if((await Promise.all(later.map(i=>datasetHash(manifestEntryValue(i.after,scope))))).includes(liveHash)){existing++;return next;}
+  if((await Promise.all(later.map(i=>datasetHash(manifestEntryValue(i.after,scope))))).includes(liveHash)){existing++;await notify('writing');return next;}
   requireThat(liveHash===await datasetHash(manifestEntryValue(intent.before,scope)),'CONTENT_CONFLICT');
   if(kind==='create')await repo.create(path,next);
   else await repo.transact(path,row=>{
@@ -89,7 +90,7 @@ export async function publish({preview,expectedHash,repo,actor}){
    // Domain transition is replayed with the actual server timestamp. Existing audits stay intact.
    const output={...row,...next};if(row?.createdAt!=null)output.createdAt=row.createdAt;return output;
   });
-  if(kind==='create')created++;else updated++;return next;
+  if(kind==='create')created++;else updated++;await notify('writing');return next;
  }
  const forwarded={...stage,updateRegistry:async()=>{throw new Error('UNSUPPORTED_PUBLICATION_MUTATION');},create:async(path,row)=>{await write('create',path,row);return stage.create(path,row);},transact:async(path,update)=>{const next=update(await stage.get(path));requireThat(next!==undefined,'CONFLICT');await write('transact',path,next);return stage.transact(path,()=>next);}};
  await runPresentationCommands(preview.commands,{repo:forwarded,actor,clock:publicationClock(preview.manifest)});
@@ -97,9 +98,10 @@ export async function publish({preview,expectedHash,repo,actor}){
  const persisted=await preflight(preview,repo);await verifyPersisted(persisted,manifest,repo,actor);
  // This final publication marker is immutable; it contains no private snapshot or commands.
  await repo.create('presentationManifests/'+manifest.id,manifest);
+ await notify('published');
  return {created,updated,existing,conflicts:[],manifestId:manifest.id};
 }
-export function createPresentationService({repo,actor}){return {prepare:options=>prepare({...options,repo,actor}),prepareRevision:options=>prepareRevision({...options,repo,actor}),publish:(preview,expectedHash)=>publish({preview,expectedHash,repo,actor}),async latest(){const rows=Object.values(await repo.get('presentationManifests')??{}).filter(row=>row.state==='published');return rows.sort((a,b)=>b.createdAt-a.createdAt||b.id.localeCompare(a.id))[0]??null;}};}
+export function createPresentationService({repo,actor}){return {prepare:options=>prepare({...options,repo,actor}),prepareRevision:options=>prepareRevision({...options,repo,actor}),publish:(preview,expectedHash,onProgress)=>publish({preview,expectedHash,repo,actor,onProgress}),async latest(){const rows=Object.values(await repo.get('presentationManifests')??{}).filter(row=>row.state==='published');return rows.sort((a,b)=>b.createdAt-a.createdAt||b.id.localeCompare(a.id))[0]??null;}};}
 
 
 // Used only by the CLI with its independently authorized full backup. App callers

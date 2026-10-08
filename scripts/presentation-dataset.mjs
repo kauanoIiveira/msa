@@ -41,7 +41,7 @@ try{
   const envelope=JSON.parse(await readFile(previewPath,'utf8'));
   if(envelope.projectId!=='msayellowteam'||envelope.workspaceId!=='msa'||await hash(envelope.fullBackup)!==envelope.fullBackupHash)throw new Error('PRIVATE_BACKUP_INVALID');
   const {preview,fullBackup}=envelope,before=await backup('before-apply');await assertPrivateBackupPreserved(fullBackup,before.snapshot,preview);
-  const result=await publish({preview,expectedHash:preview.previewHash,repo:active.repo,actor:active.actor});
+  const result=await publish({preview,expectedHash:preview.previewHash,repo:active.repo,actor:active.actor,onProgress:progress=>{if(progress.completed%100===0||progress.state==='published')console.log(JSON.stringify({type:'publication-progress',...progress}));}});
   const after=await backup('after-apply');await assertPrivateBackupPreserved(fullBackup,after.snapshot,preview);
   const second=await session('msa-verification-'+Date.now());sessions.push(second);
   const manifest=await second.repo.get('presentationManifests/'+result.manifestId);

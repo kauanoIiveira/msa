@@ -1,3 +1,4 @@
+import {presentationExampleIdentity} from './example-identity.js';
 import {productionCaseContext} from '../domain/production-case.js';
 import {stableStringify} from '../domain/canonical.js';
 import {getMsaParameterCatalog} from '../catalog/msa-parameters.js';
@@ -63,6 +64,14 @@ export async function validatePresentationDataset(snapshot,manifest){
     if(Math.abs(kpi.productivityPercent-90)>1e-9||Math.abs(kpi.scrapPercent-100*rejectPieces/grossPieces)>1e-9)issue('KPI_MEMORY_MISMATCH',{key});
     metricsByContext[key]=kpi;
   }
+  const seloCase=snapshot.productionCases?.[prefix+'_case_selo_1'];
+  if(!seloCase)issue('T20_CASE_MISSING');
+  else {
+    const context=productionCaseContext(seloCase),same=row=>stableStringify(row.context)===stableStringify(context);
+    const production=values(snapshot.production).filter(r=>own(r)&&same(r)),rejects=losses.filter(r=>own(r)&&same(r)&&r.kind==='reject'&&r.unit==='pieces'&&r.occurredAt>=seloCase.startedAt&&r.occurredAt<seloCase.endedAt);
+    const totals=buildIndicators({production,losses:rejects},{from:seloCase.startedAt,to:seloCase.endedAt,complete:true}).totals;
+    if(production.length!==2||rejects.length!==1||totals.grossPieces!==100||totals.goodPieces!==95||totals.rejectedPieces!==5||totals.rejectPercent!==5)issue('T20_SCRAP_REFERENCE_INCOMPLETE');
+  }
   const sorted=[...ownedPlans].sort((a,b)=>a.startedAt-b.startedAt);
   if(sorted.some((p,i)=>i&&sorted[i-1].endedAt>p.startedAt))issue('PLAN_OVERLAP');
   for(const productId of ['nhpl-vgard-hp','nhpl-mark-v'])for(const shift of ['1','2','3']){
@@ -90,7 +99,11 @@ export async function validatePresentationDataset(snapshot,manifest){
 // Cross-check the independent package arithmetic against the same projection
 // used by the workspace. No card is emitted when a source is incomplete.
 export async function validatePresentationProjection(services,manifest,expected){
-  const diagnostics=[],raw=await services.history.loadPeriod({context:{machineId:'nhpl'},fromDate:manifest.fromOperationalDate,toDate:date(manifest.toOperationalDate,1),limit:500,maxPages:20});
+  const diagnostics=[];
+  const prefix=manifest.packageId??manifest.id,selo=await services.productions.list({context:{machineId:prefix+'_t20_machine_1'},fromDate:manifest.fromOperationalDate,toDate:manifest.fromOperationalDate}),seloCase=selo.items.find(r=>r.id===prefix+'_case_selo_1');
+  if(seloCase){const projected=await services.getIndicators({context:productionCaseContext(seloCase),fromDate:manifest.fromOperationalDate,toDate:manifest.fromOperationalDate},{from:seloCase.startedAt,to:seloCase.endedAt});if(projected.totals.rejectPercent!==5)diagnostics.push({code:'T20_PROJECTED_SCRAP_UNAVAILABLE'});}
+  else diagnostics.push({code:'T20_CASE_MISSING'});
+  const raw=await services.history.loadPeriod({context:{machineId:'nhpl'},fromDate:manifest.fromOperationalDate,toDate:date(manifest.toOperationalDate,1),limit:500,maxPages:20});
   const technical=await services.technical.records(),asOf=Date.parse(manifest.toOperationalDate+'T07:00:00-03:00')+86400000;
   const study=buildIndicators({...raw,...raw.effective},{from:Date.parse(manifest.fromOperationalDate+'T07:00:00-03:00'),to:asOf,complete:raw.complete});
   const offsetStudies=study.statistics.filter(s=>String(s.parameterId).includes('NHPL_ALIGNMENT_OFFSET'));
@@ -98,7 +111,7 @@ export async function validatePresentationProjection(services,manifest,expected)
   for(let d=0;d<7;d++)for(let shift=1;shift<=3;shift++)for(let product=0;product<2;product++){
     const key=`d${d}_s${shift}_p${product}`,day=date(manifest.fromOperationalDate,d),recipeKey=product?'mark':'vgard';
     const recipeId=values(await services.productions.recipes.list()).find(r=>r.recipeId===`${manifest.packageId??manifest.id}_${recipeKey}`)?.id;
-    const consultation={context:{machineId:'nhpl',processId:'nhpl-montagem',productId:product?'nhpl-mark-v':'nhpl-vgard-hp',order:`${manifest.packageId??manifest.id}_order_${recipeKey}`,lot:`${manifest.packageId??manifest.id}_lot_${recipeKey}`,...(recipeId?{recipe:recipeId}:{})},fromDate:day,toDate:day,shift:String(shift)};
+    const consultation={context:{machineId:'nhpl',processId:'nhpl-montagem',productId:product?'nhpl-mark-v':'nhpl-vgard-hp',...presentationExampleIdentity(manifest.packageId??manifest.id,recipeKey).context,...(recipeId?{recipe:recipeId}:{})},fromDate:day,toDate:day,shift:String(shift)};
     const op=buildOperationalQuery(consultation),period=selectOperationalPeriod(raw,op);
     const projected=projectWorkspaceMetrics({period,technical,operationalQuery:op,fromDate:day,toDate:day,context:consultation.context,asOf,client:{mode:'workspace'}});
     const expectedRow=expected[key];

@@ -1,9 +1,10 @@
+import {presentationExampleIdentity} from './example-identity.js';
 import {runPresentationCommands} from './dataset-commands.js';
 import {manifestEntryValue,manifestEntryScope} from './dataset-hash.js';
 import {createMsaServices} from '../services/create-msa.js';
 import {createSnapshotRepository} from './snapshot-repository.js';
 import {datasetHash} from './dataset-hash.js';
-import {presentationParameterMap,exampleReading} from './parameter-map.js';
+import {presentationParameterMap,exampleReading,presentationRecipeSettings} from './parameter-map.js';
 import {validatePresentationDataset,validatePresentationProjection} from './dataset-validation.js';
 
 // Memberships are readable only at members/<auth.uid> in the deployed rules.
@@ -31,18 +32,20 @@ export function buildPresentationDataset({anchorOperationalDate,version='1',exis
     add(`parameter_${item.catalogCode}`,'registry','create','parameters',{name:row.name,code:item.catalogCode,processId:item.processId==='c26-selo'?`${prefix}_t20_process_1`:item.processId});
     add(`version_${item.catalogCode}`,'registry','createParameterVersion',item.parameterId,{unit:row.unit,nature,status:item.catalogCode==='NHPL_ALIGNMENT_OFFSET'?'approved':'draft',rule:row.draftRule});
   }
-  const recipe={};for(const [key,productId] of [['vgard','nhpl-vgard-hp'],['mark','nhpl-mark-v']])recipe[key]=add(`recipe_${key}`,'productions.recipes','create',{recipeId:`${prefix}_${key}`,productId,processId:'nhpl-montagem',label:`Configuração de exemplo ${key}`,settings:{},source:'Referência de exemplo; limites industriais pendentes',status:'draft'});
+  const recipe={};for(const [key,productId] of [['vgard','nhpl-vgard-hp'],['mark','nhpl-mark-v']])recipe[key]=add(`recipe_${key}`,'productions.recipes','create',{recipeId:`${prefix}_${key}`,productId,processId:'nhpl-montagem',label:presentationExampleIdentity(prefix,key).recipeLabel,settings:presentationRecipeSettings(prefix,'nhpl'),source:'Referência de exemplo: ciclo, força e offset nominais ilustrativos; limites industriais pendentes',status:'draft'});
   add('productivity_reference','policies','create',{id:`${prefix}_productivity_policy`,metric:'productivityPercent',value:90,effectiveFrom:instant(from,7),source:'Meta de exemplo para roteiro; sem homologação industrial',context:{machineId:'nhpl',processId:'nhpl-montagem'}});
   for(let shift=1;shift<=3;shift++)for(let product=0;product<2;product++){
     const recipeKey=product?'mark':'vgard';
     add(`ideal_reference_s${shift}_p${product}`,'technical','reference',{
-      context:{machineId:'nhpl',processId:'nhpl-montagem',productId:product?'nhpl-mark-v':'nhpl-vgard-hp',order:`${prefix}_order_${recipeKey}`,lot:`${prefix}_lot_${recipeKey}`,shift:String(shift),recipe:ref(recipe[recipeKey],['id'])},
+      context:{machineId:'nhpl',processId:'nhpl-montagem',productId:product?'nhpl-mark-v':'nhpl-vgard-hp',...presentationExampleIdentity(prefix,recipeKey).context,shift:String(shift),recipe:ref(recipe[recipeKey],['id'])},
       idealSeconds:30,source:'Ciclo ideal de exemplo para cálculo do roteiro; não é o takt de 12 s nem especificação industrial.',effectiveFrom:instant(from,7),microStopSeconds:30
     });
   }
-  const t20Recipe=add('recipe_selo','productions.recipes','create',{recipeId:`${prefix}_selo`,productId:`${prefix}_t20_product_1`,processId:`${prefix}_t20_process_1`,label:'Selo V-Gard · configuração de exemplo',settings:{},source:'Modelo T20A03(EN)5, aba Selo; parâmetros e limites industriais pendentes',status:'draft'});
-  const t20ctx={machineId:`${prefix}_t20_machine_1`,processId:`${prefix}_t20_process_1`,productId:`${prefix}_t20_product_1`,order:`${prefix}_order_selo`,lot:`${prefix}_lot_selo`,shift:'1',recipe:ref(t20Recipe,['id'])};
+  const t20Recipe=add('recipe_selo','productions.recipes','create',{recipeId:`${prefix}_selo`,productId:`${prefix}_t20_product_1`,processId:`${prefix}_t20_process_1`,label:presentationExampleIdentity(prefix,'selo').recipeLabel,settings:presentationRecipeSettings(prefix,'t20'),source:'Modelo T20A03(EN)5, aba Selo: tempos e retardos nominais de exemplo; zonas térmicas, medições e limites industriais pendentes de validação',status:'draft'});
+  const t20ctx={machineId:`${prefix}_t20_machine_1`,processId:`${prefix}_t20_process_1`,productId:`${prefix}_t20_product_1`,...presentationExampleIdentity(prefix,'selo').context,shift:'1',recipe:ref(t20Recipe,['id'])};
   add('case_selo','productions','create',{machineId:t20ctx.machineId,processId:t20ctx.processId,productId:t20ctx.productId,order:t20ctx.order,lot:t20ctx.lot,shift:'1',recipeVersionId:ref(t20Recipe,['id']),operationalDate:from,startedAt:instant(from,7),endedAt:instant(from,11),status:'closed'});
+  for(const [basis,quantity]of [['gross',100],['good',95]])add('selo_production_'+basis,'operations','recordProduction',{id:prefix+'_selo_production_'+basis,context:t20ctx,origin:'demo',occurredAt:instant(from,11)-1,startedAt:instant(from,7),endedAt:instant(from,11),basis,quantity});
+  add('selo_reject','operations','recordLoss',{id:prefix+'_selo_reject',context:t20ctx,origin:'demo',occurredAt:instant(from,11)-1,kind:'reject',unit:'pieces',amount:5,reasonId:prefix+'_reason_reject_1'});
   for(let n=0;n<30;n++)add(`selo_collection_${n}`,'operations','recordCollection',{id:`${prefix}_selo_collection_${n}`,context:t20ctx,origin:'demo',occurredAt:instant(from,8)+n*60000,readings:map.t20.map(item=>exampleReading(item,n))});
   const boundaryStop=`${prefix}_boundary_failure`;
   add('boundary_stop','operations','startStoppage',{id:boundaryStop,context:t20ctx,origin:'demo',startedAt:instant(from,14)+55*60000,planned:false,reasonId:`${prefix}_reason_stop_1`});
@@ -53,8 +56,8 @@ export function buildPresentationDataset({anchorOperationalDate,version='1',exis
     for(let shift=1;shift<=3;shift++)for(let product=0;product<2;product++){
       const key=`d${d}_s${shift}_p${product}`,productId=product?'nhpl-mark-v':'nhpl-vgard-hp',recipeKey=product?'mark':'vgard';
       const start=instant(day,shift===1?7:shift===2?15:23)+product*4*hourMs,end=start+4*hourMs;
-      const context={machineId:'nhpl',processId:'nhpl-montagem',productId,order:`${prefix}_order_${recipeKey}`,lot:`${prefix}_lot_${recipeKey}`,shift:String(shift),recipe:ref(recipe[recipeKey],['id'])};
-      const caseInput={machineId:'nhpl',processId:'nhpl-montagem',productId,order:context.order,lot:context.lot,shift:String(shift),recipeVersionId:ref(recipe[recipeKey],['id']),operationalDate:day,startedAt:start,endedAt:end,status:'closed'};
+      const context={machineId:'nhpl',processId:'nhpl-montagem',productId,...presentationExampleIdentity(prefix,recipeKey).context,shift:String(shift),recipe:ref(recipe[recipeKey],['id'])};
+      const caseInput={machineId:'nhpl',processId:'nhpl-montagem',productId,variant:context.variant,order:context.order,lot:context.lot,shift:String(shift),recipeVersionId:ref(recipe[recipeKey],['id']),operationalDate:day,startedAt:start,endedAt:end,status:'closed'};
       add(`case_${key}`,'productions','create',caseInput);
       const plan=add(`plan_${key}`,'planning','approve',{context,startedAt:start,endedAt:end,intervalMinutes:60,quantitySource:'informed',plannedPieces:400});
       const runStart=add(`run_start_${key}`,'runs','start',{context,machineStartedAt:start});
@@ -82,7 +85,7 @@ export function buildPresentationDataset({anchorOperationalDate,version='1',exis
       for(let i=0;i<5;i++)add(`collection_${key}_${i}`,'operations','recordCollection',{id:`${prefix}_collection_${key}_${i}`,context,origin:'demo',occurredAt:start+6*60000+i*42*60000,readings:map.nhpl.map(item=>exampleReading(item,d*5+i))});
     }
   }
-  const lastContext={machineId:'nhpl',processId:'nhpl-montagem',productId:'nhpl-mark-v',order:`${prefix}_order_mark`,lot:`${prefix}_lot_mark`,shift:'3',recipe:`${prefix}_recipe_mark_1`};
+  const lastContext={machineId:'nhpl',processId:'nhpl-montagem',productId:'nhpl-mark-v',...presentationExampleIdentity(prefix,'mark').context,shift:'3',recipe:`${prefix}_recipe_mark_1`};
   const dataset={manifest:{id:prefix,packageId:prefix,version,origin:'demo',fromOperationalDate:from,toOperationalDate:to,defaultSelection:{query:{context:lastContext,fromDate:to,toDate:to,shift:'3'},recording:{productionCaseId:`${prefix}_case_d6_s3_p1_1`,context:lastContext}},entries:[],state:'prepared',createdBy:null,createdAt:null},commands,diagnostics:[]};
   sourceSnapshots.set(dataset,existingSnapshot);
   return dataset;

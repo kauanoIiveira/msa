@@ -27,3 +27,12 @@ export function exampleReading(item,index) {
   else value=row.code==='NHPL_ASSEMBLY_CYCLE'?42+(index%7)/10:120+(index%7);
   return {parameterId:item.parameterId,versionId:item.versionId,raw:String(Number(value.toFixed(3)))};
 }
+
+// Nominal example configuration only. T20 ambient/dimensional/utility readings
+// and ambiguous heating/inverted ranges are not machine setup instructions.
+export function presentationRecipeSettings(prefix,machine){
+ const map=presentationParameterMap(prefix);
+ if(machine==='nhpl')return Object.fromEntries(map.nhpl.map(item=>[item.catalogCode,{NHPL_ASSEMBLY_CYCLE:42,NHPL_INSPECTION_FORCE:120,NHPL_ALIGNMENT_OFFSET:0}[item.catalogCode]]));
+ if(machine!=='t20')throw new Error('INVALID_EXAMPLE_MACHINE');
+ return Object.fromEntries(map.t20.filter(({reference:r})=>['cycle','delay'].includes(r.group)&&Number.isFinite(r.source.limits.lower)&&Number.isFinite(r.source.limits.upper)&&r.source.limits.lower<r.source.limits.upper).map(({catalogCode,reference:r})=>[catalogCode,(r.source.limits.lower+r.source.limits.upper)/2]));
+}
