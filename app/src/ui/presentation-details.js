@@ -1,4 +1,8 @@
 import {date,escapeHtml as e} from './format.js';
+export function parameterReferences(registries,parameterId){
+ const versions=Object.values(registries.parameterVersions??{}).filter(v=>v.parameterId===parameterId).sort((a,b)=>(b.createdAt??0)-(a.createdAt??0)||b.id.localeCompare(a.id));
+ return {versions,latest:versions[0]??null,approved:versions.find(v=>v.status==='approved')??null};
+}
 export function availableProductionIntervals(state){return Object.entries(state.period.intervalHeaders??{}).filter(([id,h])=>!state.period.closures?.[id]&&!state.period.retiredIntervals?.includes(id)&&Object.entries(state.context).every(([k,v])=>!v||h.context?.[k]===v)).sort(([,a],[,b])=>a.startedAt-b.startedAt);}
 export function productionChartData(view){
  const segments=view.segments.filter(s=>Number.isFinite(s.from)&&Number.isFinite(s.to)).slice().sort((a,b)=>a.from-b.from||a.to-b.to);

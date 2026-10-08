@@ -1,6 +1,8 @@
 import {parseReading} from '../domain/numbers.js';
 import {MsaError,requireThat} from '../domain/errors.js';
 import {eventDate,validateDate} from '../domain/time.js';
+import {recordLabel} from './format.js';
+import {parameterReferences} from './presentation-details.js';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const rows=(registries,kind)=>Array.isArray(registries?.[kind])?registries[kind]:Object.values(registries?.[kind]??{});
@@ -12,20 +14,20 @@ const field=(label,control,full=false)=>`<label class="field${full?' full':''}">
 const input=(name,value='',{type='text',required=true,maxLength,inputMode}={})=>`<input type="${escape(type)}" name="${escape(name)}" value="${escape(value)}"${type==='datetime-local'?' step="1"':''}${required?' required':''}${maxLength?` maxlength="${maxLength}"`:''}${inputMode?` inputmode="${escape(inputMode)}"`:''}>`;
 const option=(value,label,selected)=>`<option value="${escape(value)}"${selected?' selected':''}>${escape(label)}</option>`;
 const select=(name,choices,value='',{placeholder=true,required=true}={})=>`<select name="${escape(name)}"${required?' required':''}>${placeholder?option('','Selecione',value===''):''}${choices.map(([id,label])=>option(id,label,id===value)).join('')}</select>`;
-const registrySelect=(name,kind,registries,value)=>select(name,active(registries,kind).map(row=>[row.id,row.name]),value);
+const registrySelect=(name,kind,registries,value)=>select(name,active(registries,kind).map(row=>[row.id,recordLabel(row.name)]),value);
 const localDateTime=value=>{
   const instant=typeof value==='number'?value:Date.now();return new Date(instant-3*3600000).toISOString().slice(0,19);
 };
 const ruleLabel=rule=>rule?.kind==='range'?`${rule.lower} a ${rule.upper}`:rule?.kind==='lower'?`Mínimo ${rule.lower}`:rule?.kind==='upper'?`Máximo ${rule.upper}`:'Limite pendente';
 const versionLabel=version=>`${version.status==='approved'?'Aprovado':'Rascunho'} · ${version.nature==='setpoint'?'Setpoint':'Medição'} · ${ruleLabel(version.rule)} ${version.unit??''}`;
-const orderedVersions=(registries,id)=>rows(registries,'parameterVersions').filter(version=>version.parameterId===id).sort((a,b)=>(Number(b.createdAt)||0)-(Number(a.createdAt)||0)||String(b.id).localeCompare(String(a.id)));
+const orderedVersions=(registries,id)=>parameterReferences(registries,id).versions;
 
 export function formMarkup(kind,{registries={},context={},record={},catalog=[]}={}) {
   let content='';
   if(kind==='collection') {
     content=`<div class="parameter-input-list full">${parameters(registries,context).map(parameter=>{
       const versions=orderedVersions(registries,parameter.id),current=versions.find(version=>version.status==='approved')??versions.find(version=>version.status==='draft');
-      return `<div class="parameter-input-row"><div><strong>${escape(parameter.name)}</strong><span>${escape(current?.unit??'')}</span></div>${field('Leitura',input(`raw_${parameter.id}`,record.readings?.[parameter.id]?.raw??'',{required:false,inputMode:'decimal'}))}${field('Versão',select(`version_${parameter.id}`,versions.map(version=>[version.id,versionLabel(version)]),current?.id??''))}</div>`;
+      return `<div class="parameter-input-row"><div><strong>${escape(recordLabel(parameter.name))}</strong><span>${escape(current?.unit??'')}</span></div>${field('Leitura',input(`raw_${parameter.id}`,record.readings?.[parameter.id]?.raw??'',{required:false,inputMode:'decimal'}))}${field('Versão',select(`version_${parameter.id}`,versions.map(version=>[version.id,versionLabel(version)]),current?.id??''))}</div>`;
     }).join('')}</div>`;
   } else if(kind==='production') {
     content=field('Quantidade (peças)',input('quantity',record.quantity??'',{inputMode:'numeric'}))+field('Base',select('basis',[['gross','Produção bruta'],['good','Peças boas']],record.basis??'gross',{placeholder:false}))+field('Início',input('startedAt',localDateTime(record.startedAt),{type:'datetime-local'}))+field('Fim',input('endedAt',localDateTime(record.endedAt),{type:'datetime-local'}));
@@ -53,8 +55,9 @@ export function formMarkup(kind,{registries={},context={},record={},catalog=[]}=
     const today=eventDate(Date.now());
     content=field('Nome da meta',input('name',record.name??'',{maxLength:160}),true)+field('Indicador',select('metric',[['producedPieces','Produção bruta (peças)'],['stopMinutes','Tempo parado (minutos)'],['rejectedPieces','Refugo (peças)'],['lossKg','Perda de material (kg)']],record.metric??''))+field('Limite',input('threshold',record.threshold??'',{inputMode:'decimal'}))+field('Comparação',select('operator',[['lower','Pelo menos'],['upper','No máximo']],record.operator??'upper',{placeholder:false}))+field('Data inicial',input('fromDate',record.fromDate??today,{type:'date'}))+field('Data final',input('toDate',record.toDate??today,{type:'date'}));
   } else throw new MsaError('INVALID_KIND');
-  if(context.machineId==='nhpl'&&['collection','loss','stoppage'].includes(kind))content=['order','lot','shift'].map((key,i)=>field(['OP','Lote','Turno'][i],input('context_'+key,context[key]??'',{maxLength:100}))).join('')+content;
-  return `<div class="form-grid">${content}</div>`;
+  if(context.machineId==='nhpl'&&['collection','loss','stoppage','target'].includes(kind))content=['order','lot','shift'].map((key,i)=>field(['OP','Lote','Turno'][i],input('context_'+key,context[key]??'',{maxLength:100}))).join('')+content;
+  const versionHistory=kind==='parameterVersion'?`<p class="source-notes">Salvar cria uma nova versão. Rascunho fica salvo para revisão; Aprovado passa a ser usado nas próximas coletas. Leituras anteriores mantêm seus limites.</p><section class="data-section"><h3>Versões salvas</h3>${orderedVersions(registries,record.parameterId??'').map(version=>`<p>${escape(versionLabel(version))}</p>`).join('')||'<p>Nenhuma versão salva.</p>'}</section>`:'';
+  return `<div class="form-grid">${content}</div>${versionHistory}`;
 }
 
 export function saoPauloInstant(value,field) {
@@ -69,7 +72,7 @@ export async function submitForm(kind,data,{services,context,record={},registrie
   const value=field=>{const raw=data.get(field);requireThat(raw==null||typeof raw==='string','VALIDATION',field);return raw??'';};
   const number=(field,code='INVALID_QUANTITY')=>{const parsed=parseReading(value(field));requireThat(parsed.status==='valid'&&Number.isFinite(parsed.value),code,field);return parsed.value;};
   const local=field=>saoPauloInstant(value(field),field);
-  if(context?.machineId==='nhpl'&&['collection','loss','stoppage'].includes(kind))context={...context,...Object.fromEntries(['order','lot','shift'].map(key=>[key,value('context_'+key).trim()]))};
+  if(context?.machineId==='nhpl'&&['collection','loss','stoppage','target'].includes(kind))context={...context,...Object.fromEntries(['order','lot','shift'].map(key=>[key,value('context_'+key).trim()]))};
   if(kind==='collection') return services.operations.recordCollection({context,readings:parameters(registries,context).map(parameter=>({parameterId:parameter.id,versionId:value(`version_${parameter.id}`),raw:value(`raw_${parameter.id}`)}))});
   if(kind==='production') return services.operations.recordProduction({context,quantity:number('quantity'),basis:value('basis'),startedAt:local('startedAt'),endedAt:local('endedAt')});
   if(kind==='loss') return services.operations.recordLoss({context,kind:value('kind'),unit:value('unit'),amount:number('amount'),reasonId:value('reasonId')});

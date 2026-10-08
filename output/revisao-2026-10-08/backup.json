@@ -1,0 +1,4904 @@
+{
+  "schemaVersion": 1,
+  "fromDate": "2026-10-07",
+  "toDate": "2026-10-08",
+  "context": {
+    "machineId": "nhpl",
+    "processId": "nhpl-montagem",
+    "productId": "nhpl-vgard-hp",
+    "order": "OP-AP-001",
+    "lot": "LOTE-AP-001",
+    "shift": "1",
+    "variant": "Medium"
+  },
+  "data": {
+    "machines": {
+      "nhpl": {
+        "origin": "demo",
+        "name": "NHPL · Montagem de abafadores",
+        "code": "NHPL",
+        "id": "nhpl",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893788
+      }
+    },
+    "processes": {
+      "nhpl-montagem": {
+        "origin": "demo",
+        "name": "Processo de montagem do abafador",
+        "machineId": "nhpl",
+        "id": "nhpl-montagem",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893788
+      }
+    },
+    "products": {
+      "nhpl-vgard-hp": {
+        "origin": "demo",
+        "name": "Abafadores VGARD HP",
+        "processIds": {
+          "nhpl-montagem": true
+        },
+        "id": "nhpl-vgard-hp",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893788
+      },
+      "nhpl-mark-v": {
+        "origin": "demo",
+        "name": "Abafadores MARK V",
+        "processIds": {
+          "nhpl-montagem": true
+        },
+        "id": "nhpl-mark-v",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893788
+      }
+    },
+    "parameters": {
+      "ap-fit": {
+        "origin": "demo",
+        "name": "Dimensão de encaixe · exemplo didático",
+        "code": "ap-fit",
+        "processId": "nhpl-montagem",
+        "id": "ap-fit",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893837
+      },
+      "ap-test": {
+        "origin": "demo",
+        "name": "Resultado de ensaio · exemplo didático",
+        "code": "ap-test",
+        "processId": "nhpl-montagem",
+        "id": "ap-test",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893839
+      }
+    },
+    "parameterVersions": {
+      "88279102-dd08-478b-9199-00807fdfe04e": {
+        "origin": "demo",
+        "unit": "mm",
+        "nature": "measurement",
+        "status": "approved",
+        "rule": {
+          "kind": "range",
+          "lower": 9.5,
+          "upper": 10.5
+        },
+        "id": "88279102-dd08-478b-9199-00807fdfe04e",
+        "parameterId": "ap-fit",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893838
+      },
+      "6642f6bf-3cf6-4413-bcdb-7cd32deba872": {
+        "origin": "demo",
+        "unit": "N",
+        "nature": "measurement",
+        "status": "approved",
+        "rule": {
+          "kind": "range",
+          "lower": 90,
+          "upper": 110
+        },
+        "id": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+        "parameterId": "ap-test",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893840
+      }
+    },
+    "reasons": {
+      "nhpl-stop": {
+        "origin": "demo",
+        "name": "Interrupção de montagem",
+        "kind": "stop",
+        "id": "nhpl-stop",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893792
+      },
+      "nhpl-setup": {
+        "origin": "demo",
+        "name": "Troca e preparação",
+        "kind": "stop",
+        "id": "nhpl-setup",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893792
+      },
+      "nhpl-reject": {
+        "origin": "demo",
+        "name": "Inspeção dimensional",
+        "kind": "reject",
+        "id": "nhpl-reject",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893793
+      },
+      "nhpl-material": {
+        "origin": "demo",
+        "name": "Perda de material",
+        "kind": "material",
+        "id": "nhpl-material",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893794
+      },
+      "nhpl-rework": {
+        "origin": "demo",
+        "name": "Retrabalho",
+        "kind": "rework",
+        "id": "nhpl-rework",
+        "active": true,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893794
+      },
+      "4f0fa108-1817-47b2-8c95-7ba6ebd5814b": {
+        "origin": "demo",
+        "name": "Motivo revisado",
+        "kind": "reject",
+        "id": "4f0fa108-1817-47b2-8c95-7ba6ebd5814b",
+        "active": true,
+        "createdBy": "fixture",
+        "createdAt": 1791468897337
+      }
+    },
+    "targets": {},
+    "collections": {
+      "ap-collection-0": {
+        "origin": "demo",
+        "id": "ap-collection-0",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791370800000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893841,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-collection-1": {
+        "origin": "demo",
+        "id": "ap-collection-1",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791370860000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893842,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-collection-2": {
+        "origin": "demo",
+        "id": "ap-collection-2",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791370920000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893844,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-collection-3": {
+        "origin": "demo",
+        "id": "ap-collection-3",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791370980000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893845,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-collection-4": {
+        "origin": "demo",
+        "id": "ap-collection-4",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371040000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893847,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-collection-5": {
+        "origin": "demo",
+        "id": "ap-collection-5",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371100000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893848,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-collection-6": {
+        "origin": "demo",
+        "id": "ap-collection-6",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371160000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893850,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-collection-7": {
+        "origin": "demo",
+        "id": "ap-collection-7",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371220000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893851,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-collection-8": {
+        "origin": "demo",
+        "id": "ap-collection-8",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371280000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893853,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-collection-9": {
+        "origin": "demo",
+        "id": "ap-collection-9",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371340000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893855,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-collection-10": {
+        "origin": "demo",
+        "id": "ap-collection-10",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371400000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893856,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-collection-11": {
+        "origin": "demo",
+        "id": "ap-collection-11",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371460000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893858,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-collection-12": {
+        "origin": "demo",
+        "id": "ap-collection-12",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371520000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893859,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-collection-13": {
+        "origin": "demo",
+        "id": "ap-collection-13",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371580000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893861,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-collection-14": {
+        "origin": "demo",
+        "id": "ap-collection-14",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371640000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893863,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-collection-15": {
+        "origin": "demo",
+        "id": "ap-collection-15",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371700000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893864,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-collection-16": {
+        "origin": "demo",
+        "id": "ap-collection-16",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371760000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893867,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-collection-17": {
+        "origin": "demo",
+        "id": "ap-collection-17",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371820000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893869,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-collection-18": {
+        "origin": "demo",
+        "id": "ap-collection-18",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371880000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893871,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-collection-19": {
+        "origin": "demo",
+        "id": "ap-collection-19",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791371940000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893873,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-collection-20": {
+        "origin": "demo",
+        "id": "ap-collection-20",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372000000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893874,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-collection-21": {
+        "origin": "demo",
+        "id": "ap-collection-21",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372060000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893876,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-collection-22": {
+        "origin": "demo",
+        "id": "ap-collection-22",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372120000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893878,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-collection-23": {
+        "origin": "demo",
+        "id": "ap-collection-23",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372180000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893880,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-collection-24": {
+        "origin": "demo",
+        "id": "ap-collection-24",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372240000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893882,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-collection-25": {
+        "origin": "demo",
+        "id": "ap-collection-25",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372300000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893884,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-collection-26": {
+        "origin": "demo",
+        "id": "ap-collection-26",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372360000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893886,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-collection-27": {
+        "origin": "demo",
+        "id": "ap-collection-27",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372420000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893888,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-collection-28": {
+        "origin": "demo",
+        "id": "ap-collection-28",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372480000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893890,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-collection-29": {
+        "origin": "demo",
+        "id": "ap-collection-29",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372540000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893892,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-collection-30": {
+        "origin": "demo",
+        "id": "ap-collection-30",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372600000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893894,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-collection-31": {
+        "origin": "demo",
+        "id": "ap-collection-31",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372660000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893896,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-collection-32": {
+        "origin": "demo",
+        "id": "ap-collection-32",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372720000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893899,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-collection-33": {
+        "origin": "demo",
+        "id": "ap-collection-33",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372780000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893901,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-collection-34": {
+        "origin": "demo",
+        "id": "ap-collection-34",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372840000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893903,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-collection-35": {
+        "origin": "demo",
+        "id": "ap-collection-35",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372900000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893905,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-collection-36": {
+        "origin": "demo",
+        "id": "ap-collection-36",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372960000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893907,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-collection-37": {
+        "origin": "demo",
+        "id": "ap-collection-37",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373020000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893909,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-collection-38": {
+        "origin": "demo",
+        "id": "ap-collection-38",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373080000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893912,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-collection-39": {
+        "origin": "demo",
+        "id": "ap-collection-39",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373140000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893914,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-collection-40": {
+        "origin": "demo",
+        "id": "ap-collection-40",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373200000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893917,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-collection-41": {
+        "origin": "demo",
+        "id": "ap-collection-41",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373260000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893919,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-collection-42": {
+        "origin": "demo",
+        "id": "ap-collection-42",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373320000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893921,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-collection-43": {
+        "origin": "demo",
+        "id": "ap-collection-43",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373380000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893924,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-collection-44": {
+        "origin": "demo",
+        "id": "ap-collection-44",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373440000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893927,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-collection-45": {
+        "origin": "demo",
+        "id": "ap-collection-45",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373500000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893930,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-collection-46": {
+        "origin": "demo",
+        "id": "ap-collection-46",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373560000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893932,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-collection-47": {
+        "origin": "demo",
+        "id": "ap-collection-47",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373620000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893934,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-collection-48": {
+        "origin": "demo",
+        "id": "ap-collection-48",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373680000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893937,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-collection-49": {
+        "origin": "demo",
+        "id": "ap-collection-49",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373740000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893940,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-collection-50": {
+        "origin": "demo",
+        "id": "ap-collection-50",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373800000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893942,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-collection-51": {
+        "origin": "demo",
+        "id": "ap-collection-51",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373860000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893945,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-collection-52": {
+        "origin": "demo",
+        "id": "ap-collection-52",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373920000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893947,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-collection-53": {
+        "origin": "demo",
+        "id": "ap-collection-53",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791373980000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893950,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-collection-54": {
+        "origin": "demo",
+        "id": "ap-collection-54",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374040000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893953,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-collection-55": {
+        "origin": "demo",
+        "id": "ap-collection-55",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374100000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893955,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-collection-56": {
+        "origin": "demo",
+        "id": "ap-collection-56",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374160000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893958,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-collection-57": {
+        "origin": "demo",
+        "id": "ap-collection-57",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374220000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893961,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-collection-58": {
+        "origin": "demo",
+        "id": "ap-collection-58",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374280000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893965,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-collection-59": {
+        "origin": "demo",
+        "id": "ap-collection-59",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374340000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893968,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-mark-collection-0": {
+        "origin": "demo",
+        "id": "ap-mark-collection-0",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791388800000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894034,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-mark-collection-1": {
+        "origin": "demo",
+        "id": "ap-mark-collection-1",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791388860000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894038,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-mark-collection-2": {
+        "origin": "demo",
+        "id": "ap-mark-collection-2",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791388920000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894041,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-mark-collection-3": {
+        "origin": "demo",
+        "id": "ap-mark-collection-3",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791388980000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894044,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-mark-collection-4": {
+        "origin": "demo",
+        "id": "ap-mark-collection-4",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389040000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894048,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-mark-collection-5": {
+        "origin": "demo",
+        "id": "ap-mark-collection-5",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389100000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894052,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-mark-collection-6": {
+        "origin": "demo",
+        "id": "ap-mark-collection-6",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389160000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894055,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-mark-collection-7": {
+        "origin": "demo",
+        "id": "ap-mark-collection-7",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389220000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894059,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-mark-collection-8": {
+        "origin": "demo",
+        "id": "ap-mark-collection-8",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389280000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894063,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-mark-collection-9": {
+        "origin": "demo",
+        "id": "ap-mark-collection-9",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389340000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894066,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-mark-collection-10": {
+        "origin": "demo",
+        "id": "ap-mark-collection-10",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389400000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894070,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-mark-collection-11": {
+        "origin": "demo",
+        "id": "ap-mark-collection-11",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389460000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894073,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-mark-collection-12": {
+        "origin": "demo",
+        "id": "ap-mark-collection-12",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389520000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894077,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-mark-collection-13": {
+        "origin": "demo",
+        "id": "ap-mark-collection-13",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389580000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894081,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-mark-collection-14": {
+        "origin": "demo",
+        "id": "ap-mark-collection-14",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389640000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894084,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-mark-collection-15": {
+        "origin": "demo",
+        "id": "ap-mark-collection-15",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389700000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894089,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-mark-collection-16": {
+        "origin": "demo",
+        "id": "ap-mark-collection-16",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389760000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894093,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-mark-collection-17": {
+        "origin": "demo",
+        "id": "ap-mark-collection-17",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389820000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894096,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-mark-collection-18": {
+        "origin": "demo",
+        "id": "ap-mark-collection-18",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389880000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894099,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-mark-collection-19": {
+        "origin": "demo",
+        "id": "ap-mark-collection-19",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791389940000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894103,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "ap-mark-collection-20": {
+        "origin": "demo",
+        "id": "ap-mark-collection-20",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390000000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894107,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.975",
+            "status": "valid",
+            "value": 9.975
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.5",
+            "status": "valid",
+            "value": 99.5
+          }
+        }
+      },
+      "ap-mark-collection-21": {
+        "origin": "demo",
+        "id": "ap-mark-collection-21",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390060000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894110,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.025",
+            "status": "valid",
+            "value": 10.025
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.5",
+            "status": "valid",
+            "value": 100.5
+          }
+        }
+      },
+      "ap-mark-collection-22": {
+        "origin": "demo",
+        "id": "ap-mark-collection-22",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390120000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894114,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.9875",
+            "status": "valid",
+            "value": 9.9875
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.75",
+            "status": "valid",
+            "value": 99.75
+          }
+        }
+      },
+      "ap-mark-collection-23": {
+        "origin": "demo",
+        "id": "ap-mark-collection-23",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390180000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894117,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.0125",
+            "status": "valid",
+            "value": 10.0125
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.25",
+            "status": "valid",
+            "value": 100.25
+          }
+        }
+      },
+      "ap-mark-collection-24": {
+        "origin": "demo",
+        "id": "ap-mark-collection-24",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390240000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894121,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.98",
+            "status": "valid",
+            "value": 9.98
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.6",
+            "status": "valid",
+            "value": 99.6
+          }
+        }
+      },
+      "ap-mark-collection-25": {
+        "origin": "demo",
+        "id": "ap-mark-collection-25",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390300000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894124,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.4",
+            "status": "valid",
+            "value": 100.4
+          }
+        }
+      },
+      "ap-mark-collection-26": {
+        "origin": "demo",
+        "id": "ap-mark-collection-26",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390360000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894128,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.995",
+            "status": "valid",
+            "value": 9.995
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.9",
+            "status": "valid",
+            "value": 99.9
+          }
+        }
+      },
+      "ap-mark-collection-27": {
+        "origin": "demo",
+        "id": "ap-mark-collection-27",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390420000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894132,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.005",
+            "status": "valid",
+            "value": 10.005
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.1",
+            "status": "valid",
+            "value": 100.1
+          }
+        }
+      },
+      "ap-mark-collection-28": {
+        "origin": "demo",
+        "id": "ap-mark-collection-28",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390480000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894136,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "9.985",
+            "status": "valid",
+            "value": 9.985
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "99.7",
+            "status": "valid",
+            "value": 99.7
+          }
+        }
+      },
+      "ap-mark-collection-29": {
+        "origin": "demo",
+        "id": "ap-mark-collection-29",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791390540000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894140,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.015",
+            "status": "valid",
+            "value": 10.015
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100.3",
+            "status": "valid",
+            "value": 100.3
+          }
+        }
+      },
+      "d17e7f19-9662-4aa2-8f0b-f0682dc4b530": {
+        "origin": "manual",
+        "id": "d17e7f19-9662-4aa2-8f0b-f0682dc4b530",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-08",
+        "occurredAt": 1791468898336,
+        "createdBy": "fixture",
+        "createdAt": 1791468898337,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10,02",
+            "status": "valid",
+            "value": 10.02
+          },
+          "ap-test": {
+            "parameterId": "ap-test",
+            "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+            "raw": "100",
+            "status": "valid",
+            "value": 100
+          }
+        }
+      },
+      "imp_77c6c46fba076f7d9a6d94cb1f93c094ab7b641c088869b6d84c884ae2d7ae25": {
+        "origin": "import",
+        "id": "imp_77c6c46fba076f7d9a6d94cb1f93c094ab7b641c088869b6d84c884ae2d7ae25",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "date",
+        "eventDate": "2026-10-08",
+        "source": {
+          "file": "coletas.csv",
+          "row": 2,
+          "cells": "date,parameter,raw,unit"
+        },
+        "createdBy": "fixture",
+        "createdAt": 1791468900728,
+        "readings": {
+          "ap-fit": {
+            "parameterId": "ap-fit",
+            "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+            "raw": "10.03",
+            "status": "valid",
+            "value": 10.03
+          }
+        }
+      }
+    },
+    "production": {},
+    "losses": {
+      "b1f69332-9a49-45be-98c5-e7b00a382939": {
+        "origin": "demo",
+        "id": "b1f69332-9a49-45be-98c5-e7b00a382939",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374399000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893805,
+        "kind": "reject",
+        "unit": "pieces",
+        "amount": 5,
+        "reasonId": "nhpl-reject"
+      },
+      "f37be741-d484-4984-96fb-4b59395b633a": {
+        "origin": "demo",
+        "id": "f37be741-d484-4984-96fb-4b59395b633a",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791377999000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893811,
+        "kind": "reject",
+        "unit": "pieces",
+        "amount": 5,
+        "reasonId": "nhpl-reject"
+      },
+      "baa48a5c-755d-46a6-83bf-7c286646ddd0": {
+        "origin": "demo",
+        "id": "baa48a5c-755d-46a6-83bf-7c286646ddd0",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791381599000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893817,
+        "kind": "reject",
+        "unit": "pieces",
+        "amount": 10,
+        "reasonId": "nhpl-reject"
+      },
+      "8465c7c5-2db5-439f-b6e9-93a2248579e5": {
+        "origin": "demo",
+        "id": "8465c7c5-2db5-439f-b6e9-93a2248579e5",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791385199000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893822,
+        "kind": "reject",
+        "unit": "pieces",
+        "amount": 5,
+        "reasonId": "nhpl-reject"
+      },
+      "e88f8254-2114-4016-bc2c-65965967af73": {
+        "origin": "demo",
+        "id": "e88f8254-2114-4016-bc2c-65965967af73",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791374400000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893831,
+        "kind": "material",
+        "unit": "kg",
+        "amount": 1.2,
+        "reasonId": "nhpl-material"
+      },
+      "33165801-3b72-4ef1-8b39-5cd3f9f5c3ad": {
+        "origin": "demo",
+        "id": "33165801-3b72-4ef1-8b39-5cd3f9f5c3ad",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791392399000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894014,
+        "kind": "reject",
+        "unit": "pieces",
+        "amount": 4,
+        "reasonId": "nhpl-reject"
+      },
+      "0acce0c2-eeb1-4d86-bc1d-1ea2bbf46aec": {
+        "origin": "demo",
+        "id": "0acce0c2-eeb1-4d86-bc1d-1ea2bbf46aec",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791395999000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894029,
+        "kind": "reject",
+        "unit": "pieces",
+        "amount": 4,
+        "reasonId": "nhpl-reject"
+      },
+      "ea79ba64-9d20-4b48-b729-9afb0149942b": {
+        "origin": "manual",
+        "id": "ea79ba64-9d20-4b48-b729-9afb0149942b",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-08",
+        "occurredAt": 1791468898720,
+        "createdBy": "fixture",
+        "createdAt": 1791468898720,
+        "kind": "reject",
+        "unit": "pieces",
+        "amount": 3,
+        "reasonId": "4f0fa108-1817-47b2-8c95-7ba6ebd5814b"
+      }
+    },
+    "stoppages": {
+      "ap-failure": {
+        "origin": "demo",
+        "id": "ap-failure",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791378600000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893824,
+        "startedAt": 1791378600000,
+        "planned": false,
+        "reasonId": "nhpl-stop",
+        "endedAt": 1791379200000,
+        "closedBy": "presentation-preparation",
+        "closedAt": 1791468893825,
+        "goodValidated": true
+      },
+      "ap-micro": {
+        "origin": "demo",
+        "id": "ap-micro",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791372000000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893827,
+        "startedAt": 1791372000000,
+        "planned": false,
+        "reasonId": "nhpl-stop",
+        "endedAt": 1791372020000,
+        "closedBy": "presentation-preparation",
+        "closedAt": 1791468893828,
+        "goodValidated": true
+      },
+      "evt_ap-source_stop": {
+        "origin": "import",
+        "id": "evt_ap-source_stop",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-07",
+        "occurredAt": 1791382200000,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894153,
+        "startedAt": 1791382200000,
+        "planned": false,
+        "reasonId": "nhpl-stop",
+        "endedAt": 1791382220000,
+        "closedBy": "presentation-preparation",
+        "closedAt": 1791468894160,
+        "goodValidated": true
+      },
+      "ccbb9816-7d60-4186-a5f9-21d3461f69c2": {
+        "origin": "manual",
+        "id": "ccbb9816-7d60-4186-a5f9-21d3461f69c2",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "timePrecision": "instant",
+        "eventDate": "2026-10-08",
+        "occurredAt": 1791468839000,
+        "createdBy": "fixture",
+        "createdAt": 1791468899103,
+        "startedAt": 1791468839000,
+        "planned": false,
+        "reasonId": "nhpl-stop",
+        "endedAt": 1791468899000,
+        "closedBy": "fixture",
+        "closedAt": 1791468899438,
+        "goodValidated": true
+      }
+    },
+    "reviews": {
+      "68b35b36-6b37-4b12-9b19-c25a5d93b5d0": {
+        "origin": "demo",
+        "id": "68b35b36-6b37-4b12-9b19-c25a5d93b5d0",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "collectionId": "ap-collection-59",
+        "scope": "Nova análise · conferir montagem, inspeção e estudo Cp/Cpk didático",
+        "state": "waiting",
+        "eventDate": "2026-10-07",
+        "createdBy": "presentation-operator",
+        "createdAt": 1791468893970,
+        "history": {
+          "0": {
+            "state": "waiting",
+            "by": "presentation-operator",
+            "at": 1791468893970
+          }
+        }
+      },
+      "f92b1e02-07dd-4b35-a1be-e28d8a632dd3": {
+        "origin": "demo",
+        "id": "f92b1e02-07dd-4b35-a1be-e28d8a632dd3",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "collectionId": "ap-collection-30",
+        "scope": "Revisão de ensaio · anexar evidências de Qualidade",
+        "state": "analyzing",
+        "eventDate": "2026-10-07",
+        "createdBy": "presentation-operator",
+        "createdAt": 1791468893973,
+        "history": {
+          "0": {
+            "state": "waiting",
+            "by": "presentation-operator",
+            "at": 1791468893973
+          },
+          "1": {
+            "state": "analyzing",
+            "by": "presentation-preparation",
+            "at": 1791468893975
+          }
+        }
+      },
+      "fac2adf7-bad2-48a1-a4c0-e3b6ba7c9fa1": {
+        "origin": "demo",
+        "id": "fac2adf7-bad2-48a1-a4c0-e3b6ba7c9fa1",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "collectionId": "d17e7f19-9662-4aa2-8f0b-f0682dc4b530",
+        "scope": "Conferência dos registros",
+        "state": "approved",
+        "eventDate": "2026-10-08",
+        "createdBy": "fixture",
+        "createdAt": 1791468901304,
+        "history": {
+          "0": {
+            "state": "waiting",
+            "by": "fixture",
+            "at": 1791468901304
+          },
+          "1": {
+            "state": "analyzing",
+            "by": "fixture",
+            "at": 1791468901800
+          },
+          "2": {
+            "state": "approved",
+            "by": "fixture",
+            "at": 1791468902215,
+            "justification": "Registros conferidos"
+          }
+        }
+      }
+    },
+    "corrections": {
+      "3b92eb81-3ae3-4b16-9b01-a7092cbe63d1": {
+        "origin": "demo",
+        "id": "3b92eb81-3ae3-4b16-9b01-a7092cbe63d1",
+        "recordType": "collections",
+        "recordId": "ap-collection-0",
+        "replacement": {
+          "origin": "demo",
+          "id": "ap-collection-0",
+          "context": {
+            "machineId": "nhpl",
+            "processId": "nhpl-montagem",
+            "productId": "nhpl-vgard-hp",
+            "order": "OP-AP-001",
+            "lot": "LOTE-AP-001",
+            "shift": "1",
+            "variant": "Medium"
+          },
+          "timePrecision": "instant",
+          "eventDate": "2026-10-07",
+          "occurredAt": 1791370800000,
+          "createdBy": "presentation-preparation",
+          "createdAt": 1791468893841,
+          "readings": [
+            {
+              "parameterId": "ap-fit",
+              "versionId": "88279102-dd08-478b-9199-00807fdfe04e",
+              "raw": "10.001",
+              "status": "valid",
+              "value": 10.001
+            },
+            {
+              "parameterId": "ap-test",
+              "versionId": "6642f6bf-3cf6-4413-bcdb-7cd32deba872",
+              "raw": "99.5",
+              "status": "valid",
+              "value": 99.5
+            }
+          ]
+        },
+        "reason": "Conferência didática da digitação",
+        "state": "waiting",
+        "eventDate": "2026-10-07",
+        "createdBy": "presentation-operator",
+        "createdAt": 1791468893983
+      }
+    },
+    "pilots": {
+      "nhpl": {
+        "origin": "demo",
+        "id": "nhpl",
+        "machineId": "nhpl",
+        "processId": "nhpl-montagem",
+        "productIds": [
+          "nhpl-vgard-hp",
+          "nhpl-mark-v"
+        ],
+        "line": "Montagem",
+        "variants": [
+          "Low",
+          "Medium",
+          "High"
+        ],
+        "source": "Respostas de Fabiana — 07/10/2026",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893788
+      }
+    },
+    "productionPolicies": {
+      "ap-productivityPercent": {
+        "origin": "demo",
+        "metric": "productivityPercent",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem"
+        },
+        "firstSlotId": "4997b11a-5697-47b8-a134-6eceb4d93e93",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893790,
+        "events": {
+          "4997b11a-5697-47b8-a134-6eceb4d93e93": {
+            "origin": "demo",
+            "id": "4997b11a-5697-47b8-a134-6eceb4d93e93",
+            "metric": "productivityPercent",
+            "value": 95,
+            "effectiveFrom": 1791342000000,
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem"
+            },
+            "source": "Fabiana · respostas de 07/10/2026",
+            "policyId": "ap-productivityPercent",
+            "kind": "policy",
+            "eventDate": "2026-10-07",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893790,
+            "sequence": 1,
+            "nextSlotId": "5a86c318-4919-4c18-b827-f78cfab856fc"
+          }
+        }
+      },
+      "ap-taktSeconds": {
+        "origin": "demo",
+        "metric": "taktSeconds",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem"
+        },
+        "firstSlotId": "22d9dfb5-a2b1-4b05-8691-57e69ac217ec",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893791,
+        "events": {
+          "22d9dfb5-a2b1-4b05-8691-57e69ac217ec": {
+            "origin": "demo",
+            "id": "22d9dfb5-a2b1-4b05-8691-57e69ac217ec",
+            "metric": "taktSeconds",
+            "value": 12,
+            "effectiveFrom": 1791342000000,
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem"
+            },
+            "source": "Fabiana · respostas de 07/10/2026",
+            "policyId": "ap-taktSeconds",
+            "kind": "policy",
+            "eventDate": "2026-10-07",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893791,
+            "sequence": 1,
+            "nextSlotId": "aa28cebd-9059-4ff9-9ab6-1c9ce15d7a83"
+          }
+        }
+      }
+    },
+    "targetRevisions": {},
+    "productionPlans": {
+      "nhpl": {
+        "origin": "demo",
+        "machineId": "nhpl",
+        "firstSlotId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893796,
+        "events": {
+          "b5bce6ef-cee3-4748-80ee-53d88ba964e5": {
+            "origin": "demo",
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem",
+              "productId": "nhpl-vgard-hp",
+              "order": "OP-AP-001",
+              "lot": "LOTE-AP-001",
+              "shift": "1",
+              "variant": "Medium"
+            },
+            "startedAt": 1791370800000,
+            "endedAt": 1791385200000,
+            "breaks": [],
+            "intervalMinutes": 60,
+            "quantitySource": "informed",
+            "taktRevision": {
+              "id": "interview-takt",
+              "value": 12
+            },
+            "plannedPieces": 1200,
+            "intervals": [
+              {
+                "startedAt": 1791370800000,
+                "endedAt": 1791374400000,
+                "plannedPieces": 300,
+                "id": "5ef56441-dea5-440c-96ef-ee770727e3d9"
+              },
+              {
+                "startedAt": 1791374400000,
+                "endedAt": 1791378000000,
+                "plannedPieces": 300,
+                "id": "3db849dd-5976-44b0-ab34-d26c4b3064a1"
+              },
+              {
+                "startedAt": 1791378000000,
+                "endedAt": 1791381600000,
+                "plannedPieces": 300,
+                "id": "20fe8e2c-cf19-4301-87c6-98e428e4b24c"
+              },
+              {
+                "startedAt": 1791381600000,
+                "endedAt": 1791385200000,
+                "plannedPieces": 300,
+                "id": "52927529-4db2-450c-8956-7ea3a4c48bb3"
+              }
+            ],
+            "planId": "f85215f3-ea26-4e91-899c-25fb7fd18ec3",
+            "kind": "plan",
+            "eventDate": "2026-10-07",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893797,
+            "id": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+            "sequence": 1,
+            "nextSlotId": "31e34de2-706d-4572-8c8d-4786dd252230"
+          },
+          "31e34de2-706d-4572-8c8d-4786dd252230": {
+            "origin": "demo",
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem",
+              "productId": "nhpl-mark-v",
+              "order": "OP-AP-002",
+              "lot": "LOTE-AP-002",
+              "shift": "2",
+              "variant": "Low"
+            },
+            "startedAt": 1791388800000,
+            "endedAt": 1791396000000,
+            "breaks": [],
+            "intervalMinutes": 60,
+            "quantitySource": "informed",
+            "taktRevision": {
+              "id": "interview-takt",
+              "value": 12
+            },
+            "plannedPieces": 600,
+            "intervals": [
+              {
+                "startedAt": 1791388800000,
+                "endedAt": 1791392400000,
+                "plannedPieces": 300,
+                "id": "1fab524c-5fe5-41ac-abb8-e4ffb1db5bf8"
+              },
+              {
+                "startedAt": 1791392400000,
+                "endedAt": 1791396000000,
+                "plannedPieces": 300,
+                "id": "b1a46337-fb7e-43df-b2fa-82f72d446144"
+              }
+            ],
+            "planId": "ae08bdcc-cf7e-4439-85db-0766146ca9cd",
+            "kind": "plan",
+            "eventDate": "2026-10-07",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893990,
+            "id": "31e34de2-706d-4572-8c8d-4786dd252230",
+            "sequence": 2,
+            "previousEventId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+            "nextSlotId": "6d9ae514-1dbc-4758-bb64-41ae2e7bf2cb"
+          },
+          "6d9ae514-1dbc-4758-bb64-41ae2e7bf2cb": {
+            "origin": "demo",
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem",
+              "productId": "nhpl-vgard-hp",
+              "order": "OP-AP-001",
+              "lot": "LOTE-AP-001",
+              "shift": "1",
+              "variant": "Medium"
+            },
+            "startedAt": 1791486000000,
+            "endedAt": 1791489600000,
+            "breaks": [],
+            "intervalMinutes": 60,
+            "quantitySource": "informed",
+            "taktRevision": {
+              "id": "interview-takt",
+              "value": 12
+            },
+            "plannedPieces": 300,
+            "intervals": [
+              {
+                "startedAt": 1791486000000,
+                "endedAt": 1791489600000,
+                "plannedPieces": 300,
+                "id": "aeac4c38-8ac7-4733-b18d-5ce2546c2427"
+              }
+            ],
+            "planId": "7e98e4ab-0ace-4993-aefc-745e6fb5c269",
+            "kind": "plan",
+            "eventDate": "2026-10-08",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468894144,
+            "id": "6d9ae514-1dbc-4758-bb64-41ae2e7bf2cb",
+            "sequence": 3,
+            "previousEventId": "31e34de2-706d-4572-8c8d-4786dd252230",
+            "nextSlotId": "315f5aa6-1b87-4b9a-87f3-3ac735e0a121"
+          }
+        }
+      }
+    },
+    "productionIntervals": {
+      "5ef56441-dea5-440c-96ef-ee770727e3d9": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "planId": "f85215f3-ea26-4e91-899c-25fb7fd18ec3",
+        "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+        "intervalIndex": "0",
+        "startedAt": 1791370800000,
+        "endedAt": 1791374400000,
+        "eventDate": "2026-10-07",
+        "plannedPieces": 300,
+        "firstSlotId": "25830136-cd42-4a20-9919-803a31e6851f",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893797,
+        "events": {
+          "25830136-cd42-4a20-9919-803a31e6851f": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 285,
+            "basis": "gross",
+            "startedAt": 1791370800000,
+            "endedAt": 1791374400000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893802,
+            "id": "25830136-cd42-4a20-9919-803a31e6851f",
+            "sequence": 1,
+            "nextSlotId": "fe16495f-b98d-45e5-88de-6fab6ffce7ff"
+          },
+          "fe16495f-b98d-45e5-88de-6fab6ffce7ff": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 280,
+            "basis": "good",
+            "startedAt": 1791370800000,
+            "endedAt": 1791374400000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893802,
+            "id": "fe16495f-b98d-45e5-88de-6fab6ffce7ff",
+            "sequence": 2,
+            "previousEventId": "25830136-cd42-4a20-9919-803a31e6851f",
+            "nextSlotId": "d8a72ecc-33e0-4baf-8f73-c5e3161ab803"
+          },
+          "d8a72ecc-33e0-4baf-8f73-c5e3161ab803": {
+            "origin": "demo",
+            "kind": "closure",
+            "confirmedGrossPieces": 285,
+            "recordIds": [
+              "25830136-cd42-4a20-9919-803a31e6851f",
+              "fe16495f-b98d-45e5-88de-6fab6ffce7ff"
+            ],
+            "correctionIds": [],
+            "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+            "coveredThroughEventId": "fe16495f-b98d-45e5-88de-6fab6ffce7ff",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893804,
+            "id": "d8a72ecc-33e0-4baf-8f73-c5e3161ab803",
+            "sequence": 3,
+            "previousEventId": "fe16495f-b98d-45e5-88de-6fab6ffce7ff",
+            "nextSlotId": "f112e153-3e93-4509-9fc6-9895ad5ce2bd"
+          }
+        }
+      },
+      "3db849dd-5976-44b0-ab34-d26c4b3064a1": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "planId": "f85215f3-ea26-4e91-899c-25fb7fd18ec3",
+        "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+        "intervalIndex": "1",
+        "startedAt": 1791374400000,
+        "endedAt": 1791378000000,
+        "eventDate": "2026-10-07",
+        "plannedPieces": 300,
+        "firstSlotId": "7b44d2ab-266b-4e4f-bd6b-05f6c9b49898",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893798,
+        "events": {
+          "7b44d2ab-266b-4e4f-bd6b-05f6c9b49898": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 284,
+            "basis": "gross",
+            "startedAt": 1791374400000,
+            "endedAt": 1791378000000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893809,
+            "id": "7b44d2ab-266b-4e4f-bd6b-05f6c9b49898",
+            "sequence": 1,
+            "nextSlotId": "230f0c0c-fcc8-414e-a768-7e6efe998b62"
+          },
+          "230f0c0c-fcc8-414e-a768-7e6efe998b62": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 279,
+            "basis": "good",
+            "startedAt": 1791374400000,
+            "endedAt": 1791378000000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893809,
+            "id": "230f0c0c-fcc8-414e-a768-7e6efe998b62",
+            "sequence": 2,
+            "previousEventId": "7b44d2ab-266b-4e4f-bd6b-05f6c9b49898",
+            "nextSlotId": "a230a71a-66d0-4d26-a2de-af2a9a507ae6"
+          },
+          "a230a71a-66d0-4d26-a2de-af2a9a507ae6": {
+            "origin": "demo",
+            "kind": "closure",
+            "confirmedGrossPieces": 284,
+            "recordIds": [
+              "7b44d2ab-266b-4e4f-bd6b-05f6c9b49898",
+              "230f0c0c-fcc8-414e-a768-7e6efe998b62"
+            ],
+            "correctionIds": [],
+            "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+            "coveredThroughEventId": "230f0c0c-fcc8-414e-a768-7e6efe998b62",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893810,
+            "id": "a230a71a-66d0-4d26-a2de-af2a9a507ae6",
+            "sequence": 3,
+            "previousEventId": "230f0c0c-fcc8-414e-a768-7e6efe998b62",
+            "nextSlotId": "32d31715-b935-49d2-af41-31ec3d8006f7"
+          }
+        }
+      },
+      "20fe8e2c-cf19-4301-87c6-98e428e4b24c": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "planId": "f85215f3-ea26-4e91-899c-25fb7fd18ec3",
+        "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+        "intervalIndex": "2",
+        "startedAt": 1791378000000,
+        "endedAt": 1791381600000,
+        "eventDate": "2026-10-07",
+        "plannedPieces": 300,
+        "firstSlotId": "a951165d-eb3c-4491-831c-ea4ffcea85a8",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893799,
+        "events": {
+          "a951165d-eb3c-4491-831c-ea4ffcea85a8": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 250,
+            "basis": "gross",
+            "startedAt": 1791378000000,
+            "endedAt": 1791381600000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893814,
+            "id": "a951165d-eb3c-4491-831c-ea4ffcea85a8",
+            "sequence": 1,
+            "nextSlotId": "2dfe666b-1ffd-49b8-b046-8cacb7314a5a"
+          },
+          "2dfe666b-1ffd-49b8-b046-8cacb7314a5a": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 240,
+            "basis": "good",
+            "startedAt": 1791378000000,
+            "endedAt": 1791381600000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893815,
+            "id": "2dfe666b-1ffd-49b8-b046-8cacb7314a5a",
+            "sequence": 2,
+            "previousEventId": "a951165d-eb3c-4491-831c-ea4ffcea85a8",
+            "nextSlotId": "917261fd-14d9-4d56-b644-fca5e5a81700"
+          },
+          "917261fd-14d9-4d56-b644-fca5e5a81700": {
+            "origin": "demo",
+            "kind": "closure",
+            "confirmedGrossPieces": 250,
+            "recordIds": [
+              "a951165d-eb3c-4491-831c-ea4ffcea85a8",
+              "2dfe666b-1ffd-49b8-b046-8cacb7314a5a"
+            ],
+            "correctionIds": [],
+            "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+            "coveredThroughEventId": "2dfe666b-1ffd-49b8-b046-8cacb7314a5a",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893815,
+            "id": "917261fd-14d9-4d56-b644-fca5e5a81700",
+            "sequence": 3,
+            "previousEventId": "2dfe666b-1ffd-49b8-b046-8cacb7314a5a",
+            "nextSlotId": "ca7753ea-3c92-44c9-b82e-f3f0e1a74e16"
+          }
+        }
+      },
+      "52927529-4db2-450c-8956-7ea3a4c48bb3": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "planId": "f85215f3-ea26-4e91-899c-25fb7fd18ec3",
+        "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+        "intervalIndex": "3",
+        "startedAt": 1791381600000,
+        "endedAt": 1791385200000,
+        "eventDate": "2026-10-07",
+        "plannedPieces": 300,
+        "firstSlotId": "5d56a6a1-cb3a-476a-a07b-72d3bf53c4db",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893800,
+        "events": {
+          "5d56a6a1-cb3a-476a-a07b-72d3bf53c4db": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 295,
+            "basis": "gross",
+            "startedAt": 1791381600000,
+            "endedAt": 1791385200000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893819,
+            "id": "5d56a6a1-cb3a-476a-a07b-72d3bf53c4db",
+            "sequence": 1,
+            "nextSlotId": "a27a5e09-e487-4ec6-9ec2-ef3feaed442d"
+          },
+          "a27a5e09-e487-4ec6-9ec2-ef3feaed442d": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 290,
+            "basis": "good",
+            "startedAt": 1791381600000,
+            "endedAt": 1791385200000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893820,
+            "id": "a27a5e09-e487-4ec6-9ec2-ef3feaed442d",
+            "sequence": 2,
+            "previousEventId": "5d56a6a1-cb3a-476a-a07b-72d3bf53c4db",
+            "nextSlotId": "6960b740-0328-46c8-8c67-a60659df5f88"
+          },
+          "6960b740-0328-46c8-8c67-a60659df5f88": {
+            "origin": "demo",
+            "kind": "closure",
+            "confirmedGrossPieces": 295,
+            "recordIds": [
+              "5d56a6a1-cb3a-476a-a07b-72d3bf53c4db",
+              "a27a5e09-e487-4ec6-9ec2-ef3feaed442d"
+            ],
+            "correctionIds": [],
+            "planRevisionId": "b5bce6ef-cee3-4748-80ee-53d88ba964e5",
+            "coveredThroughEventId": "a27a5e09-e487-4ec6-9ec2-ef3feaed442d",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893820,
+            "id": "6960b740-0328-46c8-8c67-a60659df5f88",
+            "sequence": 3,
+            "previousEventId": "a27a5e09-e487-4ec6-9ec2-ef3feaed442d",
+            "nextSlotId": "4a4b3856-01bc-47d2-9d90-50c34aaed8dc"
+          }
+        }
+      },
+      "1fab524c-5fe5-41ac-abb8-e4ffb1db5bf8": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "planId": "ae08bdcc-cf7e-4439-85db-0766146ca9cd",
+        "planRevisionId": "31e34de2-706d-4572-8c8d-4786dd252230",
+        "intervalIndex": "0",
+        "startedAt": 1791388800000,
+        "endedAt": 1791392400000,
+        "eventDate": "2026-10-07",
+        "plannedPieces": 300,
+        "firstSlotId": "7dd9a2da-3246-4cb9-8f9d-1c85f649cf25",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893993,
+        "events": {
+          "7dd9a2da-3246-4cb9-8f9d-1c85f649cf25": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 286,
+            "basis": "gross",
+            "startedAt": 1791388800000,
+            "endedAt": 1791392400000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468894002,
+            "id": "7dd9a2da-3246-4cb9-8f9d-1c85f649cf25",
+            "sequence": 1,
+            "nextSlotId": "b22444d2-897c-401c-a1f4-403cc0c5e601"
+          },
+          "b22444d2-897c-401c-a1f4-403cc0c5e601": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 282,
+            "basis": "good",
+            "startedAt": 1791388800000,
+            "endedAt": 1791392400000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468894005,
+            "id": "b22444d2-897c-401c-a1f4-403cc0c5e601",
+            "sequence": 2,
+            "previousEventId": "7dd9a2da-3246-4cb9-8f9d-1c85f649cf25",
+            "nextSlotId": "88eaf3fa-b3a8-4e84-8ff8-cc4578ffe0d5"
+          },
+          "88eaf3fa-b3a8-4e84-8ff8-cc4578ffe0d5": {
+            "origin": "demo",
+            "kind": "closure",
+            "confirmedGrossPieces": 286,
+            "recordIds": [
+              "7dd9a2da-3246-4cb9-8f9d-1c85f649cf25",
+              "b22444d2-897c-401c-a1f4-403cc0c5e601"
+            ],
+            "correctionIds": [],
+            "planRevisionId": "31e34de2-706d-4572-8c8d-4786dd252230",
+            "coveredThroughEventId": "b22444d2-897c-401c-a1f4-403cc0c5e601",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468894008,
+            "id": "88eaf3fa-b3a8-4e84-8ff8-cc4578ffe0d5",
+            "sequence": 3,
+            "previousEventId": "b22444d2-897c-401c-a1f4-403cc0c5e601",
+            "nextSlotId": "e00fdedd-de5a-4dd6-a7f0-b8654a065665"
+          }
+        }
+      },
+      "b1a46337-fb7e-43df-b2fa-82f72d446144": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "planId": "ae08bdcc-cf7e-4439-85db-0766146ca9cd",
+        "planRevisionId": "31e34de2-706d-4572-8c8d-4786dd252230",
+        "intervalIndex": "1",
+        "startedAt": 1791392400000,
+        "endedAt": 1791396000000,
+        "eventDate": "2026-10-07",
+        "plannedPieces": 300,
+        "firstSlotId": "ba21601b-3031-427b-887e-ed1446971866",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893996,
+        "events": {
+          "ba21601b-3031-427b-887e-ed1446971866": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 292,
+            "basis": "gross",
+            "startedAt": 1791392400000,
+            "endedAt": 1791396000000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468894017,
+            "id": "ba21601b-3031-427b-887e-ed1446971866",
+            "sequence": 1,
+            "nextSlotId": "75bc5519-c90f-4a64-b943-c42f7f4e636f"
+          },
+          "75bc5519-c90f-4a64-b943-c42f7f4e636f": {
+            "origin": "demo",
+            "kind": "production",
+            "quantity": 288,
+            "basis": "good",
+            "startedAt": 1791392400000,
+            "endedAt": 1791396000000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468894020,
+            "id": "75bc5519-c90f-4a64-b943-c42f7f4e636f",
+            "sequence": 2,
+            "previousEventId": "ba21601b-3031-427b-887e-ed1446971866",
+            "nextSlotId": "da280454-74a9-4535-b534-5b47b379d880"
+          },
+          "da280454-74a9-4535-b534-5b47b379d880": {
+            "origin": "demo",
+            "kind": "closure",
+            "confirmedGrossPieces": 292,
+            "recordIds": [
+              "ba21601b-3031-427b-887e-ed1446971866",
+              "75bc5519-c90f-4a64-b943-c42f7f4e636f"
+            ],
+            "correctionIds": [],
+            "planRevisionId": "31e34de2-706d-4572-8c8d-4786dd252230",
+            "coveredThroughEventId": "75bc5519-c90f-4a64-b943-c42f7f4e636f",
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468894023,
+            "id": "da280454-74a9-4535-b534-5b47b379d880",
+            "sequence": 3,
+            "previousEventId": "75bc5519-c90f-4a64-b943-c42f7f4e636f",
+            "nextSlotId": "40a80ce1-41eb-4ad6-9a7c-702938fe128a"
+          }
+        }
+      },
+      "aeac4c38-8ac7-4733-b18d-5ce2546c2427": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "planId": "7e98e4ab-0ace-4993-aefc-745e6fb5c269",
+        "planRevisionId": "6d9ae514-1dbc-4758-bb64-41ae2e7bf2cb",
+        "intervalIndex": "0",
+        "startedAt": 1791486000000,
+        "endedAt": 1791489600000,
+        "eventDate": "2026-10-08",
+        "plannedPieces": 300,
+        "firstSlotId": "deea30b2-e88f-4626-bcbd-db7d264021df",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894148
+      }
+    },
+    "plannedCorrections": {},
+    "machineRuns": {
+      "91545629-0e5d-4726-b4dc-f9ccb7908eeb": {
+        "origin": "demo",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "runId": "91545629-0e5d-4726-b4dc-f9ccb7908eeb",
+        "firstSlotId": "1594ed8d-5d73-462a-b2c5-424333496592",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893832,
+        "events": {
+          "1594ed8d-5d73-462a-b2c5-424333496592": {
+            "origin": "demo",
+            "kind": "run",
+            "runId": "91545629-0e5d-4726-b4dc-f9ccb7908eeb",
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem",
+              "productId": "nhpl-vgard-hp",
+              "order": "OP-AP-001",
+              "lot": "LOTE-AP-001",
+              "shift": "1",
+              "variant": "Medium"
+            },
+            "machineStartedAt": 1791370200000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893833,
+            "id": "1594ed8d-5d73-462a-b2c5-424333496592",
+            "sequence": 1,
+            "nextSlotId": "ccfee88f-4f57-430b-8bfd-fb9d3c424e6f"
+          },
+          "ccfee88f-4f57-430b-8bfd-fb9d3c424e6f": {
+            "origin": "demo",
+            "kind": "run",
+            "runId": "91545629-0e5d-4726-b4dc-f9ccb7908eeb",
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem",
+              "productId": "nhpl-vgard-hp",
+              "order": "OP-AP-001",
+              "lot": "LOTE-AP-001",
+              "shift": "1",
+              "variant": "Medium"
+            },
+            "machineStartedAt": 1791370200000,
+            "productionStartedAt": 1791370800000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893834,
+            "id": "ccfee88f-4f57-430b-8bfd-fb9d3c424e6f",
+            "sequence": 2,
+            "previousEventId": "1594ed8d-5d73-462a-b2c5-424333496592",
+            "nextSlotId": "a49ee78d-db73-4b11-bf2a-937cc59459ae"
+          },
+          "a49ee78d-db73-4b11-bf2a-937cc59459ae": {
+            "origin": "demo",
+            "kind": "run",
+            "runId": "91545629-0e5d-4726-b4dc-f9ccb7908eeb",
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem",
+              "productId": "nhpl-vgard-hp",
+              "order": "OP-AP-001",
+              "lot": "LOTE-AP-001",
+              "shift": "1",
+              "variant": "Medium"
+            },
+            "machineStartedAt": 1791370200000,
+            "productionStartedAt": 1791370800000,
+            "productionEndedAt": 1791385200000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893835,
+            "id": "a49ee78d-db73-4b11-bf2a-937cc59459ae",
+            "sequence": 3,
+            "previousEventId": "ccfee88f-4f57-430b-8bfd-fb9d3c424e6f",
+            "nextSlotId": "1c98c220-b447-4855-8768-9b6858cbdc7d"
+          },
+          "1c98c220-b447-4855-8768-9b6858cbdc7d": {
+            "origin": "demo",
+            "kind": "run",
+            "runId": "91545629-0e5d-4726-b4dc-f9ccb7908eeb",
+            "context": {
+              "machineId": "nhpl",
+              "processId": "nhpl-montagem",
+              "productId": "nhpl-vgard-hp",
+              "order": "OP-AP-001",
+              "lot": "LOTE-AP-001",
+              "shift": "1",
+              "variant": "Medium"
+            },
+            "machineStartedAt": 1791370200000,
+            "productionStartedAt": 1791370800000,
+            "productionEndedAt": 1791385200000,
+            "machineEndedAt": 1791385500000,
+            "createdBy": "presentation-preparation",
+            "createdAt": 1791468893836,
+            "id": "1c98c220-b447-4855-8768-9b6858cbdc7d",
+            "sequence": 4,
+            "previousEventId": "a49ee78d-db73-4b11-bf2a-937cc59459ae"
+          }
+        }
+      }
+    },
+    "technicalRecords": {
+      "96195eff-3bc7-44d8-a93e-8191b69fd1c2": {
+        "origin": "demo",
+        "id": "96195eff-3bc7-44d8-a93e-8191b69fd1c2",
+        "kind": "reference",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "idealSeconds": 10,
+        "microStopSeconds": 60,
+        "effectiveFrom": 1791342000000,
+        "source": "Exemplo hipotético de apresentação · não é ciclo ideal aprovado da NHPL",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893800,
+        "eventDate": "2026-10-07"
+      },
+      "5edc8837-ac5c-4e83-9d68-7aaea90b1598": {
+        "origin": "demo",
+        "id": "5edc8837-ac5c-4e83-9d68-7aaea90b1598",
+        "kind": "inspection",
+        "intervalId": "5ef56441-dea5-440c-96ef-ee770727e3d9",
+        "firstPassGood": 280,
+        "historyComplete": true,
+        "note": "Inspeção e histórico de falhas completos somente neste exemplo didático",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "productionFingerprint": "[[\"25830136-cd42-4a20-9919-803a31e6851f\",285,null],[\"fe16495f-b98d-45e5-88de-6fab6ffce7ff\",280,null]]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893807,
+        "eventDate": "2026-10-08"
+      },
+      "bb0cde81-befd-4229-88d1-d12b09f24545": {
+        "origin": "demo",
+        "id": "bb0cde81-befd-4229-88d1-d12b09f24545",
+        "kind": "inspection",
+        "intervalId": "3db849dd-5976-44b0-ab34-d26c4b3064a1",
+        "firstPassGood": 279,
+        "historyComplete": true,
+        "note": "Inspeção e histórico de falhas completos somente neste exemplo didático",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "productionFingerprint": "[[\"230f0c0c-fcc8-414e-a768-7e6efe998b62\",279,null],[\"7b44d2ab-266b-4e4f-bd6b-05f6c9b49898\",284,null]]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893812,
+        "eventDate": "2026-10-08"
+      },
+      "43fb3529-efc4-4d8d-8757-dfac0fc57e8b": {
+        "origin": "demo",
+        "id": "43fb3529-efc4-4d8d-8757-dfac0fc57e8b",
+        "kind": "inspection",
+        "intervalId": "20fe8e2c-cf19-4301-87c6-98e428e4b24c",
+        "firstPassGood": 240,
+        "historyComplete": true,
+        "note": "Inspeção e histórico de falhas completos somente neste exemplo didático",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "productionFingerprint": "[[\"2dfe666b-1ffd-49b8-b046-8cacb7314a5a\",240,null],[\"a951165d-eb3c-4491-831c-ea4ffcea85a8\",250,null]]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893818,
+        "eventDate": "2026-10-08"
+      },
+      "d2697189-30d1-4bdd-9caf-5c3534dceb9c": {
+        "origin": "demo",
+        "id": "d2697189-30d1-4bdd-9caf-5c3534dceb9c",
+        "kind": "inspection",
+        "intervalId": "52927529-4db2-450c-8956-7ea3a4c48bb3",
+        "firstPassGood": 290,
+        "historyComplete": true,
+        "note": "Inspeção e histórico de falhas completos somente neste exemplo didático",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "productionFingerprint": "[[\"5d56a6a1-cb3a-476a-a07b-72d3bf53c4db\",295,null],[\"a27a5e09-e487-4ec6-9ec2-ef3feaed442d\",290,null]]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893823,
+        "eventDate": "2026-10-08"
+      },
+      "89427154-6911-48d9-bcf3-2f63cd3fc821": {
+        "origin": "demo",
+        "id": "89427154-6911-48d9-bcf3-2f63cd3fc821",
+        "kind": "classification",
+        "stopId": "ap-failure",
+        "category": "availability",
+        "failure": true,
+        "repairStartedAt": 1791378660000,
+        "repairEndedAt": 1791378960000,
+        "note": "Exemplo: falha classificada com reparo de cinco minutos",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "stopFingerprint": "[1791378600000,1791379200000,null]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893826,
+        "eventDate": "2026-10-08"
+      },
+      "ad3afeba-ff49-459f-a8c9-224bacd016a1": {
+        "origin": "demo",
+        "id": "ad3afeba-ff49-459f-a8c9-224bacd016a1",
+        "kind": "classification",
+        "stopId": "ap-micro",
+        "category": "performance",
+        "failure": false,
+        "note": "Microparada demonstrativa tratada como perda de desempenho",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "stopFingerprint": "[1791372000000,1791372020000,null]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893829,
+        "eventDate": "2026-10-08"
+      },
+      "5ab24202-b41a-46b3-83fa-64009fd7c4dc": {
+        "origin": "demo",
+        "id": "5ab24202-b41a-46b3-83fa-64009fd7c4dc",
+        "kind": "evidence",
+        "reviewId": "f92b1e02-07dd-4b35-a1be-e28d8a632dd3",
+        "controlPlan": "Plano de controle fictício AP-01",
+        "inspection": "Inspeção didática registrada",
+        "testResult": "Resultado demonstrativo",
+        "performance": "Conferir histórico do estudo",
+        "note": "Não é laudo industrial",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893979,
+        "eventDate": "2026-10-08"
+      },
+      "4e9534de-08fc-4903-89f4-50bf2867cccf": {
+        "origin": "demo",
+        "id": "4e9534de-08fc-4903-89f4-50bf2867cccf",
+        "kind": "occurrence",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "type": "maintenance",
+        "note": "Verificar causa da interrupção e retorno de peças boas · exemplo",
+        "occurredAt": 1791378600000,
+        "state": "waiting",
+        "createdBy": "presentation-operator",
+        "createdAt": 1791468893986,
+        "eventDate": "2026-10-07"
+      },
+      "7e66a22c-becd-41bb-9af6-6377f2fa2be0": {
+        "origin": "demo",
+        "id": "7e66a22c-becd-41bb-9af6-6377f2fa2be0",
+        "kind": "reference",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "idealSeconds": 10,
+        "microStopSeconds": 60,
+        "effectiveFrom": 1791342000000,
+        "source": "Exemplo hipotético MARK V · sem homologação industrial",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468893999,
+        "eventDate": "2026-10-07"
+      },
+      "13c5a953-2969-4dde-9714-254a00c3184f": {
+        "origin": "demo",
+        "id": "13c5a953-2969-4dde-9714-254a00c3184f",
+        "kind": "inspection",
+        "intervalId": "1fab524c-5fe5-41ac-abb8-e4ffb1db5bf8",
+        "firstPassGood": 282,
+        "historyComplete": true,
+        "note": "Inspeção didática MARK V",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "productionFingerprint": "[[\"7dd9a2da-3246-4cb9-8f9d-1c85f649cf25\",286,null],[\"b22444d2-897c-401c-a1f4-403cc0c5e601\",282,null]]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894011,
+        "eventDate": "2026-10-08"
+      },
+      "4ff04cc2-4ca6-435b-b354-6a85f74a66b3": {
+        "origin": "demo",
+        "id": "4ff04cc2-4ca6-435b-b354-6a85f74a66b3",
+        "kind": "inspection",
+        "intervalId": "b1a46337-fb7e-43df-b2fa-82f72d446144",
+        "firstPassGood": 288,
+        "historyComplete": true,
+        "note": "Inspeção didática MARK V",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-mark-v",
+          "order": "OP-AP-002",
+          "lot": "LOTE-AP-002",
+          "shift": "2",
+          "variant": "Low"
+        },
+        "productionFingerprint": "[[\"75bc5519-c90f-4a64-b943-c42f7f4e636f\",288,null],[\"ba21601b-3031-427b-887e-ed1446971866\",292,null]]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894026,
+        "eventDate": "2026-10-08"
+      },
+      "evt_ap-source_stop": {
+        "origin": "demo",
+        "id": "evt_ap-source_stop",
+        "kind": "event",
+        "event": {
+          "schemaVersion": 1,
+          "sourceId": "ap-source",
+          "context": {
+            "machineId": "nhpl",
+            "processId": "nhpl-montagem",
+            "productId": "nhpl-vgard-hp",
+            "order": "OP-AP-001",
+            "lot": "LOTE-AP-001",
+            "shift": "1",
+            "variant": "Medium"
+          },
+          "eventId": "stop",
+          "sequence": 1,
+          "occurredAt": 1791382200000,
+          "type": "state",
+          "state": "stopped",
+          "reasonId": "nhpl-stop"
+        },
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "occurredAt": 1791382200000,
+        "gap": false,
+        "baseline": false,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894156,
+        "eventDate": "2026-10-07"
+      },
+      "evt_ap-source_good": {
+        "origin": "demo",
+        "id": "evt_ap-source_good",
+        "kind": "event",
+        "event": {
+          "schemaVersion": 1,
+          "sourceId": "ap-source",
+          "context": {
+            "machineId": "nhpl",
+            "processId": "nhpl-montagem",
+            "productId": "nhpl-vgard-hp",
+            "order": "OP-AP-001",
+            "lot": "LOTE-AP-001",
+            "shift": "1",
+            "variant": "Medium"
+          },
+          "eventId": "good",
+          "sequence": 2,
+          "occurredAt": 1791382220000,
+          "type": "good-validated",
+          "validated": true
+        },
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "occurredAt": 1791382220000,
+        "gap": false,
+        "baseline": false,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894164,
+        "eventDate": "2026-10-07"
+      },
+      "evt_ap-source_offline": {
+        "origin": "demo",
+        "id": "evt_ap-source_offline",
+        "kind": "event",
+        "event": {
+          "schemaVersion": 1,
+          "sourceId": "ap-source",
+          "context": {
+            "machineId": "nhpl",
+            "processId": "nhpl-montagem",
+            "productId": "nhpl-vgard-hp",
+            "order": "OP-AP-001",
+            "lot": "LOTE-AP-001",
+            "shift": "1",
+            "variant": "Medium"
+          },
+          "eventId": "offline",
+          "sequence": 4,
+          "occurredAt": 1791385200000,
+          "type": "state",
+          "state": "disconnected"
+        },
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "occurredAt": 1791385200000,
+        "gap": true,
+        "baseline": false,
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894168,
+        "eventDate": "2026-10-07"
+      },
+      "4db34275-f0bc-483b-afb1-67ef51f8617c": {
+        "origin": "demo",
+        "id": "4db34275-f0bc-483b-afb1-67ef51f8617c",
+        "kind": "classification",
+        "stopId": "evt_ap-source_stop",
+        "category": "performance",
+        "failure": false,
+        "note": "Microparada capturada por eventos de exemplo; fim com boa validada",
+        "context": {
+          "machineId": "nhpl",
+          "processId": "nhpl-montagem",
+          "productId": "nhpl-vgard-hp",
+          "order": "OP-AP-001",
+          "lot": "LOTE-AP-001",
+          "shift": "1",
+          "variant": "Medium"
+        },
+        "stopFingerprint": "[1791382200000,1791382220000,null]",
+        "createdBy": "presentation-preparation",
+        "createdAt": 1791468894172,
+        "eventDate": "2026-10-08"
+      }
+    }
+  }
+}

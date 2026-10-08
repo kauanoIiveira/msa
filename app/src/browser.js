@@ -12,6 +12,6 @@ export function createBrowserMsa({papa=globalThis.Papa,emulator}={}) {
   const app=sdk.initializeApp(config),auth=sdk.getAuth(app),db=sdk.getDatabase(app);
   if(emulator) {sdk.connectAuthEmulator(auth,'http://127.0.0.1:9099',{disableWarnings:true});sdk.connectDatabaseEmulator(db,'127.0.0.1',9000);}
   const authService=createAuthService({auth,sdk,loginAccounts});
-  const session=createAuthenticatedMsa({authService,papa,repositoryFactory:workspaceId=>createFirebaseRepository({db,sdk,workspaceId})});
+  const session=createAuthenticatedMsa({authService,papa,enforceOperationalShifts:true,repositoryFactory:workspaceId=>createFirebaseRepository({db,sdk,workspaceId})});
   return {auth:authService,session,repository:workspaceId=>createFirebaseRepository({db,sdk,workspaceId}),dispose:async()=>{session.dispose();await sdk.deleteApp(app);}};
 }

@@ -1,3 +1,14 @@
+import {patchSnapshot} from './snapshot-dom.js';
+import {openUnifiedWorkspace} from './unified-workspace.js';
+import {liveObservedBases,mountLiveControls} from './live-controls.js';
+import {loadOperationalView,readAccountConsultation,writeAccountConsultation} from './operational-query.js';
+import {buildPending} from '../domain/pending.js';
+import {shiftAt} from '../domain/shifts.js';
+import {resolveWorkspaceRoute} from './workspace-routes.js';
+import {productionPage} from './production-page.js';
+import {stoppagesPage} from './stoppages-page.js';
+import {qualityPage} from './quality-page.js';
+import {overviewMarkup,reliabilityMarkup} from './overview.js';
 import { createBrowserMsa } from "../browser.js";
 import { emptyDashboard, workspaceId } from "./operational-workspace.js";
 import {
@@ -8,7 +19,8 @@ import {
 import { enableVlibras, disableVlibras } from "./vlibras.js";
 import { formMarkup, submitForm } from "./forms.js";
 import {
-  escapeHtml as e,
+  escapeRecordText as e,
+  recordLabel,
   number as n,
   date,
   badge,
@@ -32,10 +44,10 @@ import {openCsvImport,openCorrection} from './data-tools.js';
 import {recordsInPeriod} from './period-records.js';
 import {downloadExport} from './csv-download.js';
 import {planningMarkup,productivityMarkup,productivityView,nhplAction} from './nhpl.js';
-import {productionChartData,referenceDraft,recordContextMarkup,availableProductionIntervals} from './presentation-details.js';
+import {productionChartData,referenceDraft,recordContextMarkup,availableProductionIntervals,parameterReferences} from './presentation-details.js';
 import {visibleNavigation,initialRoute,resolveRoute} from './access.js';
 import {openPresentation} from './presentation.js';
-import {technicalMarkup,technicalView,captureMarkup,occurrencesMarkup,stopsTechnicalMarkup,technicalAction} from './technical.js';
+import {inspectionsMarkup,technicalMarkup,technicalView,captureMarkup,occurrencesMarkup,stopsTechnicalMarkup,technicalAction} from './technical.js';
 import {loginAccounts} from '../config/login-accounts.js';
 const presentationMode=new URLSearchParams(location.search).get('workspace')!=='operational';
 const app = document.getElementById("app"),
@@ -58,7 +70,7 @@ const kinds = [
   "corrections",
 ];
 const labels = {
-  dashboard: "Visão da produção",
+  dashboard: "Visão geral",
   planning: "Planejamento NHPL",
   parameters: "Parâmetros",
   operations: "Apontamentos",
@@ -71,11 +83,12 @@ const labels = {
   collections: "Coletas",
   production: "Produção",
   stoppages: "Paradas",
-  losses: "Perdas",
+  quality: "Qualidade",
+  losses: "Refugos e perdas",
   reviews: "Análises",
   corrections: "Correções",
   occurrences: "Ocorrências",
-  indicators: "Indicadores NHPL",
+  indicators: "Indicadores",
   capture: "Importação de dados",
   tv: "Acompanhamento NHPL",
   machines: "Máquinas",
@@ -85,24 +98,18 @@ const labels = {
   targets: "Metas",
 };
 const allNavigation = [
-  ["dashboard", "layout-dashboard", "Dashboard"],
-  ["parameters", "sliders-horizontal", "Parâmetros"],
-  ["operations", "clipboard-pen", "Apontamentos"],
-  ["planning", "calendar-days", "Planejamento"],
-  ["engineering", "shield-check", "Engenharia"],
-  ["cep", "chart-line", "CEP"],
-  ["history", "history", "Histórico"],
-  ["registry", "database", "Cadastros"],
-  ['indicators','gauge','Indicadores'],
-  ['capture','radio','Coleta'],
-  ['tv','monitor','TV'],
+ ['dashboard','layout-dashboard','Visão geral'],['production','factory','Produção'],['stoppages','timer','Paradas'],['quality','badge-check','Qualidade'],['parameters','sliders-horizontal','Parâmetros'],['engineering','shield-check','Engenharia'],['cep','chart-line','CEP'],['indicators','gauge','Indicadores'],['history','history','Histórico'],['registry','database','Cadastros']
 ];
 const state = {
   accountOpen: false,
+  source: 'existing',
+  consultationShift: 'all',
+  pageTabs: {production:'summary',stoppages:'open',quality:'losses'},
   dataset: 'operational',
   cep: {source:'system',parameterId:'',group:'',versionId:'',minSamples:25,sequenceConfirmed:false},
   hourly: {date:today(),target:null,microStopSeconds:60},
   route: location.hash.slice(1) || "dashboard",
+  returnRoute: location.hash.slice(1) || null,
   tab: {
     operations: "production",
     engineering: "reviews",
@@ -132,7 +139,7 @@ let cloud,
   epoch = 0,
   toastTimer,
   cloudEntry;
-let liveState, localSimulation;
+let liveState, localSimulation,sessionGeneration=0;
 let connectorTimer,connectorBusy=false;
 function stopConnector(){clearInterval(connectorTimer);connectorTimer=null;state.connectorActive=false;}
 function startConnector(){
@@ -151,11 +158,12 @@ function startConnector(){
 async function startSimulation(caseId) {
   stopConnector();
   const local = await openSimulation(caseId,{effectiveActor:state.actor??{uid:'simulation-viewer',role:'viewer'}});
-  if (!localSimulation) liveState = {client:state.client,actor:state.actor,context:structuredClone(state.context),fromDate:state.fromDate,toDate:state.toDate,route:state.route,search:state.search,connected:state.connected,dataset:state.dataset};
+  if (!localSimulation) liveState = {source:state.source,consultationShift:state.consultationShift,pageTabs:structuredClone(state.pageTabs),client:state.client,actor:state.actor,context:structuredClone(state.context),fromDate:state.fromDate,toDate:state.toDate,route:state.route,search:state.search,connected:state.connected,dataset:state.dataset,followLatest:state.followLatest};
+  if(!localSimulation&&state.client?.live)await state.client.live.suspend();
   unsubscribe();
   localSimulation?.dispose();
   localSimulation = local;
-  state.simulation = caseId;
+  state.simulation = caseId;state.source='case';state.consultationShift='all';
   state.client = local;
   state.actor = local.actor;
   state.context = local.context;
@@ -178,16 +186,16 @@ async function endSimulation() {
   state.period = {};
   state.registries = {};
   state.dashboard = emptyDashboard();
-  if (state.client) {watch();await refresh();} else layout();
+  if (state.client) {if(state.client.live)await state.client.live.start();watch();await refresh();} else layout();
 }
 const icon = (name) => `<i data-lucide="${name}" aria-hidden="true"></i>`;
 const button = (text, action, ico = "plus", cls = "") =>
   `<button class="btn ${cls}" data-action="${action}">${icon(ico)}<span>${e(text)}</span></button>`;
 const rows = (kind) => Object.values(state.registries[kind] ?? {});
 const records = (kind) =>
-  state.period.effective?.[kind] ?? state.period[kind] ?? [];
+  state.route==='history'?(state.period[kind]??[]):state.period.effective?.[kind] ?? state.period[kind] ?? [];
 const name = (kind, id) =>
-  state.registries[kind]?.[id]?.name ?? id ?? "Sem vínculo";
+  recordLabel(state.registries[kind]?.[id]?.name ?? id ?? "Sem vínculo");
 const writable = () => state.dataset!=='presentation'||Boolean(state.simulation);
 const engineer = () => writable() && ["admin", "engineer"].includes(state.actor?.role);
 const operator = () =>
@@ -259,9 +267,14 @@ function filters() {
     })
     .join(
       "",
-    )}<label class="context-field period-field"><span>Período</span><select aria-label="Período" id="period"><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="1">Hoje</option><option value="30">Últimos 30 dias</option><option value="custom">Personalizado</option></select></label><span class="context-dates">${date(state.fromDate)} a ${date(state.toDate)}</span></div><details class="context-extra"><summary>Contexto de lote, ordem, receita e turno</summary><p class="source-notes">Preencha para registrar e consultar esse contexto exato. Campos vazios consultam todos os grupos, separados no CEP.</p><div class="cep-controls">${[['lot','Lote'],['order','Ordem'],['recipe','Receita'],['shift','Turno']].map(([key,label])=>`<label class="field">${label}<input data-context-extra="${key}" maxlength="100" value="${e(state.context[key]??'')}" placeholder="Todos"></label>`).join('')}</div></details>`;
+    )}<label class="context-field shift-field"><span>Turno</span><select id="shift-filter" aria-label="Turno">${[['all','Todos os turnos'],['1','1º · 07 até 15'],['2','2º · 15 até 23'],['3','3º · 23 até 07']].map(([v,l])=>`<option value="${v}" ${state.consultationShift===v?'selected':''}>${l}</option>`).join('')}</select></label><label class="context-field period-field"><span>Período</span><select aria-label="Período" id="period"><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="1">Hoje</option><option value="30">Últimos 30 dias</option><option value="custom">Personalizado</option></select></label><span class="context-dates">${date(state.fromDate)} a ${date(state.toDate)}<span class="small muted">O 3º turno termina às 7h do dia seguinte.</span></span></div><details class="context-extra"><summary>Contexto de lote, ordem e receita</summary><p class="source-notes">Preencha para registrar e consultar esse contexto exato. Campos vazios consultam todos os grupos, separados no CEP.</p><div class="cep-controls">${[['lot','Lote'],['order','Ordem'],['recipe','Receita']].map(([key,label])=>`<label class="field">${label}<input data-context-extra="${key}" maxlength="100" value="${e(state.context[key]??'')}" placeholder="Todos"></label>`).join('')}</div></details>`;
 }
 function login(error = state.loginError) {
+  if(location.hash!=='#login'){
+    state.returnRoute=location.hash.slice(1)||state.returnRoute;
+    history.replaceState(null,'',location.pathname+location.search+'#login');
+  }
+  document.body.classList.remove('tv-active','nhpl-active','modal-open');
   const previous = app.querySelector('#login');
   const fields = previous ? new FormData(previous) : null;
   clearCharts();
@@ -278,7 +291,6 @@ function login(error = state.loginError) {
         <label class="field" for="login-password">Senha<div class="password-field"><input id="login-password" name="password" type="password" value="${e(fields?.get('password')??'')}" placeholder="Sua senha" required autocomplete="current-password" aria-describedby="login-error" ${state.signingIn?'readonly':''}><button class="icon-btn" type="button" data-action="password" aria-label="Mostrar senha" aria-pressed="false">${icon('eye')}</button></div></label>
         <p class="login-error" id="login-error" role="alert">${e(error)}</p>
         <button class="btn primary wide" type="submit" ${state.signingIn?'disabled':''}><span>${state.signingIn?'Entrando…':'Entrar'}</span>${icon('arrow-right')}</button>
-        <div class="login-secondary"><p>Conheça os cenários de operação</p>${button('Abrir simulação local','simulate','flask-conical')}</div>
       </form>
     </section>
   </main>`;
@@ -324,22 +336,23 @@ function closeAccount({restoreFocus=false}={}) {
   popover.hidden=true;trigger?.setAttribute('aria-expanded','false');
   if(restoreFocus) trigger?.focus();
 }
-function layout() {
+function layout({background=false}={}) {
   document.body.dataset.access=state.actor?.role??'viewer';
   document.body.classList.toggle('nhpl-active',state.context.machineId==='nhpl');
   document.body.classList.toggle('tv-active',state.route==='tv');
-  state.route=resolveRoute(state.route,state.actor?.role);
-  const navigation=allNavigation.filter(([id])=>visibleNavigation(state.actor?.role).includes(id));
+  const destination=resolveWorkspaceRoute({route:state.route,tab:state.route==='operations'?state.tab.operations:undefined,role:state.actor?.role});state.route=destination.route;if(destination.tab)state.pageTabs[state.route]=destination.tab;
+  const navigation=allNavigation.filter(([id])=>visibleNavigation(state.actor?.role).includes(id)||['production','stoppages','quality'].includes(id));
   if (!state.client && state.signingIn && app.querySelector('#login')) return;
   if (!state.client) return login();
-  clearCharts();
+  if(!background)clearCharts();
   const route = [...navigation.map(([id]) => id), "settings", "capture", "tv"].includes(
     state.route,
   )
     ? state.route
     : "dashboard";
   state.route = route;
-  app.innerHTML = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${navigation.map(([id, ico, label]) => `<a href="#${id}" title="${label}" class="rail-link ${route === id ? "active" : ""}" ${route === id ? 'aria-current="page"' : ""}>${icon(ico)}<span>${label}</span></a>`).join("")}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${route === "dashboard" ? "Produção, qualidade e acompanhamento do processo" : ""}</p></div><div class="page-actions">${route === "dashboard" ? button("Simular cenário", "simulate", "flask-conical") : ""}${state.client && state.context.productId && !['settings','registry','cep'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
+  const markup = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${navigation.map(([id, ico, label],index) => `${index===0?'<span class="rail-group">Operação</span>':id==='engineering'||id==='cep'&&!navigation.some(([r])=>r==='engineering')||id==='indicators'&&!navigation.some(([r])=>r==='engineering'||r==='cep')?'<span class="rail-group">Análise</span>':id==='registry'?'<span class="rail-group">Administração</span>':''}<a href="#${id}" title="${label}" class="rail-link ${route === id ? "active" : ""}" ${route === id ? 'aria-current="page"' : ""}>${icon(ico)}<span>${label}</span></a>`).join("")}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${route === "dashboard" ? "Produção, qualidade e acompanhamento do processo" : ""}</p></div><div class="page-actions">${route === "dashboard" ? button("Simular cenário", "simulate", "flask-conical") : ""}${state.client && state.context.productId && !['settings','registry','cep'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}${state.pendingReturn?button("Voltar à consulta anterior","pending-back","arrow-left"):""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
+  if(background)patchSnapshot(app,markup);else app.innerHTML=markup;
   icons();
   const period = document.getElementById("period");
   connectionStatus();
@@ -347,9 +360,12 @@ function layout() {
   drawPageCharts();
 }
 function page() {
-  if(state.route==='indicators')return `<div class="table-tools"><h2>Acompanhamento do processo</h2><a class="btn" href="#tv">${icon('monitor')}Abrir painel TV</a></div>`+technicalMarkup(state)+stopsTechnicalMarkup(state);
+  if(state.route==='production')return productionPage({state,renderers:{summary:()=>state.context.machineId==='nhpl'?productivityMarkup(state):hourlyPage(state),planning:()=>planningMarkup(state),records:kind=>operations({kind,showTabs:false}),times:manualTimes,occurrences:()=>occurrencesMarkup(state)}});
+  if(state.route==='stoppages')return stoppagesPage({state,renderers:{reliability:()=>reliabilityMarkup(technicalView(state)),classification:()=>stopsTechnicalMarkup(state),records:(kind,open)=>operations({kind,showTabs:false,openOnly:open})}});
+  if(state.route==='quality')return qualityPage({state,renderers:{records:kind=>operations({kind,showTabs:false}),inspections:()=>inspectionsMarkup(state)}});
+  if(state.route==='indicators')return reliabilityMarkup(technicalView(state))+ `<div class="table-tools"><h2>Acompanhamento do processo</h2><a class="btn" href="#tv">${icon('monitor')}Abrir painel TV</a></div>`+technicalMarkup(state)+stopsTechnicalMarkup(state);
   if(state.route==='capture')return captureMarkup(state);
-  if(state.route==='tv')return `<section class="tv-heading"><img src="./assets/msa/msalogo.png" width="108" alt="MSA"><h2>NHPL · Montagem</h2><p>${e(name('products',state.context.productId))} · OP ${e(state.context.order??'')} · turno ${e(state.context.shift??'')}</p><p>Período ${date(state.fromDate)} a ${date(state.toDate)} · consulta ${date(Date.now(),true)}</p><span class="small muted">${state.client?.mode==='presentation'?'Dados de apresentação · referências técnicas hipotéticas':'Registros operacionais'}</span><div>${button(document.fullscreenElement?'Sair da tela cheia':'Tela cheia','tv-fullscreen',document.fullscreenElement?'minimize':'maximize')}${button('Voltar ao painel','tv-back','arrow-left')}</div></section>${captureMarkup(state,{compact:true})}${productivityMarkup(state,{compact:true})}${technicalMarkup(state,{compact:true})}`;
+  if(state.route==='tv')return `<section class="tv-heading"><img src="./assets/msa/msalogo.png" width="108" alt="MSA"><h2>NHPL · Montagem</h2><p>${e(name('products',state.context.productId))} · OP ${e(state.context.order??'')} · turno ${e(state.context.shift??'')}</p><p>Período ${date(state.fromDate)} a ${date(state.toDate)} · consulta ${date(state.asOf??Date.now(),true)}</p><div>${button(document.fullscreenElement?'Sair da tela cheia':'Tela cheia','tv-fullscreen',document.fullscreenElement?'minimize':'maximize')}${button('Voltar ao painel','tv-back','arrow-left')}</div></section>${reliabilityMarkup(technicalView(state))}${captureMarkup(state,{compact:true})}${productivityMarkup(state,{compact:true})}${technicalMarkup(state,{compact:true})}`;
   if(state.route==='planning')return planningMarkup(state);
   if (state.route === "settings") return settings()+dataManagement();
   if (state.route === "registry") return registry();
@@ -367,7 +383,7 @@ function metric(title, v, unit, note, ico, highlight = false) {
 function dashboard() {
   if(state.context.machineId==='nhpl'){
     const queue=records('reviews').filter(r=>['waiting','analyzing'].includes(r.state));
-    return productivityMarkup(state,{actions:false})+dashboardCharts()+technicalMarkup(state,{compact:true})+`<section class="data-section"><div class="section-heading"><h2>Parâmetros do processo</h2></div>${parameterTable(state.dashboard.parameters??[])}</section><section class="data-section"><div class="section-heading"><h2>Fila técnica · ${queue.length} análises</h2></div>${table(['Escopo','Situação','Ação'],queue.map(r=>`<tr><td>${e(r.scope)}</td><td>${badge(r.state)}</td><td><button class="icon-btn" title="Detalhes" aria-label="Detalhes" data-detail="reviews:${e(r.id)}">${icon('history')}</button></td></tr>`).join(''))}</section>`;
+    return overviewMarkup({state,metrics:technicalView(state),productivity:productivityView(state),pending:state.pending??{open:[],checks:[],complete:false},renderers:{charts:dashboardCharts,detail:()=>productivityMarkup(state,{actions:false})+technicalMarkup(state,{compact:true}),parameters:()=>`<section class="data-section"><div class="section-heading"><h2>Parâmetros do processo</h2><a href="#parameters" class="btn">Ver todos</a></div>${parameterTable((state.dashboard.parameters??[]).slice(0,5))}</section>`,queue:()=>`<section class="data-section"><div class="section-heading"><h2>Fila técnica · ${queue.length} análises</h2><a href="#engineering" class="btn">Ver todos</a></div>${table(['Escopo','Situação','Ação'],queue.slice(0,5).map(r=>`<tr><td>${e(r.scope)}</td><td>${badge(r.state)}</td><td><button class="btn" data-detail="reviews:${e(r.id)}">Detalhes</button></td></tr>`).join(''))}</section>`}});
   }
   const d = state.dashboard,
     t = d?.totals ?? {},
@@ -418,10 +434,10 @@ function parameters() {
   const params = state.dashboard?.parameters ?? [];
   return `<div class="table-tools"><label class="search-field">${icon("search")}<input id="parameter-search" type="search" placeholder="Buscar parâmetro" aria-label="Buscar parâmetro" value="${e(state.search)}"></label><span class="small muted">${params.length} parâmetros</span></div><div id="parameter-results">${parameterTable(params.filter((p) => p.name.toLocaleLowerCase("pt-BR").includes(state.search.toLocaleLowerCase("pt-BR"))))}</div>`;
 }
-function operations() {
+function operations({kind:requestedKind,showTabs=true,openOnly=false}={}) {
   const history = state.route === "history",
-    kind = history ? state.tab.history : state.tab.operations,
-    list = recordsInPeriod(kind,records(kind),dateWindow(state.fromDate,state.toDate));
+    kind = requestedKind??(history ? state.tab.history : state.tab.operations),
+    list = recordsInPeriod(kind,records(kind),state.operationalQuery?.range??dateWindow(state.fromDate,state.toDate)).filter(r=>!openOnly||r.endedAt==null);
   if(kind==='occurrences')return tabs(['production','stoppages','losses','hourly','occurrences'],kind)+occurrencesMarkup(state);
   if(kind==='hourly')return `${tabs(["production","stoppages","losses","hourly","occurrences"],kind)}${state.context.machineId==='nhpl'?productivityMarkup(state):hourlyPage(state)}`;
   const actions = {
@@ -429,32 +445,32 @@ function operations() {
     stoppages: "stoppage",
     losses: "loss",
   };
-  return `${history ? tabs(kinds, kind) : tabs(["production", "stoppages", "losses", "hourly","occurrences"], kind)}${!history?operationSummary(kind):''}<div class="table-tools"><span class="small muted">${list.length} registros · ${labels[kind]}</span><div class="toolbar-right">${history && kind==='collections' && operator() ? button('Importar CSV','csv-import','upload') : ''}${!history && operator() ? button({production:'Registrar produção',stoppages:'Registrar parada',losses:'Registrar refugo / perda'}[kind], `form:${actions[kind]}`, "plus", "primary") : ""}</div></div>${table(
+  return `${showTabs?(history ? tabs(kinds, kind) : tabs(["production", "stoppages", "losses", "hourly","occurrences"], kind)):""}${!history?operationSummary(kind):''}<div class="table-tools"><span class="small muted">${list.length} registros · ${labels[kind]}</span><div class="toolbar-right">${history && kind==='collections' && operator() ? button('Importar CSV','csv-import','upload') : ''}${!history && operator() ? button({production:'Registrar produção',stoppages:'Registrar parada',losses:'Registrar refugo / perda'}[kind], `form:${actions[kind]}`, "plus", "primary") : ""}</div></div>${table(
     ["Data", "Registro", "Informação", "Ações"],
     list
       .slice()
       .sort((a, b) => b.eventDate.localeCompare(a.eventDate))
       .map(
         (r) =>
-          `<tr><td>${date(r.occurredAt ?? r.startedAt ?? r.eventDate, r.occurredAt != null || r.startedAt != null)}</td><td>${e(labels[kind])}<div class="small muted">${e(r.id.slice(0, 10))}</div>${recordContextMarkup(r,state.registries)}</td><td>${recordSummary(kind, r)}<div class="small muted">${e(r.createdBy??'Autor não informado')} · ${e(r.origin==='demo'?'Simulação':state.client?.mode==='presentation'?'Apresentação':r.origin??'Origem não informada')}${r.correctionId?' · Corrigido':r.revisionConflict?' · Revisão conflitante':''}</div></td><td><button class="icon-btn" title="Detalhes" aria-label="Detalhes" data-detail="${kind}:${e(r.id)}">${icon("arrow-up-right")}</button>${kind === "stoppages" && r.endedAt == null && operator() ? button("Encerrar", `close:${r.id}`, "square") : ""}${kind === "collections" && operator() ? button("Enviar à Engenharia", `review:${r.id}`, "send") : ""}</td></tr>`,
+          `<tr><td>${date(r.occurredAt ?? r.startedAt ?? r.eventDate, r.occurredAt != null || r.startedAt != null)}</td><td>${e(labels[kind])}<div class="small muted">${e(r.id.slice(0, 10))}</div>${recordContextMarkup(r,state.registries)}</td><td>${recordSummary(kind, r)}<div class="small muted">${e(r.createdBy??'Autor não informado')}${r.origin&&r.origin!=='demo'?' · '+e(r.origin):''}${r.correctionId?' · Corrigido':r.revisionConflict?' · Revisão conflitante':''}</div></td><td><button class="icon-btn" title="Detalhes" aria-label="Detalhes" data-detail="${kind}:${e(r.id)}">${icon("arrow-up-right")}</button>${kind === "stoppages" && r.endedAt == null && operator() ? button("Encerrar", `close:${r.id}`, "square") : ""}${kind === "collections" && operator() ? button("Enviar à Engenharia", `review:${r.id}`, "send") : ""}</td></tr>`,
       )
       .join(""),
   )}`;
 }
 function dashboardCharts(){return `<div class="production-charts"><section class="data-section"><h2>Plano e produção por intervalo</h2><div class="chart-frame"><canvas id="nhpl-interval-chart" role="img" aria-label="Plano, mínimo da meta e produção por intervalo"></canvas></div></section><section class="data-section"><h2>Produção acumulada</h2><div class="chart-frame"><canvas id="nhpl-accumulated-chart" role="img" aria-label="Plano e produção acumulada nos intervalos consultados"></canvas></div></section></div>`;}
 function operationSummary(kind){
- const range=dateWindow(state.fromDate,state.toDate),losses=recordsInPeriod('losses',records('losses'),range),production=recordsInPeriod('production',records('production'),range);
- const sum=(list,key)=>list.length?n(list.reduce((total,r)=>total+r[key],0)):'Sem dados';
+ const range=state.operationalQuery?.range??dateWindow(state.fromDate,state.toDate),losses=state.period.effective?.losses??recordsInPeriod('losses',records('losses'),range),production=state.period.effective?.production??recordsInPeriod('production',records('production'),range);
+ const sum=(list,key)=>list.length?n(list.reduce((total,r)=>total+r[key],0)):'Nenhum apontamento';
  const rejects=losses.filter(r=>r.kind==='reject'&&r.unit==='pieces'),waste=losses.filter(r=>r.unit==='kg');
- if(kind==='production')return `<section class="data-section"><div class="metrics">${[['Produção bruta',sum(production.filter(r=>r.basis==='gross'),'quantity'),'peças'],['Peças boas registradas',sum(production.filter(r=>r.basis==='good'),'quantity'),'peças'],['Refugos registrados',sum(rejects,'amount'),'peças'],['Perdas de material',sum(waste,'amount'),'kg']].map(([label,total,unit])=>`<div class="metric"><div class="metric-title">${label}</div><div class="metric-value">${total}</div><p>${unit}</p></div>`).join('')}</div>${operator()?button('Registrar refugo / perda','form:loss','circle-minus'):''}</section>${state.context.machineId==='nhpl'?manualTimes():''}`;
+ if(kind==='production')return `<section class="data-section"><div class="metrics">${[['Produção bruta',sum(production.filter(r=>r.basis==='gross'),'quantity'),'peças'],['Peças boas registradas',sum(production.filter(r=>r.basis==='good'),'quantity'),'peças'],['Refugos registrados',sum(rejects,'amount'),'peças'],['Perdas de material',sum(waste,'amount'),'kg']].map(([label,total,unit])=>`<div class="metric"><div class="metric-title">${label}</div><div class="metric-value">${total}</div><p>${unit}</p></div>`).join('')}</div>${operator()?button('Registrar refugo / perda','form:loss','circle-minus'):''}</section>`;
  if(kind==='stoppages'){
   const stops=recordsInPeriod('stoppages',records('stoppages'),range),closed=stops.filter(r=>r.endedAt!=null);
-  return `<section class="data-section"><div class="metrics"><div class="metric"><div class="metric-title">Paradas abertas</div><div class="metric-value">${stops.filter(r=>r.endedAt==null).length}</div></div><div class="metric"><div class="metric-title">Duração encerrada no recorte</div><div class="metric-value">${closed.length?n(closed.reduce((total,r)=>total+(Math.min(r.endedAt,range.to)-Math.max(r.startedAt,range.from))/60000,0)):'Sem dados'}</div><p>minutos · ${closed.length} registros encerrados</p></div></div></section>`;
+  return `<section class="data-section"><div class="metrics"><div class="metric"><div class="metric-title">Paradas abertas</div><div class="metric-value">${stops.filter(r=>r.endedAt==null).length}</div></div><div class="metric"><div class="metric-title">Duração encerrada no recorte</div><div class="metric-value">${n(state.dashboard?.totals?.stopMinutes)}</div><p>minutos em união por máquina · ${closed.length} registros encerrados</p></div></div></section>`;
  }
  return '';
 }
 function manualTimes(){
- const runs=new Map(),range=dateWindow(state.fromDate,state.toDate);
+ const runs=new Map(),range=state.operationalQuery?.range??dateWindow(state.fromDate,state.toDate);
  for(const r of state.period.runs??[])if(Object.entries(state.context).every(([k,v])=>!v||r.context?.[k]===v)&&r.machineStartedAt<range.to&&(r.machineEndedAt==null||r.machineEndedAt>range.from))runs.set(r.runId,r);
  return `<section class="data-section"><div class="section-heading"><h2>Horários da operação</h2>${operator()?button('Registrar horários','nhpl:run','clock'):''}</div>${table(['OP / lote / turno','Horários registrados','Ação'],[...runs.values()].map(r=>`<tr><td>${e(r.context.order)} / ${e(r.context.lot)} / ${e(r.context.shift)}</td><td>${[['machineStartedAt','Máquina ligada'],['productionStartedAt','Produção iniciada'],['productionEndedAt','Produção encerrada'],['machineEndedAt','Máquina desligada']].map(([k,label])=>`<div>${label}: ${r[k]==null?'Pendente':date(r[k],true)}</div>`).join('')}</td><td>${operator()&&r.machineEndedAt==null?button('Completar horários','nhpl:advance-run:'+r.runId,'clock'):''}</td></tr>`).join(''))}</section>`;
 }
@@ -471,7 +487,8 @@ function recordSummary(kind, r) {
 }
 function engineering() {
   const kind = state.tab.engineering;
-  return `${tabs(["reviews", "corrections"], kind)}${table(
+  if(kind==='occurrences')return tabs(["reviews","corrections","occurrences"],kind)+occurrencesMarkup(state);
+  return `${tabs(["reviews", "corrections", "occurrences"], kind)}${table(
     ["Data", "Escopo / motivo", "Situação", "Ação"],
     records(kind)
       .map(
@@ -479,11 +496,15 @@ function engineering() {
           `<tr><td>${date(r.eventDate)}</td><td><button class="link-btn" data-detail="${kind}:${e(r.id)}">${e(r.scope ?? r.reason)}</button></td><td>${badge(r.state)}</td><td><button class="icon-btn" title="Detalhes e histórico" aria-label="Detalhes e histórico" data-detail="${kind}:${e(r.id)}">${icon('history')}</button>${engineer() && kind === "reviews" && r.state === "waiting" ? button("Iniciar", `start:${r.id}`, "play") : engineer() && kind === "reviews" && r.state === "analyzing" ? button("Decidir", `decide:${r.id}`, "check") : kind === "corrections" && engineer() && r.state === "waiting" && r.createdBy !== state.actor.uid ? button("Decidir", `correction:${r.id}`, "check") : `<span class="small muted">${r.state==='waiting'&&r.createdBy===state.actor?.uid?'Aguardando outro responsável':r.state==='approved'||r.state==='rejected'?'Concluído':'Aguardando equipe técnica'}</span>`}${kind==='reviews'&&engineer()?button('Evidências',`tech:evidence:${r.id}`,'clipboard-check')+button('Nova análise',`review:${r.collectionId}`,'plus'):''}</td></tr>`,
       )
       .join(""),
-  )}<div class="operation-toolbar">${operator()?button('Nova análise','new-review','plus'):''}</div>${occurrencesMarkup(state)}<p class="source-notes">Liderança, Supervisão e times técnicos autorizados revisam os dados. Não há liberação física automática. Correções exigem outro responsável.</p>${kind==='corrections'&&records(kind).some(r=>r.state==='waiting'&&r.createdBy===state.actor?.uid)?'<p class="source-notes">Suas propostas aguardam outra pessoa da Engenharia ou da administração. O autor não pode aprovar a própria correção.</p>':''}`;
+  )}<div class="operation-toolbar">${operator()?button('Nova análise','new-review','plus'):''}</div><p class="source-notes">Liderança, Supervisão e times técnicos autorizados revisam os dados. Não há liberação física automática. Correções exigem outro responsável.</p>${kind==='corrections'&&records(kind).some(r=>r.state==='waiting'&&r.createdBy===state.actor?.uid)?'<p class="source-notes">Suas propostas aguardam outra pessoa da Engenharia ou da administração. O autor não pode aprovar a própria correção.</p>':''}`;
 }
 function registryReference(record) {
   const links = record.machineId ? `Máquina: ${name('machines',record.machineId)}` : record.processId ? `Processo: ${name('processes',record.processId)}` : record.processIds ? `Processos: ${Object.keys(record.processIds).filter(id=>record.processIds[id]).map(id=>name('processes',id)).join(', ')}` : '';
-  return `${e(record.code ?? record.metric ?? '')}${links ? `<div class="registry-binding">${e(links)}</div>` : ''}`;
+  return `${e(record.code ?? record.metric ?? '')}${links ? `<div class="registry-binding">${e(links)}</div>` : ''}${state.tab.registry==='parameters'?parameterReferenceSummary(record.id):''}`;
+}
+function parameterReferenceSummary(parameterId){
+ const refs=parameterReferences(state.registries,parameterId);
+ return `<div class="small muted">Limite atual aprovado: ${e(refs.approved?ruleText(refs.approved.rule,refs.approved.unit):'Não definido')}</div>${refs.latest?.status==='draft'?`<div class="small">Rascunho salvo: ${e(ruleText(refs.latest.rule,refs.latest.unit))}</div>`:''}`;
 }
 function registry() {
   const kind = state.tab.registry,
@@ -536,7 +557,7 @@ function drawPageCharts() {
     drawChart('nhpl-accumulated-chart',{...base,type:'line',datasets:[{label:'Plano acumulado',type:'line',data:data.accumulatedPlanned,borderColor:'#8397a1',pointRadius:2},{label:'Bruta acumulada',type:'line',data:data.accumulatedGross,borderColor:'#238166',pointRadius:2,spanGaps:false}]});return;
   }
   if(state.route==='cep'){drawCepCharts(state);return;}
-  if(state.route==='operations'&&state.tab.operations==='hourly'){if(state.context.machineId!=='nhpl')drawHourlyChart(state);return;}
+  if(state.route==='production'&&state.pageTabs.production==='summary'&&state.context.machineId!=='nhpl'){drawHourlyChart(state);return;}
   if (state.route !== "dashboard") return;
   const production = records("production").filter(
     (r) =>
@@ -568,7 +589,7 @@ function drawPageCharts() {
     datasets: [{ label: "Minutos", data: stops.map((r) => r.value) }],
   });
 }
-function dataManagement(){return `<section class="settings-section"><h2>Gestão de dados</h2><div class="setting-row"><div><h3>Importação de dados</h3><p>Arquivos de eventos e conexão com pasta de coleta</p></div><a class="btn" href="#capture">${icon('upload')}Importação de dados</a></div>${state.client?.mode==='presentation'&&!state.simulation?`<div class="setting-row"><div><h3>Cópia dos registros</h3><p>Inclui a origem dos dados e as referências de apresentação; não substitui os registros operacionais.</p></div>${button('Exportar backup','presentation-backup','download')}</div>`:''}</section>`;}
+function dataManagement(){return `<section class="settings-section"><h2>Gestão de dados</h2><div class="setting-row"><div><h3>Importação de dados</h3><p>Arquivos de eventos e conexão com pasta de coleta</p></div><a class="btn" href="#capture">${icon('upload')}Importação de dados</a></div>${['presentation','live'].includes(state.client?.mode)&&!state.simulation?`<div class="setting-row"><div><h3>Cópia dos registros</h3><p>Exporta os registros, suas referências e o histórico.</p></div>${button('Exportar backup','presentation-backup','download')}</div>`:''}</section>`;}
 
 function reconcileContext() {
   const m = rows("machines").filter((r) => r.active);
@@ -585,9 +606,10 @@ function reconcileContext() {
   if (!products.some((r) => r.id === state.context.productId))
     state.context.productId = products[0]?.id;
 }
-async function refresh() {
+async function refresh({background=false}={}) {
   if (!state.client) return;
-  if(state.client.mode==='presentation'&&state.followLatest!==false)state.toDate=state.client.toDate;
+  if(['presentation','live'].includes(state.client.mode)&&state.followLatest!==false)state.toDate=state.client.toDate;
+  if(state.client.mode==='live'&&state.context.order===state.client.context.order)state.context.shift=state.client.context.shift;
   const ticket = ++epoch;
   state.loading = true;
   state.error = null;
@@ -600,22 +622,14 @@ async function refresh() {
     reconcileContext();
     if(state.hourly.date<state.fromDate||state.hourly.date>state.toDate)state.hourly.date=state.toDate;
     if (state.context.productId) {
-      const q = {
-        fromDate: state.fromDate,
-        toDate: state.toDate,
-        context: state.context,
-        limit: 500,
-        dataset: state.simulation||state.client.mode==='presentation'?'all':state.dataset,
-      };
-      const period = await services().history.loadPeriod(q),
-        dashboard = await services().getDashboard(
-          q,
-          dateWindow(state.fromDate, state.toDate),
-        );
-      if (ticket !== epoch) return;
-      state.period = period;
-      state.dashboard = dashboard;
-      try{state.technical=await services().technical.records();}catch(error){if(['FORBIDDEN','INVALID_PATH'].includes(error.code))state.technical=[];else throw error;}
+      const asOf=state.client.live?.status().asOf??Date.now();
+      const consultation={context:state.context,fromDate:state.fromDate,toDate:state.toDate,shift:state.consultationShift,dataset:state.simulation||['presentation','live'].includes(state.client.mode)?'all':state.dataset};
+      const view=await loadOperationalView({services:services(),repo:state.client.repo,consultation,now:asOf});
+      if(ticket!==epoch)return;
+      Object.assign(state,view);
+      state.liveCoverage=state.client.mode==='live'?liveObservedBases(JSON.parse(state.client.exportBackup()),view.operationalQuery,asOf):null;
+      state.pending=buildPending({...view,productivity:productivityView(state),consultation:view.operationalQuery.consultation,actor:state.actor});
+      writeAccountConsultation(state.actor.uid,state.source,{shift:state.consultationShift,fromDate:state.fromDate,toDate:state.toDate,context:state.context,followLatest:state.followLatest});
     } else {
       state.period = {};
       state.dashboard = emptyDashboard();
@@ -625,7 +639,7 @@ async function refresh() {
   } finally {
     if (ticket === epoch) {
       state.loading = false;
-      layout();
+      layout({background});
     }
   }
 }
@@ -637,14 +651,15 @@ function unsubscribe() {
 }
 function watch() {
   unsubscribe();
+  if(state.client.live)state.offs.push(mountLiveControls({root:app,workspace:state.client,refresh:()=>schedule(),isEditing:()=>modal.open||document.activeElement?.matches('input,textarea,select')}));
   const schedule = () => {
     clearTimeout(refreshTimer);
     refreshTimer = setTimeout(() => {
-      if (modal.open) {
+      if (modal.open || document.activeElement?.matches('input,textarea,select')) {
         schedule();
         return;
       }
-      refresh();
+      refresh({background:state.client?.mode==='live'});
     }, 400);
   };
   state.offs.push(
@@ -662,6 +677,7 @@ async function enterCloud(user) {
   if (localSimulation) await endSimulation();
   if (state.client?.email === user.email) return;
   if (cloudEntry) return cloudEntry;
+  const sessionTicket=sessionGeneration;
   cloudEntry = (async () => {
     const services = await cloud.session.onWorkspace(workspaceId);
     let actor;
@@ -669,18 +685,24 @@ async function enterCloud(user) {
       actor = next.actor;
     });
     off();
+    if(sessionTicket!==sessionGeneration||!actor)return;
     state.actor = actor;
-    state.route=location.hash?resolveRoute(location.hash.slice(1),actor.role):initialRoute(actor.role);
-    state.client?.dispose?.();
-    state.client = presentationMode?await openPresentation({actor,displayName:user.displayName??'Usuário MSA',re:Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??''}):{
+    state.dataset=presentationMode?'all':'operational';
+    state.route=resolveRoute(location.hash==='#login'?(state.returnRoute??initialRoute(actor.role)):(location.hash.slice(1)||initialRoute(actor.role)),actor.role);
+    await state.client?.dispose?.();
+    const nextClient = presentationMode?await openUnifiedWorkspace({actor,displayName:user.displayName??'Usuário MSA',re:Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??''}):{
       services,
       repo: cloud.repository(workspaceId),
       email: user.email,
       displayName:user.displayName??(user.email==='adm@adm.com'?'Fabiana Dias':user.email.split('@')[0]),
     };
+    if(sessionTicket!==sessionGeneration){await nextClient.dispose?.();return;}state.client=nextClient;
+    state.source=presentationMode?'unified':'operational';state.consultationShift=readAccountConsultation(actor.uid,state.source).shift;
     state.client.email=user.email;
     state.client.re=Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??'';
-    if(presentationMode){state.context=state.client.context;state.fromDate=state.client.fromDate;state.toDate=state.client.toDate;}
+    history.replaceState(null,'',location.pathname+location.search+'#'+state.route);
+    state.returnRoute=null;
+    if(presentationMode){state.context=state.client.context;state.fromDate=state.client.fromDate;state.toDate=state.client.toDate;}restoreConsultation();
     sessionStorage.setItem("msa.session.mode", "firebase");
     watch();
     await refresh();
@@ -691,25 +713,29 @@ async function enterCloud(user) {
     cloudEntry = null;
   }
 }
+async function leaveWorkspace(){
+  sessionGeneration++;
+  stopConnector();unsubscribe();closeAccount();
+  await liveState?.client?.dispose?.();liveState=null;localSimulation=null;state.simulation=null;state.menuOpen=false;
+  await state.client?.dispose?.();state.client=null;state.actor=null;
+  state.context={};state.registries={};state.period={};state.technical=[];
+  state.dashboard=emptyDashboard();state.error=null;state.loading=false;
+  state.loginError='';state.returnRoute=null;state.route='login';
+  sessionStorage.removeItem('msa.session.mode');
+  if(modal.open)modal.close();
+  history.replaceState(null,'',location.pathname+location.search+'#login');
+  layout();
+}
 function getCloud() {
   if (cloud) return cloud;
   cloud = createBrowserMsa();
   cloud.session.watchSession((next) => {
     if (localSimulation) {
-      if (liveState?.client && !next.actor) {liveState.client=null;liveState.actor=null;localSimulation.actor.role='viewer';state.actor=localSimulation.actor;if(modal.open)modal.close();layout();}
+      if (liveState?.client && !next.actor) leaveWorkspace();
       return;
     }
     if (state.client && !next.actor) {
-      if(state.client.mode==='presentation'){state.client.actor.role='viewer';state.actor=state.client.actor;delete state.client.email;state.client.re='';if(modal.open)modal.close();layout();return;}
-      unsubscribe();
-      state.client = null;
-      state.actor = null;
-      state.context = {};
-      state.registries = {};
-      state.period = {};
-      state.dashboard = emptyDashboard();
-      if (modal.open) modal.close();
-      layout();
+      leaveWorkspace();
     }
   });
   authOff = cloud.auth.watchSession((user) => {
@@ -741,7 +767,7 @@ function showModal(
         const saved=await submit(new FormData(form));
         if(saved?.keepOpen)return;
         modal.close();
-        toast(saved?.successMessage??(saved?.name?`${saved.name} salvo.${saved.active===true&&!saved.machineId&&!saved.processIds&&!saved.processId&&!saved.kind&&!saved.metric?' Vincule um processo e um produto para registrar coletas.':''}`:'Operação confirmada.'));
+        toast(saved?.successMessage??(saved?.name?`${recordLabel(saved.name)} salvo.${saved.active===true&&!saved.machineId&&!saved.processIds&&!saved.processId&&!saved.kind&&!saved.metric?' Vincule um processo e um produto para registrar coletas.':''}`:'Operação confirmada.'));
         await refresh();
       } catch (error) {
         form.querySelector(".form-error").textContent = errorText(error);
@@ -775,6 +801,7 @@ function openForm(kind, record = {}) {
     }),
     {
       wide: kind === "collection",
+      footer:kind==='parameterVersion'?'Salvar limites':'Salvar',
       submit: async (data) => {
         const saved=await submitForm(kind, data, {
           services: services(),
@@ -783,6 +810,7 @@ function openForm(kind, record = {}) {
           record,
         });
         if(saved?.eventDate&&saved.eventDate>state.toDate)state.toDate=saved.eventDate;
+        if(kind==='parameterVersion')return {...saved,successMessage:saved.status==='approved'?'Limites aprovados e disponíveis para novas coletas.':'Limites salvos como rascunho. Selecione Aprovado para usar nas próximas coletas.'};
         return saved;
       },
     },
@@ -811,7 +839,7 @@ function detail(kind, id) {
     ["Registro", r.id],
     ["OP / lote / turno", [r.context?.order,r.context?.lot,r.context?.shift].filter(Boolean).join(' / ')||'Não informado'],
     ["Variante", r.context?.variant??'Não informada'],
-    ["Origem", r.origin==='demo'?'Simulação':state.client?.mode==='presentation'?'Apresentação':r.origin??'Não informada'],
+    ...(r.origin&&r.origin!=='demo'?[["Origem",r.origin]]:[]),
     ["Correção aplicada", r.correctionId??'Nenhuma'],
     ["Intervalo aprovado", r.intervalId??'Não vinculado'],
   ];
@@ -858,7 +886,7 @@ function parameterDetail(code) {
   const stat=selectedStudy.group;
   showModal(
     p.name,
-    `<div class="detail-header"><div class="detail-value">${value(p.latest?.value, p.latest?.unit ?? p.unit)}</div>${badge(p.state)}</div><p class="detail-meta">${e(ruleText(p.latest?.rule, p.latest?.unit))} · ${p.latest ? date(p.latest.occurredAt ?? p.latest.eventDate, !!p.latest.occurredAt) : "Sem leitura"}</p><div class="parameter-chart-heading"><h3>Histórico do parâmetro</h3><p>${e(p.latest?.unit ?? p.unit)} · ${p.latest?.versionId ? 'Versão '+e(p.latest.versionId) : 'Sem versão com leitura'}</p></div><div class="chart-frame"><canvas id="parameter-chart" role="img" aria-label="Histórico do parâmetro"></canvas></div><dl class="modal-statistics">${[
+    `<div class="detail-header"><div class="detail-value">${value(p.latest?.value, p.latest?.unit ?? p.unit)}</div>${badge(p.state)}</div><p class="detail-meta">Referência da leitura: ${e(ruleText(p.latest?.rule, p.latest?.unit))} · ${p.latest ? date(p.latest.occurredAt ?? p.latest.eventDate, !!p.latest.occurredAt) : "Sem leitura"}</p>${p.parameterIds.length===1?parameterReferenceSummary(p.parameterIds[0]):''}<div class="parameter-chart-heading"><h3>Histórico do parâmetro</h3><p>${e(p.latest?.unit ?? p.unit)} · ${p.latest?.versionId ? 'Versão '+e(p.latest.versionId) : 'Sem versão com leitura'}</p></div><div class="chart-frame"><canvas id="parameter-chart" role="img" aria-label="Histórico do parâmetro"></canvas></div><dl class="modal-statistics">${[
       ["Média", stat?.mean],
       ["Desvio", stat?.sigma],
       ["Cp", stat?.cp],
@@ -879,7 +907,7 @@ function parameterDetail(code) {
     datasets: [
       {
         type: "line",
-        label: p.name,
+        label: recordLabel(p.name),
         data: series.map((s) => (s.status === "valid" && !s.revisionConflict ? s.value : null)),
       },
     ],
@@ -896,7 +924,7 @@ async function exportCsv() {
       ? state.tab.operations
       : state.route === "history"
         ? state.tab.history
-        : "collections";
+        : state.route === "production" ? "production" : state.route === "stoppages" ? "stoppages" : state.route === "quality" ? "losses" : "collections";
   const columns = [
     "id",
     "eventDate",
@@ -906,6 +934,8 @@ async function exportCsv() {
     "createdBy",
     "origin",
     "source",
+    "context.shift",
+    "queryDiagnostics",
     ...{
       production: ["quantity", "basis", "startedAt", "endedAt"],
       stoppages: ["startedAt", "endedAt", "reasonId", "planned"],
@@ -915,7 +945,7 @@ async function exportCsv() {
       corrections: ["state", "reason", "replacement"],
     }[kind],
   ];
-  const csv = await services().csv.exportRecords(recordsInPeriod(kind,records(kind),dateWindow(state.fromDate,state.toDate)), columns);
+  const csv = await services().csv.exportRecords(recordsInPeriod(kind,records(kind),state.operationalQuery?.range??dateWindow(state.fromDate,state.toDate)), columns);
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" }),
     url = URL.createObjectURL(blob),
     a = document.createElement("a");
@@ -925,6 +955,8 @@ async function exportCsv() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 async function action(action) {
+  if(action.startsWith("live:")){const type=action.slice(5);if(type==='retry')await state.client.live.retry();else await state.client.live.command(type);return refresh();}
+  if(action==='pending-back'){if(state.pendingReturn){Object.assign(state,state.pendingReturn);state.pendingReturn=null;await refresh();}return;}
   if(action.startsWith('registry-edit:')){const[,kind,id]=action.split(':'),r=state.registries[kind]?.[id];if(!r||!engineer())return;showModal('Editar cadastro',`<div class="form-grid"><label class="field">Nome<input name="name" value="${e(r.name)}" required maxlength="160"></label><label class="field">Código<input name="code" value="${e(r.code??'')}" maxlength="100"></label></div><p class="source-notes">Identificador e vínculos históricos são preservados.</p>`,{submit:data=>services().registry.update(kind,id,{name:data.get('name'),...(data.get('code')?{code:data.get('code')}:{})})});return;}
   if(action==='connector-stop'){stopConnector();layout();return;}
   if(action.startsWith('tech:'))return technicalAction(action,{state,services:services(),showModal,downloadCsv,refresh,toast,startConnector});
@@ -934,7 +966,7 @@ async function action(action) {
   if(action==='new-review'){const col=records('collections').at(-1);if(!col){toast('Registre uma coleta neste contexto primeiro.');return;}return actionReview(col.id);}
   if(action.startsWith('nhpl:'))return nhplAction(action,{state,services:state.client?services():null,showModal,modal,refresh,downloadCsv});
   const [command, id, extra] = action.split(":");
-  if(!writable()&&['form','active','start','decide','correction','catalog','version','close','review','csv-import','request-correction','cep-review'].includes(command))throw Object.assign(new Error('Consulta de apresentação não permite gravação.'),{code:'FORBIDDEN'});
+  if(!writable()&&['form','active','start','decide','correction','catalog','version','close','review','csv-import','request-correction','cep-review'].includes(command))throw Object.assign(new Error('Seu perfil não permite gravação.'),{code:'FORBIDDEN'});
   if(command==='csv-import'){if(operator()&&state.context.productId)openCsvImport({showModal,services:services(),registries:state.registries,context:structuredClone(state.context)});return;}
   if(command==='request-correction'){
     const record=state.period[id]?.find(r=>r.id===extra);
@@ -950,7 +982,7 @@ async function action(action) {
   if(command==='cep-review') {
     const study=getCepStudy(state),last=study.samples.at(-1);
     if(!operator()||!last?.collectionId||study.fromWorkbook)return;
-    const a=study.analysis,scope=`Estudo ${study.parameter.name}; ${study.source}; ${a.method}; versão ${study.version.id}; n=${a.nValid}; Cp=${n(a.cp)}; Cpk=${n(a.cpk)}; ${cepReasons[a.reason]??'Índices estimados sob hipótese normal, sem homologação.'}`;
+    const a=study.analysis,scope=`Estudo ${recordLabel(study.parameter.name)}; ${recordLabel(study.source)}; ${a.method}; versão ${study.version.id}; n=${a.nValid}; Cp=${n(a.cp)}; Cpk=${n(a.cpk)}; ${cepReasons[a.reason]??'Índices estimados sob hipótese normal, sem homologação.'}`;
     showModal('Encaminhar estudo à Engenharia',`<label class="field">Escopo do estudo<textarea name="scope" rows="5" required maxlength="2000">${e(scope)}</textarea></label>`,{footer:'Encaminhar',submit:data=>services().analysis.submitReview({collectionId:last.collectionId,scope:data.get('scope')})});return;
   }
   if (command === "theme") {
@@ -998,7 +1030,7 @@ async function action(action) {
   if(command==='reset-consultation'){writeConsultation({days:7,compact:false});state.fromDate=dayOffset(today(),-6);state.toDate=today();state.client?await refresh():layout();toast('Preferências de consulta restauradas.');return;}
   if(command==='change-password'){showModal('Alterar senha','<div class="form-grid"><label class="field full">Senha atual<input type="password" name="current" required autocomplete="current-password"></label><label class="field">Nova senha<input type="password" name="next" required minlength="6" autocomplete="new-password"></label><label class="field">Confirmar nova senha<input type="password" name="confirm" required minlength="6" autocomplete="new-password"></label></div>',{footer:'Alterar senha',submit:async data=>{if(data.get('next')!==data.get('confirm'))throw Object.assign(new Error('As senhas não coincidem.'),{code:'PASSWORD_MISMATCH'});await getCloud().auth.changePassword({currentPassword:data.get('current'),newPassword:data.get('next')});}});return;}
   if (command === 'simulate') {
-    showModal('Simular cenário', `<p class="source-notes">Dados fictícios em memória. Cadastros, apontamentos e decisões neste cenário não alteram os registros do Firebase.</p><label class="field">Cenário<select name="scenario">${simulationCases.map(c=>`<option value="${c.id}">${e(c.name)}</option>`).join('')}</select></label>`, {footer:'Iniciar simulação',submit:data=>startSimulation(data.get('scenario'))});
+    showModal('Simular cenário', `<label class="field">Cenário<select name="scenario">${simulationCases.map(c=>`<option value="${c.id}">${e(c.name)}</option>`).join('')}</select></label>`, {footer:'Iniciar simulação',submit:data=>startSimulation(data.get('scenario'))});
     return;
   }
   if (command === 'end-simulation') return endSimulation();
@@ -1017,21 +1049,12 @@ async function action(action) {
     if (localSimulation) return endSimulation();
     unsubscribe();
     await cloud?.auth.signOut();
-    if(presentationMode){state.client?.dispose?.();await enterPresentation();return;}
-    state.client = null;
-    state.actor = null;
-    state.context = {};
-    state.registries = {};
-    state.period = {};
-    state.dashboard = emptyDashboard();
-    state.loginError = '';
-    sessionStorage.removeItem("msa.session.mode");
-    layout();
+    await leaveWorkspace();
     return;
   }
   if (command === "refresh") return refresh();
 
-  if (command === "export") return state.context.machineId==='nhpl'&&['dashboard','planning'].includes(state.route)?nhplAction('nhpl:export',{state,services:services(),showModal,modal,refresh,downloadCsv}):exportCsv();
+  if (command === "export") return state.context.machineId==='nhpl'&&(['dashboard','planning'].includes(state.route)||state.route==='production'&&state.pageTabs.production==='summary')?nhplAction('nhpl:export',{state,services:services(),showModal,modal,refresh,downloadCsv}):exportCsv();
   if (command === "form") return openForm(id);
   if (command === "close")
     return openForm(
@@ -1065,7 +1088,7 @@ async function action(action) {
   if (command === "version") {
     if (modal.open) modal.close();
     const selected=state.route==='cep'?getCepStudy(state).version:null;
-    const version=selected?.parameterId===id?selected:Object.values(state.registries.parameterVersions??{}).filter(v=>v.parameterId===id&&v.status==='approved').sort((a,b)=>(b.createdAt??0)-(a.createdAt??0)||b.id.localeCompare(a.id))[0];
+    const version=selected?.parameterId===id?selected:parameterReferences(state.registries,id).latest;
     return openForm("parameterVersion", referenceDraft(id,version));
   }
   if (command === "active") {
@@ -1105,9 +1128,11 @@ document.addEventListener('keydown',event=>{
 document.addEventListener("click", (event) => {
   if(!event.target.closest('.account')) closeAccount();
   const target = event.target.closest(
-    "[data-action],[data-tab],[data-parameter],[data-detail],[data-theme-choice]",
+    "[data-action],[data-tab],[data-page-tab],[data-pending],[data-parameter],[data-detail],[data-theme-choice]",
   );
   if (!target) return;
+  if(target.dataset.pageTab){state.pageTabs[target.dataset.pageRoute]=target.dataset.pageTab;layout();return;}
+  if(target.dataset.pending){const item=[...(state.pending?.open??[]),...(state.pending?.checks??[]),...(state.pending?.deviations??[])].find(x=>x.id===target.dataset.pending);if(!item)return;state.pendingReturn={context:structuredClone(state.context),fromDate:state.fromDate,toDate:state.toDate,route:state.route,pageTabs:structuredClone(state.pageTabs),consultationShift:state.consultationShift,followLatest:state.followLatest};if(item.context)state.context=structuredClone(item.context);state.route=item.route;state.pageTabs[item.route]=item.tab;if(item.route==='engineering')state.tab.engineering=item.tab;state.fromDate=item.occurredAt!=null?shiftAt(item.occurredAt).operationalDate:dayOffset(today(),-30);state.toDate=today();state.consultationShift='all';state.followLatest=false;refresh().then(()=>{if(['reviews','corrections','stoppages','collections','production','losses'].includes(item.recordType))detail(item.recordType,item.recordId);}).catch(fail);return;}
   if (target.dataset.action) {
     event.preventDefault();
     action(target.dataset.action).catch(fail);
@@ -1142,6 +1167,7 @@ document.addEventListener("input", (event) => {
 });
 document.addEventListener("change", async (event) => {
   try {
+    if(event.target.id==='shift-filter'){state.consultationShift=event.target.value;state.cep.sequenceConfirmed=false;await refresh();return;}
     if(event.target.id==='event-file'){const file=event.target.files?.[0];if(!file)return;if(file.size>1_000_000)throw Object.assign(new Error(),{code:'CSV_TOO_LARGE'});modal.querySelector('[name=events]').value=await file.text();return;}
     if(event.target.id==='csv-file'){
       const file=event.target.files?.[0];if(!file)return;
@@ -1253,9 +1279,13 @@ if (vlibrasError) {
   sessionStorage.removeItem("msa.vlibras.error");
   toast(vlibrasError);
 }
-async function enterPresentation(){
- unsubscribe();state.client=await openPresentation();state.actor=state.client.actor;state.context=state.client.context;state.fromDate=state.client.fromDate;state.toDate=state.client.toDate;state.dataset='all';state.route=location.hash.slice(1)||'dashboard';watch();await refresh();
-}
 function actionReview(id){return action('review:'+id);}
-if(presentationMode)enterPresentation().then(()=>getCloud()).catch(fail);else{layout();getCloud();}
-setInterval(()=>{if(state.route==='tv'&&!modal.open&&state.client)layout();},5000);
+layout();getCloud();
+setInterval(()=>{if(state.route==='tv'&&!modal.open&&state.client)refresh({background:state.client.mode==='live'});},5000);
+
+
+function restoreConsultation(){
+ const saved=readAccountConsultation(state.actor.uid,state.source);state.consultationShift=saved.shift;
+ if(saved.context)state.context={...saved.context};
+ if(saved.fromDate&&saved.toDate){try{dateWindow(saved.fromDate,saved.toDate);state.fromDate=saved.fromDate;state.toDate=saved.followLatest===false?saved.toDate:state.client.toDate??saved.toDate;state.followLatest=saved.followLatest!==false;}catch{}}
+}

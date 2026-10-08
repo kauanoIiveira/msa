@@ -1,12 +1,15 @@
 import {escapeHtml as e, number as n} from './format.js';
+import {patchSnapshot} from './snapshot-dom.js';
 let charts = [];
 export function clearCharts() {
   for (const chart of charts) chart.destroy();
   charts = [];
 }
-export function drawChart(id, { labels, fullLabels = labels, datasets, horizontal = false, unit = '', beginAtZero }) {
+export function drawChart(id, options) {
+  let {labels,fullLabels=labels,datasets,horizontal=false,unit='',beginAtZero}=options;
   const canvas = document.getElementById(id);
   if (!canvas || !globalThis.Chart) return;
+  const previous=charts.find(c=>c.canvas===canvas);if(previous){previous.updateSnapshot(options);return previous;}
   const style = getComputedStyle(document.documentElement),
     color = (name) => style.getPropertyValue(name).trim();
   const numeric = value => Number.isFinite(value) ? `${n(value)}${unit ? ' '+unit : ''}` : 'Sem leitura';
@@ -74,8 +77,15 @@ export function drawChart(id, { labels, fullLabels = labels, datasets, horizonta
   charts.push(chart);
   const container = document.createElement('div');
   container.className = 'chart-consultation';
-  container.innerHTML = `${datasets.length>1?`<div class="chart-legend" aria-label="Séries do gráfico">${datasets.map((set,i)=>`<button type="button" data-series="${i}" aria-pressed="true"><span class="series-swatch" style="background:${e(set.borderColor ?? color(i?'--chart-alt':'--chart'))}"></span>${e(set.label)}</button>`).join('')}</div>`:''}<p id="${e(id)}-readout" class="chart-readout" aria-live="polite">${labels.length?'Use as setas no gráfico para consultar os valores.':'Sem amostras nesta versão.'}</p><details class="chart-data" id="${e(id)}-data"><summary>Consultar dados <span>${labels.length} ${isLine?'amostras':'registros'}</span></summary><div class="table-wrap" tabindex="0" role="region" aria-label="Valores do gráfico"><table class="data-table"><caption>${e(canvas.getAttribute('aria-label'))}${unit?' · '+e(unit):''}</caption><thead><tr><th scope="col">${horizontal?'Motivo':isLine?'Data e hora':'Data'}</th>${datasets.map(set=>`<th scope="col">${e(set.label)}${unit?' ('+e(unit)+')':''}</th>`).join('')}</tr></thead><tbody>${fullLabels.map((label,index)=>`<tr><th scope="row">${e(label)}</th>${datasets.map(set=>`<td class="numeric">${e(numeric(set.data[index]))}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${datasets.length+1}">Sem amostras nesta versão.</td></tr>`}</tbody></table></div></details>`;
+  const consultationHtml = () => `${datasets.length>1?`<div class="chart-legend" aria-label="Séries do gráfico">${datasets.map((set,i)=>`<button type="button" data-series="${i}" aria-pressed="true"><span class="series-swatch" style="background:${e(set.borderColor ?? color(i?'--chart-alt':'--chart'))}"></span>${e(set.label)}</button>`).join('')}</div>`:''}<p id="${e(id)}-readout" class="chart-readout" aria-live="polite">${labels.length?'Use as setas no gráfico para consultar os valores.':'Sem amostras nesta versão.'}</p><details class="chart-data" id="${e(id)}-data"><summary>Consultar dados <span>${labels.length} ${isLine?'amostras':'registros'}</span></summary><div class="table-wrap" tabindex="0" role="region" aria-label="Valores do gráfico"><table class="data-table"><caption>${e(canvas.getAttribute('aria-label'))}${unit?' · '+e(unit):''}</caption><thead><tr><th scope="col">${horizontal?'Motivo':isLine?'Data e hora':'Data'}</th>${datasets.map(set=>`<th scope="col">${e(set.label)}${unit?' ('+e(unit)+')':''}</th>`).join('')}</tr></thead><tbody>${fullLabels.map((label,index)=>`<tr><th scope="row">${e(label)}</th>${datasets.map(set=>`<td class="numeric">${e(numeric(set.data[index]))}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${datasets.length+1}">Sem amostras nesta versão.</td></tr>`}</tbody></table></div></details>`;
+  container.innerHTML=consultationHtml();
   canvas.closest('.chart-frame').after(container);
+  chart.updateSnapshot=next=>{
+    labels=next.labels;fullLabels=next.fullLabels??labels;datasets=next.datasets;unit=next.unit??'';
+    chart.data.labels=labels;chart.data.datasets.forEach((set,i)=>Object.assign(set,datasets[i]));
+    patchSnapshot(container,consultationHtml());container.querySelectorAll('[data-series]').forEach(b=>b.setAttribute('aria-pressed',String(chart.isDatasetVisible(Number(b.dataset.series)))));
+    chart.update('none');
+  };
   container.querySelectorAll('[data-series]').forEach(button=>button.addEventListener('click',()=>{
     const index=Number(button.dataset.series),visible=!chart.isDatasetVisible(index);
     chart.setDatasetVisibility(index,visible);chart.update('none');

@@ -4,7 +4,7 @@ import {evaluateReading,validateRule} from './limits.js';
 import {assertId,knownKeys,requireThat} from './errors.js';
 import {eventDate} from './time.js';
 
-export function buildDashboard(data,{context,from,to,complete,sigmaMethod='population'}={}) {
+export function buildDashboard(data,{context,from,to,windows,complete,sigmaMethod='population'}={}) {
   knownKeys(context,['machineId','processId','productId','recipe','lot','order','shift','variant']);
   for(const field of ['machineId','processId','productId']) assertId(context[field],field);
   requireThat(Number.isSafeInteger(from)&&Number.isSafeInteger(to)&&from>=0&&to>from,'INVALID_PERIOD');
@@ -16,7 +16,7 @@ export function buildDashboard(data,{context,from,to,complete,sigmaMethod='popul
   for(const kind of ['collections','losses']) scoped[kind]=(data[kind]??[]).filter(row=>matches(row)&&inPeriod(row));
   const fullDays=from>0&&eventDate(from-1)!==fromDate&&eventDate(to)!==toDate;
   const imprecise=!fullDays&&[...scoped.collections,...scoped.losses].some(row=>row.timePrecision==='date');
-  const indicators=buildIndicators(scoped,{from,to,complete:complete===true&&!imprecise,sigmaMethod});
+  const indicators=buildIndicators(scoped,{from,to,windows,complete:complete===true&&!imprecise,sigmaMethod});
   if(imprecise) indicators.notes.push('date-only-in-partial-day-window');
   const registered=Object.values(data.parameters??{}).filter(p=>p.processId===context.processId&&p.active===true);
   const references=context.machineId==='nhpl'?[]:getMsaParameterCatalog(),codes=new Set(references.map(item=>item.code));

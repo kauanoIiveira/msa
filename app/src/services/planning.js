@@ -1,15 +1,16 @@
+import {assertShiftPeriod} from '../domain/shifts.js';
 import {assertRole,assertId,requireThat} from '../domain/errors.js';
 import {loadContext} from '../domain/context.js';
 import {suggestPlan,latestPlans,conflictingPlans} from '../domain/planning.js';
 import {initLedger,readLedger,appendLedgerEvent} from '../repositories/append-ledger.js';
 import {eventDate} from '../domain/time.js';
-export function createPlanningService({repo,actor,idFactory=()=>crypto.randomUUID()}){
+export function createPlanningService({repo,actor,enforceOperationalShifts=false,idFactory=()=>crypto.randomUUID()}){
  const options={actor,idFactory};
  async function retire(plan){
   const intervals=[];for(const interval of plan.intervals){const view=await readLedger(repo,'productionIntervals/'+interval.id);requireThat(view.complete,'INCOMPLETE_DATA');requireThat(!view.events.some(e=>['production','closure'].includes(e.kind)),'CORRECTION_REQUIRED');intervals.push({interval,view});}
   for(const {interval,view} of intervals)if(view.last?.kind!=='retire')await appendLedgerEvent(repo,'productionIntervals/'+interval.id,{expectedEventId:view.last?.id??null,event:{kind:'retire',planRevisionId:plan.id,createdBy:actor.uid,createdAt:repo.timestamp()}},options);
  }
- async function write(payload,previous){assertRole(actor,['admin','engineer']);const context=await loadContext(repo,payload.context),pilot=await repo.get('pilots/nhpl');requireThat(pilot?.machineId===context.machineId,'INVALID_REFERENCE');const draft=suggestPlan({...payload,context});const path='productionPlans/'+context.machineId;await initLedger(repo,path,{machineId:context.machineId},options);const view=await readLedger(repo,path);requireThat(view.complete,'INCOMPLETE_DATA');
+ async function write(payload,previous){assertRole(actor,['admin','engineer']);const context=await loadContext(repo,payload.context),pilot=await repo.get('pilots/nhpl');requireThat(pilot?.machineId===context.machineId,'INVALID_REFERENCE');if(enforceOperationalShifts)assertShiftPeriod(context,payload.startedAt,payload.endedAt);const draft=suggestPlan({...payload,context});const path='productionPlans/'+context.machineId;await initLedger(repo,path,{machineId:context.machineId},options);const view=await readLedger(repo,path);requireThat(view.complete,'INCOMPLETE_DATA');
   const plans=latestPlans(view.events),old=previous?plans.find(p=>p.planId===previous):null;if(previous)requireThat(old&&payload.reason?.trim(),'JUSTIFICATION_REQUIRED');
   requireThat(!conflictingPlans([...plans.filter(p=>p.planId!==previous),{...draft,planId:previous??'new'}]).length,'PLAN_OVERLAP');
   if(old)await retire(old);
