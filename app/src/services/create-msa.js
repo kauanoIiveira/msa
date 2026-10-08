@@ -48,15 +48,16 @@ export function createMsaServices(options) {
   };
 }
 export function createAuthenticatedMsa({authService,repositoryFactory,...options}) {
-  let user=null,actor=null,workspaceId=null,generation=0,disposed=false;
+  let user=null,actor=null,workspaceId=null,activeRepository=null,generation=0,disposed=false;
   const observers=new Set(),listeners=new Set();
   const notify=()=>{for(const callback of observers) callback({user,actor,workspaceId});};
-  const revoke=()=>{generation++;for(const off of listeners) off();listeners.clear();actor=null;workspaceId=null;};
+  const revoke=()=>{generation++;for(const off of listeners) off();listeners.clear();actor=null;workspaceId=null;activeRepository=null;};
   const offAuth=authService.watchSession(next=>{
     if(disposed) return;
     if(next?.uid!==user?.uid) revoke();user=next;notify();
   },error=>{revoke();user=null;notify();for(const observer of observers) observer({user:null,actor:null,workspaceId:null,error});});
   return {
+    repository(){requireThat(!disposed&&activeRepository,'STALE_SESSION');return activeRepository;},
     watchSession(callback) {requireThat(!disposed,'STALE_SESSION');observers.add(callback);callback({user,actor,workspaceId});return()=>observers.delete(callback);},
     async onWorkspace(id) {
       requireThat(!disposed,'STALE_SESSION');requireThat(user?.uid,'AUTH_REQUIRED');assertId(id);revoke();const epoch=generation,uid=user.uid;
@@ -85,6 +86,7 @@ export function createAuthenticatedMsa({authService,repositoryFactory,...options
       const secured=Object.fromEntries(Object.entries(services).map(([key,value])=>[key,wrap(value)]));
       // Listener APIs must return cancellation synchronously, unlike write/read promises.
       secured.history.watch=(...args)=>{check();return services.history.watch(...args);};
+      activeRepository=wrapRepo;
       notify();return secured;
     },
     dispose() {if(disposed) return;disposed=true;revoke();offAuth();observers.clear();}

@@ -1,5 +1,6 @@
 import {patchSnapshot} from './snapshot-dom.js';
-import {openUnifiedWorkspace} from './unified-workspace.js';
+import {openWorkspaceClient} from './workspace-client.js';
+import {archiveLocalWorkspace} from './local-archive.js';
 import {liveObservedBases,mountLiveControls} from './live-controls.js';
 import {loadOperationalView,readAccountConsultation,writeAccountConsultation} from './operational-query.js';
 import {buildPending} from '../domain/pending.js';
@@ -49,7 +50,6 @@ import {visibleNavigation,initialRoute,resolveRoute} from './access.js';
 import {openPresentation} from './presentation.js';
 import {inspectionsMarkup,technicalMarkup,technicalView,captureMarkup,occurrencesMarkup,stopsTechnicalMarkup,technicalAction} from './technical.js';
 import {loginAccounts} from '../config/login-accounts.js';
-const presentationMode=new URLSearchParams(location.search).get('workspace')!=='operational';
 const app = document.getElementById("app"),
   modal = document.getElementById("modal");
 const roots = [
@@ -589,7 +589,10 @@ function drawPageCharts() {
     datasets: [{ label: "Minutos", data: stops.map((r) => r.value) }],
   });
 }
-function dataManagement(){return `<section class="settings-section"><h2>Gestão de dados</h2><div class="setting-row"><div><h3>Importação de dados</h3><p>Arquivos de eventos e conexão com pasta de coleta</p></div><a class="btn" href="#capture">${icon('upload')}Importação de dados</a></div>${['presentation','live'].includes(state.client?.mode)&&!state.simulation?`<div class="setting-row"><div><h3>Cópia dos registros</h3><p>Exporta os registros, suas referências e o histórico.</p></div>${button('Exportar backup','presentation-backup','download')}</div>`:''}</section>`;}
+function dataManagement(){
+ const backup=['presentation','live','workspace'].includes(state.client?.mode)&&!state.simulation;
+ return `<section class="settings-section"><h2>Gestão de dados</h2><div class="setting-row"><div><h3>Importação de dados</h3><p>Arquivos de eventos e conexão com pasta de coleta</p></div><a class="btn" href="#capture">${icon('upload')}Importação de dados</a></div>${backup?`<div class="setting-row"><div><h3>Cópia dos registros</h3><p>Exporta os registros, suas referências e o histórico.</p></div>${button('Exportar backup','presentation-backup','download')}</div><div class="setting-row"><div><h3>Registros locais anteriores</h3><p>Preserva uma cópia dos dados que já estavam neste navegador.</p></div>${button('Exportar arquivo local','local-archive','archive')}</div>`:''}</section>`;
+}
 
 function reconcileContext() {
   const m = rows("machines").filter((r) => r.active);
@@ -687,22 +690,18 @@ async function enterCloud(user) {
     off();
     if(sessionTicket!==sessionGeneration||!actor)return;
     state.actor = actor;
-    state.dataset=presentationMode?'all':'operational';
+    state.dataset='all';
     state.route=resolveRoute(location.hash==='#login'?(state.returnRoute??initialRoute(actor.role)):(location.hash.slice(1)||initialRoute(actor.role)),actor.role);
     await state.client?.dispose?.();
-    const nextClient = presentationMode?await openUnifiedWorkspace({actor,displayName:user.displayName??'Usuário MSA',re:Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??''}):{
-      services,
-      repo: cloud.repository(workspaceId),
-      email: user.email,
-      displayName:user.displayName??(user.email==='adm@adm.com'?'Fabiana Dias':user.email.split('@')[0]),
-    };
+    const nextClient = await openWorkspaceClient({session:cloud.session,workspaceId,services,repository:cloud.repository(workspaceId)});
+    nextClient.displayName=user.displayName??(user.email==='adm@adm.com'?'Fabiana Dias':user.email.split('@')[0]);
     if(sessionTicket!==sessionGeneration){await nextClient.dispose?.();return;}state.client=nextClient;
-    state.source=presentationMode?'unified':'operational';state.consultationShift=readAccountConsultation(actor.uid,state.source).shift;
+    state.source='workspace';state.consultationShift=readAccountConsultation(actor.uid,state.source).shift;
     state.client.email=user.email;
     state.client.re=Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??'';
     history.replaceState(null,'',location.pathname+location.search+'#'+state.route);
     state.returnRoute=null;
-    if(presentationMode){state.context=state.client.context;state.fromDate=state.client.fromDate;state.toDate=state.client.toDate;}restoreConsultation();
+    if(state.client.defaultSelection){const initial=state.client.defaultSelection;state.context=initial.query.context;state.fromDate=initial.query.fromDate;state.toDate=initial.query.toDate;state.consultationShift=initial.query.shift;state.selection=initial;}restoreConsultation();
     sessionStorage.setItem("msa.session.mode", "firebase");
     watch();
     await refresh();
@@ -962,7 +961,8 @@ async function action(action) {
   if(action.startsWith('tech:'))return technicalAction(action,{state,services:services(),showModal,downloadCsv,refresh,toast,startConnector});
   if(action==='tv-back'){if(document.fullscreenElement)await document.exitFullscreen();location.hash='indicators';return;}
   if(action==='tv-fullscreen'){document.fullscreenElement?await document.exitFullscreen():await document.documentElement.requestFullscreen();layout();return;}
-  if(action==='presentation-backup'){const url=URL.createObjectURL(new Blob([state.client.exportBackup()],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='msa-nhpl-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
+  if(action==='presentation-backup'){const url=URL.createObjectURL(new Blob([await state.client.exportBackup()],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='msa-registros-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
+  if(action==='local-archive'){const archive=await archiveLocalWorkspace({uid:state.actor.uid}),url=URL.createObjectURL(new Blob([JSON.stringify(archive,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='msa-registros-locais-anteriores.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
   if(action==='new-review'){const col=records('collections').at(-1);if(!col){toast('Registre uma coleta neste contexto primeiro.');return;}return actionReview(col.id);}
   if(action.startsWith('nhpl:'))return nhplAction(action,{state,services:state.client?services():null,showModal,modal,refresh,downloadCsv});
   const [command, id, extra] = action.split(":");
