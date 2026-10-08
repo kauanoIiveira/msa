@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {assertFails} from '@firebase/rules-unit-testing';
+import {assertFails,assertSucceeds} from '@firebase/rules-unit-testing';
 import {setup,sdk} from '../helpers/firebase-env.js';
 import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
 import {createRegistryService} from '../../app/src/services/registry.js';
@@ -12,6 +12,9 @@ test('coverage witness is immutable, author-bound and cannot grant membership',a
  const service=createCoverageService({repo,actor:{uid:'admin',role:'admin'},idFactory:()=>`witness_${++n}`});
  const input={context:{machineId:m.id,processId:p.id,productId:q.id},startedAt:1000000,endedAt:4600000,complete:true,evidence:'Período conferido',recordsFingerprint:'[]'};
  const row=await service.confirm(input);assert.equal(typeof row.createdAt,'number');
+ const future={...row,id:'future',startedAt:Date.now(),endedAt:Date.now()+3600000,createdAt:sdk.serverTimestamp()};
+ await assertFails(sdk.set(sdk.ref(db,'workspaces/demo/coverageWitnesses/future'),future));
+ await assertSucceeds(sdk.set(sdk.ref(db,'workspaces/demo/coverageWitnesses/future'),{...future,complete:false}));
  await assertFails(sdk.update(sdk.ref(db,'workspaces/demo/coverageWitnesses/'+row.id),{complete:false}));
  await assertFails(sdk.remove(sdk.ref(db,'workspaces/demo/coverageWitnesses/'+row.id)));
  await assertFails(sdk.set(sdk.ref(env.authenticatedContext('view').database(),'workspaces/demo/coverageWitnesses/forged'),{...row,id:'forged',createdBy:'view',createdAt:sdk.serverTimestamp()}));

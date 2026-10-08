@@ -6,9 +6,10 @@ import {eventDate} from './time.js';
 
 export function buildDashboard(data,{context,from,to,windows,complete,sigmaMethod='population'}={}) {
   knownKeys(context,['machineId','processId','productId','recipe','lot','order','shift','variant']);
-  for(const field of ['machineId','processId','productId']) assertId(context[field],field);
+  for(const field of ['machineId','processId']) assertId(context[field],field);
+  if(context.productId)assertId(context.productId,'productId');
   requireThat(Number.isSafeInteger(from)&&Number.isSafeInteger(to)&&from>=0&&to>from,'INVALID_PERIOD');
-  const matches=row=>Object.entries(context).every(([key,value])=>row.context?.[key]===value);
+  const matches=row=>Object.entries(context).every(([key,value])=>!value||row.context?.[key]===value);
   const fromDate=eventDate(from),toDate=eventDate(to-1);
   const inPeriod=row=>row.timePrecision==='date'?row.eventDate>=fromDate&&row.eventDate<=toDate:Number.isSafeInteger(row.occurredAt)&&row.occurredAt>=from&&row.occurredAt<to;
   const scoped={...data};

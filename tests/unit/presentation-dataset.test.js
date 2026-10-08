@@ -139,7 +139,7 @@ test('wrong context, reject unit or incomplete repair rejects the whole preview'
   const badContext=await change(snapshot=>{Object.values(snapshot.productionCases).find(r=>r.machineId==='nhpl').order='WRONG-ORDER';});
   assert.equal(badContext.ok,false);
   assert.ok(badContext.diagnostics.some(d=>d.code==='CASE_MISSING'));
-  const badReject=await change(snapshot=>{Object.values(snapshot.losses).find(r=>r.kind==='reject').unit='kg';});
+  const badReject=await change(snapshot=>{Object.values(snapshot.losses).find(r=>r.kind==='reject'&&r.context.machineId==='nhpl').unit='kg';});
   assert.equal(badReject.ok,false);
   assert.ok(badReject.diagnostics.some(d=>d.code==='REJECT_RECONCILIATION'));
   const badRepair=await change(snapshot=>{Object.values(snapshot.technicalRecords).find(r=>r.kind==='classification'&&r.context.machineId==='nhpl').repairEndedAt=null;});

@@ -11,6 +11,12 @@ import {readLedger} from '../../app/src/repositories/append-ledger.js';
 import {createMsaServices} from '../../app/src/services/create-msa.js';
 const actor={uid:'admin',role:'admin'},from=Date.parse('2026-10-07T08:00:00-03:00'),to=from+3600000;
 async function setup(){const repo=memoryRepository();await repo.create('machines/old',{id:'old',name:'T20',active:true});const nhpl=createNhplService({repo,actor});const pilot=await nhpl.install({expectedPreview:await nhpl.preview()});const context={machineId:pilot.machineId,processId:pilot.processId,productId:pilot.productIds[0],order:'OP1',lot:'L1',shift:'1'};return {repo,context,pilot};}
+test('planned production retry returns its original intent and rejects changed content',async()=>{
+ const {repo,context}=await setup(),planning=createPlanningService({repo,actor});const plan=await planning.approve({context,startedAt:from,endedAt:to,intervalMinutes:60,quantitySource:'informed',plannedPieces:300}),id=plan.intervals[0].id;
+ const service=createPlannedProductionService({repo,actor,clock:()=>to+1}),payload={id:'stable_intent',quantity:25,basis:'gross',startedAt:from,endedAt:to};
+ const first=await service.record(id,payload),retry=await service.record(id,payload);assert.equal(first.id,retry.id);assert.equal((await readLedger(repo,'productionIntervals/'+id)).events.length,1);
+ await assert.rejects(service.record(id,{...payload,quantity:26}),{code:'RECORD_CONFLICT'});
+});
 test('NHPL installation is additive, idempotent, collision-safe and admin-only',async()=>{
  const {repo,pilot}=await setup();assert.equal((await repo.get('machines/old')).name,'T20');assert.deepEqual(await createNhplService({repo,actor}).install({}),pilot);
  await assert.rejects(()=>createNhplService({repo,actor:{uid:'op',role:'operator'}}).install({}),{code:'FORBIDDEN'});

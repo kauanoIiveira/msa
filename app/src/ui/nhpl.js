@@ -73,7 +73,7 @@ export async function nhplAction(action,{state,services,showModal,modal,refresh,
  if(command==='run'||command==='advance-run'){
   requireThat(operator(state),'FORBIDDEN');const run=state.period.runs?.filter(r=>r.runId===id).at(-1),next=run?['productionStartedAt','productionEndedAt','machineEndedAt'].find(k=>run[k]==null):'machineStartedAt';requireThat(next,'INVALID_TRANSITION');
   const label={machineStartedAt:'Máquina ligada',productionStartedAt:'Produção iniciada',productionEndedAt:'Produção encerrada',machineEndedAt:'Máquina desligada'}[next];
-  showModal('Registrar horário · '+label,`<div class="form-grid">${!run?['order','lot','shift'].map((k,i)=>field(['OP','Lote','Turno'][i],k,context[k])).join(''):''}${field(label,'at',local(Date.now()),'datetime-local')}</div>`,{submit:data=>run?services.runs.advance(id,{expectedRevision:run.id,[next]:timestamp(data)}):services.runs.start({context:{...context,...Object.fromEntries(['order','lot','shift'].map(k=>[k,data.get(k).trim()]))},machineStartedAt:timestamp(data)})});return;
+  showModal('Registrar horário · '+label,`<div class="form-grid"><p>OP ${e((run?.context??context).order)} · Lote ${e((run?.context??context).lot)} · Turno ${e((run?.context??context).shift)}</p>${field(label,'at',local(Date.now()),'datetime-local')}</div>`,{submit:data=>run?services.runs.advance(id,{expectedRevision:run.id,[next]:timestamp(data)}):services.runs.start({context,machineStartedAt:timestamp(data)})});return;
  }
  requireThat(false,'INVALID_KIND');
 }

@@ -43,7 +43,7 @@ export function createMsaServices(options) {
     async getDashboard(query,range) {
       assertPeriod(range?.from,range?.to);
       requireThat(query?.fromDate===eventDate(range.from)&&query?.toDate===eventDate(range.to-1),'INVALID_PERIOD');
-      for(const field of ['machineId','processId','productId']) assertId(query.context?.[field],field);
+      for(const field of ['machineId','processId']) assertId(query.context?.[field],field);if(query.context?.productId)assertId(query.context.productId,'productId');
       const period=await history.loadPeriod(query),parameters=await options.repo.get('parameters')??{};
       const view=buildDashboard({...period,...period.effective,parameters},{...range,context:query.context,complete:period.complete});
       return {...view,notes:[...new Set([...period.notes,...view.notes])]};

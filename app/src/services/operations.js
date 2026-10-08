@@ -2,8 +2,14 @@ import {assertRole,assertId,knownKeys,requireThat} from '../domain/errors.js';
 import {loadContext} from '../domain/context.js';
 import {assertInstant,assertPeriod,eventDate,validateDate} from '../domain/time.js';
 import {parseReading} from '../domain/numbers.js';
+import {stableStringify} from '../domain/canonical.js';
 const common=['id','context','origin','occurredAt','eventDate','timePrecision','source'];
 export function createOperations({repo,actor,clock=Date.now,idFactory=()=>crypto.randomUUID()}) {
+  async function createOnce(path,record){
+    const existing=await repo.get(path);
+    if(existing){const content=({createdAt,...rest})=>rest;requireThat(stableStringify(content(existing))===stableStringify(content(record)),'RECORD_CONFLICT');return existing;}
+    try{return await repo.create(path,record);}catch(error){const confirmed=await repo.get(path).catch(()=>null);if(confirmed){const {createdAt:a,...left}=confirmed,{createdAt:b,...right}=record;requireThat(stableStringify(left)===stableStringify(right),'RECORD_CONFLICT');return confirmed;}throw error;}
+  }
   async function reason(id,kind) {const r=await repo.get(`reasons/${assertId(id,'reasonId')}`);requireThat(r?.active===true&&r.kind===kind,'INVALID_REFERENCE','reasonId');}
   async function envelope(payload,extra) {
     assertRole(actor,['admin','operator','engineer']);knownKeys(payload,[...common,...extra]);
@@ -33,7 +39,7 @@ export function createOperations({repo,actor,clock=Date.now,idFactory=()=>crypto
         const parsed=parseReading(r.raw);requireThat(parsed.raw==null||parsed.raw.length<=100,'INVALID_READINGS');
         readings[r.parameterId]={parameterId:r.parameterId,versionId:r.versionId,...parsed};
       }
-      return repo.create(`collections/${record.id}`,{...record,readings});
+      return createOnce(`collections/${record.id}`,{...record,readings});
     },
     async recordProduction(payload) {
       requireThat(payload.context?.machineId!=='nhpl','PLANNING_REQUIRED');
@@ -41,19 +47,19 @@ export function createOperations({repo,actor,clock=Date.now,idFactory=()=>crypto
       assertPeriod(payload.startedAt,payload.endedAt);
       requireThat(Number.isSafeInteger(payload.quantity)&&payload.quantity>=0&&payload.quantity<=1e12,'INVALID_QUANTITY');
       requireThat(['gross','good'].includes(payload.basis),'INVALID_BASIS');
-      return repo.create(`production/${record.id}`,{...record,quantity:payload.quantity,basis:payload.basis,startedAt:payload.startedAt,endedAt:payload.endedAt});
+      return createOnce(`production/${record.id}`,{...record,quantity:payload.quantity,basis:payload.basis,startedAt:payload.startedAt,endedAt:payload.endedAt});
     },
     async recordLoss(payload) {
       const record=await envelope(payload,['kind','unit','amount','reasonId']);requireThat(['reject','material','rework'].includes(payload.kind),'INVALID_KIND');
       requireThat(['kg','pieces'].includes(payload.unit),'INVALID_UNIT');
       requireThat(Number.isFinite(payload.amount)&&payload.amount>0&&payload.amount<=1e12&&(payload.unit==='kg'||Number.isSafeInteger(payload.amount)),'INVALID_QUANTITY');
       await reason(payload.reasonId,payload.kind);
-      return repo.create(`losses/${record.id}`,{...record,kind:payload.kind,unit:payload.unit,amount:payload.amount,reasonId:payload.reasonId});
+      return createOnce(`losses/${record.id}`,{...record,kind:payload.kind,unit:payload.unit,amount:payload.amount,reasonId:payload.reasonId});
     },
     async startStoppage(payload) {
       const record=await envelope(payload,['startedAt','planned','reasonId']);requireThat(record.timePrecision==='instant','INVALID_TIME');assertInstant(payload.startedAt);
       requireThat(typeof payload.planned==='boolean','VALIDATION','planned');await reason(payload.reasonId,'stop');
-      return repo.create(`stoppages/${record.id}`,{...record,startedAt:payload.startedAt,planned:payload.planned,reasonId:payload.reasonId});
+      return createOnce(`stoppages/${record.id}`,{...record,startedAt:payload.startedAt,planned:payload.planned,reasonId:payload.reasonId});
     },
     async closeStoppage(id,payload) {
       assertRole(actor,['admin','operator','engineer']);assertId(id);knownKeys(payload,['endedAt','reasonId','goodValidated']);assertInstant(payload.endedAt);await reason(payload.reasonId,'stop');

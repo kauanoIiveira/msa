@@ -8,6 +8,12 @@ const context={machineId:'m',processId:'p',productId:'q',order:'OP',lot:'LT',shi
 const stop={id:'stop',context,startedAt:1200000,endedAt:1800000};
 const classification={id:'class1',kind:'classification',stopId:'stop',category:'availability',failure:true,repairStartedAt:1300000,repairEndedAt:1600000,stopFingerprint:stableStringify([1200000,1800000,null])};
 const input={context,startedAt:1000000,endedAt:4600000};
+test('a future window can record a pending witness but cannot attest complete coverage',async()=>{
+ const repo=memoryRepository();await repo.create('machines/m',{active:true});await repo.create('processes/p',{active:true,machineId:'m'});await repo.create('products/q',{active:true,processIds:{p:true}});
+ const service=createCoverageService({repo,actor:{uid:'admin',role:'admin'},clock:()=>2000000,idFactory:()=> 'future'});
+ await assert.rejects(service.confirm({...input,complete:true,evidence:'Future',recordsFingerprint:'[]'}),{code:'COVERAGE_FUTURE'});
+ assert.equal((await service.confirm({...input,complete:false,evidence:'Pending',recordsFingerprint:'[]'})).complete,false);
+});
 function witness(){return {...input,id:'w',complete:true,evidence:'Conferência do período',recordsFingerprint:coverageFingerprint({...input,stops:[stop],classifications:[classification]})};}
 test('explicit coverage requires evidence across every planned window and invalidates after correction',()=>{
  const data={witnesses:[witness()],stops:[stop],classifications:[classification],windows:[{from:1000000,to:4600000,context}]};

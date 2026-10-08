@@ -1,0 +1,13 @@
+import {escapeHtml as e,date} from './format.js';
+export function equipmentView({catalog={},events={},selection={}}){
+ const values=kind=>Object.values(events[kind]??{}),sector=selection.sector;
+ return Object.values(catalog.machines??{}).filter(m=>!sector||m.sector===sector).map(machine=>{
+  const collections=values('collections').filter(c=>c.context?.machineId===machine.id),timed=collections.filter(c=>Number.isSafeInteger(c.occurredAt)).sort((a,b)=>b.occurredAt-a.occurredAt),openStops=values('stoppages').filter(s=>s.context?.machineId===machine.id&&s.endedAt==null);
+  const latestTimed=timed[0]??null,missingTime=collections.some(c=>!Number.isSafeInteger(c.occurredAt)&&(!latestTimed||c.eventDate>=latestTimed.eventDate)),latest=missingTime?null:latestTimed,ambiguous=latest&&timed[1]?.occurredAt===latest.occurredAt;
+  return {id:machine.id,name:machine.name,sector:machine.sector??null,active:machine.active,status:openStops.length?'Parada registrada em aberto':machine.active?'Ativo no cadastro':'Inativo no cadastro',lastReading:ambiguous?null:latest,lastReadingReason:ambiguous?'Horários empatados':collections.length&&!latest?'Horário da leitura não informado':!latest?'Sem leitura no período':null,processes:Object.values(catalog.processes??{}).filter(p=>p.machineId===machine.id)};
+ });
+}
+export function equipmentPage({state}){
+ const rows=equipmentView({catalog:state.registries,events:state.equipmentEvents??{},selection:{sector:state.equipmentSector}}),sectors=[...new Set(Object.values(state.registries.machines??{}).map(m=>m.sector).filter(Boolean))];
+ return `<section class="data-section"><div class="section-heading"><div><h2>Situação registrada dos equipamentos</h2><p>Cadastro e leituras no período consultado. O acesso ao Firebase não informa conexão física com a máquina.</p></div>${sectors.length?`<label class="field">Setor<select id="equipment-sector"><option value="">Todos</option>${sectors.map(s=>`<option ${s===state.equipmentSector?'selected':''}>${e(s)}</option>`).join('')}</select></label>`:''}</div><div class="equipment-grid">${rows.map(r=>`<article class="equipment-card"><h3>${e(r.name)}</h3><p>${e(r.status)}${r.sector?' · '+e(r.sector):''}</p><p>Última leitura: ${r.lastReading?date(r.lastReading.occurredAt,true):e(r.lastReadingReason)}</p><p>${e(r.processes.map(p=>p.name).join(' · ')||'Sem processo cadastrado')}</p><button class="btn" data-action="equipment-detail:${e(r.id)}">Ver equipamento</button></article>`).join('')||'<p class="empty-state">Nenhum equipamento cadastrado neste setor.</p>'}</div></section>`;
+}

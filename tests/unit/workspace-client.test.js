@@ -5,6 +5,11 @@ import {createAuthenticatedMsa} from '../../app/src/services/create-msa.js';
 import {openWorkspaceClient,connectionState} from '../../app/src/ui/workspace-client.js';
 import {archiveLocalWorkspace} from '../../app/src/ui/local-archive.js';
 function authBoundary(uid){let listener;return {watchSession(callback){listener=callback;callback({uid});return()=>{};},logout(){listener(null);}};}
+test('workspace exposes the persisted package and backs up coverage/manifests without membership',async()=>{
+ const repo=memoryRepository();await repo.create('coverageWitnesses/w',{id:'w'});await repo.create('presentationManifests/m',{id:'m',packageId:'prepared',state:'published'});
+ const manifest=await repo.get('presentationManifests/m'),client=await openWorkspaceClient({session:{},repository:repo,services:{},manifest});assert.equal(client.packageId,'prepared');assert.deepEqual(client.manifest,manifest);
+ const backup=JSON.parse(await client.exportBackup());assert.ok(backup.values.coverageWitnesses.w);assert.ok(backup.values.presentationManifests.m);assert.equal('members' in backup.values,false);
+});
 test('two authenticated clients consult the same repository instead of creating a local dataset',async()=>{
  const repo=memoryRepository();await repo.create('members/admin',{role:'admin'});await repo.create('members/second',{role:'admin'});
  const a=authBoundary('admin'),b=authBoundary('second');

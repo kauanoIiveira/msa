@@ -27,7 +27,8 @@ export function formMarkup(kind,{registries={},context={},record={},catalog=[]}=
   if(kind==='collection') {
     content=`<div class="parameter-input-list full">${parameters(registries,context).map(parameter=>{
       const versions=orderedVersions(registries,parameter.id),current=versions.find(version=>version.status==='approved')??versions.find(version=>version.status==='draft');
-      return `<div class="parameter-input-row"><div><strong>${escape(recordLabel(parameter.name))}</strong><span>${escape(current?.unit??'')}</span></div>${field('Leitura',input(`raw_${parameter.id}`,record.readings?.[parameter.id]?.raw??'',{required:false,inputMode:'decimal'}))}${field('Versão',select(`version_${parameter.id}`,versions.map(version=>[version.id,versionLabel(version)]),current?.id??''))}</div>`;
+      const reference=versions.length===1?`<div class="field"><span>Referência da leitura</span><p>${escape(versionLabel(current))}</p><input type="hidden" name="version_${escape(parameter.id)}" value="${escape(current.id)}"></div>`:field('Versão',select(`version_${parameter.id}`,versions.map(version=>[version.id,versionLabel(version)]),current?.id??''));
+      return `<div class="parameter-input-row"><div><strong>${escape(recordLabel(parameter.name))}</strong> <span class="parameter-unit">${escape(current?.unit??'')}</span></div>${field('Leitura',input(`raw_${parameter.id}`,record.readings?.[parameter.id]?.raw??'',{required:false,inputMode:'decimal'}))}${reference}</div>`;
     }).join('')}</div>`;
   } else if(kind==='production') {
     content=field('Quantidade (peças)',input('quantity',record.quantity??'',{inputMode:'numeric'}))+field('Base',select('basis',[['gross','Produção bruta'],['good','Peças boas']],record.basis??'gross',{placeholder:false}))+field('Início',input('startedAt',localDateTime(record.startedAt),{type:'datetime-local'}))+field('Fim',input('endedAt',localDateTime(record.endedAt),{type:'datetime-local'}));
@@ -55,7 +56,8 @@ export function formMarkup(kind,{registries={},context={},record={},catalog=[]}=
     const today=eventDate(Date.now());
     content=field('Nome da meta',input('name',record.name??'',{maxLength:160}),true)+field('Indicador',select('metric',[['producedPieces','Produção bruta (peças)'],['stopMinutes','Tempo parado (minutos)'],['rejectedPieces','Refugo (peças)'],['lossKg','Perda de material (kg)']],record.metric??''))+field('Limite',input('threshold',record.threshold??'',{inputMode:'decimal'}))+field('Comparação',select('operator',[['lower','Pelo menos'],['upper','No máximo']],record.operator??'upper',{placeholder:false}))+field('Data inicial',input('fromDate',record.fromDate??today,{type:'date'}))+field('Data final',input('toDate',record.toDate??today,{type:'date'}));
   } else throw new MsaError('INVALID_KIND');
-  if(context.machineId==='nhpl'&&['collection','loss','stoppage','target'].includes(kind))content=['order','lot','shift'].map((key,i)=>field(['OP','Lote','Turno'][i],input('context_'+key,context[key]??'',{maxLength:100}))).join('')+content;
+  if(context.machineId==='nhpl'&&kind==='target')content=['order','lot','shift'].map((key,i)=>field(['OP','Lote','Turno'][i],input('context_'+key,context[key]??'',{maxLength:100}))).join('')+content;
+  if(['collection','loss'].includes(kind))content=field(kind==='collection'?'Horário da medição · São Paulo':'Horário da perda · São Paulo',input('occurredAt',localDateTime(record.occurredAt),{type:'datetime-local'}),true)+content;
   const versionHistory=kind==='parameterVersion'?`<p class="source-notes">Salvar cria uma nova versão. Rascunho fica salvo para revisão; Aprovado passa a ser usado nas próximas coletas. Leituras anteriores mantêm seus limites.</p><section class="data-section"><h3>Versões salvas</h3>${orderedVersions(registries,record.parameterId??'').map(version=>`<p>${escape(versionLabel(version))}</p>`).join('')||'<p>Nenhuma versão salva.</p>'}</section>`:'';
   return `<div class="form-grid">${content}</div>${versionHistory}`;
 }
@@ -68,15 +70,15 @@ export function saoPauloInstant(value,field) {
   requireThat(Number.isSafeInteger(result)&&result>=0,'INVALID_TIME',field);return result;
 }
 
-export async function submitForm(kind,data,{services,context,record={},registries={}}={}) {
+export async function submitForm(kind,data,{services,context,record={},registries={},intent={}}={}) {
   const value=field=>{const raw=data.get(field);requireThat(raw==null||typeof raw==='string','VALIDATION',field);return raw??'';};
   const number=(field,code='INVALID_QUANTITY')=>{const parsed=parseReading(value(field));requireThat(parsed.status==='valid'&&Number.isFinite(parsed.value),code,field);return parsed.value;};
   const local=field=>saoPauloInstant(value(field),field);
-  if(context?.machineId==='nhpl'&&['collection','loss','stoppage','target'].includes(kind))context={...context,...Object.fromEntries(['order','lot','shift'].map(key=>[key,value('context_'+key).trim()]))};
-  if(kind==='collection') return services.operations.recordCollection({context,readings:parameters(registries,context).map(parameter=>({parameterId:parameter.id,versionId:value(`version_${parameter.id}`),raw:value(`raw_${parameter.id}`)}))});
-  if(kind==='production') return services.operations.recordProduction({context,quantity:number('quantity'),basis:value('basis'),startedAt:local('startedAt'),endedAt:local('endedAt')});
-  if(kind==='loss') return services.operations.recordLoss({context,kind:value('kind'),unit:value('unit'),amount:number('amount'),reasonId:value('reasonId')});
-  if(kind==='stoppage') return services.operations.startStoppage({context,startedAt:local('startedAt'),planned:data.has('planned'),reasonId:value('reasonId')});
+  if(context?.machineId==='nhpl'&&kind==='target')context={...context,...Object.fromEntries(['order','lot','shift'].map(key=>[key,value('context_'+key).trim()]))};
+  if(kind==='collection') return services.operations.recordCollection({...intent,context,...(value('occurredAt')?{occurredAt:local('occurredAt')}:{}),readings:parameters(registries,context).map(parameter=>({parameterId:parameter.id,versionId:value(`version_${parameter.id}`),raw:value(`raw_${parameter.id}`)}))});
+  if(kind==='production') return services.operations.recordProduction({...intent,context,quantity:number('quantity'),basis:value('basis'),startedAt:local('startedAt'),endedAt:local('endedAt')});
+  if(kind==='loss') return services.operations.recordLoss({...intent,context,...(value('occurredAt')?{occurredAt:local('occurredAt')}:{}),kind:value('kind'),unit:value('unit'),amount:number('amount'),reasonId:value('reasonId')});
+  if(kind==='stoppage') return services.operations.startStoppage({...intent,context,startedAt:local('startedAt'),planned:data.has('planned'),reasonId:value('reasonId')});
   if(kind==='closeStop') return services.operations.closeStoppage(record.id,{endedAt:local('endedAt'),reasonId:record.reasonId,...(data.has('goodValidated')?{goodValidated:true}:{})});
   if(kind==='reviewDecision') return services.analysis.decideReview(record.id,{decision:value('decision'),justification:value('justification')});
   if(kind==='parameterVersion') {

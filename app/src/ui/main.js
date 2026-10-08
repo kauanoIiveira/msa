@@ -1,11 +1,20 @@
 import {patchSnapshot} from './snapshot-dom.js';
+import {productionContextCard} from './production-context-card.js';
+import {initialSelection} from './production-selection.js';
+import {parametersPage} from './parameters-page.js';
+import {equipmentPage,equipmentView} from './equipment-page.js';
+import {createProductionJourney} from './production-journey.js';
+import {requireThat} from '../domain/errors.js';
+import {saoPauloInstant} from './forms.js';
+import {ledgerView} from '../repositories/append-ledger.js';
+import {eventDate} from '../domain/time.js';
 import {openWorkspaceClient} from './workspace-client.js';
 import {archiveLocalWorkspace} from './local-archive.js';
 import {liveObservedBases,mountLiveControls} from './live-controls.js';
 import {loadOperationalView,readAccountConsultation,writeAccountConsultation} from './operational-query.js';
 import {buildPending} from '../domain/pending.js';
 import {shiftAt} from '../domain/shifts.js';
-import {resolveWorkspaceRoute} from './workspace-routes.js';
+import {resolveWorkspaceRoute,groupedNavigation,pagePurposes} from './workspace-routes.js';
 import {productionPage} from './production-page.js';
 import {stoppagesPage} from './stoppages-page.js';
 import {qualityPage} from './quality-page.js';
@@ -53,6 +62,7 @@ import {loginAccounts} from '../config/login-accounts.js';
 const app = document.getElementById("app"),
   modal = document.getElementById("modal");
 const roots = [
+  "recipeVersions",
   "machines",
   "processes",
   "products",
@@ -70,6 +80,7 @@ const kinds = [
   "corrections",
 ];
 const labels = {
+  equipment: "Equipamentos",
   dashboard: "Visão geral",
   planning: "Planejamento NHPL",
   parameters: "Parâmetros",
@@ -98,7 +109,7 @@ const labels = {
   targets: "Metas",
 };
 const allNavigation = [
- ['dashboard','layout-dashboard','Visão geral'],['production','factory','Produção'],['stoppages','timer','Paradas'],['quality','badge-check','Qualidade'],['parameters','sliders-horizontal','Parâmetros'],['engineering','shield-check','Engenharia'],['cep','chart-line','CEP'],['indicators','gauge','Indicadores'],['history','history','Histórico'],['registry','database','Cadastros']
+ ['dashboard','layout-dashboard','Visão geral'],['production','factory','Produção'],['equipment','boxes','Equipamentos'],['stoppages','timer','Paradas'],['quality','badge-check','Qualidade'],['parameters','sliders-horizontal','Parâmetros'],['engineering','shield-check','Engenharia'],['cep','chart-line','CEP'],['indicators','gauge','Indicadores'],['history','history','Histórico'],['registry','database','Cadastros']
 ];
 const state = {
   accountOpen: false,
@@ -119,6 +130,9 @@ const state = {
   fromDate: dayOffset(today(), 1-readConsultation().days),
   toDate: today(),
   context: {},
+  selection: {query:{},recording:null},
+  productionCases: [],
+  draft: null,
   registries: {},
   period: {},
   technical: [],
@@ -158,7 +172,7 @@ function startConnector(){
 async function startSimulation(caseId) {
   stopConnector();
   const local = await openSimulation(caseId,{effectiveActor:state.actor??{uid:'simulation-viewer',role:'viewer'}});
-  if (!localSimulation) liveState = {source:state.source,consultationShift:state.consultationShift,pageTabs:structuredClone(state.pageTabs),client:state.client,actor:state.actor,context:structuredClone(state.context),fromDate:state.fromDate,toDate:state.toDate,route:state.route,search:state.search,connected:state.connected,dataset:state.dataset,followLatest:state.followLatest};
+  if (!localSimulation) liveState = {selection:structuredClone(state.selection),draft:state.draft,productionCases:state.productionCases,source:state.source,consultationShift:state.consultationShift,pageTabs:structuredClone(state.pageTabs),client:state.client,actor:state.actor,context:structuredClone(state.context),fromDate:state.fromDate,toDate:state.toDate,route:state.route,search:state.search,connected:state.connected,dataset:state.dataset,followLatest:state.followLatest};
   if(!localSimulation&&state.client?.live)await state.client.live.suspend();
   unsubscribe();
   localSimulation?.dispose();
@@ -167,6 +181,7 @@ async function startSimulation(caseId) {
   state.client = local;
   state.actor = local.actor;
   state.context = local.context;
+  state.selection={query:{context:structuredClone(local.context),fromDate:local.fromDate,toDate:local.toDate,shift:'all'},recording:{productionCaseId:null,context:structuredClone(local.context)}};state.draft=null;
   state.fromDate = local.fromDate;
   state.toDate = local.toDate;
   state.route = 'dashboard';
@@ -202,6 +217,8 @@ const operator = () =>
   writable() && ["admin", "engineer", "operator"].includes(state.actor?.role);
 const admin = () => writable() && state.actor?.role === "admin";
 const services = () => state.client.services;
+const journey=createProductionJourney({state,services,showModal,modal,refresh,layout,openForm});
+async function recordingContext(){const selected=state.selection.recording;requireThat(selected,'CONTEXT_REQUIRED');return structuredClone(selected.productionCaseId?await services().productions.context(selected.productionCaseId):selected.context);}
 function icons() {
   document.body.classList.toggle("compact-tables",readConsultation().compact);
   const account=app.querySelector(".avatar");if(account&&state.client){const words=(state.client.displayName || "Usuário").trim().split(/\s+/);account.textContent=(words[0][0]+(words.length>1?words.at(-1)[0]:'')).toUpperCase();account.title=state.client.displayName;}
@@ -253,21 +270,12 @@ function tabs(items, current) {
 function value(v, unit = "") {
   return `<strong${v == null ? ' class="missing-value"' : ""}>${n(v)}</strong>${v != null ? `<span>${e(unit)}</span>` : ""}`;
 }
-function filters() {
-  return `<div class="filterbar">${["machines", "processes", "products"]
-    .map((kind, i) => {
-      const field = ["machineId", "processId", "productId"][i];
-      const available = rows(kind).filter(
-        (r) =>
-          r.active &&
-          (kind !== "processes" || r.machineId === state.context.machineId) &&
-          (kind !== "products" || r.processIds?.[state.context.processId]),
-      );
-      return `<label class="context-field"><span>${['Máquina','Processo','Produto'][i]}</span><select aria-label="${labels[kind]}" data-context="${field}">${available.length ? available.map((r) => `<option value="${e(r.id)}" ${r.id === state.context[field] ? "selected" : ""}>${e(r.name)}</option>`).join("") : '<option value="">Sem cadastro</option>'}</select></label>`;
-    })
-    .join(
-      "",
-    )}<label class="context-field shift-field"><span>Turno</span><select id="shift-filter" aria-label="Turno">${[['all','Todos os turnos'],['1','1º · 07 até 15'],['2','2º · 15 até 23'],['3','3º · 23 até 07']].map(([v,l])=>`<option value="${v}" ${state.consultationShift===v?'selected':''}>${l}</option>`).join('')}</select></label><label class="context-field period-field"><span>Período</span><select aria-label="Período" id="period"><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="1">Hoje</option><option value="30">Últimos 30 dias</option><option value="custom">Personalizado</option></select></label><span class="context-dates">${date(state.fromDate)} a ${date(state.toDate)}<span class="small muted">O 3º turno termina às 7h do dia seguinte.</span></span></div><details class="context-extra"><summary>Contexto de lote, ordem e receita</summary><p class="source-notes">Preencha para registrar e consultar esse contexto exato. Campos vazios consultam todos os grupos, separados no CEP.</p><div class="cep-controls">${[['lot','Lote'],['order','Ordem'],['recipe','Receita']].map(([key,label])=>`<label class="field">${label}<input data-context-extra="${key}" maxlength="100" value="${e(state.context[key]??'')}" placeholder="Todos"></label>`).join('')}</div></details>`;
+function applyQuery(query){
+ state.context=structuredClone(query.context??{});if(query.fromDate)state.fromDate=query.fromDate;if(query.toDate)state.toDate=query.toDate;state.consultationShift=query.shift??'all';state.followLatest=false;state.selection.query=structuredClone(query);
+}
+function filters(){
+ const options=(kind,selected,filter=()=>true,all=false)=>`${all?'<option value="">Todos os produtos</option>':''}${rows(kind).filter(r=>r.active&&filter(r)).map(r=>`<option value="${e(r.id)}" ${r.id===selected?'selected':''}>${e(r.name)}</option>`).join('')}`;
+ return `${productionContextCard({recording:state.selection.recording,catalog:state.registries,cases:state.productionCases,editable:Boolean(state.client)})}${state.draft?'<div class="context-notice"><span>Rascunho de '+e({collection:'coleta',loss:'perda',production:'produção',stoppage:'parada'}[state.draft.kind]??'registro')+' preservado no contexto original.</span><button class="btn" data-action="resume-draft">Continuar rascunho</button></div>':''}${state.lastSaved?'<div class="context-notice" role="status"><span>Registro confirmado: '+e(state.lastSaved.record.id)+' · '+date(state.lastSaved.record.occurredAt??state.lastSaved.record.startedAt,true)+'</span><button class="btn" data-action="saved-summary">Ver no resumo</button><button class="btn" data-action="saved-history">Ver no histórico</button></div>':''}<section class="consultation-context"><div class="section-heading"><div><span class="context-eyebrow">Consultar</span><p>${e(name('machines',state.context.machineId))} · ${state.context.productId?e(name('products',state.context.productId)):'Todos os produtos'} · ${date(state.fromDate)} a ${date(state.toDate)} · ${state.consultationShift==='all'?'Todos os turnos':state.consultationShift+'º turno'}</p></div>${state.client?.defaultSelection?button('Último período concluído','latest-period','calendar'):''}</div><details class="query-details"><summary>Filtros da consulta</summary><p class="source-notes">Estes filtros alteram os resultados consultados. Registrar em conserva a produção escolhida. O dia operacional vai das 7h às 7h do dia seguinte.</p><form id="query-form"><div class="filterbar"><label class="context-field">Máquina<select name="machineId" data-query-catalog="machine">${options('machines',state.context.machineId)}</select></label><label class="context-field">Processo<select name="processId" data-query-catalog="process">${options('processes',state.context.processId,r=>r.machineId===state.context.machineId)}</select></label><label class="context-field">Produto<select name="productId">${options('products',state.context.productId,r=>r.processIds?.[state.context.processId],true)}</select></label><label class="context-field">Turno<select name="shift">${[['all','Todos'],['1','1º · 07–15'],['2','2º · 15–23'],['3','3º · 23–07']].map(([v,l])=>`<option value="${v}" ${state.consultationShift===v?'selected':''}>${l}</option>`).join('')}</select></label><label class="context-field">De<input type="date" name="fromDate" value="${state.fromDate}" required></label><label class="context-field">Até<input type="date" name="toDate" value="${state.toDate}" required></label></div><div class="context-extra form-grid">${[['order','OP'],['lot','Lote'],['recipe','Configuração (ID)']].map(([key,label])=>`<label class="field">${label}<input name="${key}" value="${e(state.context[key]??'')}" placeholder="Todos" maxlength="100"></label>`).join('')}</div><div class="operation-toolbar"><button class="btn primary" type="submit">Aplicar filtros</button><button class="btn" type="button" data-action="clear-query">Limpar filtros</button></div></form></details></section>`;
 }
 function login(error = state.loginError) {
   if(location.hash!=='#login'){
@@ -351,7 +359,7 @@ function layout({background=false}={}) {
     ? state.route
     : "dashboard";
   state.route = route;
-  const markup = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${navigation.map(([id, ico, label],index) => `${index===0?'<span class="rail-group">Operação</span>':id==='engineering'||id==='cep'&&!navigation.some(([r])=>r==='engineering')||id==='indicators'&&!navigation.some(([r])=>r==='engineering'||r==='cep')?'<span class="rail-group">Análise</span>':id==='registry'?'<span class="rail-group">Administração</span>':''}<a href="#${id}" title="${label}" class="rail-link ${route === id ? "active" : ""}" ${route === id ? 'aria-current="page"' : ""}>${icon(ico)}<span>${label}</span></a>`).join("")}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${route === "dashboard" ? "Produção, qualidade e acompanhamento do processo" : ""}</p></div><div class="page-actions">${route === "dashboard" ? button("Simular cenário", "simulate", "flask-conical") : ""}${state.client && state.context.productId && !['settings','registry','cep'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}${state.pendingReturn?button("Voltar à consulta anterior","pending-back","arrow-left"):""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
+  const markup = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${groupedNavigation(navigation,([id,ico,label])=>`<a href="#${id}" title="${label}" class="rail-link ${route===id?"active":""}" ${route===id?'aria-current="page"':""}>${icon(ico)}<span>${label}</span></a>`)}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${e(pagePurposes[route]??"")}</p></div><div class="page-actions">${state.client && state.context.productId && !['settings','registry','cep'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}${state.pendingReturn?button("Voltar à consulta anterior","pending-back","arrow-left"):""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
   if(background)patchSnapshot(app,markup);else app.innerHTML=markup;
   icons();
   const period = document.getElementById("period");
@@ -360,6 +368,7 @@ function layout({background=false}={}) {
   drawPageCharts();
 }
 function page() {
+  if(state.route==='equipment')return equipmentPage({state});
   if(state.route==='production')return productionPage({state,renderers:{summary:()=>state.context.machineId==='nhpl'?productivityMarkup(state):hourlyPage(state),planning:()=>planningMarkup(state),records:kind=>operations({kind,showTabs:false}),times:manualTimes,occurrences:()=>occurrencesMarkup(state)}});
   if(state.route==='stoppages')return stoppagesPage({state,renderers:{reliability:()=>reliabilityMarkup(technicalView(state)),classification:()=>stopsTechnicalMarkup(state),records:(kind,open)=>operations({kind,showTabs:false,openOnly:open})}});
   if(state.route==='quality')return qualityPage({state,renderers:{records:kind=>operations({kind,showTabs:false}),inspections:()=>inspectionsMarkup(state)}});
@@ -372,7 +381,7 @@ function page() {
   if (state.route === "dashboard") return dashboard();
   if (state.route === "cep") return cepPage(state);
   if (state.route === "parameters") return parameters();
-  if (!state.context.productId)
+  if (!state.context.processId)
     return `<div class="empty-state"><h2>Workspace sem contexto de produção</h2><p>Máquinas, processos e produtos ainda não foram cadastrados.</p><a class="btn" href="#registry">Cadastros</a></div>`;
   if (state.route === "engineering") return engineering();
   return operations();
@@ -431,8 +440,7 @@ function parameterTable(params) {
   );
 }
 function parameters() {
-  const params = state.dashboard?.parameters ?? [];
-  return `<div class="table-tools"><label class="search-field">${icon("search")}<input id="parameter-search" type="search" placeholder="Buscar parâmetro" aria-label="Buscar parâmetro" value="${e(state.search)}"></label><span class="small muted">${params.length} parâmetros</span></div><div id="parameter-results">${parameterTable(params.filter((p) => p.name.toLocaleLowerCase("pt-BR").includes(state.search.toLocaleLowerCase("pt-BR"))))}</div>`;
+  return parametersPage({state,parameterTable,icon});
 }
 function operations({kind:requestedKind,showTabs=true,openOnly=false}={}) {
   const history = state.route === "history",
@@ -549,7 +557,7 @@ function installCatalog() {
     },
   );
 }
-function settings(){const prefs=readPreferences(),view=readConsultation(),connected=Boolean(state.client?.email)&&!state.simulation;return `<section class="settings-section"><h2>Perfil</h2><form id="profile-form" class="settings-form"><div class="form-grid"><label class="field">RE<input name="re" value="${e(state.client?.re??'')}" readonly></label><label class="field">Nome<input name="displayName" value="${e(state.client?.displayName??'')}" required maxlength="100" ${connected?'':'disabled'}></label><label class="field">Cargo / acesso<input value="${e({admin:'Administração / Supervisão',engineer:'Liderança / Engenharia / times técnicos',operator:'Operação',viewer:'Consulta'}[state.actor?.role]??'Sem sessão')}" readonly></label></div><div class="profile-footer">${connected?'<button class="btn" type="submit">'+icon('save')+'Salvar perfil</button>':button('Entrar com RE','connect','log-in')}</div></form><div class="setting-row"><div><h3>Senha</h3></div>${connected?button('Alterar senha','change-password','key-round'):''}</div></section><section class="settings-section"><h2>Aparência e acessibilidade</h2><div class="setting-row"><div><h3>Tema</h3></div><div class="segmented">${[['light','sun','Claro'],['dark','moon','Escuro'],['system','monitor','Sistema']].map(([id,ico,title])=>`<button data-theme-choice="${id}" class="${prefs.theme===id?'selected':''}">${icon(ico)}${title}</button>`).join('')}</div></div><div class="setting-row"><div><h3>VLibras</h3><p>Tradução em Libras</p></div><label class="switch"><input id="vlibras-toggle" type="checkbox" aria-label="Ativar VLibras" ${prefs.vlibras?'checked':''}><span class="switch-track"></span></label></div><div class="setting-row"><div><h3>Tabelas compactas</h3></div><label class="switch"><input id="compact-toggle" type="checkbox" aria-label="Tabelas compactas" ${view.compact?'checked':''}><span class="switch-track"></span></label></div></section><section class="settings-section"><h2>Consulta</h2><div class="setting-row"><label class="field" for="default-period">Período inicial</label><select id="default-period">${[7,14,30].map(days=>`<option value="${days}" ${days===view.days?'selected':''}>Últimos ${days} dias</option>`).join('')}</select></div><div class="setting-row"><div><h3>Preferências de consulta</h3></div>${button('Restaurar','reset-consultation','rotate-ccw')}</div></section>`;}
+function settings(){const prefs=readPreferences(),view=readConsultation(),connected=Boolean(state.client?.email)&&!state.simulation;return `<section class="settings-section"><h2>Perfil</h2><form id="profile-form" class="settings-form"><div class="form-grid"><label class="field">RE<input name="re" value="${e(state.client?.re??'')}" readonly></label><label class="field">Nome<input name="displayName" value="${e(state.client?.displayName??'')}" required maxlength="100" ${connected?'':'disabled'}></label><label class="field">Cargo / acesso<input value="${e({admin:'Administração / Supervisão',engineer:'Liderança / Engenharia / times técnicos',operator:'Operação',viewer:'Consulta'}[state.actor?.role]??'Sem sessão')}" readonly></label></div><div class="profile-footer">${connected?'<button class="btn" type="submit">'+icon('save')+'Salvar perfil</button>':button('Entrar com RE','connect','log-in')}</div></form><div class="setting-row"><div><h3>Senha</h3></div>${connected?button('Alterar senha','change-password','key-round'):''}</div></section><section class="settings-section"><h2>Aparência e acessibilidade</h2><div class="setting-row"><div><h3>Tema</h3></div><div class="segmented">${[['light','sun','Claro'],['dark','moon','Escuro'],['system','monitor','Sistema']].map(([id,ico,title])=>`<button data-theme-choice="${id}" class="${prefs.theme===id?'selected':''}">${icon(ico)}${title}</button>`).join('')}</div></div><div class="setting-row"><div><h3>VLibras</h3><p>Tradução em Libras</p></div><label class="switch"><input id="vlibras-toggle" type="checkbox" aria-label="Ativar VLibras" ${prefs.vlibras?'checked':''}><span class="switch-track"></span></label></div><div class="setting-row"><div><h3>Tabelas compactas</h3></div><label class="switch"><input id="compact-toggle" type="checkbox" aria-label="Tabelas compactas" ${view.compact?'checked':''}><span class="switch-track"></span></label></div></section><section class="settings-section"><h2>Verificação técnica</h2><p>17 cenários isolados para conferir comportamentos e limites.</p>${button('Simular cenário','simulate','flask-conical')}</section><section class="settings-section"><h2>Consulta</h2><div class="setting-row"><label class="field" for="default-period">Período inicial</label><select id="default-period">${[7,14,30].map(days=>`<option value="${days}" ${days===view.days?'selected':''}>Últimos ${days} dias</option>`).join('')}</select></div><div class="setting-row"><div><h3>Preferências de consulta</h3></div>${button('Restaurar','reset-consultation','rotate-ccw')}</div></section>`;}
 function drawPageCharts() {
   if(state.route==='dashboard'&&state.context.machineId==='nhpl'){
     const data=productionChartData(productivityView(state)),base={labels:data.labels,fullLabels:data.fullLabels,unit:'peças',beginAtZero:true};
@@ -606,8 +614,8 @@ function reconcileContext() {
   const products = rows("products").filter(
     (r) => r.active && r.processIds?.[state.context.processId],
   );
-  if (!products.some((r) => r.id === state.context.productId))
-    state.context.productId = products[0]?.id;
+  if (state.context.productId&&!products.some((r) => r.id === state.context.productId))
+    delete state.context.productId;
 }
 async function refresh({background=false}={}) {
   if (!state.client) return;
@@ -624,15 +632,18 @@ async function refresh({background=false}={}) {
     state.registries = registries;
     reconcileContext();
     if(state.hourly.date<state.fromDate||state.hourly.date>state.toDate)state.hourly.date=state.toDate;
-    if (state.context.productId) {
+    if (state.context.processId) {
       const asOf=state.client.live?.status().asOf??Date.now();
       const consultation={context:state.context,fromDate:state.fromDate,toDate:state.toDate,shift:state.consultationShift,dataset:state.simulation||['presentation','live'].includes(state.client.mode)?'all':state.dataset};
+      state.selection.query=structuredClone(consultation);
       const view=await loadOperationalView({services:services(),repo:state.client.repo,consultation,now:asOf});
       if(ticket!==epoch)return;
       Object.assign(state,view);
       state.liveCoverage=state.client.mode==='live'?liveObservedBases(JSON.parse(state.client.exportBackup()),view.operationalQuery,asOf):null;
       state.pending=buildPending({...view,productivity:productivityView(state),consultation:view.operationalQuery.consultation,actor:state.actor});
-      writeAccountConsultation(state.actor.uid,state.source,{shift:state.consultationShift,fromDate:state.fromDate,toDate:state.toDate,context:state.context,followLatest:state.followLatest});
+      if(!state.simulation){const listed=await services().productions.list();if(ticket!==epoch)return;state.productionCases=listed.items;}
+      if(state.route==='equipment'){const equipmentPeriod=await services().history.loadPeriod({...view.operationalQuery.query,context:{}});if(ticket!==epoch)return;state.equipmentEvents=equipmentPeriod.effective??equipmentPeriod;}
+      writeAccountConsultation(state.actor.uid,state.source,{shift:state.consultationShift,fromDate:state.fromDate,toDate:state.toDate,context:state.context,followLatest:state.followLatest,recording:state.selection.recording,packageId:state.selection.packageId,previousQuery:state.selection.previousQuery});
     } else {
       state.period = {};
       state.dashboard = emptyDashboard();
@@ -701,7 +712,9 @@ async function enterCloud(user) {
     state.client.re=Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??'';
     history.replaceState(null,'',location.pathname+location.search+'#'+state.route);
     state.returnRoute=null;
-    if(state.client.defaultSelection){const initial=state.client.defaultSelection;state.context=initial.query.context;state.fromDate=initial.query.fromDate;state.toDate=initial.query.toDate;state.consultationShift=initial.query.shift;state.selection=initial;}restoreConsultation();
+    restoreConsultation();
+    state.selection=initialSelection({manifest:state.client.manifest,saved:readAccountConsultation(actor.uid,state.source)});
+    applyQuery(state.selection.query);
     sessionStorage.setItem("msa.session.mode", "firebase");
     watch();
     await refresh();
@@ -717,7 +730,7 @@ async function leaveWorkspace(){
   stopConnector();unsubscribe();closeAccount();
   await liveState?.client?.dispose?.();liveState=null;localSimulation=null;state.simulation=null;state.menuOpen=false;
   await state.client?.dispose?.();state.client=null;state.actor=null;
-  state.context={};state.registries={};state.period={};state.technical=[];
+  state.context={};state.selection={query:{},recording:null};state.draft=null;state.lastSaved=null;state.productionCases=[];state.registries={};state.period={};state.technical=[];
   state.dashboard=emptyDashboard();state.error=null;state.loading=false;
   state.loginError='';state.returnRoute=null;state.route='login';
   sessionStorage.removeItem('msa.session.mode');
@@ -748,6 +761,7 @@ function showModal(
   { submit, wide = false, footer = "Salvar" } = {},
 ) {
   const trigger = document.activeElement;
+  const modalClient=state.client;
   state.modalReturn = ['data-action','data-parameter','data-detail'].flatMap(attribute=>trigger?.hasAttribute(attribute)?[`[${attribute}="${CSS.escape(trigger.getAttribute(attribute))}"]`]:[])[0] ?? null;
   modal.className = wide ? "modal-wide" : "";
   modal.innerHTML = `<form id="modal-form"><header class="modal-head"><h2 id="modal-title">${e(title)}</h2><button class="icon-btn" type="button" data-action="close-modal" aria-label="Fechar">${icon("x")}</button></header><div class="modal-body">${body}<p class="form-error" role="alert"></p></div><footer class="modal-footer"><button class="btn" type="button" data-action="close-modal">${submit ? "Cancelar" : "Fechar"}</button>${submit ? `<button class="btn primary" type="submit">${e(footer)}</button>` : ""}</footer></form>`;
@@ -763,8 +777,10 @@ function showModal(
       form.dataset.submitting='true';
       btn.disabled = true;
       try {
+        requireThat(state.client===modalClient,'STALE_SESSION');
         const saved=await submit(new FormData(form));
         if(saved?.keepOpen)return;
+        if(saved?.context&&saved?.id&&saved?.eventDate)state.lastSaved={record:saved,kind:saved.readings?'collections':saved.quantity!=null?'production':saved.amount!=null?'losses':'stoppages'};
         modal.close();
         toast(saved?.successMessage??(saved?.name?`${recordLabel(saved.name)} salvo.${saved.active===true&&!saved.machineId&&!saved.processIds&&!saved.processId&&!saved.kind&&!saved.metric?' Vincule um processo e um produto para registrar coletas.':''}`:'Operação confirmada.'));
         await refresh();
@@ -776,12 +792,23 @@ function showModal(
       }
     });
 }
-function openForm(kind, record = {}) {
-  if(kind==='production'&&state.context.machineId==='nhpl'){
-    const available=availableProductionIntervals(state);
+async function openForm(kind, record = {},resume=false) {
+  if(kind==='plannedProduction')return openPlannedForm(state.draft.header,true);
+  const operational=['collection','production','loss','stoppage'].includes(kind);
+  if(operational){requireThat(operator(),'FORBIDDEN');if(!state.selection.recording)return journey.choose();if(state.draft&&!resume){showModal('Continuar registro',`<p>Há um rascunho preservado. Continue a edição ou escolha outra produção para iniciar um novo registro.</p><button type="button" class="btn" data-action="resume-draft">Continuar rascunho</button><button type="button" class="btn" data-action="choose-production">Escolher produção</button>`);return;}}
+  const client=state.client,selected=state.selection.recording;
+  const context=structuredClone(resume?state.draft.context:operational?(selected.productionCaseId?await services().productions.context(selected.productionCaseId):selected.context):record.context??state.context);
+  requireThat(state.client===client,'STALE_SESSION');
+  const recordingState={...state,context,operationalQuery:null};
+  if(kind==='production'&&context.machineId==='nhpl'){
+    const row=state.productionCases.find(r=>r.id===selected.productionCaseId),period=await services().history.loadPeriod({context,fromDate:row?.operationalDate??state.fromDate,toDate:row?.endedAt?eventDate(row.endedAt-1):state.toDate,dataset:'all'});
+    requireThat(state.client===client,'STALE_SESSION');recordingState.period=period;
+    const available=availableProductionIntervals(recordingState);
     if(!available.length){showModal('Registrar produção','<p>Não há intervalo aprovado aberto neste contexto. Confira o produto e o período selecionados ou prepare um plano em Planejamento.</p>');return;}
-    showModal('Selecionar intervalo aprovado',`<label class="field">Intervalo<select name="intervalId" required>${available.map(([id,h])=>`<option value="${e(id)}">${date(h.startedAt,true)} · OP ${e(h.context.order)} · ${n(h.plannedPieces)} peças</option>`).join('')}</select></label>`,{footer:'Abrir apontamento',submit:async data=>{modal.close();await nhplAction('nhpl:production:'+data.get('intervalId'),{state,services:services(),showModal,modal,refresh,downloadCsv});return {keepOpen:true};}});return;
+    showModal('Selecionar intervalo aprovado',`<label class="field">Intervalo<select name="intervalId" required>${available.map(([id,h])=>`<option value="${e(id)}">${date(h.startedAt,true)} · OP ${e(h.context.order)} · ${n(h.plannedPieces)} peças</option>`).join('')}</select></label>`,{footer:'Abrir apontamento',submit:async data=>{requireThat(state.client===client,'STALE_SESSION');modal.close();openPlannedForm({...period.intervalHeaders[data.get('intervalId')],id:data.get('intervalId')});return {keepOpen:true};}});return;
   }
+  const draft=operational?(resume?state.draft:{kind,record,context,selection:structuredClone(selected),intent:{id:crypto.randomUUID()},values:null}):null;
+  if(draft)state.draft=draft;
   showModal(
     {
       collection: "Nova coleta",
@@ -792,28 +819,42 @@ function openForm(kind, record = {}) {
       reviewDecision: "Decisão da Engenharia",
       parameterVersion: "Nova versão de limites",
     }[kind] ?? "Novo cadastro",
-    formMarkup(kind, {
+    (operational?productionContextCard({recording:{...selected,context},catalog:state.registries,cases:state.productionCases})+'<p class="source-notes">Informe o horário real do registro. Uma produção encerrada não altera automaticamente o horário para o passado.</p>':'')+formMarkup(kind, {
       registries: state.registries,
-      context: state.context,
+      context,
       record,
-      catalog: state.context.machineId==='nhpl'?[]:getMsaParameterCatalog(),
+      catalog: context.machineId==='nhpl'?[]:getMsaParameterCatalog(),
     }),
     {
       wide: kind === "collection",
       footer:kind==='parameterVersion'?'Salvar limites':'Salvar',
       submit: async (data) => {
+        requireThat(state.client===client,'STALE_SESSION');
+        if(draft){if(!draft.intent.occurredAt)draft.intent.occurredAt=data.get('occurredAt')?saoPauloInstant(data.get('occurredAt'),'occurredAt'):data.get('startedAt')?saoPauloInstant(data.get('startedAt'),'startedAt'):Date.now();}
         const saved=await submitForm(kind, data, {
           services: services(),
-          context: state.context,
+          context,
+          intent:draft?.intent,
           registries: state.registries,
           record,
         });
-        if(saved?.eventDate&&saved.eventDate>state.toDate)state.toDate=saved.eventDate;
+        if(operational){state.lastSaved={kind:{collection:'collections',production:'production',loss:'losses',stoppage:'stoppages'}[kind],record:saved};state.draft=null;}
         if(kind==='parameterVersion')return {...saved,successMessage:saved.status==='approved'?'Limites aprovados e disponíveis para novas coletas.':'Limites salvos como rascunho. Selecione Aprovado para usar nas próximas coletas.'};
         return saved;
       },
     },
   );
+  if(draft){const form=modal.querySelector('form');if(!draft.values)draft.values=[...new FormData(form)];if(draft.values)for(const [key,value]of draft.values){const input=form.elements.namedItem(key);if(input){if(input.type==='checkbox')input.checked=true;else input.value=value;}}form.addEventListener('input',()=>{draft.values=[...new FormData(form)];});form.addEventListener('change',()=>{draft.values=[...new FormData(form)];});}
+}
+function openPlannedForm(header,resume=false){
+ requireThat(operator(),'FORBIDDEN');requireThat(header?.context,'NOT_FOUND');
+ if(state.draft&&!resume){showModal('Rascunho preservado','<p>Continue o registro anterior antes de abrir outro apontamento.</p><button type="button" class="btn" data-action="resume-draft">Continuar rascunho</button>');return;}
+ requireThat(Object.entries(state.selection.recording?.context??{}).every(([k,v])=>header.context[k]===v)&&state.selection.recording,'CONTEXT_MISMATCH');
+ const draft=resume?state.draft:{kind:'plannedProduction',record:{},header:structuredClone(header),context:structuredClone(header.context),intent:{id:crypto.randomUUID()},values:null};state.draft=draft;
+ showModal('Registrar produção no intervalo',productionContextCard({recording:{context:draft.context},catalog:state.registries})+formMarkup('production',{context:draft.context,record:{startedAt:header.startedAt,endedAt:header.endedAt}}),{submit:async data=>{
+  const saved=await services().plannedProduction.record(header.id,{id:draft.intent.id,quantity:Number(String(data.get('quantity')).replace(',','.')),basis:data.get('basis'),startedAt:saoPauloInstant(data.get('startedAt'),'startedAt'),endedAt:saoPauloInstant(data.get('endedAt'),'endedAt'),expectedRevision:ledgerView(draft.header).last?.id??null,origin:state.simulation?'demo':'manual'});state.draft=null;state.lastSaved={kind:'production',record:saved};return saved;
+ }});
+ const form=modal.querySelector('form');if(!draft.values)draft.values=[...new FormData(form)];if(draft.values)for(const[k,v]of draft.values){const field=form.elements.namedItem(k);if(field)field.value=v;}const capture=()=>{draft.values=[...new FormData(form)];};form.addEventListener('input',capture);form.addEventListener('change',capture);
 }
 function correctionComparison(request) {
   const original=state.period[request?.recordType]?.find(r=>r.id===request.recordId),replacement=request?.replacement;
@@ -838,7 +879,7 @@ function detail(kind, id) {
     ["Registro", r.id],
     ["OP / lote / turno", [r.context?.order,r.context?.lot,r.context?.shift].filter(Boolean).join(' / ')||'Não informado'],
     ["Variante", r.context?.variant??'Não informada'],
-    ...(r.origin&&r.origin!=='demo'?[["Origem",r.origin]]:[]),
+    ...(r.origin?[["Origem",r.origin==='demo'?'Exemplo rastreável (demo)':r.origin]]:[]),
     ["Correção aplicada", r.correctionId??'Nenhuma'],
     ["Intervalo aprovado", r.intervalId??'Não vinculado'],
   ];
@@ -954,6 +995,19 @@ async function exportCsv() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 async function action(action) {
+  if(action==='choose-production')return journey.choose();
+  if(action.startsWith('select-production:'))return journey.select(action.slice(18));
+  if(action.startsWith('production-new:'))return journey.select(action.slice(15),'new');
+  if(action==='production-keep')return journey.keep();
+  if(action==='create-production')return journey.create();
+  if(action==='resume-draft'&&state.draft){modal.close();return openForm(state.draft.kind,state.draft.record,true);}
+  if(action==='latest-period'){applyQuery(state.client.defaultSelection.query);return refresh();}
+  if(action==='clear-query'){applyQuery({...state.selection.query,context:{machineId:state.context.machineId,processId:state.context.processId},shift:'all'});return refresh();}
+  if(action==='saved-summary'||action==='saved-history'){
+    const saved=state.lastSaved;if(!saved)return;const r=saved.record,day=shiftAt(r.occurredAt??r.startedAt).operationalDate;
+    applyQuery({context:r.context,fromDate:day,toDate:day,shift:'all'});state.route=action==='saved-history'?'history':saved.kind==='collections'?'parameters':'production';state.tab.history=saved.kind;state.pageTabs.production='summary';history.replaceState(null,'','#'+state.route);await refresh();if(action==='saved-history')detail(saved.kind,r.id);return;
+  }
+  if(action.startsWith('equipment-detail:')){const id=action.slice(17),row=equipmentView({catalog:state.registries,events:state.equipmentEvents}).find(r=>r.id===id);if(row)showModal(row.name,`<p>${e(row.status)}</p><p>Última leitura: ${row.lastReading?date(row.lastReading.occurredAt,true):e(row.lastReadingReason)}</p><p>${e(row.processes.map(p=>p.name).join(' · '))}</p><p class="source-notes">Situação baseada nos registros consultados, sem comprovação de conexão física.</p>${row.lastReading?recordContextMarkup(row.lastReading,state.registries)+`<dl>${Object.values(row.lastReading.readings??{}).map(r=>`<dt>${e(name('parameters',r.parameterId))}</dt><dd>${e(r.raw??'Sem leitura')} ${e(state.registries.parameterVersions?.[r.versionId]?.unit??'')} · versão ${e(r.versionId)}</dd>`).join('')}</dl>`:''}`);return;}
   if(action.startsWith("live:")){const type=action.slice(5);if(type==='retry')await state.client.live.retry();else await state.client.live.command(type);return refresh();}
   if(action==='pending-back'){if(state.pendingReturn){Object.assign(state,state.pendingReturn);state.pendingReturn=null;await refresh();}return;}
   if(action.startsWith('registry-edit:')){const[,kind,id]=action.split(':'),r=state.registries[kind]?.[id];if(!r||!engineer())return;showModal('Editar cadastro',`<div class="form-grid"><label class="field">Nome<input name="name" value="${e(r.name)}" required maxlength="160"></label><label class="field">Código<input name="code" value="${e(r.code??'')}" maxlength="100"></label></div><p class="source-notes">Identificador e vínculos históricos são preservados.</p>`,{submit:data=>services().registry.update(kind,id,{name:data.get('name'),...(data.get('code')?{code:data.get('code')}:{})})});return;}
@@ -964,7 +1018,13 @@ async function action(action) {
   if(action==='presentation-backup'){const url=URL.createObjectURL(new Blob([await state.client.exportBackup()],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='msa-registros-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
   if(action==='local-archive'){const archive=await archiveLocalWorkspace({uid:state.actor.uid}),url=URL.createObjectURL(new Blob([JSON.stringify(archive,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='msa-registros-locais-anteriores.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
   if(action==='new-review'){const col=records('collections').at(-1);if(!col){toast('Registre uma coleta neste contexto primeiro.');return;}return actionReview(col.id);}
-  if(action.startsWith('nhpl:'))return nhplAction(action,{state,services:state.client?services():null,showModal,modal,refresh,downloadCsv});
+  if(action.startsWith('nhpl:')){
+    const command=action.split(':')[1],needsRecording=['run','production'].includes(command);
+    if(needsRecording&&!state.selection.recording)return journey.choose();
+    if(command==='production')return openPlannedForm({...state.period.intervalHeaders?.[action.split(':')[2]],id:action.split(':')[2]});
+    const context=needsRecording?await recordingContext():state.context;
+    return nhplAction(action,{state:needsRecording?{...state,context}:state,services:state.client?services():null,showModal,modal,refresh,downloadCsv});
+  }
   const [command, id, extra] = action.split(":");
   if(!writable()&&['form','active','start','decide','correction','catalog','version','close','review','csv-import','request-correction','cep-review'].includes(command))throw Object.assign(new Error('Seu perfil não permite gravação.'),{code:'FORBIDDEN'});
   if(command==='csv-import'){if(operator()&&state.context.productId)openCsvImport({showModal,services:services(),registries:state.registries,context:structuredClone(state.context)});return;}
@@ -1125,6 +1185,14 @@ document.addEventListener('keydown',event=>{
   if(event.key==='Escape'&&state.menuOpen){state.menuOpen=false;icons();app.querySelector('[data-action=menu]')?.focus();}
   if(event.key==='Escape' && !app.querySelector('#account-popover')?.hidden) closeAccount({restoreFocus:true});
 });
+document.addEventListener('submit',async event=>{
+ if(event.target.id!=='query-form')return;event.preventDefault();
+ try{const data=new FormData(event.target),context=Object.fromEntries(['machineId','processId','productId','order','lot','recipe'].filter(k=>data.get(k)).map(k=>[k,data.get(k)]));dateWindow(data.get('fromDate'),data.get('toDate'));applyQuery({context,fromDate:data.get('fromDate'),toDate:data.get('toDate'),shift:data.get('shift')});await refresh();}catch(error){fail(error);}
+});
+document.addEventListener('change',event=>{
+ const form=event.target.closest('#query-form');if(form&&event.target.dataset.queryCatalog){const controls=form.elements,options=values=>values.map(r=>`<option value="${e(r.id)}">${e(r.name)}</option>`).join('');if(event.target.dataset.queryCatalog==='machine')controls.processId.innerHTML=options(rows('processes').filter(p=>p.active&&p.machineId===controls.machineId.value));controls.productId.innerHTML='<option value="">Todos os produtos</option>'+options(rows('products').filter(p=>p.active&&p.processIds?.[controls.processId.value]));}
+ if(event.target.id==='equipment-sector'){state.equipmentSector=event.target.value;layout();}
+});
 document.addEventListener("click", (event) => {
   if(!event.target.closest('.account')) closeAccount();
   const target = event.target.closest(
@@ -1253,6 +1321,7 @@ document.addEventListener("change", async (event) => {
   }
 });
 modal.addEventListener("close", () => {
+  if(!modal.open&&state.draft)layout();
   document.body.classList.remove("modal-open");
   requestAnimationFrame(()=>{
     const target = (state.modalReturn && app.querySelector(state.modalReturn)) || app.querySelector('#content');
@@ -1263,6 +1332,7 @@ window.addEventListener("hashchange", () => {
   closeAccount();
   state.menuOpen = false;
   state.route = location.hash.slice(1) || "dashboard";
+  if(state.route==='equipment'&&state.client){refresh();return;}
   layout();
 });
 const prefs = readPreferences();
