@@ -1,12 +1,28 @@
 # Brainstorming — respostas da Fabiana e evolução do MVP
 
+Estado mais recente do complemento: [Entrega completa NHPL](ENTREGA_NHPL_COMPLETA_2026-10-07.md). As cinco frentes foram implementadas localmente, incluindo planejamento/hora a hora, indicadores condicionais, captura por eventos, Engenharia/CEP e TV. Lideres/supervisores/times tecnicos vinculados a Engenharia podem registrar, revisar, corrigir, decidir e manter cadastros produtivos; Operacao tem atalhos de producao, parametros, parada, perda e ocorrencia, com proposta de correcao sem autoaprovacao. Nenhuma conta foi promovida. O login por aba foi descartado por orientacao do usuario; navegadores distintos nao compartilham a base local. OEE/limites reais e integracao industrial continuam exigindo evidencias. As notas anteriores permanecem como historico.
+
 Data: 07/10/2026. Estado: levantamento e proposta para revisão. Este documento não é uma especificação aprovada. Nenhum código de produto ou registro operacional foi alterado nesta etapa.
 
-Estado mais recente: em 07/10/2026, o usuário **aprovou a especificação escrita da primeira entrega** e **adiou a implementação para outro computador**. A [Especificação NHPL](superpowers/specs/2026-10-07-nhpl-produtividade-design.md) está aprovada. Elaborar e revisar o plano de implementação é a próxima etapa quando o usuário retomar o trabalho. As indicações abaixo de revisão pendente representam o levantamento anterior à aprovação.
+Estado mais recente: em 07/10/2026, o usuário retomou na cópia Desktop, revisou o plano e autorizou a execução. A primeira entrega foi implementada e validada localmente, incluindo o complemento de quatro horários e registro manual de paradas. Leia [Entrega NHPL](ENTREGA_NHPL_MSA.md) para evidências e limites. A especificação permanece aprovada; os trechos anteriores de adiamento/revisão pendente são histórico. Sem publicação, instalação industrial ou alteração do banco real nesta execução.
 
 Atualização após a orientação do usuário e a conferência do material fornecido: a divisão de permissões foi aceita. O Pitch Board da NHPL mostra Plano/Realizado/Acumulado/Sucata e sustenta a decisão proposta para o MVP de produtividade sobre o plano de produção total, com qualidade separada. Os 12 s/peça orientam uma sugestão de planejamento; o plano explicitamente aprovado prevalece. A fórmula deixa de ser uma escolha aberta nesta proposta, mas não é apresentada como política industrial homologada. A primeira entrega está detalhada em [Especificação NHPL](superpowers/specs/2026-10-07-nhpl-produtividade-design.md), aguardando revisão do documento antes da elaboração do plano de implementação. Os blocos abaixo preservam o levantamento original.
 
 ## Objetivo e fontes
+
+### Complemento do usuário e autorização de execução — 07/10/2026
+
+O usuário revisou o plano da primeira entrega e autorizou sua execução completa nesta conversa. Acrescentou as orientações abaixo. Elas complementam a especificação aprovada; não reabrem sua aprovação.
+
+- A experiência principal passa a usar NHPL, Montagem e montagem de abafadores, com VGARD HP/MARK V e variante quando conhecida. Isso cria um contexto próprio, sem renomear as medições históricas da T20/selos como montagem.
+- Registrar quatro instantes distintos: **máquina ligada**, **produção iniciada**, **produção encerrada** e **máquina desligada**. Preparação/aquecimento antes da produção e tempo após a produção permanecem identificáveis. Enquanto o ciclo estiver aberto, mostrar a janela parcial até o instante da consulta; no fechamento, conservar os quatro horários e os apontamentos associados.
+- Esses horários preparam os dados do OEE. OEE continua separado da produtividade sobre o plano: sua disponibilidade precisa de programação e classificação das paradas; desempenho requer ciclo ideal próprio; qualidade usa quantidades total/boa compatíveis. O takt de 12 s não vira ciclo ideal automaticamente. A primeira entrega registra a janela, sem apresentar um OEE completo quando faltar definição/dado.
+- Apontamento de parada manual deve priorizar seletores de motivo, recurso/contexto e horários. A taxonomia é mantida pela Administração; a pessoa não precisa escrever um relato livre para cada parada. Preservar justificativa nas revisões/correções, onde há decisão rastreável.
+- Cadastro manual por formulário é uma solução válida para máquinas, processos e parâmetros: centraliza os registros mesmo sem automação. A marca/modelo da HMI não permite descobrir automaticamente a máquina ou suas zonas. Fotografias não substituem confirmação de protocolo, tags e sinais por Manutenção/TI.
+- Materiais reconsultados em `C:/Users/Kauan/Desktop/Grupo Amarelo - MSA Brasil/MSA - Material Fornecido`: as dez fontes são idênticas por SHA-256 às cópias preservadas. A planilha contém somente `Selo ` e `Normality test `; é referência de selos, não limites da NHPL. Contramolde 80/75 continua invertido; pressão 6,5 e vácuo -600 continuam com limite incompleto. Manter essas pendências e a origem; não completar/aprovar faixas por suposição.
+- Fotos da NHPL ajudam a identificar o fluxo Plano/Realizado/Acumulado/Sucata e estados/alarmes da IHM. Valores de telas isoladas são observações da foto, não prova de um mínimo/máximo homologado.
+
+Decisão de execução: concluir o bloco A/primeira entrega, incluindo janela operacional e paradas por seleção. Conector físico/arquivos e microparadas automáticas (B), OEE e política técnica completa (C) e análises/integrações ampliadas (D) continuam identificados como evoluções posteriores. Nenhuma instalação industrial, publicação ou alteração de contas foi autorizada por essa continuidade.
 
 Facilitar o registro e a coleta, acelerar decisões e acompanhar a produção durante a operação da NHPL, preservando rastreabilidade e permissões. Os requisitos mínimos do desafio continuam sendo a base; as respostas novas orientam o piloto e suas prioridades.
 

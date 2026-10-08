@@ -35,7 +35,7 @@ export function formMarkup(kind,{registries={},context={},record={},catalog=[]}=
   } else if(kind==='stoppage') {
     content=field('Início da parada',input('startedAt',localDateTime(record.startedAt),{type:'datetime-local'}))+field('Motivo',select('reasonId',active(registries,'reasons').filter(row=>row.kind==='stop').map(row=>[row.id,row.name]),record.reasonId??''))+`<label class="check-line full"><input type="checkbox" name="planned"${record.planned===true?' checked':''}><span>Parada planejada</span></label>`;
   } else if(kind==='closeStop') {
-    content=field('Fim da parada',input('endedAt',localDateTime(record.endedAt),{type:'datetime-local'}),true);
+    content=field('Fim da parada',input('endedAt',localDateTime(record.endedAt),{type:'datetime-local'}),true)+(context.machineId==='nhpl'?'<label class="check-line full"><input name="goodValidated" required type="checkbox">Retomada com peça boa validada</label>':'');
   } else if(kind==='reviewDecision') {
     content=field('Decisão',select('decision',[['approved','Aprovar'],['rejected','Rejeitar']],'',{}),true)+field('Justificativa',`<textarea name="justification" required maxlength="2000" rows="4">${escape(record.justification??'')}</textarea>`,true);
   } else if(kind==='parameterVersion') {
@@ -53,6 +53,7 @@ export function formMarkup(kind,{registries={},context={},record={},catalog=[]}=
     const today=eventDate(Date.now());
     content=field('Nome da meta',input('name',record.name??'',{maxLength:160}),true)+field('Indicador',select('metric',[['producedPieces','Produção bruta (peças)'],['stopMinutes','Tempo parado (minutos)'],['rejectedPieces','Refugo (peças)'],['lossKg','Perda de material (kg)']],record.metric??''))+field('Limite',input('threshold',record.threshold??'',{inputMode:'decimal'}))+field('Comparação',select('operator',[['lower','Pelo menos'],['upper','No máximo']],record.operator??'upper',{placeholder:false}))+field('Data inicial',input('fromDate',record.fromDate??today,{type:'date'}))+field('Data final',input('toDate',record.toDate??today,{type:'date'}));
   } else throw new MsaError('INVALID_KIND');
+  if(context.machineId==='nhpl'&&['collection','loss','stoppage'].includes(kind))content=['order','lot','shift'].map((key,i)=>field(['OP','Lote','Turno'][i],input('context_'+key,context[key]??'',{maxLength:100}))).join('')+content;
   return `<div class="form-grid">${content}</div>`;
 }
 
@@ -68,11 +69,12 @@ export async function submitForm(kind,data,{services,context,record={},registrie
   const value=field=>{const raw=data.get(field);requireThat(raw==null||typeof raw==='string','VALIDATION',field);return raw??'';};
   const number=(field,code='INVALID_QUANTITY')=>{const parsed=parseReading(value(field));requireThat(parsed.status==='valid'&&Number.isFinite(parsed.value),code,field);return parsed.value;};
   const local=field=>saoPauloInstant(value(field),field);
+  if(context?.machineId==='nhpl'&&['collection','loss','stoppage'].includes(kind))context={...context,...Object.fromEntries(['order','lot','shift'].map(key=>[key,value('context_'+key).trim()]))};
   if(kind==='collection') return services.operations.recordCollection({context,readings:parameters(registries,context).map(parameter=>({parameterId:parameter.id,versionId:value(`version_${parameter.id}`),raw:value(`raw_${parameter.id}`)}))});
   if(kind==='production') return services.operations.recordProduction({context,quantity:number('quantity'),basis:value('basis'),startedAt:local('startedAt'),endedAt:local('endedAt')});
   if(kind==='loss') return services.operations.recordLoss({context,kind:value('kind'),unit:value('unit'),amount:number('amount'),reasonId:value('reasonId')});
   if(kind==='stoppage') return services.operations.startStoppage({context,startedAt:local('startedAt'),planned:data.has('planned'),reasonId:value('reasonId')});
-  if(kind==='closeStop') return services.operations.closeStoppage(record.id,{endedAt:local('endedAt'),reasonId:record.reasonId});
+  if(kind==='closeStop') return services.operations.closeStoppage(record.id,{endedAt:local('endedAt'),reasonId:record.reasonId,...(data.has('goodValidated')?{goodValidated:true}:{})});
   if(kind==='reviewDecision') return services.analysis.decideReview(record.id,{decision:value('decision'),justification:value('justification')});
   if(kind==='parameterVersion') {
     const ruleKind=value('ruleKind'),rule={kind:ruleKind};

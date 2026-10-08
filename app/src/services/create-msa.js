@@ -8,11 +8,28 @@ import {assertId,requireThat} from '../domain/errors.js';
 import {createCatalogService} from './catalog.js';
 import {buildDashboard} from '../domain/dashboard.js';
 import {assertPeriod,eventDate} from '../domain/time.js';
+import {createNhplService} from './nhpl.js';
+import {createProductionPolicyService} from './production-policy.js';
+import {createPlanningService} from './planning.js';
+import {createPlannedProductionService} from './planned-production.js';
+import {buildProductivity} from '../domain/productivity.js';
+import {createMachineRunService} from './machine-runs.js';
+import {createTechnicalService} from './technical.js';
 export function createMsaServices(options) {
   const history=createHistoryService(options),operations=createOperations(options);
+  const plannedProduction=createPlannedProductionService(options),analysis=createAnalysisService(options);
+  const requestCorrection=analysis.requestCorrection.bind(analysis),decideCorrection=analysis.decideCorrection.bind(analysis);
+  analysis.requestCorrection=payload=>payload.intervalId?plannedProduction.requestCorrection(payload):requestCorrection(payload);
+  analysis.decideCorrection=async(id,payload)=>{let row;try{row=await options.repo.get('plannedCorrections/'+id);}catch(error){if(error.code!=='FORBIDDEN')throw error;}return row?plannedProduction.decideCorrection(id,payload):decideCorrection(id,payload);};
   return {
-    registry:createRegistryService(options),catalog:createCatalogService(options),operations,analysis:createAnalysisService(options),history,
+    registry:createRegistryService(options),catalog:createCatalogService(options),operations,analysis,history,
+    technical:createTechnicalService({...options,operations,plannedProduction}),
+    nhpl:createNhplService(options),policies:createProductionPolicyService(options),planning:createPlanningService(options),plannedProduction,runs:createMachineRunService(options),
     csv:createCsvService({...options,operations}),
+    async getProductivity(query,range,config={}) {
+      assertPeriod(range?.from,range?.to);const data=await history.loadPeriod(query);
+      return buildProductivity({...data,production:data.effective.production,losses:data.effective.losses},{...range,now:(options.clock??Date.now)(),...config,context:query.context,coverage:{complete:data.nhplComplete&&data.coverage.production&&data.coverage.corrections}});
+    },
     async getIndicators(query,range) {
       const period=await history.loadPeriod(query);
       const indicators=buildIndicators({...period,...period.effective},{...range,complete:period.complete});

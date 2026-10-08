@@ -36,6 +36,7 @@ export function createOperations({repo,actor,clock=Date.now,idFactory=()=>crypto
       return repo.create(`collections/${record.id}`,{...record,readings});
     },
     async recordProduction(payload) {
+      requireThat(payload.context?.machineId!=='nhpl','PLANNING_REQUIRED');
       const record=await envelope(payload,['quantity','basis','startedAt','endedAt']);requireThat(record.timePrecision==='instant','INVALID_TIME');
       assertPeriod(payload.startedAt,payload.endedAt);
       requireThat(Number.isSafeInteger(payload.quantity)&&payload.quantity>=0&&payload.quantity<=1e12,'INVALID_QUANTITY');
@@ -55,11 +56,12 @@ export function createOperations({repo,actor,clock=Date.now,idFactory=()=>crypto
       return repo.create(`stoppages/${record.id}`,{...record,startedAt:payload.startedAt,planned:payload.planned,reasonId:payload.reasonId});
     },
     async closeStoppage(id,payload) {
-      assertRole(actor,['admin','operator','engineer']);assertId(id);knownKeys(payload,['endedAt','reasonId']);assertInstant(payload.endedAt);await reason(payload.reasonId,'stop');
+      assertRole(actor,['admin','operator','engineer']);assertId(id);knownKeys(payload,['endedAt','reasonId','goodValidated']);assertInstant(payload.endedAt);await reason(payload.reasonId,'stop');
       return repo.transact(`stoppages/${id}`,current=>{
         if(!current||current.endedAt!=null) return undefined;
+        if(current.context.machineId==='nhpl')requireThat(payload.goodValidated===true,'QUALITY_REQUIRED');
         assertPeriod(current.startedAt,payload.endedAt);requireThat(current.reasonId===payload.reasonId,'CORRECTION_REQUIRED','reasonId');
-        return {...current,endedAt:payload.endedAt,closedBy:actor.uid,closedAt:repo.timestamp()};
+        return {...current,endedAt:payload.endedAt,closedBy:actor.uid,closedAt:repo.timestamp(),...(payload.goodValidated===true?{goodValidated:true}:{})};
       });
     }
   };

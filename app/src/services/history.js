@@ -1,6 +1,9 @@
 import {requireThat,knownKeys,assertId} from '../domain/errors.js';
 import {validateDate} from '../domain/time.js';
 import {effectiveRecords} from '../domain/indicators.js';
+import {projectIntervalProduction} from '../repositories/operation-records.js';
+import {ledgerView} from '../repositories/append-ledger.js';
+import {normalizeCorrection} from '../domain/review.js';
 const kinds=['collections','production','stoppages','losses','reviews','corrections'];
 const operations=['collections','production','stoppages','losses'];
 const included=(row,dataset)=>!dataset||dataset==='all'||(dataset==='presentation'?row.origin==='demo':row.origin!=='demo');
@@ -13,11 +16,12 @@ export function createHistoryService({repo}) {
     requireThat(!q.fromDate||!q.toDate||q.fromDate<=q.toDate,'INVALID_PERIOD');
     if(q.limit!=null) requireThat(Number.isInteger(q.limit)&&q.limit>0&&q.limit<=500,'INVALID_QUERY');
     if(q.cursor) {validateDate(q.cursor.date);assertId(q.cursor.key);requireThat((!q.fromDate||q.cursor.date>=q.fromDate)&&(!q.toDate||q.cursor.date<=q.toDate),'INVALID_QUERY');}
-    if(q.context) {knownKeys(q.context,['machineId','processId','productId','recipe','lot','order','shift']);for(const key of ['machineId','processId','productId']) if(q.context[key]) assertId(q.context[key]);}
+    if(q.context) {knownKeys(q.context,['machineId','processId','productId','recipe','lot','order','shift','variant']);for(const key of ['machineId','processId','productId']) if(q.context[key]) assertId(q.context[key]);}
     return q;
   }
   const filtered=async(page,q,kind)=>{
-    const selected=await Promise.all(page.items.map(async row=>{
+    const selected=await Promise.all(page.items.map(async entry=>{
+      const row=kind==='corrections'?normalizeCorrection(entry):entry;
       if(kind==='corrections'||kind==='reviews'){
         if(!q.context&&(!q.dataset||q.dataset==='all'))return row;
         const type=kind==='reviews'?'collections':row.recordType,id=kind==='reviews'?row.collectionId:row.recordId;
@@ -51,6 +55,18 @@ export function createHistoryService({repo}) {
         result[kind]=rows;result.coverage[kind]=done;if(!done) {result.complete=false;result.notes.push(`page-cap:${kind}`);}
       }
       result.parameterVersions=await repo.get('parameterVersions')??{};result.targets=Object.values(await repo.get('targets')??{});
+      result.nhplComplete=true;
+      const optional=async path=>{try{return await repo.get(path)??{};}catch(error){if(error.code!=='FORBIDDEN')throw error;result.nhplComplete=false;return {};}};
+      result.pilot=await optional('pilots/nhpl');result.intervalHeaders=await optional('productionIntervals');
+      result.policies=[];result.plans=[];result.closures={};result.runs=[];result.retiredIntervals=[];
+      const readChains=(headers,key)=>{for(const header of Object.values(headers)){try{const chain=ledgerView(header);result.nhplComplete&&=chain.complete;result[key].push(...chain.events);}catch{result.nhplComplete=false;}}};
+      readChains(await optional('productionPolicies'),'policies');readChains(await optional('productionPlans'),'plans');readChains(await optional('machineRuns'),'runs');
+      for(const [id,header] of Object.entries(result.intervalHeaders)){try{const chain=ledgerView(header);result.nhplComplete&&=chain.complete;if(!chain.complete){delete result.intervalHeaders[id];continue;}if(chain.last?.kind==='closure')result.closures[id]=chain.last;if(chain.last?.kind==='retire')result.retiredIntervals.push(id);}catch{result.nhplComplete=false;delete result.intervalHeaders[id];}}
+      const projected=projectIntervalProduction(result.intervalHeaders).filter(r=>matches(r,q.context)&&(!q.toDate||r.eventDate<=q.toDate));
+      result.production.push(...projected);const plannedCorrections=Object.values(await optional('plannedCorrections'));
+      result.corrections.push(...plannedCorrections.filter(c=>projected.some(r=>r.id===c.recordId)));
+      result.targetRevisions=await optional('targetRevisions');
+      result.targets=result.targets.flatMap(target=>{const revisions=result.targetRevisions[target.id];if(!revisions)return [target];try{const view=ledgerView(revisions);if(!view.complete){result.nhplComplete=false;return [target];}const applicable=view.events.filter(r=>r.fromDate<=q.fromDate&&r.toDate>=q.toDate).at(-1);return [applicable?{...target,...applicable,id:target.id,revisionId:applicable.id}:target];}catch{result.nhplComplete=false;return [target];}});
       result.excludedPresentationCount=operations.reduce((n,kind)=>n+result[kind].filter(r=>r.origin==='demo'&&!included(r,q.dataset)).length,0);
       for(const kind of operations)result[kind]=result[kind].filter(r=>included(r,q.dataset));
       if(q.dataset&&q.dataset!=='all') {

@@ -55,7 +55,7 @@ export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}
     const version=data.parameterVersions?.[g.versionId];
     const ordered=[...g.readings].sort((a,b)=>(a.occurredAt??0)-(b.occurredAt??0));
     const sequenceConfirmed=ordered.every((r,i)=>r.timePrecision==='instant'&&Number.isSafeInteger(r.occurredAt)&&(!i||r.occurredAt>ordered[i-1].occurredAt));
-    const cep=analyzeCep(ordered,{version,sequenceConfirmed,complete:collectionsComplete});
+    const cep=analyzeCep(ordered,{version,sequenceConfirmed,complete:collectionsComplete,context:g.context});
     const trustedReadings=g.readings.map(r=>r.revisionConflict?{...r,status:'invalid',value:null}:r);
     return {...g,readings:undefined,...summarizeReadings(trustedReadings,{sigmaMethod,rule:version?.rule}),cp:cep.cp,cpk:cep.cpk,pp:cep.pp,ppk:cep.ppk,nConflicted:cep.nConflicted,capabilityReason:cep.reason,cep,unit:version?.unit??null,nature:version?.nature??null,versionStatus:version?.status??null};
   });

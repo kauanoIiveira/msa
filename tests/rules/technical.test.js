@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {assertFails} from '@firebase/rules-unit-testing';
+import {setup,sdk} from '../helpers/firebase-env.js';
+import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
+import {createMsaServices} from '../../app/src/services/create-msa.js';
+test('technical records are immutable, role-bound and never grant access',async t=>{
+ const env=await setup(t),db=uid=>env.authenticatedContext(uid).database(),service=(uid,role)=>createMsaServices({repo:createFirebaseRepository({db:db(uid),sdk,workspaceId:'demo'}),actor:{uid,role}});
+ const admin=service('admin','admin'),eng=service('eng','engineer'),op=service('op','operator');await admin.nhpl.install({});
+ const context={machineId:'nhpl',processId:'nhpl-montagem',productId:'nhpl-vgard-hp',order:'OP',lot:'L',shift:'1'},base='workspaces/demo/technicalRecords/';
+ const reference=await eng.technical.reference({context,idealSeconds:10,microStopSeconds:60,effectiveFrom:Date.now()-7200000,source:'Referência de teste'});
+ await assertFails(sdk.set(sdk.ref(db('op'),base+'forged'),{...reference,id:'forged',createdBy:'op',createdAt:sdk.serverTimestamp()}));
+ await assertFails(sdk.set(sdk.ref(db('eng'),base+reference.id+'/idealSeconds'),12));
+ await assertFails(sdk.remove(sdk.ref(db('admin'),base+reference.id)));
+ const occurrence=await op.technical.occurrence({context,type:'maintenance',note:'Conferir falha',occurredAt:Date.now()-1000});
+ await eng.technical.decideOccurrence(occurrence.id,{decision:'analyzing',note:'Em análise'});
+ await assertFails(sdk.set(sdk.ref(db('view'),base+'forged'),{...occurrence,id:'forged',createdBy:'view',createdAt:sdk.serverTimestamp()}));
+ await assertFails(sdk.set(sdk.ref(db('eng'),'workspaces/demo/members/eng/role'),'admin'));
+ assert.equal((await op.technical.records()).length,3);
+ const from=Date.now()-7200000,to=from+3600000,plan=await eng.planning.approve({context,startedAt:from,endedAt:to,intervalMinutes:60,quantitySource:'informed',plannedPieces:300});
+ const counter={schemaVersion:1,sourceId:'counter',context,type:'counter',basis:'gross',intervalId:plan.intervals[0].id,epoch:'one'};
+ const baseline=await op.technical.ingest({...counter,eventId:'e1',sequence:1,occurredAt:from+1000,count:100});assert.equal(baseline.baseline,true);
+ await op.technical.ingest({...counter,eventId:'e2',sequence:2,occurredAt:from+2000,count:110});
+ const header=(await sdk.get(sdk.ref(db('op'),'workspaces/demo/productionIntervals/'+plan.intervals[0].id))).val();assert.equal(Object.values(header.events).filter(r=>r.kind==='production')[0].origin,'import');
+});

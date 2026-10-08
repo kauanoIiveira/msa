@@ -1,6 +1,6 @@
 # MSA Yellow Team
 
-**Retomada atual — 07/10/2026:** comece por [RETOMADA_2026-10-07.md](RETOMADA_2026-10-07.md) e [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md). Especificação NHPL aprovada; implementação adiada pelo usuário; plano ainda pendente. Login por RE e quatro perfis de teste já existem. As notas abaixo descrevem etapas anteriores quando divergirem da atualização atual.
+**Retomada atual — 07/10/2026:** primeira entrega NHPL implementada e validada localmente, sem publicação ou instalação no banco real. Leia [Entrega NHPL](docs/ENTREGA_NHPL_MSA.md), [RETOMADA_2026-10-07.md](RETOMADA_2026-10-07.md) e [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md). Planejamento, produtividade, quatro horários e perfis preservados; OEE e integrações industriais continuam pendentes. As notas abaixo preservam etapas anteriores.
 
 Para retomar com o pacote local completo, comece por [LEIA_PRIMEIRO.md](LEIA_PRIMEIRO.md), use [PROMPT_RETOMADA.md](PROMPT_RETOMADA.md) e siga o [guia de transferência](docs/TRANSFERENCIA_LOCAL.md). Os originais e o contexto privado agora acompanham a cópia local; partes antigas deste documento permanecem como histórico.
 
@@ -12,7 +12,7 @@ Para continuar em outro computador, leia [CONTINUE_AQUI.md](CONTINUE_AQUI.md). R
 
 Entrega corrente: [CEP e pendências](docs/ENTREGA_CEP_E_PENDENCIAS_MSA_2026-10-06.md). Inclui CEP I-MR fase I e Cp/Cpk/Pp/Ppk condicionados aos requisitos do estudo, referência histórica da planilha com proveniência, visão por hora, microparadas manuais em segundos, CSV com prévia e correções rastreáveis. Consulta Operacional exclui `origin: demo`; Apresentação conserva os dados fictícios identificados e sem ações de gravação.
 
-O dashboard inclui "Simular cenário", com 13 casos isolados em memória, incluindo CEP estável/instável. Usa os mesmos serviços de validação, indicadores e estatística; não grava no Firebase. "Voltar aos registros" restaura o contexto operacional. Os índices usam as amostras do cenário e não representam resultados da fábrica.
+O dashboard inclui "Simular cenário", com 16 casos isolados em memória, incluindo NHPL e CEP estável/instável. Usa os mesmos serviços e conserva o perfil efetivo; sem sessão, usa Consulta. Não grava no Firebase. "Voltar aos registros" restaura o contexto operacional. Os índices do cenário não representam resultados da fábrica.
 
 Interface funcional com login, dashboard, 41 parametros, graficos, apontamentos, Engenharia, historico, cadastros e configuracoes. Temas claro/escuro/sistema persistentes e VLibras opcional. Funcoes de limites versionados, correcoes rastreaveis, indicadores, comparacoes e CSV continuam nos servicos. QR, OCR, IoT/CLP e IA nao foram entregues.
 

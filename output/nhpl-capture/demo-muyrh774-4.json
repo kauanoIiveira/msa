@@ -1,0 +1,20 @@
+[
+  {
+    "schemaVersion": 1,
+    "sourceId": "demo-muyrh774",
+    "eventId": "event-5",
+    "sequence": 5,
+    "occurredAt": 1791417094298,
+    "context": {
+      "machineId": "nhpl",
+      "processId": "nhpl-montagem",
+      "productId": "nhpl-vgard-hp",
+      "order": "OP-AP-001",
+      "lot": "LOTE-AP-001",
+      "shift": "1",
+      "variant": "Medium"
+    },
+    "type": "state",
+    "state": "disconnected"
+  }
+]

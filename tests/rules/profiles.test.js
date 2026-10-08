@@ -14,7 +14,7 @@ test('all four profiles are enforced by RTDB for direct SDK writes, independentl
     await assertSucceeds(sdk.get(sdk.ref(db,`workspaces/demo/production/${production.id}`)));
     const id=`production_${uid}`;
     await expect(role!=='viewer')(sdk.set(sdk.ref(db,`workspaces/demo/production/${id}`),{...production,id,createdBy:uid,createdAt:sdk.serverTimestamp()}));
-    await expect(role==='admin')(sdk.update(sdk.ref(db,`workspaces/demo/machines/${f.context.machineId}`),{name:`Machine ${uid}`}));
+    await expect(['admin','engineer'].includes(role))(sdk.update(sdk.ref(db,`workspaces/demo/machines/${f.context.machineId}`),{name:`Machine ${uid}`}));
     const targetId=`target_${uid}`,editing=['admin','engineer'].includes(role);
     await expect(editing)(sdk.set(sdk.ref(db,`workspaces/demo/targets/${targetId}`),{id:targetId,name:'Target',active:true,metric:'producedPieces',unit:'pieces',context:f.context,fromDate:'2026-10-07',toDate:'2026-10-07',operator:'lower',threshold:100,createdBy:uid,createdAt:sdk.serverTimestamp()}));
     const versionId=`version_${uid}`;

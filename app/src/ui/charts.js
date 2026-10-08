@@ -4,7 +4,7 @@ export function clearCharts() {
   for (const chart of charts) chart.destroy();
   charts = [];
 }
-export function drawChart(id, { labels, fullLabels = labels, datasets, horizontal = false, unit = '' }) {
+export function drawChart(id, { labels, fullLabels = labels, datasets, horizontal = false, unit = '', beginAtZero }) {
   const canvas = document.getElementById(id);
   if (!canvas || !globalThis.Chart) return;
   const style = getComputedStyle(document.documentElement),
@@ -57,12 +57,12 @@ export function drawChart(id, { labels, fullLabels = labels, datasets, horizonta
           x: {
             grid: { display: horizontal, color: color("--line") },
             border:{display:false},
-            beginAtZero:horizontal && !isLine,
+            beginAtZero:horizontal && (beginAtZero??!isLine),
             title:{display:horizontal,text:unit,color:color('--muted'),font:{size:12,family:'Manrope'}},
             ticks: { color: color("--muted"), font: { size: 12, family:'Manrope' },maxRotation:0,autoSkip:true,autoSkipPadding:14,callback:horizontal?value=>n(value):function(value){return this.getLabelForValue(value);} },
           },
           y: {
-            beginAtZero: !horizontal && !isLine,
+            beginAtZero: !horizontal && (beginAtZero??!isLine),
             grid: { display: !horizontal, color: color("--line") },
             border:{display:false},
             title:{display:!horizontal,text:unit,color:color('--muted'),font:{size:12,family:'Manrope'}},

@@ -1,0 +1,4 @@
+﻿id;eventDate;context.machineId;context.processId;context.productId;createdBy;origin;source;quantity;basis;startedAt;endedAt
+test-carry-over;2026-10-06;demo-t20;demo-termoformagem;demo-piloto;fixture;manual;;987654321;gross;1791338400000;1791345600000
+demo-production-good-7;2026-10-07;demo-t20;demo-termoformagem;demo-piloto;demo-admin;manual;;4825;good;1791370800000;1791399600000
+demo-production-gross-7;2026-10-07;demo-t20;demo-termoformagem;demo-piloto;demo-admin;manual;;4920;gross;1791370800000;1791399600000

@@ -5,7 +5,8 @@ import {contextKey} from './context.js';
 
 // Phase-I Individuals / Moving Range, pairs of size 2: d2=1.128, D3=0, D4=3.267.
 // The selected study is the baseline. No Phase-II frozen limits or industrial release is implied.
-export function analyzeCep(samples,{version,minSamples=25,sequenceConfirmed=true,complete=true,sourceUnit=null}={}) {
+export function analyzeCep(samples,{version,minSamples=25,sequenceConfirmed=true,complete=true,sourceUnit=null,context}={}) {
+  if(context?.machineId==='nhpl')minSamples=Math.max(30,minSamples);
   requireThat(Number.isInteger(minSamples)&&minSamples>=2&&minSamples<=500,'VALIDATION','minSamples');
   const points=samples.map(s=>!s.revisionConflict&&s.status==='valid'&&Number.isFinite(s.value)?s.value:null);
   const values=points.filter(v=>v!=null),n=values.length;

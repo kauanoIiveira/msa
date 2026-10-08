@@ -1,0 +1,33 @@
+{
+  "fixtureOnly": true,
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "role": "engineer",
+      "simulationRolePreserved": true
+    },
+    {
+      "role": "operator",
+      "simulationRolePreserved": true
+    },
+    {
+      "role": "viewer",
+      "simulationRolePreserved": true
+    }
+  ],
+  "errors": []
+}

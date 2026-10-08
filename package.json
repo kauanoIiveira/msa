@@ -12,7 +12,9 @@
     "test:emulator": "node scripts/run-emulator-tests.mjs",
     "prepare:vendor": "node scripts/prepare-vendor.mjs",
     "verify:static": "node scripts/verify-static.mjs",
-    "start": "node scripts/serve.mjs"
+    "start": "node scripts/serve.mjs",
+    "capture": "node scripts/nhpl-connector.mjs",
+    "capture:demo": "node scripts/nhpl-demo-events.mjs"
   },
   "dependencies": {
     "chart.js": "4.5.1",

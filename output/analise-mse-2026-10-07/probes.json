@@ -1,0 +1,53 @@
+{
+  "historicalTarget": {
+    "sameRecords": true,
+    "before": 100,
+    "after": 50
+  },
+  "emptyDataset": {
+    "goodPieces": 0,
+    "attainment": 0,
+    "notes": "No coverage/confirmation flags required."
+  },
+  "periodCut": {
+    "wholeDayRecordCountedInLastHour": 200,
+    "first23Hours": 0,
+    "notes": "Attribution uses end-1, not measured distribution."
+  },
+  "limits": {
+    "sameReading": 10,
+    "initialDeviationCount": 0,
+    "afterCurrentLimitChange": 1
+  },
+  "formula": {
+    "input": {
+      "operatingSeconds": 3000,
+      "plannedSeconds": 3600,
+      "totalCount": 250,
+      "goodCount": 240,
+      "idealCycleSeconds": 10,
+      "partsPerCycle": 1
+    },
+    "result": {
+      "availability": 83.33333333333334,
+      "performance": 83.33333333333334,
+      "quality": 96,
+      "oee": 66.66666666666667
+    },
+    "zeroConfirmedProduction": null
+  },
+  "nhplSimulation": {
+    "idealCycleSeconds": 11,
+    "force": {
+      "nome": "Força de prensagem",
+      "unidade": "N",
+      "min": 350,
+      "max": 450,
+      "value": 393.5902016745848,
+      "updatedAt": 1791413369720,
+      "quality": "good",
+      "alarm": false
+    },
+    "notes": "Synthetic defaults, not approved factory references."
+  }
+}

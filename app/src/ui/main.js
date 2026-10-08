@@ -29,6 +29,15 @@ import {cepPage,drawCepCharts,getCepStudy,cepReportRows,cepReasons} from './cep.
 import {hourlyPage,drawHourlyChart} from './hourly.js';
 import {parseReading} from '../domain/numbers.js';
 import {openCsvImport,openCorrection} from './data-tools.js';
+import {recordsInPeriod} from './period-records.js';
+import {downloadExport} from './csv-download.js';
+import {planningMarkup,productivityMarkup,productivityView,nhplAction} from './nhpl.js';
+import {productionChartData,referenceDraft,recordContextMarkup,availableProductionIntervals} from './presentation-details.js';
+import {visibleNavigation,initialRoute,resolveRoute} from './access.js';
+import {openPresentation} from './presentation.js';
+import {technicalMarkup,technicalView,captureMarkup,occurrencesMarkup,stopsTechnicalMarkup,technicalAction} from './technical.js';
+import {loginAccounts} from '../config/login-accounts.js';
+const presentationMode=new URLSearchParams(location.search).get('workspace')!=='operational';
 const app = document.getElementById("app"),
   modal = document.getElementById("modal");
 const roots = [
@@ -50,6 +59,7 @@ const kinds = [
 ];
 const labels = {
   dashboard: "Visão da produção",
+  planning: "Planejamento NHPL",
   parameters: "Parâmetros",
   operations: "Apontamentos",
   engineering: "Engenharia",
@@ -64,20 +74,28 @@ const labels = {
   losses: "Perdas",
   reviews: "Análises",
   corrections: "Correções",
+  occurrences: "Ocorrências",
+  indicators: "Indicadores NHPL",
+  capture: "Importação de dados",
+  tv: "Acompanhamento NHPL",
   machines: "Máquinas",
   processes: "Processos",
   products: "Produtos",
   reasons: "Motivos",
   targets: "Metas",
 };
-const navigation = [
+const allNavigation = [
   ["dashboard", "layout-dashboard", "Dashboard"],
   ["parameters", "sliders-horizontal", "Parâmetros"],
   ["operations", "clipboard-pen", "Apontamentos"],
+  ["planning", "calendar-days", "Planejamento"],
   ["engineering", "shield-check", "Engenharia"],
   ["cep", "chart-line", "CEP"],
   ["history", "history", "Histórico"],
   ["registry", "database", "Cadastros"],
+  ['indicators','gauge','Indicadores'],
+  ['capture','radio','Coleta'],
+  ['tv','monitor','TV'],
 ];
 const state = {
   accountOpen: false,
@@ -96,6 +114,7 @@ const state = {
   context: {},
   registries: {},
   period: {},
+  technical: [],
   dashboard: emptyDashboard(),
   client: null,
   actor: null,
@@ -114,9 +133,24 @@ let cloud,
   toastTimer,
   cloudEntry;
 let liveState, localSimulation;
+let connectorTimer,connectorBusy=false;
+function stopConnector(){clearInterval(connectorTimer);connectorTimer=null;state.connectorActive=false;}
+function startConnector(){
+ stopConnector();state.connectorActive=true;
+ connectorTimer=setInterval(async()=>{
+  if(connectorBusy)return;if(!operator()){stopConnector();return;}connectorBusy=true;
+  const client=state.client;
+  try{const response=await fetch('http://127.0.0.1:5188/events',{cache:'no-store',signal:AbortSignal.timeout(4000)});if(!response.ok)throw new Error('Conector indisponível');const queue=await response.json();if(!Array.isArray(queue.events)||queue.events.length>500)throw new Error('Fila inválida');
+   for(const event of queue.events){if(state.client!==client)break;await client.services.technical.ingest(event);}
+   state.connectorMessage=queue.errors?.length?queue.errors.map(r=>r.file+': '+r.message).join(' · '):'Pasta acompanhada · '+queue.events.length+' eventos conferidos';
+  }catch(error){state.connectorMessage='Recepção interrompida: '+(error.code?errorText(error):'conferir conector, pasta e conexão local');stopConnector();}
+  finally{connectorBusy=false;if(!modal.open)layout();}
+ },2000);
+}
 
 async function startSimulation(caseId) {
-  const local = await openSimulation(caseId);
+  stopConnector();
+  const local = await openSimulation(caseId,{effectiveActor:state.actor??{uid:'simulation-viewer',role:'viewer'}});
   if (!localSimulation) liveState = {client:state.client,actor:state.actor,context:structuredClone(state.context),fromDate:state.fromDate,toDate:state.toDate,route:state.route,search:state.search,connected:state.connected,dataset:state.dataset};
   unsubscribe();
   localSimulation?.dispose();
@@ -164,6 +198,7 @@ function icons() {
   document.body.classList.toggle("compact-tables",readConsultation().compact);
   const account=app.querySelector(".avatar");if(account&&state.client){const words=(state.client.displayName || "Usuário").trim().split(/\s+/);account.textContent=(words[0][0]+(words.length>1?words.at(-1)[0]:'')).toUpperCase();account.title=state.client.displayName;}
   app.querySelector(".rail")?.classList.toggle("open", Boolean(state.menuOpen));
+  const scrim=app.querySelector('.rail-scrim');if(scrim)scrim.hidden=!state.menuOpen;
   app
     .querySelector("[data-action=menu]")
     ?.setAttribute("aria-expanded", String(Boolean(state.menuOpen)));
@@ -280,7 +315,7 @@ function login(error = state.loginError) {
 function accountMarkup() {
   const displayName=state.client?.displayName || 'Usuário';
   const role={admin:'Administrador',engineer:'Engenharia',operator:'Operação',viewer:'Consulta'}[state.actor?.role] || '';
-  return `<div class="account"><button type="button" class="avatar" data-action="profile" aria-label="Abrir menu da conta" aria-expanded="${state.accountOpen}" aria-controls="account-popover">AD</button><div id="account-popover" class="account-popover" ${state.accountOpen?'':'hidden'} aria-label="Conta do usuário"><strong>${e(displayName)}</strong><p>${e(state.simulation?'Simulação local':state.client?.email || '')}</p><p>${e(role)}</p><div class="account-actions"><a class="btn" href="#settings">${icon('settings')}<span>Configurações da conta</span></a>${button(state.simulation?'Sair da simulação':'Sair','logout','log-out')}</div></div></div>`;
+  return `<div class="account"><button type="button" class="avatar" data-action="profile" aria-label="Abrir menu da conta" aria-expanded="${state.accountOpen}" aria-controls="account-popover">AD</button><div id="account-popover" class="account-popover" ${state.accountOpen?'':'hidden'} aria-label="Conta do usuário"><strong>${e(displayName)}</strong><p>${state.client?.re?'RE '+e(state.client.re):'Consulta NHPL'}</p><p>${e(role)}</p><div class="account-actions"><a class="btn" href="#settings">${icon('settings')}<span>Configurações da conta</span></a>${button(state.simulation?'Sair da simulação':state.client?.email?'Sair':'Entrar com RE',state.client?.email||state.simulation?'logout':'connect','log-in')}</div></div></div>`;
 }
 function closeAccount({restoreFocus=false}={}) {
   state.accountOpen=false;
@@ -290,28 +325,33 @@ function closeAccount({restoreFocus=false}={}) {
   if(restoreFocus) trigger?.focus();
 }
 function layout() {
+  document.body.dataset.access=state.actor?.role??'viewer';
+  document.body.classList.toggle('nhpl-active',state.context.machineId==='nhpl');
+  document.body.classList.toggle('tv-active',state.route==='tv');
+  state.route=resolveRoute(state.route,state.actor?.role);
+  const navigation=allNavigation.filter(([id])=>visibleNavigation(state.actor?.role).includes(id));
   if (!state.client && state.signingIn && app.querySelector('#login')) return;
   if (!state.client) return login();
   clearCharts();
-  const route = [...navigation.map(([id]) => id), "settings"].includes(
+  const route = [...navigation.map(([id]) => id), "settings", "capture", "tv"].includes(
     state.route,
   )
     ? state.route
     : "dashboard";
   state.route = route;
-  app.innerHTML = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${navigation.map(([id, ico, label]) => `<a href="#${id}" title="${label}" class="rail-link ${route === id ? "active" : ""}" ${route === id ? 'aria-current="page"' : ""}>${icon(ico)}<span>${label}</span></a>`).join("")}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${route === "dashboard" ? "Produção, qualidade e acompanhamento do processo" : ""}</p></div><div class="page-actions">${route === "dashboard" ? button("Simular cenário", "simulate", "flask-conical") : ""}${state.client && state.context.productId && !['settings','registry','cep'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && ["dashboard", "parameters"].includes(route) ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}${datasetMarkup()}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
+  app.innerHTML = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${navigation.map(([id, ico, label]) => `<a href="#${id}" title="${label}" class="rail-link ${route === id ? "active" : ""}" ${route === id ? 'aria-current="page"' : ""}>${icon(ico)}<span>${label}</span></a>`).join("")}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${route === "dashboard" ? "Produção, qualidade e acompanhamento do processo" : ""}</p></div><div class="page-actions">${route === "dashboard" ? button("Simular cenário", "simulate", "flask-conical") : ""}${state.client && state.context.productId && !['settings','registry','cep'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
   icons();
   const period = document.getElementById("period");
   connectionStatus();
   if(period){const days=(dateWindow(state.fromDate,state.toDate).to-dateWindow(state.fromDate,state.toDate).from)/86400000;period.value=state.toDate===today()&&[1,7,14,30].includes(days)?String(days):'custom';}
   drawPageCharts();
 }
-function datasetMarkup() {
-  if(!state.client||state.simulation)return '';
-  return `<div class="dataset-bar"><label>Base de consulta<select id="dataset-choice"><option value="operational" ${state.dataset==='operational'?'selected':''}>Operacional · registros reais</option><option value="presentation" ${state.dataset==='presentation'?'selected':''}>Apresentação · dados fictícios</option></select></label><p>${state.dataset==='presentation'?'Dados fictícios de apresentação · consulta sem gravação. Não representam resultados da fábrica.':state.period.excludedPresentationCount?state.period.excludedPresentationCount+' registros fictícios preservados e excluídos dos indicadores operacionais.':'Registros digitais de operação e importação.'}</p></div>`;
-}
 function page() {
-  if (state.route === "settings") return settings();
+  if(state.route==='indicators')return `<div class="table-tools"><h2>Acompanhamento do processo</h2><a class="btn" href="#tv">${icon('monitor')}Abrir painel TV</a></div>`+technicalMarkup(state)+stopsTechnicalMarkup(state);
+  if(state.route==='capture')return captureMarkup(state);
+  if(state.route==='tv')return `<section class="tv-heading"><img src="./assets/msa/msalogo.png" width="108" alt="MSA"><h2>NHPL · Montagem</h2><p>${e(name('products',state.context.productId))} · OP ${e(state.context.order??'')} · turno ${e(state.context.shift??'')}</p><p>Período ${date(state.fromDate)} a ${date(state.toDate)} · consulta ${date(Date.now(),true)}</p><span class="small muted">${state.client?.mode==='presentation'?'Dados de apresentação · referências técnicas hipotéticas':'Registros operacionais'}</span><div>${button(document.fullscreenElement?'Sair da tela cheia':'Tela cheia','tv-fullscreen',document.fullscreenElement?'minimize':'maximize')}${button('Voltar ao painel','tv-back','arrow-left')}</div></section>${captureMarkup(state,{compact:true})}${productivityMarkup(state,{compact:true})}${technicalMarkup(state,{compact:true})}`;
+  if(state.route==='planning')return planningMarkup(state);
+  if (state.route === "settings") return settings()+dataManagement();
   if (state.route === "registry") return registry();
   if (state.route === "dashboard") return dashboard();
   if (state.route === "cep") return cepPage(state);
@@ -325,6 +365,10 @@ function metric(title, v, unit, note, ico, highlight = false) {
   return `<article class="metric ${highlight ? "highlight" : ""}"><div class="metric-title">${title}${icon(ico)}</div><div class="metric-value">${value(v, unit)}</div><p class="metric-note">${e(note)}</p></article>`;
 }
 function dashboard() {
+  if(state.context.machineId==='nhpl'){
+    const queue=records('reviews').filter(r=>['waiting','analyzing'].includes(r.state));
+    return productivityMarkup(state,{actions:false})+dashboardCharts()+technicalMarkup(state,{compact:true})+`<section class="data-section"><div class="section-heading"><h2>Parâmetros do processo</h2></div>${parameterTable(state.dashboard.parameters??[])}</section><section class="data-section"><div class="section-heading"><h2>Fila técnica · ${queue.length} análises</h2></div>${table(['Escopo','Situação','Ação'],queue.map(r=>`<tr><td>${e(r.scope)}</td><td>${badge(r.state)}</td><td><button class="icon-btn" title="Detalhes" aria-label="Detalhes" data-detail="reviews:${e(r.id)}">${icon('history')}</button></td></tr>`).join(''))}</section>`;
+  }
   const d = state.dashboard,
     t = d?.totals ?? {},
     params = d?.parameters ?? [],
@@ -377,24 +421,42 @@ function parameters() {
 function operations() {
   const history = state.route === "history",
     kind = history ? state.tab.history : state.tab.operations,
-    list = records(kind);
-  if(kind==='hourly')return `${tabs(["production","stoppages","losses","hourly"],kind)}${hourlyPage(state)}`;
+    list = recordsInPeriod(kind,records(kind),dateWindow(state.fromDate,state.toDate));
+  if(kind==='occurrences')return tabs(['production','stoppages','losses','hourly','occurrences'],kind)+occurrencesMarkup(state);
+  if(kind==='hourly')return `${tabs(["production","stoppages","losses","hourly","occurrences"],kind)}${state.context.machineId==='nhpl'?productivityMarkup(state):hourlyPage(state)}`;
   const actions = {
     production: "production",
     stoppages: "stoppage",
     losses: "loss",
   };
-  return `${history ? tabs(kinds, kind) : tabs(["production", "stoppages", "losses", "hourly"], kind)}<div class="table-tools"><span class="small muted">${list.length} registros · ${labels[kind]}</span><div class="toolbar-right">${history && kind==='collections' && operator() ? button('Importar CSV','csv-import','upload') : ''}${!history && operator() ? button("Novo registro", `form:${actions[kind]}`, "plus", "primary") : ""}</div></div>${table(
+  return `${history ? tabs(kinds, kind) : tabs(["production", "stoppages", "losses", "hourly","occurrences"], kind)}${!history?operationSummary(kind):''}<div class="table-tools"><span class="small muted">${list.length} registros · ${labels[kind]}</span><div class="toolbar-right">${history && kind==='collections' && operator() ? button('Importar CSV','csv-import','upload') : ''}${!history && operator() ? button({production:'Registrar produção',stoppages:'Registrar parada',losses:'Registrar refugo / perda'}[kind], `form:${actions[kind]}`, "plus", "primary") : ""}</div></div>${table(
     ["Data", "Registro", "Informação", "Ações"],
     list
       .slice()
       .sort((a, b) => b.eventDate.localeCompare(a.eventDate))
       .map(
         (r) =>
-          `<tr><td>${date(r.occurredAt ?? r.startedAt ?? r.eventDate, r.occurredAt != null || r.startedAt != null)}</td><td>${e(labels[kind])}<div class="small muted">${e(r.id.slice(0, 10))}</div></td><td>${recordSummary(kind, r)}</td><td><button class="icon-btn" title="Detalhes" aria-label="Detalhes" data-detail="${kind}:${e(r.id)}">${icon("arrow-up-right")}</button>${kind === "stoppages" && r.endedAt == null && operator() ? button("Encerrar", `close:${r.id}`, "square") : ""}${kind === "collections" && operator() ? button("Enviar à Engenharia", `review:${r.id}`, "send") : ""}</td></tr>`,
+          `<tr><td>${date(r.occurredAt ?? r.startedAt ?? r.eventDate, r.occurredAt != null || r.startedAt != null)}</td><td>${e(labels[kind])}<div class="small muted">${e(r.id.slice(0, 10))}</div>${recordContextMarkup(r,state.registries)}</td><td>${recordSummary(kind, r)}<div class="small muted">${e(r.createdBy??'Autor não informado')} · ${e(r.origin==='demo'?'Simulação':state.client?.mode==='presentation'?'Apresentação':r.origin??'Origem não informada')}${r.correctionId?' · Corrigido':r.revisionConflict?' · Revisão conflitante':''}</div></td><td><button class="icon-btn" title="Detalhes" aria-label="Detalhes" data-detail="${kind}:${e(r.id)}">${icon("arrow-up-right")}</button>${kind === "stoppages" && r.endedAt == null && operator() ? button("Encerrar", `close:${r.id}`, "square") : ""}${kind === "collections" && operator() ? button("Enviar à Engenharia", `review:${r.id}`, "send") : ""}</td></tr>`,
       )
       .join(""),
   )}`;
+}
+function dashboardCharts(){return `<div class="production-charts"><section class="data-section"><h2>Plano e produção por intervalo</h2><div class="chart-frame"><canvas id="nhpl-interval-chart" role="img" aria-label="Plano, mínimo da meta e produção por intervalo"></canvas></div></section><section class="data-section"><h2>Produção acumulada</h2><div class="chart-frame"><canvas id="nhpl-accumulated-chart" role="img" aria-label="Plano e produção acumulada nos intervalos consultados"></canvas></div></section></div>`;}
+function operationSummary(kind){
+ const range=dateWindow(state.fromDate,state.toDate),losses=recordsInPeriod('losses',records('losses'),range),production=recordsInPeriod('production',records('production'),range);
+ const sum=(list,key)=>list.length?n(list.reduce((total,r)=>total+r[key],0)):'Sem dados';
+ const rejects=losses.filter(r=>r.kind==='reject'&&r.unit==='pieces'),waste=losses.filter(r=>r.unit==='kg');
+ if(kind==='production')return `<section class="data-section"><div class="metrics">${[['Produção bruta',sum(production.filter(r=>r.basis==='gross'),'quantity'),'peças'],['Peças boas registradas',sum(production.filter(r=>r.basis==='good'),'quantity'),'peças'],['Refugos registrados',sum(rejects,'amount'),'peças'],['Perdas de material',sum(waste,'amount'),'kg']].map(([label,total,unit])=>`<div class="metric"><div class="metric-title">${label}</div><div class="metric-value">${total}</div><p>${unit}</p></div>`).join('')}</div>${operator()?button('Registrar refugo / perda','form:loss','circle-minus'):''}</section>${state.context.machineId==='nhpl'?manualTimes():''}`;
+ if(kind==='stoppages'){
+  const stops=recordsInPeriod('stoppages',records('stoppages'),range),closed=stops.filter(r=>r.endedAt!=null);
+  return `<section class="data-section"><div class="metrics"><div class="metric"><div class="metric-title">Paradas abertas</div><div class="metric-value">${stops.filter(r=>r.endedAt==null).length}</div></div><div class="metric"><div class="metric-title">Duração encerrada no recorte</div><div class="metric-value">${closed.length?n(closed.reduce((total,r)=>total+(Math.min(r.endedAt,range.to)-Math.max(r.startedAt,range.from))/60000,0)):'Sem dados'}</div><p>minutos · ${closed.length} registros encerrados</p></div></div></section>`;
+ }
+ return '';
+}
+function manualTimes(){
+ const runs=new Map(),range=dateWindow(state.fromDate,state.toDate);
+ for(const r of state.period.runs??[])if(Object.entries(state.context).every(([k,v])=>!v||r.context?.[k]===v)&&r.machineStartedAt<range.to&&(r.machineEndedAt==null||r.machineEndedAt>range.from))runs.set(r.runId,r);
+ return `<section class="data-section"><div class="section-heading"><h2>Horários da operação</h2>${operator()?button('Registrar horários','nhpl:run','clock'):''}</div>${table(['OP / lote / turno','Horários registrados','Ação'],[...runs.values()].map(r=>`<tr><td>${e(r.context.order)} / ${e(r.context.lot)} / ${e(r.context.shift)}</td><td>${[['machineStartedAt','Máquina ligada'],['productionStartedAt','Produção iniciada'],['productionEndedAt','Produção encerrada'],['machineEndedAt','Máquina desligada']].map(([k,label])=>`<div>${label}: ${r[k]==null?'Pendente':date(r[k],true)}</div>`).join('')}</td><td>${operator()&&r.machineEndedAt==null?button('Completar horários','nhpl:advance-run:'+r.runId,'clock'):''}</td></tr>`).join(''))}</section>`;
 }
 function recordSummary(kind, r) {
   if (kind === "production")
@@ -414,10 +476,10 @@ function engineering() {
     records(kind)
       .map(
         (r) =>
-          `<tr><td>${date(r.eventDate)}</td><td><button class="link-btn" data-detail="${kind}:${e(r.id)}">${e(r.scope ?? r.reason)}</button></td><td>${badge(r.state)}</td><td>${engineer() && kind === "reviews" && r.state === "waiting" ? button("Iniciar", `start:${r.id}`, "play") : engineer() && kind === "reviews" && r.state === "analyzing" ? button("Decidir", `decide:${r.id}`, "check") : kind === "corrections" && engineer() && r.state === "waiting" && r.createdBy !== state.actor.uid ? button("Decidir", `correction:${r.id}`, "check") : ""}</td></tr>`,
+          `<tr><td>${date(r.eventDate)}</td><td><button class="link-btn" data-detail="${kind}:${e(r.id)}">${e(r.scope ?? r.reason)}</button></td><td>${badge(r.state)}</td><td><button class="icon-btn" title="Detalhes e histórico" aria-label="Detalhes e histórico" data-detail="${kind}:${e(r.id)}">${icon('history')}</button>${engineer() && kind === "reviews" && r.state === "waiting" ? button("Iniciar", `start:${r.id}`, "play") : engineer() && kind === "reviews" && r.state === "analyzing" ? button("Decidir", `decide:${r.id}`, "check") : kind === "corrections" && engineer() && r.state === "waiting" && r.createdBy !== state.actor.uid ? button("Decidir", `correction:${r.id}`, "check") : `<span class="small muted">${r.state==='waiting'&&r.createdBy===state.actor?.uid?'Aguardando outro responsável':r.state==='approved'||r.state==='rejected'?'Concluído':'Aguardando equipe técnica'}</span>`}${kind==='reviews'&&engineer()?button('Evidências',`tech:evidence:${r.id}`,'clipboard-check')+button('Nova análise',`review:${r.collectionId}`,'plus'):''}</td></tr>`,
       )
       .join(""),
-  )}<p class="source-notes">Decisões registradas pela Engenharia. Não representam acionamento ou liberação automática da máquina.</p>${kind==='corrections'&&records(kind).some(r=>r.state==='waiting'&&r.createdBy===state.actor?.uid)?'<p class="source-notes">Suas propostas aguardam outra pessoa da Engenharia ou da administração. O autor não pode aprovar a própria correção.</p>':''}`;
+  )}<div class="operation-toolbar">${operator()?button('Nova análise','new-review','plus'):''}</div>${occurrencesMarkup(state)}<p class="source-notes">Liderança, Supervisão e times técnicos autorizados revisam os dados. Não há liberação física automática. Correções exigem outro responsável.</p>${kind==='corrections'&&records(kind).some(r=>r.state==='waiting'&&r.createdBy===state.actor?.uid)?'<p class="source-notes">Suas propostas aguardam outra pessoa da Engenharia ou da administração. O autor não pode aprovar a própria correção.</p>':''}`;
 }
 function registryReference(record) {
   const links = record.machineId ? `Máquina: ${name('machines',record.machineId)}` : record.processId ? `Processo: ${name('processes',record.processId)}` : record.processIds ? `Processos: ${Object.keys(record.processIds).filter(id=>record.processIds[id]).map(id=>name('processes',id)).join(', ')}` : '';
@@ -433,12 +495,12 @@ function registry() {
       reasons: "registry-reason",
       targets: "target",
     }[kind];
-  return `<p class="registry-guidance">Para coletar: cadastre a máquina, vincule um processo e vincule um produto a esse processo. Depois defina parâmetros e versões de referência.</p>${tabs(["machines", "processes", "products", "parameters", "reasons", "targets"], kind)}<div class="table-tools"><span class="small muted">${rows(kind).length} cadastros</span><div class="toolbar-right">${admin() || (kind === "targets" && engineer()) ? button("Novo cadastro", `form:${form}`, "plus", "primary") : ""}${kind === "parameters" && admin() && state.context.processId ? button("Cadastrar referências", "catalog", "list-plus") : ""}</div></div>${table(
+  return `<div class="section-heading"><h2>Cadastros de produção</h2>${admin()?button('Cadastrar piloto NHPL','nhpl:install','factory'):''}</div>${tabs(["machines", "processes", "products", "parameters", "reasons", "targets"], kind)}<div class="table-tools"><span class="small muted">${rows(kind).length} cadastros</span><div class="toolbar-right">${engineer() ? button("Novo cadastro", `form:${form}`, "plus", "primary") : ""}${kind === "parameters" && admin() && state.context.processId && state.context.machineId!=='nhpl' ? button("Cadastrar referências", "catalog", "list-plus") : ""}</div></div>${table(
     ["Nome", "Código / vínculo", "Situação", "Ações"],
     rows(kind)
       .map(
         (r) =>
-          `<tr><td>${e(r.name)}</td><td>${registryReference(r)}</td><td><span class="badge ${r.active ? "good" : "neutral"}">${r.active ? "Ativo" : "Inativo"}</span></td><td>${kind === "parameters" && engineer() ? button("Limites", `version:${r.id}`, "sliders-horizontal") : ""}${admin() ? `<button class="icon-btn" title="${r.active ? "Inativar" : "Ativar"}" aria-label="${r.active ? "Inativar" : "Ativar"}" data-action="active:${kind}:${e(r.id)}">${icon(r.active ? "archive" : "archive-restore")}</button>` : ""}</td></tr>`,
+          `<tr><td>${e(r.name)}</td><td>${registryReference(r)}</td><td><span class="badge ${r.active ? "good" : "neutral"}">${r.active ? "Ativo" : "Inativo"}</span></td><td>${kind === "parameters" && engineer() ? button("Limites", `version:${r.id}`, "sliders-horizontal") : ""}${kind==="targets"&&engineer()?button("Revisar",`nhpl:revise-target:${r.id}`,"pencil"):""}${engineer()?button('Editar',`registry-edit:${kind}:${r.id}`,'pencil'):''}${engineer() ? `<button class="icon-btn" title="${r.active ? "Inativar" : "Ativar"}" aria-label="${r.active ? "Inativar" : "Ativar"}" data-action="active:${kind}:${e(r.id)}">${icon(r.active ? "archive" : "archive-restore")}</button>` : ""}</td></tr>`,
       )
       .join(""),
   )}`;
@@ -466,10 +528,15 @@ function installCatalog() {
     },
   );
 }
-function settings(){const prefs=readPreferences(),view=readConsultation(),connected=Boolean(state.client)&&!state.simulation;return `<section class="settings-section"><h2>Perfil</h2><form id="profile-form" class="settings-form"><div class="form-grid"><label class="field">Nome<input name="displayName" value="${e(state.client?.displayName??'')}" required maxlength="100" ${connected?'':'disabled'}></label><label class="field">E-mail<input value="${e(state.client?.email??'')}" type="email" readonly></label></div><div class="profile-footer"><span class="badge neutral">${e({admin:'Administradora',engineer:'Engenharia',operator:'Operador',viewer:'Leitura'}[state.actor?.role]??'Sem sessão')}</span>${connected?'<button class="btn" type="submit">'+icon('save')+'Salvar perfil</button>':button('Entrar','connect','log-in')}</div></form><div class="setting-row"><div><h3>Senha</h3></div>${connected?button('Alterar senha','change-password','key-round'):''}</div></section><section class="settings-section"><h2>Aparência e acessibilidade</h2><div class="setting-row"><div><h3>Tema</h3></div><div class="segmented">${[['light','sun','Claro'],['dark','moon','Escuro'],['system','monitor','Sistema']].map(([id,ico,title])=>`<button data-theme-choice="${id}" class="${prefs.theme===id?'selected':''}">${icon(ico)}${title}</button>`).join('')}</div></div><div class="setting-row"><div><h3>VLibras</h3><p>Tradução em Libras</p></div><label class="switch"><input id="vlibras-toggle" type="checkbox" aria-label="Ativar VLibras" ${prefs.vlibras?'checked':''}><span class="switch-track"></span></label></div><div class="setting-row"><div><h3>Tabelas compactas</h3></div><label class="switch"><input id="compact-toggle" type="checkbox" aria-label="Tabelas compactas" ${view.compact?'checked':''}><span class="switch-track"></span></label></div></section><section class="settings-section"><h2>Consulta</h2><div class="setting-row"><label class="field" for="default-period">Período inicial</label><select id="default-period">${[7,14,30].map(days=>`<option value="${days}" ${days===view.days?'selected':''}>Últimos ${days} dias</option>`).join('')}</select></div><div class="setting-row"><div><h3>Preferências de consulta</h3></div>${button('Restaurar','reset-consultation','rotate-ccw')}</div></section>`;}
+function settings(){const prefs=readPreferences(),view=readConsultation(),connected=Boolean(state.client?.email)&&!state.simulation;return `<section class="settings-section"><h2>Perfil</h2><form id="profile-form" class="settings-form"><div class="form-grid"><label class="field">RE<input name="re" value="${e(state.client?.re??'')}" readonly></label><label class="field">Nome<input name="displayName" value="${e(state.client?.displayName??'')}" required maxlength="100" ${connected?'':'disabled'}></label><label class="field">Cargo / acesso<input value="${e({admin:'Administração / Supervisão',engineer:'Liderança / Engenharia / times técnicos',operator:'Operação',viewer:'Consulta'}[state.actor?.role]??'Sem sessão')}" readonly></label></div><div class="profile-footer">${connected?'<button class="btn" type="submit">'+icon('save')+'Salvar perfil</button>':button('Entrar com RE','connect','log-in')}</div></form><div class="setting-row"><div><h3>Senha</h3></div>${connected?button('Alterar senha','change-password','key-round'):''}</div></section><section class="settings-section"><h2>Aparência e acessibilidade</h2><div class="setting-row"><div><h3>Tema</h3></div><div class="segmented">${[['light','sun','Claro'],['dark','moon','Escuro'],['system','monitor','Sistema']].map(([id,ico,title])=>`<button data-theme-choice="${id}" class="${prefs.theme===id?'selected':''}">${icon(ico)}${title}</button>`).join('')}</div></div><div class="setting-row"><div><h3>VLibras</h3><p>Tradução em Libras</p></div><label class="switch"><input id="vlibras-toggle" type="checkbox" aria-label="Ativar VLibras" ${prefs.vlibras?'checked':''}><span class="switch-track"></span></label></div><div class="setting-row"><div><h3>Tabelas compactas</h3></div><label class="switch"><input id="compact-toggle" type="checkbox" aria-label="Tabelas compactas" ${view.compact?'checked':''}><span class="switch-track"></span></label></div></section><section class="settings-section"><h2>Consulta</h2><div class="setting-row"><label class="field" for="default-period">Período inicial</label><select id="default-period">${[7,14,30].map(days=>`<option value="${days}" ${days===view.days?'selected':''}>Últimos ${days} dias</option>`).join('')}</select></div><div class="setting-row"><div><h3>Preferências de consulta</h3></div>${button('Restaurar','reset-consultation','rotate-ccw')}</div></section>`;}
 function drawPageCharts() {
+  if(state.route==='dashboard'&&state.context.machineId==='nhpl'){
+    const data=productionChartData(productivityView(state)),base={labels:data.labels,fullLabels:data.fullLabels,unit:'peças',beginAtZero:true};
+    drawChart('nhpl-interval-chart',{...base,datasets:[{label:'Plano aprovado',data:data.planned,backgroundColor:'#8397a1',borderColor:'#8397a1'},{label:'Produção bruta registrada',data:data.gross,backgroundColor:'#238166',borderColor:'#238166'},{label:'Mínimo da meta',type:'line',data:data.minimum,borderColor:'#ba7b15',borderDash:[4,4],pointRadius:2}]});
+    drawChart('nhpl-accumulated-chart',{...base,type:'line',datasets:[{label:'Plano acumulado',type:'line',data:data.accumulatedPlanned,borderColor:'#8397a1',pointRadius:2},{label:'Bruta acumulada',type:'line',data:data.accumulatedGross,borderColor:'#238166',pointRadius:2,spanGaps:false}]});return;
+  }
   if(state.route==='cep'){drawCepCharts(state);return;}
-  if(state.route==='operations'&&state.tab.operations==='hourly'){drawHourlyChart(state);return;}
+  if(state.route==='operations'&&state.tab.operations==='hourly'){if(state.context.machineId!=='nhpl')drawHourlyChart(state);return;}
   if (state.route !== "dashboard") return;
   const production = records("production").filter(
     (r) =>
@@ -501,11 +568,12 @@ function drawPageCharts() {
     datasets: [{ label: "Minutos", data: stops.map((r) => r.value) }],
   });
 }
+function dataManagement(){return `<section class="settings-section"><h2>Gestão de dados</h2><div class="setting-row"><div><h3>Importação de dados</h3><p>Arquivos de eventos e conexão com pasta de coleta</p></div><a class="btn" href="#capture">${icon('upload')}Importação de dados</a></div>${state.client?.mode==='presentation'&&!state.simulation?`<div class="setting-row"><div><h3>Cópia dos registros</h3><p>Inclui a origem dos dados e as referências de apresentação; não substitui os registros operacionais.</p></div>${button('Exportar backup','presentation-backup','download')}</div>`:''}</section>`;}
 
 function reconcileContext() {
   const m = rows("machines").filter((r) => r.active);
   if (!m.some((r) => r.id === state.context.machineId))
-    state.context.machineId = m[0]?.id;
+    state.context.machineId = m.find(r=>r.id==='nhpl')?.id??m[0]?.id;
   const p = rows("processes").filter(
     (r) => r.active && r.machineId === state.context.machineId,
   );
@@ -519,6 +587,7 @@ function reconcileContext() {
 }
 async function refresh() {
   if (!state.client) return;
+  if(state.client.mode==='presentation'&&state.followLatest!==false)state.toDate=state.client.toDate;
   const ticket = ++epoch;
   state.loading = true;
   state.error = null;
@@ -536,7 +605,7 @@ async function refresh() {
         toDate: state.toDate,
         context: state.context,
         limit: 500,
-        dataset: state.simulation?'all':state.dataset,
+        dataset: state.simulation||state.client.mode==='presentation'?'all':state.dataset,
       };
       const period = await services().history.loadPeriod(q),
         dashboard = await services().getDashboard(
@@ -546,6 +615,7 @@ async function refresh() {
       if (ticket !== epoch) return;
       state.period = period;
       state.dashboard = dashboard;
+      try{state.technical=await services().technical.records();}catch(error){if(['FORBIDDEN','INVALID_PATH'].includes(error.code))state.technical=[];else throw error;}
     } else {
       state.period = {};
       state.dashboard = emptyDashboard();
@@ -585,6 +655,8 @@ function watch() {
   );
   for (const root of [...roots, ...kinds])
     state.offs.push(state.client.repo.watch(root, null, schedule, fail));
+  for(const root of ['productionPolicies','productionPlans','productionIntervals','plannedCorrections','machineRuns','targetRevisions'])state.offs.push(state.client.repo.watch(root,null,schedule,error=>{if(error.code!=='FORBIDDEN')fail(error);}));
+  state.offs.push(state.client.repo.watch('technicalRecords',null,schedule,error=>{if(!['FORBIDDEN','INVALID_PATH'].includes(error.code))fail(error);}));
 }
 async function enterCloud(user) {
   if (localSimulation) await endSimulation();
@@ -598,12 +670,17 @@ async function enterCloud(user) {
     });
     off();
     state.actor = actor;
-    state.client = {
+    state.route=location.hash?resolveRoute(location.hash.slice(1),actor.role):initialRoute(actor.role);
+    state.client?.dispose?.();
+    state.client = presentationMode?await openPresentation({actor,displayName:user.displayName??'Usuário MSA',re:Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??''}):{
       services,
       repo: cloud.repository(workspaceId),
       email: user.email,
       displayName:user.displayName??(user.email==='adm@adm.com'?'Fabiana Dias':user.email.split('@')[0]),
     };
+    state.client.email=user.email;
+    state.client.re=Object.keys(loginAccounts).find(re=>loginAccounts[re]===user.email)??'';
+    if(presentationMode){state.context=state.client.context;state.fromDate=state.client.fromDate;state.toDate=state.client.toDate;}
     sessionStorage.setItem("msa.session.mode", "firebase");
     watch();
     await refresh();
@@ -619,10 +696,11 @@ function getCloud() {
   cloud = createBrowserMsa();
   cloud.session.watchSession((next) => {
     if (localSimulation) {
-      if (liveState?.client && !next.actor) {liveState.client=null;liveState.actor=null;}
+      if (liveState?.client && !next.actor) {liveState.client=null;liveState.actor=null;localSimulation.actor.role='viewer';state.actor=localSimulation.actor;if(modal.open)modal.close();layout();}
       return;
     }
     if (state.client && !next.actor) {
+      if(state.client.mode==='presentation'){state.client.actor.role='viewer';state.actor=state.client.actor;delete state.client.email;state.client.re='';if(modal.open)modal.close();layout();return;}
       unsubscribe();
       state.client = null;
       state.actor = null;
@@ -674,6 +752,11 @@ function showModal(
     });
 }
 function openForm(kind, record = {}) {
+  if(kind==='production'&&state.context.machineId==='nhpl'){
+    const available=availableProductionIntervals(state);
+    if(!available.length){showModal('Registrar produção','<p>Não há intervalo aprovado aberto neste contexto. Confira o produto e o período selecionados ou prepare um plano em Planejamento.</p>');return;}
+    showModal('Selecionar intervalo aprovado',`<label class="field">Intervalo<select name="intervalId" required>${available.map(([id,h])=>`<option value="${e(id)}">${date(h.startedAt,true)} · OP ${e(h.context.order)} · ${n(h.plannedPieces)} peças</option>`).join('')}</select></label>`,{footer:'Abrir apontamento',submit:async data=>{modal.close();await nhplAction('nhpl:production:'+data.get('intervalId'),{state,services:services(),showModal,modal,refresh,downloadCsv});return {keepOpen:true};}});return;
+  }
   showModal(
     {
       collection: "Nova coleta",
@@ -688,17 +771,20 @@ function openForm(kind, record = {}) {
       registries: state.registries,
       context: state.context,
       record,
-      catalog: getMsaParameterCatalog(),
+      catalog: state.context.machineId==='nhpl'?[]:getMsaParameterCatalog(),
     }),
     {
       wide: kind === "collection",
-      submit: (data) =>
-        submitForm(kind, data, {
+      submit: async (data) => {
+        const saved=await submitForm(kind, data, {
           services: services(),
           context: state.context,
           registries: state.registries,
           record,
-        }),
+        });
+        if(saved?.eventDate&&saved.eventDate>state.toDate)state.toDate=saved.eventDate;
+        return saved;
+      },
     },
   );
 }
@@ -723,6 +809,11 @@ function detail(kind, id) {
     ["Produto", name("products", r.context?.productId)],
     ["Autor", r.createdBy],
     ["Registro", r.id],
+    ["OP / lote / turno", [r.context?.order,r.context?.lot,r.context?.shift].filter(Boolean).join(' / ')||'Não informado'],
+    ["Variante", r.context?.variant??'Não informada'],
+    ["Origem", r.origin==='demo'?'Simulação':state.client?.mode==='presentation'?'Apresentação':r.origin??'Não informada'],
+    ["Correção aplicada", r.correctionId??'Nenhuma'],
+    ["Intervalo aprovado", r.intervalId??'Não vinculado'],
   ];
   if (r.startedAt != null)
     fields.push(
@@ -736,11 +827,11 @@ function detail(kind, id) {
     `<div class="detail-header"><h2>${recordSummary(kind, r)}</h2></div>${kind==='corrections'?correctionComparison(r):''}<dl class="detail-list">${fields.map(([k, v]) => `<div><dt>${e(k)}</dt><dd>${e(v)}</dd></div>`).join("")}</dl>${
       kind === "collections"
         ? table(
-            ["Parâmetro", "Leitura original", "Situação"],
+            ["Parâmetro / referência", "Leitura original", "Situação"],
             Object.values(r.readings ?? {})
               .map(
                 (reading) =>
-                  `<tr><td>${e(name("parameters", reading.parameterId))}</td><td>${e(reading.raw)}</td><td>${badge(evaluateReading(reading, state.registries.parameterVersions?.[reading.versionId]).state)}</td></tr>`,
+                  `<tr><td>${e(name("parameters", reading.parameterId))}<div class="small muted">Versão ${e(reading.versionId)} · ${e(ruleText(state.registries.parameterVersions?.[reading.versionId]?.rule,state.registries.parameterVersions?.[reading.versionId]?.unit))}</div></td><td>${e(reading.raw)} ${e(state.registries.parameterVersions?.[reading.versionId]?.unit??'')}</td><td>${badge(evaluateReading(reading, state.registries.parameterVersions?.[reading.versionId]).state)}</td></tr>`,
               )
               .join(""),
           )
@@ -757,7 +848,7 @@ function detail(kind, id) {
               .join(""),
           )
         : ""
-    }${operator()&&['collections','production','losses','stoppages'].includes(kind)&&!(kind==='stoppages'&&r.endedAt==null)&&!r.correctionId&&!r.revisionConflict?button('Propor correção',`request-correction:${kind}:${r.id}`,'pencil'):''}${r.correctionId?'<p class="source-notes">Correção aplicada. Consulte a proposta em Engenharia; o original permanece no histórico.</p>':''}`,
+    }${kind==='reviews'?(state.technical??[]).filter(x=>x.kind==='evidence'&&x.reviewId===r.id).map(x=>`<section class="review-evidence"><h3>Evidências de Qualidade</h3><dl class="detail-list">${['controlPlan','inspection','testResult','performance','note'].map(k=>`<div><dt>${e({controlPlan:'Plano de controle',inspection:'Inspeção',testResult:'Ensaio',performance:'Performance',note:'Justificativa'}[k])}</dt><dd>${e(x[k])}</dd></div>`).join('')}</dl><p>${date(x.createdAt,true)} · ${e(x.createdBy)}</p></section>`).join(''):''}${operator()&&['collections','production','losses','stoppages'].includes(kind)&&!(kind==='stoppages'&&r.endedAt==null)&&!r.correctionId&&!r.revisionConflict?button('Propor correção',`request-correction:${kind}:${r.id}`,'pencil'):''}${r.correctionId?'<p class="source-notes">Correção aplicada. Consulte a proposta em Engenharia; o original permanece no histórico.</p>':''}`,
   );
 }
 function parameterDetail(code) {
@@ -824,7 +915,7 @@ async function exportCsv() {
       corrections: ["state", "reason", "replacement"],
     }[kind],
   ];
-  const csv = await services().csv.exportRecords(records(kind), columns);
+  const csv = await services().csv.exportRecords(recordsInPeriod(kind,records(kind),dateWindow(state.fromDate,state.toDate)), columns);
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" }),
     url = URL.createObjectURL(blob),
     a = document.createElement("a");
@@ -834,6 +925,14 @@ async function exportCsv() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 async function action(action) {
+  if(action.startsWith('registry-edit:')){const[,kind,id]=action.split(':'),r=state.registries[kind]?.[id];if(!r||!engineer())return;showModal('Editar cadastro',`<div class="form-grid"><label class="field">Nome<input name="name" value="${e(r.name)}" required maxlength="160"></label><label class="field">Código<input name="code" value="${e(r.code??'')}" maxlength="100"></label></div><p class="source-notes">Identificador e vínculos históricos são preservados.</p>`,{submit:data=>services().registry.update(kind,id,{name:data.get('name'),...(data.get('code')?{code:data.get('code')}:{})})});return;}
+  if(action==='connector-stop'){stopConnector();layout();return;}
+  if(action.startsWith('tech:'))return technicalAction(action,{state,services:services(),showModal,downloadCsv,refresh,toast,startConnector});
+  if(action==='tv-back'){if(document.fullscreenElement)await document.exitFullscreen();location.hash='indicators';return;}
+  if(action==='tv-fullscreen'){document.fullscreenElement?await document.exitFullscreen():await document.documentElement.requestFullscreen();layout();return;}
+  if(action==='presentation-backup'){const url=URL.createObjectURL(new Blob([state.client.exportBackup()],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='msa-nhpl-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
+  if(action==='new-review'){const col=records('collections').at(-1);if(!col){toast('Registre uma coleta neste contexto primeiro.');return;}return actionReview(col.id);}
+  if(action.startsWith('nhpl:'))return nhplAction(action,{state,services:state.client?services():null,showModal,modal,refresh,downloadCsv});
   const [command, id, extra] = action.split(":");
   if(!writable()&&['form','active','start','decide','correction','catalog','version','close','review','csv-import','request-correction','cep-review'].includes(command))throw Object.assign(new Error('Consulta de apresentação não permite gravação.'),{code:'FORBIDDEN'});
   if(command==='csv-import'){if(operator()&&state.context.productId)openCsvImport({showModal,services:services(),registries:state.registries,context:structuredClone(state.context)});return;}
@@ -842,8 +941,11 @@ async function action(action) {
     if(operator()&&record){modal.close();openCorrection({showModal,services:services(),registries:state.registries,kind:id,record});}return;
   }
   if(command==='cep-export') {
+    if(state.exporting)return;
+    state.exporting=true;
     const report=cepReportRows(state),columns=[...new Set(report.flatMap(r=>Object.keys(r)))];
-    downloadCsv(services().csv.exportRecords(report,columns),'msa-cep-'+state.toDate+'.csv');return;
+    try {await downloadExport((...args)=>services().csv.exportRecords(...args),report,columns,downloadCsv,'msa-cep-'+state.toDate+'.csv');}
+    finally {state.exporting=false;}return;
   }
   if(command==='cep-review') {
     const study=getCepStudy(state),last=study.samples.at(-1);
@@ -878,9 +980,10 @@ async function action(action) {
     modal.close();
     return;
   }
-  if (command === "menu") {
-    state.menuOpen = !state.menuOpen;
+  if (command === "menu" || command === "menu-close") {
+    state.menuOpen = command === 'menu-close' ? false : !state.menuOpen;
     document.querySelector(".rail").classList.toggle("open", state.menuOpen);
+    document.querySelector('.rail-scrim').hidden=!state.menuOpen;
     document
       .querySelector("[data-action=menu]")
       .setAttribute("aria-expanded", String(state.menuOpen));
@@ -909,10 +1012,12 @@ async function action(action) {
     return;
   }
   if (command === "logout") {
+    stopConnector();
     closeAccount();
     if (localSimulation) return endSimulation();
     unsubscribe();
     await cloud?.auth.signOut();
+    if(presentationMode){state.client?.dispose?.();await enterPresentation();return;}
     state.client = null;
     state.actor = null;
     state.context = {};
@@ -926,7 +1031,7 @@ async function action(action) {
   }
   if (command === "refresh") return refresh();
 
-  if (command === "export") return exportCsv();
+  if (command === "export") return state.context.machineId==='nhpl'&&['dashboard','planning'].includes(state.route)?nhplAction('nhpl:export',{state,services:services(),showModal,modal,refresh,downloadCsv}):exportCsv();
   if (command === "form") return openForm(id);
   if (command === "close")
     return openForm(
@@ -959,7 +1064,9 @@ async function action(action) {
   }
   if (command === "version") {
     if (modal.open) modal.close();
-    return openForm("parameterVersion", { parameterId: id });
+    const selected=state.route==='cep'?getCepStudy(state).version:null;
+    const version=selected?.parameterId===id?selected:Object.values(state.registries.parameterVersions??{}).filter(v=>v.parameterId===id&&v.status==='approved').sort((a,b)=>(b.createdAt??0)-(a.createdAt??0)||b.id.localeCompare(a.id))[0];
+    return openForm("parameterVersion", referenceDraft(id,version));
   }
   if (command === "active") {
     const r = state.registries[id][extra];
@@ -992,6 +1099,7 @@ async function action(action) {
   }
 }
 document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&state.menuOpen){state.menuOpen=false;icons();app.querySelector('[data-action=menu]')?.focus();}
   if(event.key==='Escape' && !app.querySelector('#account-popover')?.hidden) closeAccount({restoreFocus:true});
 });
 document.addEventListener("click", (event) => {
@@ -1034,6 +1142,7 @@ document.addEventListener("input", (event) => {
 });
 document.addEventListener("change", async (event) => {
   try {
+    if(event.target.id==='event-file'){const file=event.target.files?.[0];if(!file)return;if(file.size>1_000_000)throw Object.assign(new Error(),{code:'CSV_TOO_LARGE'});modal.querySelector('[name=events]').value=await file.text();return;}
     if(event.target.id==='csv-file'){
       const file=event.target.files?.[0];if(!file)return;
       if(file.size>5_000_000)throw Object.assign(new Error('Arquivo muito grande'),{code:'CSV_TOO_LARGE'});
@@ -1042,7 +1151,7 @@ document.addEventListener("change", async (event) => {
     if(event.target.id==='dataset-choice'){state.dataset=event.target.value;state.cep.sequenceConfirmed=false;await refresh();return;}
     if(event.target.dataset.cep){
       const key=event.target.dataset.cep,value=key==='sequenceConfirmed'?event.target.checked:key==='minSamples'?Number(event.target.value):event.target.value;
-      if(key==='minSamples'&&(!Number.isInteger(value)||value<2||value>500))throw Object.assign(new Error('Mínimo inválido'),{code:'VALIDATION',field:'minSamples'});
+      if(key==='minSamples'&&(!Number.isInteger(value)||value<(state.context.machineId==='nhpl'?30:2)||value>500))throw Object.assign(new Error('Mínimo inválido'),{code:'VALIDATION',field:'minSamples'});
       state.cep[key]=value;
       if(key==='source'||key==='parameterId'){state.cep.parameterId=key==='parameterId'?value:'';state.cep.group='';state.cep.versionId='';state.cep.sequenceConfirmed=false;}
       if(key==='group'||key==='versionId')state.cep.sequenceConfirmed=false;
@@ -1072,7 +1181,7 @@ document.addEventListener("change", async (event) => {
         kind === "material" ? "kg" : "pieces";
     } else if (event.target.dataset.context) {
       state.context[event.target.dataset.context] = event.target.value;
-      for(const field of ['lot','order','recipe','shift'])delete state.context[field];
+      for(const field of ['lot','order','recipe','shift','variant'])delete state.context[field];
       state.cep.sequenceConfirmed=false;
       reconcileContext();
       await refresh();
@@ -1081,6 +1190,7 @@ document.addEventListener("change", async (event) => {
       if(raw)state.context[key]=raw;else delete state.context[key];
       state.cep.sequenceConfirmed=false;await refresh();
     } else if (event.target.id === "period") {
+      state.followLatest=false;
       if (event.target.value === "custom")
         showModal(
           "Período",
@@ -1143,5 +1253,9 @@ if (vlibrasError) {
   sessionStorage.removeItem("msa.vlibras.error");
   toast(vlibrasError);
 }
-layout();
-getCloud();
+async function enterPresentation(){
+ unsubscribe();state.client=await openPresentation();state.actor=state.client.actor;state.context=state.client.context;state.fromDate=state.client.fromDate;state.toDate=state.client.toDate;state.dataset='all';state.route=location.hash.slice(1)||'dashboard';watch();await refresh();
+}
+function actionReview(id){return action('review:'+id);}
+if(presentationMode)enterPresentation().then(()=>getCloud()).catch(fail);else{layout();getCloud();}
+setInterval(()=>{if(state.route==='tv'&&!modal.open&&state.client)layout();},5000);

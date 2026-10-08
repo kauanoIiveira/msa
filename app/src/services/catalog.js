@@ -6,6 +6,7 @@ import {createRegistryService} from './registry.js';
 export function createCatalogService(options) {
   const {repo,actor}=options;
   async function plan(processId) {
+    requireThat(processId!=='nhpl-montagem','INVALID_REFERENCE','Limites de selos não são referências de NHPL.');
     assertId(processId,'processId');requireThat((await repo.get(`processes/${processId}`))?.active===true,'INVALID_REFERENCE','processId');
     const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(`msa-catalog-v1:${processId}`));
     const prefix='msa_'+[...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('');

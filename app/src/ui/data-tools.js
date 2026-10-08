@@ -39,6 +39,6 @@ export function openCorrection({showModal,services,registries,kind,record}) {
     if(['production','stoppages'].includes(kind)){replacement.startedAt=saoPauloInstant(data.get('startedAt'),'startedAt');replacement.endedAt=saoPauloInstant(data.get('endedAt'),'endedAt');}
     if(['losses','stoppages'].includes(kind))replacement.reasonId=data.get('reasonId');
     if(kind==='collections')for(const[id,r]of Object.entries(replacement.readings)){const raw=data.get('raw_'+id);replacement.readings[id]={parameterId:r.parameterId,versionId:r.versionId,...parseReading(raw)};}
-    return services.analysis.requestCorrection({recordType:kind,recordId:record.id,replacement,reason:data.get('reason')});
+    return services.analysis.requestCorrection({recordType:kind,recordId:record.id,...(record.intervalId?{intervalId:record.intervalId}:{}),replacement,reason:data.get('reason')});
   }});
 }

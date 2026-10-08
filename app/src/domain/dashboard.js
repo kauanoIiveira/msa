@@ -5,7 +5,7 @@ import {assertId,knownKeys,requireThat} from './errors.js';
 import {eventDate} from './time.js';
 
 export function buildDashboard(data,{context,from,to,complete,sigmaMethod='population'}={}) {
-  knownKeys(context,['machineId','processId','productId','recipe','lot','order','shift']);
+  knownKeys(context,['machineId','processId','productId','recipe','lot','order','shift','variant']);
   for(const field of ['machineId','processId','productId']) assertId(context[field],field);
   requireThat(Number.isSafeInteger(from)&&Number.isSafeInteger(to)&&from>=0&&to>from,'INVALID_PERIOD');
   const matches=row=>Object.entries(context).every(([key,value])=>row.context?.[key]===value);
@@ -19,7 +19,7 @@ export function buildDashboard(data,{context,from,to,complete,sigmaMethod='popul
   const indicators=buildIndicators(scoped,{from,to,complete:complete===true&&!imprecise,sigmaMethod});
   if(imprecise) indicators.notes.push('date-only-in-partial-day-window');
   const registered=Object.values(data.parameters??{}).filter(p=>p.processId===context.processId&&p.active===true);
-  const references=getMsaParameterCatalog(),codes=new Set(references.map(item=>item.code));
+  const references=context.machineId==='nhpl'?[]:getMsaParameterCatalog(),codes=new Set(references.map(item=>item.code));
   for(const parameter of registered.filter(p=>!codes.has(p.code))) references.push({code:parameter.code??parameter.id,name:parameter.name,group:'custom',unit:null,source:null,issues:[],questions:[],customId:parameter.id});
   const versions=data.parameterVersions??{};
   indicators.statistics=indicators.statistics.map(group=>{

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {createStaticServer} from '../../scripts/serve.mjs';
 import {installAuthFixture} from './fixtures/auth.mjs';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE??'playwright');
-const server=await createStaticServer({port:0}),browser=await chromium.launch({headless:true}),url=`http://127.0.0.1:${server.address().port}/`;
+const server=await createStaticServer({port:0}),browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_CHANNEL?{channel:process.env.PLAYWRIGHT_CHANNEL}:{})}),url=`http://127.0.0.1:${server.address().port}/`;
 const saved=page=>page.evaluate(()=>JSON.parse(localStorage.getItem('msa.demo.workspace.v1')).data);
 async function login(page,options){await installAuthFixture(page,options);await page.goto(url);await page.locator('#login [name=re]').fill('00000');await page.locator('#login [name=password]').fill('fixture-only');await page.locator('#login [type=submit]').click();await page.locator('.dataset-bar').waitFor();}
 try{

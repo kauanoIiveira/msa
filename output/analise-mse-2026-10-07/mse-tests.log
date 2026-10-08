@@ -1,0 +1,163 @@
+
+> msa-producao-base@0.6.0 test
+> node --test tests/*.test.*
+
+✔ cadastro por RE preserva zeros e entra imediatamente pelo cargo escolhido (8.502ms)
+✔ campos inválidos são rejeitados antes de criar conta ou consultar credenciais (12.4222ms)
+✔ Lembrar de mim controla persistência Firebase; autenticação não usa os dados locais antigos (3.3571ms)
+✔ credenciais erradas e RE duplicado têm erro de campo e não deixam sessão aberta (2.6746ms)
+✔ cadastro incompleto pode ser retomado sem sobrescrever um perfil existente (2.8098ms)
+✔ três cargos se cadastram sem setor ou máquina e recebem acesso imediato (3.2336ms)
+✔ campos de lotação enviados por um cadastro antigo não prendem o novo funcionário (2.3849ms)
+✔ mudanças no perfil, bloqueio e logout atualizam o acesso observado (14.2222ms)
+✔ provedor não habilitado, falhas de rede, política de senha e banco negado geram feedback (3.1202ms)
+✔ perfil inconsistente com a identidade Firebase ou cargo desconhecido não libera acesso (2.4967ms)
+✔ chat recebe o token da sessão Firebase e perde acesso após Sair (2.4892ms)
+✔ perfil legado gestor/pending vira chefe ativo sem alterar a identidade (2.3029ms)
+✔ uma mensagem do setor usa a identidade Firebase e é lida por outro funcionário (65.3555ms)
+✔ conversas individuais são compartilhadas pelos dois participantes e bloqueadas para terceiros (17.4797ms)
+✔ repetir um envio após falha de rede não duplica a mensagem (5.3457ms)
+✔ paginação mantém a ordem e recupera mensagens antigas e novas sem perdas (36.2887ms)
+✔ validação impede uso anônimo, mensagens inválidas, alteração do RE e requisições externas (3.4093ms)
+✔ perfil ativo é exigido também na API e bloqueio posterior interrompe novos envios (1.9744ms)
+✔ regras reais: cadastro por RE, contexto móvel, escrita e consultas por cargo (2575.2867ms)
+✔ exemplos têm produção de hoje, referências consistentes, unidades separadas e nenhuma senha (2.0468ms)
+✔ importador preserva existentes, recusa corrida de escrita e não duplica em nova execução (32.9855ms)
+✔ importador não tenta acesso sem token e interrompe antes de escrever em caso de acesso negado (0.5878ms)
+✔ identidade e RE vêm do Firebase; cabeçalhos da hospedagem não substituem o login (44.3799ms)
+✔ tokens expirados ou de outro projeto são recusados antes da consulta (1.4092ms)
+✔ um JWT aparentemente correto não autentica quando o Firebase o recusa (0.9712ms)
+✔ conta desabilitada ou sessão revogada não acessa as conversas (1.7344ms)
+✔ perfil ausente, RE inconsistente e cargo desconhecido não liberam acesso (4.5166ms)
+✔ falha ao consultar Firebase deixa o acesso fechado e permite tentar novamente (2.0956ms)
+✔ NHPL preserva o ciclo parcial e não recupera produção durante perda de comunicação (15.7846ms)
+✔ metas exigem origem e vigência de data, turno e ordem (1.2331ms)
+✔ produção hora a hora usa somente diferenças de saídas e não duplica leituras (0.7546ms)
+✔ dados insuficientes não fabricam OEE, confiabilidade, metas ou posições (3.1469ms)
+✔ leituras reais perdidas preservam o horário e voltam somente com nova amostra (4.4673ms)
+✔ planta de demonstração separa 32 postos fictícios do cadastro operacional e conserva os totais (18.3321ms)
+✔ produção simulada cresce por ciclos completos e conserva peças e tempos (8.7953ms)
+✔ parada, setup e manutenção congelam a produção e acumulam o tempo correspondente (15.398ms)
+✔ alerta é independente do estado operacional e registra normalização (7.2373ms)
+✔ pausar congela contadores, parâmetros e cronologia, sem produzir ao retomar (6.6066ms)
+✔ OEE usa disponibilidade × desempenho × qualidade e rejeita bases incompletas (2.3721ms)
+✔ adaptador descarta leituras antigas e sinaliza perda e recuperação de comunicação (4.6341ms)
+✔ leituras inválidas não se tornam valores plausíveis nem estados operacionais (3.0628ms)
+✔ os seis cargos usam RE e senha simples, com cadastro já liberado e sem Firebase (17.1354ms)
+✖ cadastro aceita nome simples e senha curta, preserva zeros e não exige confirmação (5.362ms)
+✔ login exige o RE e a senha cadastrados; não entra apenas por cargo (4.8218ms)
+✔ abrir o sistema ou a tela de liberação sem sessão mantém o login obrigatório (3.6974ms)
+✖ cadastro e sessão atravessam as páginas; Sair permite retornar com RE e senha (1.87ms)
+✖ chat local mantém autoria, envio único e conversa entre dois cadastros (3.8831ms)
+✖ mensagens locais persistem ao recarregar e aceitam os cursores do chat (2.2581ms)
+✔ desativar a apresentação conserva o adaptador Firebase e não aceita perfis demo (1.5066ms)
+✖ todas as entradas carregam a apresentação antes dos controladores (11.7712ms)
+✔ rotas e ações exclusivas não são liberadas por outro cargo (1.5588ms)
+✔ Operador lê sua máquina e edita somente os registros próprios; Supervisor usa seu setor (0.8004ms)
+✔ indicadores não somam kg com peças nem contam paradas sobrepostas duas vezes (0.7322ms)
+✔ entradas carregam dependências existentes e nenhum modo local substitui o Firebase (6.159ms)
+✔ abrir o menu sem sessão mantém a tela protegida oculta e volta ao login (5.0642ms)
+✔ login válido abre o menu com nome abreviado e preserva a identificação da conta (1.654ms)
+✔ header abrevia Luan Miguel e conserva o nome completo no perfil (1.2923ms)
+✔ nome curto e sobrenome com preposição permanecem legíveis no header (2.7851ms)
+✔ contas sem acesso ativo seguem para a tela de situação do acesso (1.8762ms)
+✔ bloquear uma conta já conectada fecha o menu e limpa o chat (7.7889ms)
+✔ Sair encerra a sessão, interrompe a observação e volta ao login (1.6416ms)
+✔ erro de conexão mantém o menu oculto; Tentar novamente recupera a sessão (1.8881ms)
+ℹ tests 62
+ℹ suites 0
+ℹ pass 57
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2692.0394
+
+✖ failing tests:
+
+test at tests\presentation.test.mjs:51:1
+✖ cadastro aceita nome simples e senha curta, preserva zeros e não exige confirmação (5.362ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: Selecione um cargo.
+      at async TestContext.<anonymous> (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:65:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Selecione um cargo.
+        at requireValid (evalmachine.<anonymous>:64:36)
+        at Object.register (evalmachine.<anonymous>:84:7)
+        at TestContext.<anonymous> (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:65:31)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\presentation.test.mjs:90:1
+✖ cadastro e sessão atravessam as páginas; Sair permite retornar com RE e senha (1.87ms)
+  Error: Selecione um cargo.
+      at requireValid (evalmachine.<anonymous>:64:36)
+      at Object.register (evalmachine.<anonymous>:84:7)
+      at signup (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:31:59)
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:93:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    field: 'cargo'
+  }
+
+test at tests\presentation.test.mjs:108:1
+✖ chat local mantém autoria, envio único e conversa entre dois cadastros (3.8831ms)
+  Error: Selecione um cargo.
+      at requireValid (evalmachine.<anonymous>:64:36)
+      at Object.register (evalmachine.<anonymous>:84:7)
+      at signup (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:31:59)
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:112:27)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    field: 'cargo'
+  }
+
+test at tests\presentation.test.mjs:136:1
+✖ mensagens locais persistem ao recarregar e aceitam os cursores do chat (2.2581ms)
+  Error: Selecione um cargo.
+      at requireValid (evalmachine.<anonymous>:64:36)
+      at Object.register (evalmachine.<anonymous>:84:7)
+      at signup (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:31:59)
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:139:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    field: 'cargo'
+  }
+
+test at tests\presentation.test.mjs:160:1
+✖ todas as entradas carregam a apresentação antes dos controladores (11.7712ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(service > scripts.indexOf('assets/auth-service.js'))
+  
+      at TestContext.<anonymous> (file:///C:/Users/Kauan/Desktop/msa-master/output/analise-mse-2026-10-07/MSE-copia/tests/presentation.test.mjs:167:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

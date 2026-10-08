@@ -1,0 +1,387 @@
+{
+  "sdk": {
+    "ready": true,
+    "sdk": null
+  },
+  "publicConfiguration": {
+    "status": 200,
+    "error": null,
+    "authorizedDomains": [
+      "localhost",
+      "msa-safety-9f978.firebaseapp.com",
+      "msa-safety-9f978.web.app"
+    ],
+    "passwordSignInAllowed": null,
+    "projectId": "500075830709"
+  },
+  "passwordPolicy": {
+    "basic": {
+      "isValid": false,
+      "passwordPolicy": {
+        "customStrengthOptions": {
+          "minPasswordLength": 8,
+          "maxPasswordLength": 4096,
+          "containsLowercaseLetter": true,
+          "containsUppercaseLetter": true,
+          "containsNumericCharacter": true,
+          "containsNonAlphanumericCharacter": false
+        },
+        "enforcementState": "ENFORCE",
+        "allowedNonAlphanumericCharacters": "^$*.[]{}()?\"!@#%&/\\,><':;|_~`-",
+        "forceUpgradeOnSignin": false,
+        "schemaVersion": 1
+      },
+      "meetsMinPasswordLength": false,
+      "meetsMaxPasswordLength": true,
+      "containsLowercaseLetter": true,
+      "containsUppercaseLetter": false,
+      "containsNumericCharacter": true
+    },
+    "strong": {
+      "isValid": true,
+      "passwordPolicy": {
+        "customStrengthOptions": {
+          "minPasswordLength": 8,
+          "maxPasswordLength": 4096,
+          "containsLowercaseLetter": true,
+          "containsUppercaseLetter": true,
+          "containsNumericCharacter": true,
+          "containsNonAlphanumericCharacter": false
+        },
+        "enforcementState": "ENFORCE",
+        "allowedNonAlphanumericCharacters": "^$*.[]{}()?\"!@#%&/\\,><':;|_~`-",
+        "forceUpgradeOnSignin": false,
+        "schemaVersion": 1
+      },
+      "meetsMinPasswordLength": true,
+      "meetsMaxPasswordLength": true,
+      "containsLowercaseLetter": true,
+      "containsUppercaseLetter": true,
+      "containsNumericCharacter": true
+    }
+  },
+  "roles": [
+    "Selecione seu cargo",
+    "Operador",
+    "Supervisor",
+    "Chefe"
+  ],
+  "buttons": [
+    {
+      "text": "×",
+      "aria": "Fechar menu"
+    },
+    {
+      "text": "☰",
+      "aria": "Recolher ou expandir menu"
+    },
+    {
+      "text": "",
+      "aria": "Ativar modo escuro"
+    },
+    {
+      "text": "",
+      "aria": null,
+      "action": "pause"
+    },
+    {
+      "text": "Todas as rotas",
+      "aria": null
+    },
+    {
+      "text": "Capacetes",
+      "aria": null
+    },
+    {
+      "text": "Fones",
+      "aria": null
+    },
+    {
+      "text": "+",
+      "aria": "Ampliar planta",
+      "action": "zoom-in"
+    },
+    {
+      "text": "−",
+      "aria": "Reduzir planta",
+      "action": "zoom-out"
+    },
+    {
+      "text": "Ajustar",
+      "aria": "Ajustar planta à tela",
+      "action": "fit"
+    },
+    {
+      "text": "⛶",
+      "aria": "Expandir mapa para tela cheia",
+      "action": "fullscreen"
+    }
+  ],
+  "demo": {
+    "telemetryMode": "simulation",
+    "catalogCount": 32,
+    "nhpl": {
+      "id": "NHPL",
+      "state": "operando",
+      "stateSince": 1791409993608,
+      "totalCount": 1032,
+      "rejectedCount": 12,
+      "goodCount": 1020,
+      "goal": 1440,
+      "cycleSeconds": 12,
+      "idealCycleSeconds": 11,
+      "cycleProgress": 0.36,
+      "partsPerCycle": 1,
+      "speed": 5,
+      "plannedSeconds": 14400,
+      "operatingSeconds": 12384,
+      "stopSeconds": 1209.6,
+      "setupSeconds": 806.4000000000001,
+      "maintenanceSeconds": 0,
+      "phase": "Montagem",
+      "parameters": {
+        "forca": {
+          "nome": "Força de prensagem",
+          "unidade": "N",
+          "min": 350,
+          "max": 450,
+          "value": 407.4661311788691,
+          "updatedAt": 1791413089608,
+          "quality": "good",
+          "alarm": false
+        }
+      },
+      "alarms": [],
+      "timeline": [
+        {
+          "state": "operando",
+          "start": 1791398689608,
+          "end": 1791404262408,
+          "reason": "Produção iniciada"
+        },
+        {
+          "state": "parada",
+          "start": 1791404262408,
+          "end": 1791405472008,
+          "reason": "Abastecimento de material"
+        },
+        {
+          "state": "operando",
+          "start": 1791405472008,
+          "end": 1791409187208,
+          "reason": "Produção retomada"
+        },
+        {
+          "state": "setup",
+          "start": 1791409187208,
+          "end": 1791409993608,
+          "reason": "Ajuste de processo"
+        },
+        {
+          "state": "operando",
+          "start": 1791409993608,
+          "end": null,
+          "reason": "Produção retomada"
+        }
+      ],
+      "events": [
+        {
+          "id": "NHPL-1791398689608",
+          "time": 1791398689608,
+          "type": "estado",
+          "description": "Produção iniciada",
+          "state": "operando"
+        },
+        {
+          "id": "NHPL-1791404262408",
+          "time": 1791404262408,
+          "type": "estado",
+          "description": "Abastecimento de material",
+          "state": "parada"
+        },
+        {
+          "id": "NHPL-1791405472008",
+          "time": 1791405472008,
+          "type": "estado",
+          "description": "Produção retomada",
+          "state": "operando"
+        },
+        {
+          "id": "NHPL-1791409187208",
+          "time": 1791409187208,
+          "type": "estado",
+          "description": "Ajuste de processo",
+          "state": "setup"
+        },
+        {
+          "id": "NHPL-1791409993608",
+          "time": 1791409993608,
+          "type": "estado",
+          "description": "Produção retomada",
+          "state": "operando"
+        }
+      ],
+      "samples": [
+        {
+          "time": 1791412399608,
+          "cycleSeconds": 12,
+          "temperature": null
+        },
+        {
+          "time": 1791412429608,
+          "cycleSeconds": 12.336588393923158,
+          "temperature": null
+        },
+        {
+          "time": 1791412459608,
+          "cycleSeconds": 12.363718970730273,
+          "temperature": null
+        },
+        {
+          "time": 1791412489608,
+          "cycleSeconds": 12.056448003223947,
+          "temperature": null
+        },
+        {
+          "time": 1791412519608,
+          "cycleSeconds": 11.69727900187683,
+          "temperature": null
+        },
+        {
+          "time": 1791412549608,
+          "cycleSeconds": 11.616430290134744,
+          "temperature": null
+        },
+        {
+          "time": 1791412579608,
+          "cycleSeconds": 11.88823380072043,
+          "temperature": null
+        },
+        {
+          "time": 1791412609608,
+          "cycleSeconds": 12.262794639487515,
+          "temperature": null
+        },
+        {
+          "time": 1791412639608,
+          "cycleSeconds": 12.395743298649354,
+          "temperature": null
+        },
+        {
+          "time": 1791412669608,
+          "cycleSeconds": 12.164847394096702,
+          "temperature": null
+        },
+        {
+          "time": 1791412699608,
+          "cycleSeconds": 11.782391555644253,
+          "temperature": null
+        },
+        {
+          "time": 1791412729608,
+          "cycleSeconds": 11.600003917379718,
+          "temperature": null
+        },
+        {
+          "time": 1791412759608,
+          "cycleSeconds": 11.785370832799826,
+          "temperature": null
+        },
+        {
+          "time": 1791412789608,
+          "cycleSeconds": 12.168066814730656,
+          "temperature": null
+        },
+        {
+          "time": 1791412819608,
+          "cycleSeconds": 12.396242942277949,
+          "temperature": null
+        },
+        {
+          "time": 1791412849608,
+          "cycleSeconds": 12.260115136062847,
+          "temperature": null
+        },
+        {
+          "time": 1791412879608,
+          "cycleSeconds": 11.884838673333974,
+          "temperature": null
+        },
+        {
+          "time": 1791412909608,
+          "cycleSeconds": 11.615441003248177,
+          "temperature": null
+        },
+        {
+          "time": 1791412939608,
+          "cycleSeconds": 11.69960510129133,
+          "temperature": null
+        },
+        {
+          "time": 1791412969608,
+          "cycleSeconds": 12.05995088386518,
+          "temperature": null
+        },
+        {
+          "time": 1791412999608,
+          "cycleSeconds": 12.36517810029105,
+          "temperature": null
+        },
+        {
+          "time": 1791413029608,
+          "cycleSeconds": 12.334662255414422,
+          "temperature": null
+        },
+        {
+          "time": 1791413059608,
+          "cycleSeconds": 11.996459476283839,
+          "temperature": null
+        },
+        {
+          "time": 1791413089608,
+          "cycleSeconds": 11.661511838329933,
+          "temperature": null
+        }
+      ],
+      "periodStart": 1791398689608,
+      "periodLabel": "Turno demonstrativo",
+      "updatedAt": 1791413089608,
+      "source": "simulated",
+      "sourceLabel": "Simulação",
+      "connected": true,
+      "stale": false,
+      "efficiency": {
+        "availability": 86,
+        "performance": 91.66666666666666,
+        "quality": 98.83720930232558,
+        "oee": 77.91666666666667
+      }
+    }
+  },
+  "errors": [],
+  "requests": [
+    {
+      "url": "https://www.googletagmanager.com/gtag/js",
+      "error": "net::ERR_FAILED"
+    }
+  ],
+  "responses": [
+    {
+      "url": "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js",
+      "status": 200
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js",
+      "status": 200
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js",
+      "status": 200
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js",
+      "status": 200
+    }
+  ],
+  "scope": "Public SDK and public Auth/password policy only; no login credentials submitted, accounts created or private data read."
+}

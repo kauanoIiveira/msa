@@ -6,6 +6,9 @@ import {dateWindow,dayOffset} from './format.js';
 import {eventDate} from '../domain/time.js';
 
 export const simulationCases = [
+  {id:'nhpl-met',name:'NHPL · 285 / 300 · meta atingida'},
+  {id:'nhpl-below',name:'NHPL · 284 / 300 · abaixo da meta'},
+  {id:'nhpl-missing',name:'NHPL · apontamento ausente'},
   {id:'normal',name:'Processo dentro dos limites'},
   {id:'outside',name:'Parâmetro fora da faixa'},
   {id:'stoppage',name:'Parada e retomada'},
@@ -21,8 +24,19 @@ export const simulationCases = [
   {id:'cep-unstable',name:'CEP · sinal de instabilidade'},
 ];
 
-export async function openSimulation(caseId,{papa=globalThis.Papa,now=Date.now}={}) {
+export async function openSimulation(caseId,{papa=globalThis.Papa,now=Date.now,effectiveActor}={}) {
   requireThat(simulationCases.some(c=>c.id===caseId),'INVALID_SCENARIO');
+  if(caseId.startsWith('nhpl-')){
+    const local=createLocalRepository({data:{},now}),preparationActor={uid:'simulation-preparation',role:'admin'},prepare=createMsaServices({repo:local.repo,actor:preparationActor,papa,clock:now});
+    const pilot=await prepare.nhpl.install({}),context={machineId:pilot.machineId,processId:pilot.processId,productId:pilot.productIds[0],order:'OP-SIM',lot:'LOTE-SIM',shift:'1'};
+    const toDate=eventDate(now()),range=dateWindow(toDate,toDate),end=Math.min(range.to-1,now()-60000),start=end-3600000;
+    await prepare.policies.create({id:'simulation-productivity',metric:'productivityPercent',value:95,effectiveFrom:range.from-86400000,source:'Fabiana · respostas de 07/10/2026',context:{machineId:context.machineId,processId:context.processId}});
+    await prepare.policies.create({id:'simulation-takt',metric:'taktSeconds',value:12,effectiveFrom:range.from-86400000,source:'Fabiana · takt informado',context:{machineId:context.machineId,processId:context.processId}});
+    const plan=await prepare.planning.approve({context,startedAt:start,endedAt:end,intervalMinutes:60,quantitySource:'informed',plannedPieces:300});
+    if(caseId!=='nhpl-missing'){const row=await prepare.plannedProduction.record(plan.intervals[0].id,{quantity:caseId==='nhpl-met'?285:284,basis:'gross',startedAt:start,endedAt:end,origin:'demo'});await prepare.plannedProduction.confirm(plan.intervals[0].id,{expectedRevision:row.id,confirmedGrossPieces:row.quantity});}
+    const actor=effectiveActor??{uid:'simulation-viewer',role:'viewer'};
+    return {repo:local.repo,services:createMsaServices({repo:local.repo,actor,papa,clock:now}),actor,context,fromDate:toDate,toDate,range,displayName:'Simulação NHPL',dispose:local.dispose};
+  }
   const roots=['machines','processes','products','parameters','parameterVersions','reasons','targets','collections','production','losses','stoppages','reviews','corrections'];
   const baseline=createLocalRepository({data:Object.fromEntries(roots.map(r=>[r,{}])),now});
   const actor={uid:'simulation-admin',role:'admin'};
@@ -90,5 +104,6 @@ export async function openSimulation(caseId,{papa=globalThis.Papa,now=Date.now}=
     const review=Object.values(data.reviews).find(r=>r.state==='analyzing');
     await services.analysis.decideReview(review.id,{decision:'rejected',justification:'Revisão do cenário local. Solicitar ajuste e nova coleta.'});
   }
-  return {repo:local.repo,services,actor,context,fromDate,toDate,range,displayName:'Fabiana Dias',dispose:local.dispose};
+  const sessionActor=effectiveActor??{uid:'simulation-viewer',role:'viewer'};
+  return {repo:local.repo,services:createMsaServices({repo:local.repo,papa,actor:sessionActor,clock:now}),actor:sessionActor,context,fromDate,toDate,range,displayName:'Simulação local',dispose:local.dispose};
 }

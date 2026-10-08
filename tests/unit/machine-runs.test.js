@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {memoryRepository} from '../helpers/memory-repository.js';
+import {createNhplService} from '../../app/src/services/nhpl.js';
+import {createMachineRunService} from '../../app/src/services/machine-runs.js';
+import {readLedger} from '../../app/src/repositories/append-ledger.js';
+test('four operational timestamps are ordered, append-only, and role restricted',async()=>{
+ const repo=memoryRepository(),admin={uid:'adm',role:'admin'};await createNhplService({repo,actor:admin}).install({});
+ const actor={uid:'op',role:'operator'},runs=createMachineRunService({repo,actor});
+ const context={machineId:'nhpl',processId:'nhpl-montagem',productId:'nhpl-vgard-hp',order:'OP',lot:'L',shift:'1'};
+ const start=await runs.start({context,machineStartedAt:1000});
+ await assert.rejects(()=>runs.advance(start.runId,{expectedRevision:start.id,productionStartedAt:900}),{code:'INVALID_TIME'});
+ const production=await runs.advance(start.runId,{expectedRevision:start.id,productionStartedAt:2000});
+ const end=await runs.advance(start.runId,{expectedRevision:production.id,productionEndedAt:3000});
+ const off=await runs.advance(start.runId,{expectedRevision:end.id,machineEndedAt:4000});
+ assert.equal(off.machineStartedAt,1000);assert.equal(off.productionStartedAt,2000);assert.equal(off.productionEndedAt,3000);assert.equal(off.machineEndedAt,4000);
+ assert.equal((await readLedger(repo,'machineRuns/'+start.runId)).events.length,4);
+ await assert.rejects(()=>runs.advance(start.runId,{expectedRevision:off.id,machineEndedAt:5000}),{code:'INVALID_TRANSITION'});
+ await assert.rejects(()=>createMachineRunService({repo,actor:{uid:'v',role:'viewer'}}).start({}),{code:'FORBIDDEN'});
+});

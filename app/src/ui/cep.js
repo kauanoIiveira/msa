@@ -6,6 +6,8 @@ import {parseReading} from '../domain/numbers.js';
 import {summarizeReadings} from '../domain/statistics.js';
 import {escapeHtml as e,number as n,date,ruleText} from './format.js';
 import {drawChart} from './charts.js';
+import {latestPlans} from '../domain/planning.js';
+import {matchesScope} from '../domain/production-policy.js';
 const workbook=getCapabilityStudy(),catalog=getMsaParameterCatalog();
 export const cepReasons={setpoint:'Capacidade não se aplica a ajustes/setpoints. Selecione uma característica medida.',
   'revision-conflict':'Há correções aprovadas conflitantes neste estudo. Resolva a revisão antes de interpretar capacidade.',
@@ -46,27 +48,28 @@ export function getCepStudy(state) {
   }
   const timed=samples.length>0&&samples.every((s,i)=>s.timePrecision==='instant'&&Number.isSafeInteger(s.occurredAt)&&(!i||s.occurredAt>samples[i-1].occurredAt));
   const sequenceConfirmed=timed||config.sequenceConfirmed;
-  const analysis=analyzeCep(samples,{version,minSamples:config.minSamples,sequenceConfirmed,complete:fromWorkbook?true:group?.cep?.complete??state.period?.coverage?.collections??true,sourceUnit:fromWorkbook?parameter?.unit:null});
+  const analysis=analyzeCep(samples,{version,minSamples:config.minSamples,context:state.context,sequenceConfirmed,complete:fromWorkbook?true:group?.cep?.complete??state.period?.coverage?.collections??true,sourceUnit:fromWorkbook?parameter?.unit:null});
   return {parameter,choices,id,groups,group,samples,version,unit:fromWorkbook?parameter?.unit:version?.unit,analysis,comparison,fromWorkbook,
-    source:fromWorkbook?`${workbook.source.name} · ${workbook.source.sheet} · ${parameter?.column??''}17:${parameter?.column??''}33`:state.simulation?'Simulação local':state.dataset==='presentation'?'Dados fictícios de apresentação':'Registros operacionais',
+    source:fromWorkbook?`${workbook.source.name} · ${workbook.source.sheet} · ${parameter?.column??''}17:${parameter?.column??''}33`:state.simulation?'Simulação local':state.client?.mode==='presentation'||state.dataset==='presentation'?'Dados fictícios de apresentação':'Registros operacionais',
     timed,sequenceConfirmed};
 }
 export function cepPage(state) {
   const s=getCepStudy(state),a=s.analysis,c=state.cep;
   const versions=s.fromWorkbook?Object.values(state.registries.parameterVersions??{}).filter(v=>Object.values(state.registries.parameters??{}).some(p=>p.id===v.parameterId&&p.code===s.id&&p.processId===state.context.processId)):[];
-  const indices=[['Média',a.mean],['σ dentro (MR/d₂)',a.sigmaWithin],['σ global (amostral)',a.sigmaOverall],['Cp',a.cp],['Cpk',a.cpk],['Pp',a.pp],['Ppk',a.ppk]];
+  const indices=[['Média',a.mean],['σ dentro (MR/d₂)',a.sigmaWithin],['Cp',a.cp],['Cpk',a.cpk]];
   return `<section class="data-section cep-intro"><div class="section-heading"><div><h2>Estudo de processo</h2><p>Uma característica, uma versão e um contexto por estudo</p></div><button class="btn" data-action="cep-export" ${s.samples.length?'':'disabled'}>Exportar estudo</button></div><div class="cep-controls">
     <label class="field">Fonte<select id="cep-source" data-cep="source">${opt('system','Registros do sistema',!s.fromWorkbook)}${opt('workbook','Planilha fornecida pela empresa',s.fromWorkbook)}</select></label>
     <label class="field">Parâmetro<select id="cep-parameter" data-cep="parameterId">${s.choices.map(p=>opt(s.fromWorkbook?p.code:p.id,p.name,(s.fromWorkbook?p.code:p.id)===s.id)).join('')}</select></label>
     ${s.fromWorkbook?`<label class="field">Referência de especificação<select data-cep="versionId">${opt('','Planilha · referência não aprovada',!c.versionId)}${versions.map(v=>opt(v.id,`${v.status==='approved'?'Aprovada':'Rascunho'} · ${v.nature==='measurement'?'Medição':'Setpoint'} · ${ruleText(v.rule,v.unit)} · ${v.id}`,v.id===c.versionId)).join('')}</select></label>`:`<label class="field">Versão e contexto<select data-cep="group">${s.groups.map(g=>opt(groupLabel(g),groupLabel(g),g===s.group)).join('')}</select></label>`}
-    <label class="field">Mínimo de leituras do estudo<input data-cep="minSamples" type="number" min="2" max="500" value="${c.minSamples}"></label>
+    <label class="field">Mínimo de leituras do estudo<input data-cep="minSamples" type="number" min="${state.context.machineId==='nhpl'?30:2}" max="500" value="${a.minSamples}"></label>
     ${!s.timed?`<label class="check-line"><input data-cep="sequenceConfirmed" type="checkbox" ${c.sequenceConfirmed?'checked':''}>Confirmei a ordem e a natureza das observações</label>`:''}</div>
     <p class="source-notes">${e(s.source)}${s.fromWorkbook?' · 17 linhas históricas de 25/08 a 29/09/2026, sem horário/subgrupo. Não são produção ao vivo.':''}</p>
     ${s.parameter&&!s.fromWorkbook&&['admin','engineer'].includes(state.actor?.role)&&!(state.dataset==='presentation'&&!state.simulation)?`<button class="btn" data-action="version:${e(s.parameter.id)}">Definir nova referência da Engenharia</button>`:''}</section>
+    ${state.context.machineId==='nhpl'&&!s.fromWorkbook?samplingMarkup(state):''}
     <section class="data-section" id="cep-results"><div class="section-heading"><div><h2>${e(s.parameter?.name??'Selecione um parâmetro')}</h2><p>${a.nValid} leituras válidas · ${a.nMissing} ausentes · ${a.nInvalid} inválidas · ${a.nConflicted} conflitantes · ${e(s.unit??'')}</p></div><span class="badge ${a.signals.length?'bad':'neutral'}">${a.signals.length?'Sinais de instabilidade':'Estudo exploratório'}</span></div>
     ${a.reason?`<p class="cep-diagnostic" role="status">${e(cepReasons[a.reason]??a.reason)}</p>`:`<p class="cep-diagnostic">Nenhum sinal nas regras testadas. Índices estimados sob hipótese de distribuição normal; isso não comprova estabilidade nem libera produção.</p>`}
     <div class="cep-indices">${indices.map(([label,value])=>`<div><span>${e(label)}</span><strong data-cep-index="${label.toLowerCase()}">${n(value,3)}</strong></div>`).join('')}</div>
-    <p class="source-notes">I-MR, fase I · limites calculados no período selecionado. Cp/Cpk usam σ dentro; Pp/Ppk usam σ global. Normalidade e adequação do instrumento não verificadas. Mínimo informado: ${a.minSamples}; não é aprovação industrial.</p>
+    <p class="source-notes">I-MR, fase I · Cp/Cpk usam σ dentro. Normalidade e adequação do instrumento não verificadas. Mínimo do estudo: ${a.minSamples}; não é aprovação industrial. ${state.client?.mode==='presentation'?'Leituras e faixas hipotéticas do conjunto de apresentação.':''}</p>
     ${s.group&&s.samples.length&&['admin','engineer','operator'].includes(state.actor?.role)&&!(state.dataset==='presentation'&&!state.simulation)?`<button class="btn" data-action="cep-review">Encaminhar estudo à Engenharia</button>`:''}</section>
     ${s.samples.length?`<div class="cep-charts"><section class="data-section"><h2>Individuais (I)</h2><p class="source-notes">Limites de controle do estudo e especificações da referência</p><div class="chart-frame"><canvas id="cep-chart" role="img" aria-label="Carta de indivíduos"></canvas></div></section><section class="data-section"><h2>Amplitude móvel (MR)</h2><p class="source-notes">Pares consecutivos; lacunas interrompem a amplitude</p><div class="chart-frame"><canvas id="cep-mr-chart" role="img" aria-label="Carta de amplitude móvel"></canvas></div></section></div>`:'<div class="empty-state"><h2>Sem leituras neste contexto</h2><p>Registre uma coleta ou consulte a planilha histórica.</p></div>'}
     ${s.fromWorkbook&&s.comparison?`<section class="data-section" id="cep-comparison"><h2>Conferência da planilha</h2><p>Recalculado com números e números em texto: média ${n(s.comparison.mean,6)} ${e(s.parameter.unit)} · desvio populacional ${n(s.comparison.sigma,6)}.</p><p class="source-notes">Este é o cálculo de dispersão global usado como comparação com STDEVP, não o σ dentro da carta I-MR. Cp/Cpk do estudo acima dependem dos requisitos indicados.</p><details><summary>Fórmulas e resultados salvos na fonte</summary><div class="table-wrap"><table class="data-table"><thead><tr><th>Célula</th><th>Fórmula original</th><th>Valor salvo</th></tr></thead><tbody>${s.parameter.excelSummary.map(x=>`<tr><td>${e(x.cell)}</td><td>${e(x.formula)}</td><td>${e(x.cached)}</td></tr>`).join('')}</tbody></table></div></details></section>`:''}
@@ -79,6 +82,10 @@ export function drawCepCharts(state) {
   if(s.version?.rule?.kind==='range'&&a.reason!=='incompatible-unit'){datasets.push(line('LIE · especificação',s.version.rule.lower,red,[8,4]),line('LSE · especificação',s.version.rule.upper,red,[8,4]));}
   drawChart('cep-chart',{labels,fullLabels,unit:s.unit??'',datasets});
   drawChart('cep-mr-chart',{labels,fullLabels,unit:s.unit??'',datasets:[{type:'line',label:'Amplitude móvel',data:a.movingRanges},line('MR média',a.mrMean,muted,[4,4]),line('LCS MR',a.movingRange.upper,control,[3,3])]});
+}
+function samplingMarkup(state){
+ const plans=latestPlans(state.period.plans??[]).filter(p=>matchesScope(state.context,p.context)),collections=state.period.effective?.collections??[];
+ return `<section class="data-section"><h2>Coleta por turno</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>Período / turno</th><th>OP / lote</th><th>Coleta</th></tr></thead><tbody>${plans.map(p=>{const rows=collections.filter(c=>matchesScope(p.context,c.context)&&c.occurredAt>=p.startedAt&&c.occurredAt<p.endedAt);return `<tr><td>${date(p.startedAt,true)} · turno ${e(p.context.shift)}</td><td>${e(p.context.order)} / ${e(p.context.lot)}</td><td>${rows.length?'Coleta registrada':p.startedAt>Date.now()?'Programado':'Coleta pendente'}</td></tr>`;}).join('')}</tbody></table></div><p class="source-notes">Frequência informada: uma coleta por turno. O estudo NHPL exige ao menos 30 observações válidas; isso não exige 30 peças em cada turno. Conferir o método de amostragem com a equipe técnica.</p></section>`;
 }
 export function cepReportRows(state) {
   const s=getCepStudy(state),a=s.analysis;

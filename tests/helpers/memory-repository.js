@@ -4,10 +4,10 @@ export function memoryRepository() {
   const clone=value=>value==null?null:structuredClone(value);
   const notify=()=>{for(const listener of listeners) listener();};
   const get=path=>{
-    if(values.has(path)) return clone(values.get(path));
-    const prefix=path+'/',object={};
-    for(const [key,value] of values) if(key.startsWith(prefix)&&!key.slice(prefix.length).includes('/')) object[key.slice(prefix.length)]=clone(value);
-    return Object.keys(object).length?object:null;
+    let base=values.has(path)?clone(values.get(path)):null;
+    for(const [key,value] of values)if(path.startsWith(key+'/')){let node=value;for(const part of path.slice(key.length+1).split('/'))node=node?.[part];if(node!=null)base=clone(node);}
+    const prefix=path+'/';for(const [key,value] of values)if(key.startsWith(prefix)){base??={};let node=base;const parts=key.slice(prefix.length).split('/');for(const part of parts.slice(0,-1))node=node[part]??={};node[parts.at(-1)]=clone(value);}
+    return base;
   };
   const list=(path,q={})=>{
     const rows=Object.entries(get(path)??{}).map(([id,value])=>({...value,id})).filter(r=>(!q.fromDate||r.eventDate>=q.fromDate)&&(!q.toDate||r.eventDate<=q.toDate)&&(!q.cursor||r.eventDate>q.cursor.date||(r.eventDate===q.cursor.date&&r.id>q.cursor.key))).sort((a,b)=>a.eventDate.localeCompare(b.eventDate)||a.id.localeCompare(b.id));

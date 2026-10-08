@@ -11,12 +11,12 @@ for(const role of ['admin','engineer','operator','viewer'])test(`${role}: author
   const requester=createMsaServices({repo,actor:{uid:'requester',role:'operator'},papa:Papa});
   const editing=['admin','engineer'].includes(role),operating=role!=='viewer';
   const check=async(allowed,call)=>allowed?await call():await assert.rejects(call,{code:'FORBIDDEN'});
-  await check(role==='admin',()=>service.registry.create('machines',{name:'New machine'}));
-  await check(role==='admin',()=>service.registry.create('processes',{name:'New process',machineId:f.context.machineId}));
-  await check(role==='admin',()=>service.registry.create('products',{name:'New product',processIds:{[f.context.processId]:true}}));
-  await check(role==='admin',()=>service.registry.create('parameters',{name:'New parameter',processId:f.context.processId}));
-  await check(role==='admin',()=>service.registry.create('reasons',{name:'New reason',kind:'stop'}));
-  await check(role==='admin',()=>service.registry.update('machines',f.context.machineId,{name:'Updated machine'}));
+  await check(editing,()=>service.registry.create('machines',{name:'New machine'}));
+  await check(editing,()=>service.registry.create('processes',{name:'New process',machineId:f.context.machineId}));
+  await check(editing,()=>service.registry.create('products',{name:'New product',processIds:{[f.context.processId]:true}}));
+  await check(editing,()=>service.registry.create('parameters',{name:'New parameter',processId:f.context.processId}));
+  await check(editing,()=>service.registry.create('reasons',{name:'New reason',kind:'stop'}));
+  await check(editing,()=>service.registry.update('machines',f.context.machineId,{name:'Updated machine'}));
   await check(editing,()=>service.registry.create('targets',{name:'Production target',metric:'producedPieces',unit:'pieces',context:f.context,fromDate:'2026-10-07',toDate:'2026-10-07',operator:'lower',threshold:100}));
   await check(editing,()=>service.registry.createParameterVersion(f.parameterId,{unit:'mmHg',nature:'measurement',status:'approved',rule:{kind:'upper',upper:-600}}));
   const readings=[{parameterId:f.parameterId,versionId:f.versionId,raw:'-650'}];
@@ -36,7 +36,7 @@ for(const role of ['admin','engineer','operator','viewer'])test(`${role}: author
   await check(editing,()=>service.analysis.decideCorrection(proposal.id,{decision:'approved',justification:'Count checked'}));
   assert.equal((await repo.get(`production/${original.id}`)).quantity,100,'the original remains intact');
   assert.ok((await service.history.list('production')).items.length>0,'all authorized roles can consult records');
-  await check(role==='admin',()=>service.registry.deactivate('machines',f.context.machineId));
+  await check(editing,()=>service.registry.deactivate('machines',f.context.machineId));
 });
 
 for(const role of ['admin','engineer'])test(`${role} cannot approve their own correction`,async()=>{

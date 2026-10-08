@@ -5,7 +5,7 @@ import {eventDate} from '../domain/time.js';
 import {validateRule} from '../domain/limits.js';
 
 const storageKey='msa.demo.workspace.v1';
-const roots=['machines','processes','products','parameters','parameterVersions','reasons','targets','collections','production','losses','stoppages','reviews','corrections'];
+const roots=['machines','processes','products','parameters','parameterVersions','reasons','targets','collections','production','losses','stoppages','reviews','corrections','pilots','productionPolicies','targetRevisions','productionPlans','productionIntervals','plannedCorrections','machineRuns'];
 const demoActor=Object.freeze({uid:'demo-admin',role:'admin'});
 const defaultContext=Object.freeze({machineId:'demo-t20',processId:'demo-termoformagem',productId:'demo-piloto'});
 const clone=value=>value==null?null:structuredClone(value);
@@ -85,7 +85,7 @@ export function createLocalRepository({data,now,persist=()=>{},notify=()=>{}}) {
   const check=()=>requireThat(!disposed,'STALE_SESSION');
   const parts=path=>{
     requireThat(typeof path==='string','INVALID_PATH');const keys=path.split('/');
-    requireThat(roots.includes(keys[0])&&keys.every(safeKey),'INVALID_PATH');return keys;
+    requireThat([...roots,'technicalRecords'].includes(keys[0])&&keys.every(safeKey),'INVALID_PATH');return keys;
   };
   const read=path=>{
     let value=state;for(const key of parts(path)) {if(!isObject(value)||!Object.hasOwn(value,key)) return null;value=value[key];}
@@ -123,7 +123,7 @@ export function createLocalRepository({data,now,persist=()=>{},notify=()=>{}}) {
     },
     watchConnection(onNext) {check();connections.add(onNext);queueMicrotask(()=>{if(!disposed&&connections.has(onNext)) onNext(true);});return()=>connections.delete(onNext);}
   };
-  return {repo,snapshot:()=>clone(state),replace:save,dispose(){disposed=true;watchers.clear();connections.clear();}};
+  return {repo,snapshot:()=>clone(state),replace:save,hydrate(next){check();state=clone(next);announce();},dispose(){disposed=true;watchers.clear();connections.clear();}};
 }
 
 function parseStored(value) {

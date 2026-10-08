@@ -29,12 +29,12 @@ export function createRegistryService({repo,actor,idFactory=()=>crypto.randomUUI
   }
   return {
     async create(kind,payload) {
-      assertRole(actor,kind==='targets'?['admin','engineer']:['admin']);await validate(kind,payload);
+      assertRole(actor,['admin','engineer']);await validate(kind,payload);
       const id=assertId(idFactory());
       return repo.create(`${kind}/${id}`,{...payload,id,active:true,createdBy:actor.uid,createdAt:timestamp()});
     },
     async update(kind,id,patch) {
-      assertRole(actor,kind==='targets'?['admin','engineer']:['admin']);requireThat(registryKinds.includes(kind),'INVALID_KIND');
+      assertRole(actor,['admin','engineer']);requireThat(registryKinds.includes(kind),'INVALID_KIND');
       knownKeys(patch,['name','code','active']);
       if(patch.name!=null) requireThat(typeof patch.name==='string'&&patch.name.trim().length>0&&patch.name.length<=160,'VALIDATION','name');
       if(patch.code!=null) requireThat(typeof patch.code==='string'&&patch.code.length<=100,'VALIDATION','code');

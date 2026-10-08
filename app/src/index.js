@@ -15,3 +15,7 @@ export {buildDashboard} from './domain/dashboard.js';
 export {analyzeCep,selectParameterStudy} from './domain/cep.js';
 export {buildHourly} from './domain/hourly.js';
 export {getCapabilityStudy} from './catalog/capability-study.js';
+export {buildProductivity} from './domain/productivity.js';
+export {suggestPlan,validatePlan} from './domain/planning.js';
+export {resolvePolicy} from './domain/production-policy.js';
+export {nhplCatalog} from './catalog/nhpl.js';

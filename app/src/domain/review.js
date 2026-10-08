@@ -18,7 +18,7 @@ export function nextReviewState(state,action,role) {
 export function validateReplacement(type,original,replacement) {
   requireThat(['collections','production','losses','stoppages'].includes(type),'INVALID_KIND');
   knownKeys(replacement,Object.keys(original));
-  for(const key of ['id','context','origin','createdBy','createdAt','timePrecision','eventDate','occurredAt','source','kind','unit','basis','planned']) {
+  for(const key of ['id','context','origin','createdBy','createdAt','closedBy','closedAt','timePrecision','eventDate','occurredAt','source','kind','unit','basis','planned','intervalId','planId','planRevisionId','goodValidated']) {
     requireThat(stableStringify(replacement[key])===stableStringify(original[key]),'CORRECTION_CONTEXT',key);
   }
   if(type==='production') {
