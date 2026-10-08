@@ -57,7 +57,7 @@ import {planningMarkup,productivityMarkup,productivityView,nhplAction} from './n
 import {productionChartData,referenceDraft,recordContextMarkup,availableProductionIntervals,parameterReferences} from './presentation-details.js';
 import {visibleNavigation,initialRoute,resolveRoute} from './access.js';
 import {openPresentation} from './presentation.js';
-import {inspectionsMarkup,technicalMarkup,technicalView,captureMarkup,occurrencesMarkup,stopsTechnicalMarkup,technicalAction} from './technical.js';
+import {inspectionsMarkup,technicalMarkup,technicalView,captureMarkup,occurrencesMarkup,stopsTechnicalMarkup,stopClassificationMarkup,technicalAction} from './technical.js';
 import {loginAccounts} from '../config/login-accounts.js';
 const app = document.getElementById("app"),
   modal = document.getElementById("modal");
@@ -430,11 +430,11 @@ function statisticsReason(reason) {
 }
 function parameterTable(params) {
   return table(
-    ["Parâmetro", "Última leitura", "Limite da versão", "Situação"],
+    ["Parâmetro", "Última leitura / horário", "Referência / tolerância", "Situação"],
     params
       .map(
         (p) =>
-          `<tr><td><button class="link-btn" data-parameter="${e(p.code)}">${e(p.name)}</button></td><td class="mono">${n(p.latest?.value)} ${e(p.latest?.value != null ? p.latest.unit : "")}</td><td class="muted">${e(ruleText(p.latest?.rule, p.latest?.unit))}</td><td>${badge(p.state)}</td></tr>`,
+          `<tr><td><button class="link-btn" data-parameter="${e(p.code)}">${e(p.name)}</button></td><td class="mono">${n(p.latest?.value)} ${e(p.latest?.value != null ? p.latest.unit : "")}<div class="small muted">${p.latest?date(p.latest.occurredAt??p.latest.eventDate,p.latest.occurredAt!=null):'Sem leitura no período'}</div></td><td class="muted">${e(ruleText(p.latest?.rule, p.latest?.unit))}${p.latest&&state.registries.recipeVersions?.[p.latest.context?.recipe]?.settings?.[p.code]!=null?'<div class="small">Nominal da configuração: '+n(state.registries.recipeVersions[p.latest.context.recipe].settings[p.code])+' '+e(p.latest.unit??p.unit)+'</div>':''}${p.state==='pending'?'<div class="small">Tolerância pendente de aprovação; leitura sem avaliação de conformidade.</div>':''}</td><td>${badge(p.state)}</td></tr>`,
       )
       .join(""),
   );
@@ -457,7 +457,7 @@ function operations({kind:requestedKind,showTabs=true,openOnly=false}={}) {
     ["Data", "Registro", "Informação", "Ações"],
     list
       .slice()
-      .sort((a, b) => b.eventDate.localeCompare(a.eventDate))
+      .sort((a, b) => b.eventDate.localeCompare(a.eventDate)||(b.occurredAt??b.startedAt??0)-(a.occurredAt??a.startedAt??0))
       .map(
         (r) =>
           `<tr><td>${date(r.occurredAt ?? r.startedAt ?? r.eventDate, r.occurredAt != null || r.startedAt != null)}</td><td>${e(labels[kind])}<div class="small muted">${e(r.id.slice(0, 10))}</div>${recordContextMarkup(r,state.registries)}</td><td>${recordSummary(kind, r)}<div class="small muted">${e(r.createdBy??'Autor não informado')}${r.origin&&r.origin!=='demo'?' · '+e(r.origin):''}${r.correctionId?' · Corrigido':r.revisionConflict?' · Revisão conflitante':''}</div></td><td><button class="icon-btn" title="Detalhes" aria-label="Detalhes" data-detail="${kind}:${e(r.id)}">${icon("arrow-up-right")}</button>${kind === "stoppages" && r.endedAt == null && operator() ? button("Encerrar", `close:${r.id}`, "square") : ""}${kind === "collections" && operator() ? button("Enviar à Engenharia", `review:${r.id}`, "send") : ""}</td></tr>`,
@@ -472,8 +472,8 @@ function operationSummary(kind){
  const rejects=losses.filter(r=>r.kind==='reject'&&r.unit==='pieces'),waste=losses.filter(r=>r.unit==='kg');
  if(kind==='production')return `<section class="data-section"><div class="metrics">${[['Produção bruta',sum(production.filter(r=>r.basis==='gross'),'quantity'),'peças'],['Peças boas registradas',sum(production.filter(r=>r.basis==='good'),'quantity'),'peças'],['Refugos registrados',sum(rejects,'amount'),'peças'],['Perdas de material',sum(waste,'amount'),'kg']].map(([label,total,unit])=>`<div class="metric"><div class="metric-title">${label}</div><div class="metric-value">${total}</div><p>${unit}</p></div>`).join('')}</div>${operator()?button('Registrar refugo / perda','form:loss','circle-minus'):''}</section>`;
  if(kind==='stoppages'){
-  const stops=recordsInPeriod('stoppages',records('stoppages'),range),closed=stops.filter(r=>r.endedAt!=null);
-  return `<section class="data-section"><div class="metrics"><div class="metric"><div class="metric-title">Paradas abertas</div><div class="metric-value">${stops.filter(r=>r.endedAt==null).length}</div></div><div class="metric"><div class="metric-title">Duração encerrada no recorte</div><div class="metric-value">${n(state.dashboard?.totals?.stopMinutes)}</div><p>minutos em união por máquina · ${closed.length} registros encerrados</p></div></div></section>`;
+  const stops=recordsInPeriod('stoppages',records('stoppages'),range),closed=stops.filter(r=>r.endedAt!=null),metrics=technicalView(state);
+  return `<section class="data-section"><div class="metrics"><div class="metric"><div class="metric-title">Paradas abertas</div><div class="metric-value">${stops.filter(r=>r.endedAt==null).length}</div></div><div class="metric"><div class="metric-title">Duração encerrada no recorte</div><div class="metric-value">${n(state.dashboard?.totals?.stopMinutes)}</div><p>minutos em união por máquina · ${closed.length} registros encerrados</p></div><div class="metric"><div class="metric-title">Microparadas</div><div class="metric-value">${n(metrics.microCount)}</div><p>${n(metrics.microSeconds)} s em união temporal · limiar da referência técnica</p></div></div></section>`;
  }
  return '';
 }
@@ -488,7 +488,7 @@ function recordSummary(kind, r) {
   if (kind === "losses")
     return `${n(r.amount)} ${r.unit === "pieces" ? "peças" : "kg"} · ${e(name("reasons", r.reasonId))}`;
   if (kind === "stoppages")
-    return `${r.endedAt == null ? "Em aberto" : `${n((r.endedAt - r.startedAt) / 60000)} min`} · ${e(name("reasons", r.reasonId))}`;
+    return `${r.endedAt == null ? "Em aberto" : `${n((r.endedAt - r.startedAt) / 60000)} min`} · ${e(name("reasons", r.reasonId))}${stopClassificationMarkup(state,r)}`;
   if (kind === "collections")
     return `${Object.values(r.readings ?? {}).length} leituras`;
   return badge(r.state);
