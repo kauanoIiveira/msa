@@ -4,7 +4,7 @@ import {productiveWindows,latestPlans,netSeconds} from './planning.js';
 import {matchesScope} from './production-policy.js';
 import {buildProductivity} from './productivity.js';
 import {stableStringify} from './canonical.js';
-import {evaluateCoverage} from './coverage.js';
+import {evaluateCoverage,latestClassification} from './coverage.js';
 import {validateDate} from './time.js';
 function dateWindow(fromDate,toDate){validateDate(fromDate);validateDate(toDate);return {from:Date.parse(fromDate+'T00:00:00-03:00'),to:Date.parse(toDate+'T00:00:00-03:00')+86400000};}
 export function projectProductivity(state){
@@ -21,7 +21,7 @@ export function projectWorkspaceMetrics(state,{now=state.asOf??Date.now()}={}) {
   const ref=refs.filter(r=>r.effectiveFrom<=s.from).at(-1),crosses=refs.some(r=>r.effectiveFrom>s.from&&r.effectiveFrom<through);
   const applicable=refs.filter(r=>r.effectiveFrom<s.to),refConflict=new Set(applicable.map(r=>r.supersedes??'root')).size!==applicable.length;
   const stops=allStops.filter(r=>matchesScope(s.context,r.context)&&r.startedAt<through&&(r.endedAt??through)>s.from);
-  const classified=stops.map(stop=>({stop,classification:technical.filter(r=>r.kind==='classification'&&r.stopId===stop.id).at(-1)}));
+  const classified=stops.map(stop=>({stop,classification:latestClassification(technical.filter(r=>r.kind==='classification'),stop)}));
   const live=state.client?.mode==='live',gap=(state.liveCoverage?.gaps??[]).some(g=>g.from<through&&g.to>s.from);
   const pending=state.period.coverage?.stoppages!==true||classified.some(x=>!x.classification||(!live&&x.stop.endedAt==null)||x.stop.revisionConflict||x.classification.stopFingerprint!==stableStringify([x.stop.startedAt,x.stop.endedAt??null,x.stop.correctionId??null])||x.classification.category==='outside-plan'&&plan&&productiveWindows(plan).some(w=>x.stop.startedAt<w.endedAt&&(x.stop.endedAt??through)>w.startedAt));
   const loss=plan?productiveWindows(plan).reduce((sum,w)=>sum+unionSeconds(classified.filter(x=>x.classification?.category==='availability').map(x=>x.stop),Math.max(s.from,w.startedAt),Math.min(through,w.endedAt)),0):null;
@@ -36,11 +36,12 @@ export function projectWorkspaceMetrics(state,{now=state.asOf??Date.now()}={}) {
   if(s.reason&&!['policy-required','policy-conflict','confirmation-required','production-required','awaiting-update','future'].includes(s.reason)){result.performance=null;result.quality=null;result.oee=null;result.reason=s.reason;result.state='unavailable';}
   const crossingFailure=classified.some(x=>x.classification?.failure&&(x.stop.startedAt<s.from||(x.stop.endedAt??Infinity)>s.to));
   const observed=evaluateCoverage({witnesses:state.period.coverageWitnesses??[],stops:allStops,classifications:technical.filter(r=>r.kind==='classification'),windows:[{from:s.from,to:through,context:s.context}],completeQuery:state.period.nhplComplete===true&&state.period.coverage?.stoppages===true});
-  const rel=calculateReliability({operatingSeconds:result.runSeconds,repairs:classified.filter(x=>x.classification?.failure&&x.stop.startedAt>=s.from&&(x.stop.endedAt??Infinity)<=s.to).map(x=>x.classification),complete:(observed.complete||(state.client?.mode!=='workspace'&&inspection?.historyComplete===true))&&!pending&&!crossingFailure&&s.state==='final'});
+  const legacyCovered=state.client?.mode!=='workspace'&&trusted&&inspection?.historyComplete===true;
+  const rel=calculateReliability({operatingSeconds:result.runSeconds,repairs:classified.filter(x=>x.classification?.failure&&x.stop.startedAt>=s.from&&(x.stop.endedAt??Infinity)<=s.to).map(x=>x.classification),complete:(observed.complete||legacyCovered)&&!pending&&!crossingFailure&&s.state==='final'});
   const micros=stops.filter(r=>r.endedAt!=null&&!r.planned&&(r.endedAt-r.startedAt)/1000<=(ref?.microStopSeconds??60));
-  return {...s,...result,referenceId:ref?.id,inspectionId:inspection?.id,classificationIds:classified.map(x=>x.classification?.id).filter(Boolean),reliability:rel,microCount:micros.length,microSeconds:unionSeconds(micros,s.from,s.to)};
+  return {...s,...result,referenceId:ref?.id,inspectionId:inspection?.id,legacyCovered,classificationIds:classified.map(x=>x.classification?.id).filter(Boolean),reliability:rel,microCount:micros.length,microSeconds:unionSeconds(micros,s.from,s.to)};
  });
- const valid=evaluated.filter(s=>s.oee!=null),aggregate=aggregateOee(evaluated),windows=state.operationalQuery?.windows??[dateWindow(state.fromDate,state.toDate)],manualCoverage=evaluated.length>0&&evaluated.every(s=>technical.find(r=>r.id===s.inspectionId)?.historyComplete===true);
+ const valid=evaluated.filter(s=>s.oee!=null),aggregate=aggregateOee(evaluated),windows=state.operationalQuery?.windows??[dateWindow(state.fromDate,state.toDate)],manualCoverage=evaluated.length>0&&evaluated.every(s=>s.legacyCovered);
  if(aggregate.oee!=null&&state.period.coverage?.production===false)aggregate.state='partial';
  const maintenanceWindows=plans.flatMap(plan=>productiveWindows(plan).flatMap(p=>windows.map(w=>({from:Math.max(p.startedAt,w.from),to:Math.min(p.endedAt,w.to,now),context:plan.context})).filter(w=>w.to>w.from)));
  const maintenance=evaluateCoverage({witnesses:state.period.coverageWitnesses??[],stops:allStops,classifications:technical.filter(r=>r.kind==='classification'),windows:maintenanceWindows,completeQuery:state.period.nhplComplete===true&&state.period.coverage?.stoppages===true});

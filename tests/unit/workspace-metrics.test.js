@@ -12,3 +12,9 @@ test('MTBF and MTTR use classified failures and covered time independently of qu
  const view=projectWorkspaceMetrics(state);assert.equal(view.reliability.mtbf.value,3000);assert.equal(view.reliability.mttr.value,300);assert.equal(view.aggregate.oee,null);
  const noCoverage=projectWorkspaceMetrics({...state,period:{...state.period,coverageWitnesses:[]}});assert.equal(noCoverage.reliability.mtbf.value,null);assert.equal(noCoverage.reliability.mttr.value,null);
 });
+test('legacy inspection coverage requires its current production fingerprint',()=>{
+ const production=[{id:'gross',intervalId:'interval',basis:'gross',quantity:100}],inspection={id:'inspection',kind:'inspection',context,intervalId:'interval',firstPassGood:90,historyComplete:true,productionFingerprint:stableStringify([['gross',100,null]])};
+ const legacy={...state,client:{mode:'scenario'},period:{...state.period,coverageWitnesses:[],effective:{...state.period.effective,production}},technical:[...state.technical,inspection]};
+ assert.equal(projectWorkspaceMetrics(legacy).reliability.mtbf.value,3000);
+ assert.equal(projectWorkspaceMetrics({...legacy,period:{...legacy.period,effective:{...legacy.period.effective,production:[{...production[0],quantity:101}]}}}).reliability.mtbf.value,null);
+});

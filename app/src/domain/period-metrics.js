@@ -2,6 +2,7 @@ import {unionSeconds} from './oee.js';
 import {productiveWindows,latestPlans} from './planning.js';
 import {stableStringify} from './canonical.js';
 import {matchesScope} from './production-policy.js';
+import {latestClassification} from './coverage.js';
 const sum=(rows,key)=>rows.reduce((n,r)=>n+r[key],0);
 const metric=(value,state,reason=null,coverage={})=>({value,state,reason,coverage});
 export function aggregateOee(segments){
@@ -20,7 +21,11 @@ export function aggregateOee(segments){
 export function periodReliability({plans=[],stops=[],classifications=[],windows,now=Date.now(),coverage={complete:false}}){
  const byMachine=new Map();for(const plan of latestPlans(plans)){const key=plan.context.machineId,list=byMachine.get(key)??[];list.push(...productiveWindows(plan));byMachine.set(key,list);}
  let plannedSeconds=0,loss=0,invalid=false;const classified=new Map();
- for(const stop of stops){const c=classifications.filter(c=>c.stopId===stop.id).at(-1);if(!c||c.stopFingerprint!==stableStringify([stop.startedAt,stop.endedAt??null,stop.correctionId??null])||stop.revisionConflict){invalid=true;continue;}classified.set(stop.id,{stop,c});}
+ const activePlans=latestPlans(plans);
+ for(const stop of stops){
+  if(!activePlans.some(p=>matchesScope(p.context,stop.context))||!windows.some(w=>stop.startedAt<Math.min(w.to,now)&&(stop.endedAt??now)>w.from))continue;
+  const c=latestClassification(classifications,stop);if(!c||c.stopFingerprint!==stableStringify([stop.startedAt,stop.endedAt??null,stop.correctionId??null])||stop.revisionConflict){invalid=true;continue;}classified.set(stop.id,{stop,c});
+ }
  for(const [machine,planned]of byMachine){for(const w of windows){const end=Math.min(w.to,now);if(end<=w.from)continue;plannedSeconds+=unionSeconds(planned,w.from,end);
   const lost=[];for(const {stop,c}of classified.values())if(stop.context.machineId===machine&&c.category==='availability')for(const p of planned){const from=Math.max(stop.startedAt,p.startedAt,w.from),to=Math.min(stop.endedAt??now,p.endedAt,end);if(to>from)lost.push({startedAt:from,endedAt:to});}
   loss+=unionSeconds(lost,w.from,end);

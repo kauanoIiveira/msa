@@ -19,3 +19,16 @@ test('period reliability counts unique starts and complete repairs independently
 test('microstop across hourly boundaries counts once and unions duration',()=>{
  const stops=[{id:'micro',context,startedAt:2000000,endedAt:2020000}];const r=periodMicroStops({stops,windows:[{from:1900000,to:2010000},{from:2010000,to:2100000}],references:[]});assert.equal(r.count,1);assert.equal(r.seconds,20);
 });
+test('reliability selects the latest classification chronologically and ignores unrelated stops',()=>{
+ const newer={...classification,id:'z-new',createdAt:200},older={...classification,id:'a-old',createdAt:100,failure:false};
+ const unrelated=[{...stop,id:'other-machine',context:{machineId:'other',shift:'1'}},{...stop,id:'past',startedAt:1,endedAt:100}];
+ const r=periodReliability({plans,stops:[stop,...unrelated],classifications:[newer,older],windows,now:20000000,coverage:{complete:true}});
+ assert.equal(r.failures,1);assert.equal(r.mtbf.value,230*60);assert.equal(r.mttr.value,300);
+});
+test('overnight reliability unions overlapping availability stops and keeps open repairs distinct',()=>{
+ const from=Date.parse('2026-10-01T23:00:00-03:00'),to=from+8*3600000,ctx={machineId:'m',shift:'3'};
+ const a={id:'a',context:ctx,startedAt:from+3600000,endedAt:from+4200000},b={id:'b',context:ctx,startedAt:from+3900000,endedAt:from+4500000};
+ const classes=[a,b].map(s=>({id:s.id,stopId:s.id,failure:true,category:'availability',repairStartedAt:s.startedAt,stopFingerprint:stableStringify([s.startedAt,s.endedAt,null]),...(s.id==='a'?{repairEndedAt:s.startedAt+300000}:{})}));
+ const r=periodReliability({plans:[{context:ctx,startedAt:from,endedAt:to}],stops:[a,b],classifications:classes,windows:[{from,to}],now:to,coverage:{complete:true}});
+ assert.equal(r.operatingSeconds,8*3600-900);assert.equal(r.mtbf.value,(8*3600-900)/2);assert.equal(r.mttr.value,300);assert.equal(r.openRepairs,1);
+});
