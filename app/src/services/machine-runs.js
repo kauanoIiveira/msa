@@ -6,7 +6,7 @@ export function createMachineRunService({repo,actor,clock=Date.now,idFactory=()=
  const options={actor,idFactory},allowed=()=>assertRole(actor,['admin','engineer','operator']);
  const instant=value=>requireThat(Number.isSafeInteger(value)&&value>=0&&value<=clock(),'INVALID_TIME');
  return {
-  async start(payload){allowed();knownKeys(payload,['context','machineStartedAt']);const context=await loadContext(repo,payload.context);requireThat(context.machineId==='nhpl','INVALID_REFERENCE');instant(payload.machineStartedAt);
+  async start(payload){allowed();knownKeys(payload,['context','machineStartedAt']);const context=await loadContext(repo,payload.context);instant(payload.machineStartedAt);
    const runId=assertId(idFactory()),path='machineRuns/'+runId;
    await initLedger(repo,path,{context,runId},options);
    return appendLedgerEvent(repo,path,{expectedEventId:null,event:{kind:'run',runId,context,machineStartedAt:payload.machineStartedAt,createdBy:actor.uid,createdAt:repo.timestamp()}},options);

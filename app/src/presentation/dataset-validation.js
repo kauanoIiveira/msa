@@ -83,7 +83,7 @@ export async function validatePresentationDataset(snapshot,manifest){
   const selo=collections.filter(c=>own(c)&&c.context?.machineId?.includes('_t20_machine_'));
   if(selo.length<30||selo.some(c=>Object.keys(c.readings??{}).length!==getMsaParameterCatalog().length))issue('SELO_STUDY_INCOMPLETE');
   if(!collections.some(c=>own(c)&&values(c.readings).some(r=>r.value===0))||!selo.some(c=>values(c.readings).some(r=>r.value<0)))issue('ZERO_OR_VACUUM_MISSING');
-  const runs=values(snapshot.machineRuns).filter(r=>String(r.runId).startsWith(prefix+'_'));
+  const runs=values(snapshot.machineRuns).filter(r=>String(r.runId).startsWith(prefix+'_run_start_'));
   if(runs.length!==42||runs.some(r=>{
     const events=values(r.events).sort((a,b)=>a.sequence-b.sequence),last=events.at(-1);
     return events.length!==4||last?.machineEndedAt==null||last.machineStartedAt>last.productionStartedAt||last.productionStartedAt>last.productionEndedAt||last.productionEndedAt>last.machineEndedAt;

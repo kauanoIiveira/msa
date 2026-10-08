@@ -369,7 +369,7 @@ function layout({background=false}={}) {
 }
 function page() {
   if(state.route==='equipment')return equipmentPage({state});
-  if(state.route==='production')return productionPage({state,renderers:{summary:()=>state.context.machineId==='nhpl'?productivityMarkup(state):hourlyPage(state),planning:()=>planningMarkup(state),records:kind=>operations({kind,showTabs:false}),times:manualTimes,occurrences:()=>occurrencesMarkup(state)}});
+  if(state.route==='production')return productionPage({state,renderers:{summary:()=>state.period.plans?.some(p=>p.context.machineId===state.context.machineId)?productivityMarkup(state):hourlyPage(state),planning:()=>planningMarkup(state),records:kind=>operations({kind,showTabs:false}),times:manualTimes,occurrences:()=>occurrencesMarkup(state)}});
   if(state.route==='stoppages')return stoppagesPage({state,renderers:{reliability:()=>reliabilityMarkup(technicalView(state)),classification:()=>stopsTechnicalMarkup(state),records:(kind,open)=>operations({kind,showTabs:false,openOnly:open})}});
   if(state.route==='quality')return qualityPage({state,renderers:{records:kind=>operations({kind,showTabs:false}),inspections:()=>inspectionsMarkup(state)}});
   if(state.route==='indicators')return reliabilityMarkup(technicalView(state))+ `<div class="table-tools"><h2>Acompanhamento do processo</h2><a class="btn" href="#tv">${icon('monitor')}Abrir painel TV</a></div>`+technicalMarkup(state)+stopsTechnicalMarkup(state);
@@ -390,7 +390,7 @@ function metric(title, v, unit, note, ico, highlight = false) {
   return `<article class="metric ${highlight ? "highlight" : ""}"><div class="metric-title">${title}${icon(ico)}</div><div class="metric-value">${value(v, unit)}</div><p class="metric-note">${e(note)}</p></article>`;
 }
 function dashboard() {
-  if(state.context.machineId==='nhpl'){
+  if(state.context.machineId==='nhpl'||state.period.plans?.some(p=>p.context.machineId===state.context.machineId)){
     const queue=records('reviews').filter(r=>['waiting','analyzing'].includes(r.state));
     return overviewMarkup({state,metrics:technicalView(state),productivity:productivityView(state),pending:state.pending??{open:[],checks:[],complete:false},renderers:{charts:dashboardCharts,detail:()=>productivityMarkup(state,{actions:false})+technicalMarkup(state,{compact:true}),parameters:()=>`<section class="data-section"><div class="section-heading"><h2>Parâmetros do processo</h2><a href="#parameters" class="btn">Ver todos</a></div>${parameterTable((state.dashboard.parameters??[]).slice(0,5))}</section>`,queue:()=>`<section class="data-section"><div class="section-heading"><h2>Fila técnica · ${queue.length} análises</h2><a href="#engineering" class="btn">Ver todos</a></div>${table(['Escopo','Situação','Ação'],queue.slice(0,5).map(r=>`<tr><td>${e(r.scope)}</td><td>${badge(r.state)}</td><td><button class="btn" data-detail="reviews:${e(r.id)}">Detalhes</button></td></tr>`).join(''))}</section>`}});
   }
@@ -447,7 +447,7 @@ function operations({kind:requestedKind,showTabs=true,openOnly=false}={}) {
     kind = requestedKind??(history ? state.tab.history : state.tab.operations),
     list = recordsInPeriod(kind,records(kind),state.operationalQuery?.range??dateWindow(state.fromDate,state.toDate)).filter(r=>!openOnly||r.endedAt==null);
   if(kind==='occurrences')return tabs(['production','stoppages','losses','hourly','occurrences'],kind)+occurrencesMarkup(state);
-  if(kind==='hourly')return `${tabs(["production","stoppages","losses","hourly","occurrences"],kind)}${state.context.machineId==='nhpl'?productivityMarkup(state):hourlyPage(state)}`;
+  if(kind==='hourly')return `${tabs(["production","stoppages","losses","hourly","occurrences"],kind)}${state.period.plans?.some(p=>p.context.machineId===state.context.machineId)?productivityMarkup(state):hourlyPage(state)}`;
   const actions = {
     production: "production",
     stoppages: "stoppage",
@@ -559,7 +559,7 @@ function installCatalog() {
 }
 function settings(){const prefs=readPreferences(),view=readConsultation(),connected=Boolean(state.client?.email)&&!state.simulation;return `<section class="settings-section"><h2>Perfil</h2><form id="profile-form" class="settings-form"><div class="form-grid"><label class="field">RE<input name="re" value="${e(state.client?.re??'')}" readonly></label><label class="field">Nome<input name="displayName" value="${e(state.client?.displayName??'')}" required maxlength="100" ${connected?'':'disabled'}></label><label class="field">Cargo / acesso<input value="${e({admin:'Administração / Supervisão',engineer:'Liderança / Engenharia / times técnicos',operator:'Operação',viewer:'Consulta'}[state.actor?.role]??'Sem sessão')}" readonly></label></div><div class="profile-footer">${connected?'<button class="btn" type="submit">'+icon('save')+'Salvar perfil</button>':button('Entrar com RE','connect','log-in')}</div></form><div class="setting-row"><div><h3>Senha</h3></div>${connected?button('Alterar senha','change-password','key-round'):''}</div></section><section class="settings-section"><h2>Aparência e acessibilidade</h2><div class="setting-row"><div><h3>Tema</h3></div><div class="segmented">${[['light','sun','Claro'],['dark','moon','Escuro'],['system','monitor','Sistema']].map(([id,ico,title])=>`<button data-theme-choice="${id}" class="${prefs.theme===id?'selected':''}">${icon(ico)}${title}</button>`).join('')}</div></div><div class="setting-row"><div><h3>VLibras</h3><p>Tradução em Libras</p></div><label class="switch"><input id="vlibras-toggle" type="checkbox" aria-label="Ativar VLibras" ${prefs.vlibras?'checked':''}><span class="switch-track"></span></label></div><div class="setting-row"><div><h3>Tabelas compactas</h3></div><label class="switch"><input id="compact-toggle" type="checkbox" aria-label="Tabelas compactas" ${view.compact?'checked':''}><span class="switch-track"></span></label></div></section><section class="settings-section"><h2>Verificação técnica</h2><p>17 cenários isolados para conferir comportamentos e limites.</p>${button('Simular cenário','simulate','flask-conical')}</section><section class="settings-section"><h2>Consulta</h2><div class="setting-row"><label class="field" for="default-period">Período inicial</label><select id="default-period">${[7,14,30].map(days=>`<option value="${days}" ${days===view.days?'selected':''}>Últimos ${days} dias</option>`).join('')}</select></div><div class="setting-row"><div><h3>Preferências de consulta</h3></div>${button('Restaurar','reset-consultation','rotate-ccw')}</div></section>`;}
 function drawPageCharts() {
-  if(state.route==='dashboard'&&state.context.machineId==='nhpl'){
+  if(state.route==='dashboard'&&(state.context.machineId==='nhpl'||state.period.plans?.some(p=>p.context.machineId===state.context.machineId))){
     const data=productionChartData(productivityView(state)),base={labels:data.labels,fullLabels:data.fullLabels,unit:'peças',beginAtZero:true};
     drawChart('nhpl-interval-chart',{...base,datasets:[{label:'Plano aprovado',data:data.planned,backgroundColor:'#8397a1',borderColor:'#8397a1'},{label:'Produção bruta registrada',data:data.gross,backgroundColor:'#238166',borderColor:'#238166'},{label:'Mínimo da meta',type:'line',data:data.minimum,borderColor:'#ba7b15',borderDash:[4,4],pointRadius:2}]});
     drawChart('nhpl-accumulated-chart',{...base,type:'line',datasets:[{label:'Plano acumulado',type:'line',data:data.accumulatedPlanned,borderColor:'#8397a1',pointRadius:2},{label:'Bruta acumulada',type:'line',data:data.accumulatedGross,borderColor:'#238166',pointRadius:2,spanGaps:false}]});return;
@@ -800,12 +800,12 @@ async function openForm(kind, record = {},resume=false) {
   const context=structuredClone(resume?state.draft.context:operational?(selected.productionCaseId?await services().productions.context(selected.productionCaseId):selected.context):record.context??state.context);
   requireThat(state.client===client,'STALE_SESSION');
   const recordingState={...state,context,operationalQuery:null};
-  if(kind==='production'&&context.machineId==='nhpl'){
+  if(kind==='production'){
     const row=state.productionCases.find(r=>r.id===selected.productionCaseId),period=await services().history.loadPeriod({context,fromDate:row?.operationalDate??state.fromDate,toDate:row?.endedAt?eventDate(row.endedAt-1):state.toDate,dataset:'all'});
     requireThat(state.client===client,'STALE_SESSION');recordingState.period=period;
     const available=availableProductionIntervals(recordingState);
-    if(!available.length){showModal('Registrar produção','<p>Não há intervalo aprovado aberto neste contexto. Confira o produto e o período selecionados ou prepare um plano em Planejamento.</p>');return;}
-    showModal('Selecionar intervalo aprovado',`<label class="field">Intervalo<select name="intervalId" required>${available.map(([id,h])=>`<option value="${e(id)}">${date(h.startedAt,true)} · OP ${e(h.context.order)} · ${n(h.plannedPieces)} peças</option>`).join('')}</select></label>`,{footer:'Abrir apontamento',submit:async data=>{requireThat(state.client===client,'STALE_SESSION');modal.close();openPlannedForm({...period.intervalHeaders[data.get('intervalId')],id:data.get('intervalId')});return {keepOpen:true};}});return;
+    if(!available.length&&(context.machineId==='nhpl'||period.plans?.some(p=>p.context.machineId===context.machineId))){showModal('Registrar produção','<p>Não há intervalo aprovado aberto neste contexto. Confira o produto e o período selecionados ou prepare um plano em Planejamento.</p>');return;}
+    if(available.length){showModal('Selecionar intervalo aprovado',`<label class="field">Intervalo<select name="intervalId" required>${available.map(([id,h])=>`<option value="${e(id)}">${date(h.startedAt,true)} · OP ${e(h.context.order)} · ${n(h.plannedPieces)} peças</option>`).join('')}</select></label>`,{footer:'Abrir apontamento',submit:async data=>{requireThat(state.client===client,'STALE_SESSION');modal.close();openPlannedForm({...period.intervalHeaders[data.get('intervalId')],id:data.get('intervalId')});return {keepOpen:true};}});return;}
   }
   const draft=operational?(resume?state.draft:{kind,record,context,selection:structuredClone(selected),intent:{id:crypto.randomUUID()},values:null}):null;
   if(draft)state.draft=draft;
@@ -995,6 +995,7 @@ async function exportCsv() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 async function action(action) {
+  if(action==='consult-production'){const row=state.productionCases.find(r=>r.id===state.selection.recording?.productionCaseId);if(row){applyQuery({context:structuredClone(state.selection.recording.context),fromDate:row.operationalDate,toDate:row.operationalDate,shift:row.shift});modal.close();return refresh();}return;}
   if(action==='choose-production')return journey.choose();
   if(action.startsWith('select-production:'))return journey.select(action.slice(18));
   if(action.startsWith('production-new:'))return journey.select(action.slice(15),'new');
@@ -1030,7 +1031,7 @@ async function action(action) {
   if(action==='local-archive'){const archive=await archiveLocalWorkspace({uid:state.actor.uid}),url=URL.createObjectURL(new Blob([JSON.stringify(archive,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='msa-registros-locais-anteriores.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;}
   if(action==='new-review'){const col=records('collections').at(-1);if(!col){toast('Registre uma coleta neste contexto primeiro.');return;}return actionReview(col.id);}
   if(action.startsWith('nhpl:')){
-    const command=action.split(':')[1],needsRecording=['run','production'].includes(command);
+    const command=action.split(':')[1],needsRecording=['run','production','plan'].includes(command);
     if(needsRecording&&!state.selection.recording)return journey.choose();
     if(command==='production')return openPlannedForm({...state.period.intervalHeaders?.[action.split(':')[2]],id:action.split(':')[2]});
     const context=needsRecording?await recordingContext():state.context;

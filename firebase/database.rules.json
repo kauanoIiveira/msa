@@ -417,7 +417,7 @@
             "eventDate"
           ],
           "$id": {
-            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/) && newData.child('context').child('machineId').val() != 'nhpl'",
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/) && newData.child('context').child('machineId').val() != 'nhpl' && !root.child('workspaces').child($ws).child('productionPlans').child(newData.child('context').child('machineId').val()).exists()",
             ".validate": "newData.hasChildren([\"id\",\"context\",\"origin\",\"eventDate\",\"timePrecision\",\"createdBy\",\"createdAt\",\"quantity\",\"basis\",\"startedAt\",\"endedAt\"]) && (((newData.child('timePrecision').val() == 'instant' && newData.hasChild('occurredAt')) || (newData.child('timePrecision').val() == 'date' && newData.child('origin').val() == 'import' && !newData.hasChild('occurredAt'))) && newData.child('timePrecision').val() == 'instant' && newData.child('endedAt').val() > newData.child('startedAt').val()) && ((!data.hasChild('id') || newData.hasChild('id')) && (!data.hasChild('createdBy') || newData.hasChild('createdBy')) && (!data.hasChild('createdAt') || newData.hasChild('createdAt')) && (!data.hasChild('context') || newData.hasChild('context')) && (!data.hasChild('origin') || newData.hasChild('origin')) && (!data.hasChild('eventDate') || newData.hasChild('eventDate')) && (!data.hasChild('timePrecision') || newData.hasChild('timePrecision')) && (!data.hasChild('occurredAt') || newData.hasChild('occurredAt')) && (!data.hasChild('source') || newData.hasChild('source')) && (!data.hasChild('quantity') || newData.hasChild('quantity')) && (!data.hasChild('basis') || newData.hasChild('basis')) && (!data.hasChild('startedAt') || newData.hasChild('startedAt')) && (!data.hasChild('endedAt') || newData.hasChild('endedAt')))",
             "id": {
               ".validate": "newData.isString() && newData.val() == $id && (!data.parent().exists() || newData.val() == data.val())"
@@ -3262,7 +3262,7 @@
               ".validate": "newData.isNumber() && newData.val() == now"
             },
             "machineId": {
-              ".validate": "newData.val() == $id && newData.val() == 'nhpl'"
+              ".validate": "newData.val() == $id && root.child('workspaces').child($ws).child('machines').child($id).child('active').val() == true"
             },
             "events": {
               "$event": {

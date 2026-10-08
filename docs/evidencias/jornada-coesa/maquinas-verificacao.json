@@ -1,0 +1,46 @@
+{
+  "status": "verified-local-cloud-publication-pending",
+  "operationalDate": "2026-10-07",
+  "baseManifestId": "presentation_20261008_v1",
+  "revision": "machines",
+  "machines": [
+    "Prensa P02",
+    "Injetora I03",
+    "Montagem M04"
+  ],
+  "shifts": [
+    "1",
+    "2",
+    "3"
+  ],
+  "commands": 567,
+  "cases": 9,
+  "collections": 270,
+  "parametersPerMachine": 3,
+  "verifiedEachContext": {
+    "grossPieces": 360,
+    "goodPieces": 344,
+    "firstPassGood": 336,
+    "rejectPieces": 16,
+    "reworkPieces": 8,
+    "productivityPercent": 90,
+    "scrapPercent": 4.444444444444445,
+    "oee": 0.7,
+    "mtbfSeconds": 13800,
+    "mttrSeconds": 480
+  },
+  "verification": {
+    "focusedUnit": 16,
+    "emulator": 2,
+    "static": true,
+    "interruptedReplay": true,
+    "idempotentRepeat": true,
+    "baseManifestPreserved": true,
+    "invalidLinksDenied": true,
+    "productionBypassDenied": true
+  },
+  "limits": [
+    "Examples created by MSA, not industrial specifications.",
+    "Browser and cloud publication verified separately by controller."
+  ]
+}

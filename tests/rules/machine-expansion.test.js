@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {assertFails} from '@firebase/rules-unit-testing';
+import {setup,sdk} from '../helpers/firebase-env.js';
+import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
+import {createMsaServices} from '../../app/src/services/create-msa.js';
+import {buildMachineExpansion} from '../../app/src/presentation/machine-expansion.js';
+import {runPresentationCommands} from '../../app/src/presentation/dataset-commands.js';
+test('registered machine plans, collections and maintenance pass while invalid links, bypasses and roles fail',async t=>{
+ const env=await setup(t),db=env.authenticatedContext('admin').database(),repo=createFirebaseRepository({db,sdk,workspaceId:'demo'}),actor={uid:'admin',role:'admin'};
+ const commands=buildMachineExpansion({baseManifestId:'base',packageId:'base',revision:'machines',operationalDate:'2026-10-07'}).filter(c=>c.id.includes('_reason_')||c.id.includes('_p02_')&&!c.id.includes('_s2_')&&!c.id.includes('_s3_'));
+ await runPresentationCommands(commands,{repo,actor,clock:()=>Date.parse('2026-10-08T12:00:00Z')});
+ const services=createMsaServices({repo,actor}),machineId='base_rev_machines_p02_machine_1',header=await repo.get('productionPlans/'+machineId),plan=Object.values(header.events)[0];
+ assert.equal(plan.context.machineId,machineId);
+ await assert.rejects(()=>services.operations.recordProduction({context:plan.context,quantity:1,basis:'gross',startedAt:plan.startedAt,endedAt:plan.endedAt,occurredAt:plan.startedAt}),{code:'PLANNING_REQUIRED'});
+ const planPath='workspaces/demo/productionPlans/';
+ await assertFails(sdk.set(sdk.ref(db,planPath+'missing'),{firstSlotId:'one',machineId:'missing',createdBy:'admin',createdAt:sdk.serverTimestamp()}));
+ await assertFails(sdk.set(sdk.ref(env.authenticatedContext('op').database(),planPath+'unauthorized'),{firstSlotId:'one',machineId,createdBy:'op',createdAt:sdk.serverTimestamp()}));
+ const forged={...plan,id:plan.nextSlotId,previousEventId:plan.id,sequence:2,nextSlotId:'other',createdAt:sdk.serverTimestamp(),context:{...plan.context,productId:'missing'}};
+ await assertFails(sdk.set(sdk.ref(db,planPath+machineId+'/events/'+forged.id),forged));
+ const production={id:'bypass',context:plan.context,origin:'manual',timePrecision:'instant',eventDate:'2026-10-07',occurredAt:plan.startedAt,quantity:1,basis:'gross',startedAt:plan.startedAt,endedAt:plan.endedAt,createdBy:'admin',createdAt:sdk.serverTimestamp()};
+ await assertFails(sdk.set(sdk.ref(db,'workspaces/demo/production/bypass'),production));
+});

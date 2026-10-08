@@ -1,3 +1,4 @@
+import {validateMachineExpansion} from '../presentation/machine-expansion.js';
 import {assertRole,assertId,requireThat} from '../domain/errors.js';
 import {stableStringify} from '../domain/canonical.js';
 import {shiftAt} from '../domain/shifts.js';
@@ -31,8 +32,8 @@ export async function prepareRevision({repo,actor,baseManifestId,revision,comman
  const baseline=await readPresentationSnapshot(repo),base=baseline.presentationManifests?.[baseManifestId];requireThat(base?.state==='published','BASE_MANIFEST_REQUIRED');
  const id=assertId(base.packageId+'_rev_'+revision);requireThat(!baseline.presentationManifests?.[id],'MANIFEST_EXISTS');
  requireThat(Array.isArray(commands)&&commands.length>0&&commands.every(c=>c.id.startsWith(id+'_')),'REVISION_COMMAND_ID');
- const local=await isolated(baseline,()=>repo.timestamp()),intents=[];
- const tracked={...local,updateRegistry:async()=>{throw new Error('REVISION_NOT_ADDITIVE');},create:async(path,row)=>{requireThat(at(baseline,path)==null,'REVISION_NOT_ADDITIVE');const result=await local.create(path,row);intents.push({kind:'create',path,before:null,after:result});return result;},transact:async()=>{throw new Error('REVISION_NOT_ADDITIVE');}};
+ const local=await isolated(baseline,()=>repo.timestamp()),intents=[],createdPaths=new Set();
+ const tracked={...local,updateRegistry:async()=>{throw new Error('REVISION_NOT_ADDITIVE');},create:async(path,row)=>{requireThat(at(baseline,path)==null,'REVISION_NOT_ADDITIVE');const result=await local.create(path,row);createdPaths.add(path);intents.push({kind:'create',path,before:null,after:result});return result;},transact:async(path,update)=>{requireThat(createdPaths.has(path)&&at(baseline,path)==null,'REVISION_NOT_ADDITIVE');const before=await local.get(path),result=await local.transact(path,update);intents.push({kind:'transact',path,before,after:result});return result;}};
  await runPresentationCommands(commands,{repo:tracked,actor,clock:publicationClock(base),onCommand:command=>{tracked.commandId=command.id;}});
  // Command identity is descriptive; deterministic path/content is verified during replay.
  const additions=[];for(const path of new Set(intents.map(i=>i.path)))additions.push({index:base.entries.length+additions.length,path,scope:manifestEntryScope(path),hash:await datasetHash(manifestEntryValue(await local.get(path),{scope:manifestEntryScope(path)}))});
@@ -41,6 +42,7 @@ export async function prepareRevision({repo,actor,baseManifestId,revision,comman
  for(const key of ['entryCount','entriesHash','previewHash','backupHash'])delete manifest[key];
  const snapshot=await readPresentationSnapshot(local),validation=await validatePresentationDataset(snapshot,manifest);
  validation.diagnostics.push(...await validatePresentationProjection(createMsaServices({repo:local,actor}),manifest,validation.metricsByContext));
+ validation.diagnostics.push(...(await validateMachineExpansion(createMsaServices({repo:local,actor}),manifest)).diagnostics);
  return seal({manifest,commands,intents,diagnostics:validation.diagnostics},baseline,actor);
 }
 function outsidePackage(snapshot,preview){
@@ -66,7 +68,9 @@ async function preflight(preview,repo){
 }
 async function verifyPersisted(snapshot,manifest,repo,actor){
  const validation=await validatePresentationDataset(snapshot,manifest);requireThat(validation.ok,'VERIFICATION_FAILED');
- const diagnostics=await validatePresentationProjection(createMsaServices({repo,actor}),manifest,validation.metricsByContext);requireThat(!diagnostics.length,'VERIFICATION_FAILED');
+ // The caller just reloaded every business root and checked all entry digests.
+ const fresh=await isolated(snapshot,()=>repo.timestamp()),services=createMsaServices({repo:fresh,actor});
+ const diagnostics=await validatePresentationProjection(services,manifest,validation.metricsByContext);diagnostics.push(...(await validateMachineExpansion(services,manifest)).diagnostics);requireThat(!diagnostics.length,'VERIFICATION_FAILED');
 }
 export async function publish({preview,expectedHash,repo,actor,onProgress}){
  assertRole(actor,['admin']);requireThat(same(actor,preview.actor),'ACTOR_CHANGED');

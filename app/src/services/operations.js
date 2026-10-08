@@ -42,7 +42,7 @@ export function createOperations({repo,actor,clock=Date.now,idFactory=()=>crypto
       return createOnce(`collections/${record.id}`,{...record,readings});
     },
     async recordProduction(payload) {
-      requireThat(payload.context?.machineId!=='nhpl','PLANNING_REQUIRED');
+      requireThat(payload.context?.machineId!=='nhpl'&&!await repo.get('productionPlans/'+assertId(payload.context?.machineId)),'PLANNING_REQUIRED');
       const record=await envelope(payload,['quantity','basis','startedAt','endedAt']);requireThat(record.timePrecision==='instant','INVALID_TIME');
       assertPeriod(payload.startedAt,payload.endedAt);
       requireThat(Number.isSafeInteger(payload.quantity)&&payload.quantity>=0&&payload.quantity<=1e12,'INVALID_QUANTITY');
