@@ -105,3 +105,17 @@
 - [ ] Implementar cartões/lista pesquisável e ajuda OP/lote/configuração; manter filtros avançados de consulta com rótulo explícito. Padronizar abas/resumo e retorno pós-gravação. Equipamentos filtra catálogo real por setor quando cadastrado; não inventa departamentos. Manter aliases e cenários antigos. Estado de rede não equivale a conexão física.
 - [ ] Validar manualmente via CUA nas cinco dimensões e teclado: escolher produção → coletar → ver resumo/histórico → trocar produto/turno; conferir Firebase atualizado e persistência. Capturar desktop e celular; registrar estados erro/vazio/sem permissão.
 - [ ] Commit: `feat: orienta operacao pela producao selecionada`; entregar subprojeto funcional antes de iniciar plano 2.
+
+## Task 7: Várias máquinas com produção e coletas úteis
+
+**Origem:** requisito explícito posterior do usuário em 08/10/2026; priorizar antes dos novos módulos de coordenação. T20/zonas não são foco; preservar o que já existe sem reverter commits.
+
+**Files:** Create `app/src/presentation/machine-expansion.js`, `tests/unit/machine-expansion.test.js`; modify apenas serviços/regras/UI necessários para produção planejada em equipamentos cadastrados, CLI de revisão aditiva e publicador, com testes focais de permissões/planning. Evidence `docs/evidencias/jornada-coesa/maquinas-verificacao.json`.
+
+**Interfaces:** `buildMachineExpansion({baseManifestId,packageId,operationalDate,revision}) -> commands` consumidos por `presentation.prepareRevision`. Pelo menos três máquinas adicionais, cada uma com processo, produto, receita, produção selecionável e >=30 coletas coerentes com poucos parâmetros relevantes, unidades e referências de exemplo rastreáveis. Dados do último dia concluído já persistido no manifesto; sem produtores contínuos.
+
+- [ ] Testar seleção/troca entre equipamentos com catálogo e parâmetros diferentes; consultas não misturam suas leituras nem contexto de registro. Não herdar zonas T20. Não basta adicionar máquinas sem dados.
+- [ ] Reutilizar serviços/planner/projetor existentes para incluir produção bruta, boa/primeira passagem, refugo, falha/reparo e cobertura encerrada em cada novo contexto. Se o planner estiver limitado ao ID nhpl, generalizar somente para máquinas/processos/produtos ativos e compatíveis, mantendo perfis, auditoria, controle de concorrência e schemas. Testar negativa para equipamento/vínculo inválido também nas regras. Não criar fórmulas paralelas ou KPI fixo.
+- [ ] Preparar revisão aditiva sem regenerar planos/pacote base. Permitir transições de ledgers novos durante uma revisão somente no namespace/path criado por essa revisão; proibido alterar registros existentes. Testar retomada, zero duplicações e preservação de memberships/base. CLI mantém senha exclusivamente no ambiente transitório.
+- [ ] Implementar seleção significativa de máquina na jornada de coleta/produção, últimos valores e dados legíveis. Preparar/testar publicação com backup e hashes; controlador aplica a revisão autorizada e relê os dados. Confirmar máquinas/produções/coletas e métricas numéricas em serviço e navegador.
+- [ ] Commit: `feat: amplia maquinas e coleta com dados coerentes`; depois priorizar indicadores/BI e completar os módulos operacionais aprovados.

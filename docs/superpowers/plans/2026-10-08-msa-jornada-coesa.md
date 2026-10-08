@@ -36,6 +36,8 @@
 
 ## Estado e execução
 
+**Prioridade atual determinada pelo usuário em 08/10:** acelerar; priorizar coleta/apresentação dos dados e várias máquinas com dados e produções selecionáveis; não investir em novos refinamentos exclusivos de T20/Z1–Z21; não reverter commits. Esta orientação prevalece sobre o foco anterior em zonas. Executar primeiro a extensão de máquinas do plano 1, depois indicadores/coleta/BI do plano 3 e os módulos operacionais do plano 2, usando os mesmos contratos. Conferir as novas integrações com testes focalizados e concentrar a conferência visual completa no gate final; evitar repetir suítes sem mudança ou risco novo.
+
 Este índice, a spec e os planos derivados foram aprovados pelo usuário. A execução está em andamento, incluindo reformulações visuais básicas, funcionalidades úteis do MSE e compatibilidade com GitHub Pages. A escolha de exemplos completos já foi feita pelo usuário; não refazer essa pergunta.
 
 Base de leitura: `C:\Users\Kauan\Desktop\msa-master`, sem `.git`. Antes de executar, usar checkout Git conferido em `a231c145bbe34101358e6ba83b58862ae751af7b` ou sucessor explicitamente verificado, incluindo os materiais locais preservados. O checkout do cwd em `69f674a` está antigo. Não executar pull/reset sobre alterações do usuário, não inventar commits da cópia Desktop e não publicar sem registrar o resultado. Se houver branch nova, usar prefixo `codex/`.
@@ -44,7 +46,7 @@ Execução isolada em `C:\Users\Kauan\.codex\worktrees\msa-jornada-coesa\Desafio
 
 ## Entregas derivadas
 
-1. [Contexto, Firebase e dados completos](2026-10-08-msa-contexto-firebase-dados.md): seis tarefas; entrega jornada utilizável com fonte compartilhada e confiabilidade calculável.
+1. [Contexto, Firebase e dados completos](2026-10-08-msa-contexto-firebase-dados.md): sete tarefas, incluindo extensão solicitada para várias máquinas; entrega jornada utilizável com fonte compartilhada e confiabilidade calculável.
 2. [Operação e coordenação](2026-10-08-msa-operacao-coordenacao.md): seis tarefas; entrega qualidade de lote, equipe, passagem, ocorrências e atendimento de pendências.
 3. [Indicadores, BI e apresentação](2026-10-08-msa-indicadores-bi-apresentacao.md): cinco tarefas; entrega instrumentos, CSVs normalizados, Excel, consolidação e QA integrado.
 

@@ -4,6 +4,12 @@ Data: 08/10/2026. Status: aprovado pelo usuário; implementação em andamento. 
 
 ## Objetivo e sucesso esperado
 
+### Orientação posterior do usuário — prioridade atual
+
+Em 08/10/2026, durante a implementação, o usuário pediu acelerar e deixar de priorizar T20 e Z1–Z21. A prioridade passa a ser a coleta, a apresentação intuitiva dos dados inspirada nos fluxos do MSE e a seleção entre várias máquinas cadastradas com processos, produtos, produções e leituras coerentes. Não reverter commits nem apagar entregas ou dados existentes. As referências anteriores a T20/zonas neste documento descrevem preservação histórica; não exigem novos refinamentos exclusivos desse equipamento. Não solicitar novamente aprovação do plano ou da carga Firebase.
+
+Adicionar no mínimo três equipamentos aos contextos principais já cadastrados, com dados de exemplo rastreáveis e produções selecionáveis. Não basta acrescentar nomes a um seletor vazio. A coleta herda o contexto da produção e apresenta os parâmetros aplicáveis, suas unidades, valores e resultado. A apresentação continua com o visual próprio do MSA e executável pelo GitHub Pages. CSV com % Scrap, indicadores e capacidades operacionais úteis do MSE continuam no escopo.
+
 Uma pessoa que nunca viu o sistema consegue identificar a produção, registrar uma coleta e entender o resultado sem uma explicação sobre filtros técnicos. A apresentação usa exemplos completos persistidos no Firebase, uma única experiência de trabalho e os mesmos serviços de consulta/cadastro/cálculo. MTBF/MTTR e demais resultados previstos no roteiro têm bases verificáveis. Nenhum número é inserido diretamente no cartão de indicador.
 
 Decisão do usuário: preparar exemplos completos; não criar opção que alterne entre real e simulado. A origem é preservada em histórico, exportações e gestão técnica; as páginas de trabalho não recebem faixas repetidas de protótipo/demonstração. Os exemplos não passam a ser medições industriais nem prova de integração física.
