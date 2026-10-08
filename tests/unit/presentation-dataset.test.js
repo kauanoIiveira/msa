@@ -73,6 +73,35 @@ test('replay rejects modified content at the same ID and an interrupted partial 
   assert.equal(interrupted.diagnostics[0].code,'PARTIAL_PACKAGE_REQUIRES_RECONCILIATION');
 });
 
+test('replay rejects an unclassified non-package stop in the covered context',async()=>{
+  const built=await preview(create());assert.equal(built.ok,true);
+  const plan=Object.values(built.snapshot.productionPlans.nhpl.events).find(e=>e.kind==='plan');
+  const repo=memoryRepository();for(const [root,value] of Object.entries(built.snapshot))await repo.create(root,value);
+  await repo.create('stoppages/external_stop',{id:'external_stop',context:plan.context,origin:'manual',eventDate:'2026-10-01',startedAt:plan.startedAt+40*60000,endedAt:plan.startedAt+50*60000,planned:false});
+  const replay=await previewPresentationDataset({...create(),manifest:built.manifest},{repo,actor});
+  assert.equal(replay.ok,false);
+  assert.ok(replay.diagnostics.some(d=>d.code==='PROJECTED_KPI_UNAVAILABLE'));
+});
+
+test('preview never reads members root from authenticated source and preserves supplied backup memberships',async()=>{
+  const underlying=memoryRepository(),backupMembers={example:{role:'admin'}},blocked=[];
+  const guarded={...underlying,get:async path=>{if(path==='members'){blocked.push(path);const error=new Error('FORBIDDEN');error.code='FORBIDDEN';throw error;}return underlying.get(path);}};
+  const result=await previewPresentationDataset(create(),{repo:guarded,actor,existingSnapshot:{members:backupMembers}});
+  assert.equal(result.ok,true,JSON.stringify(result.diagnostics.slice(0,2)));
+  assert.deepEqual(blocked,[]);
+  assert.deepEqual(result.snapshot.members,backupMembers);
+});
+
+test('good pieces beyond first passage reconcile with recorded rework',async()=>{
+  const built=await preview(create());assert.equal(built.ok,true);
+  for(const row of Object.values(built.metricsByContext))assert.equal(row.goodPieces-row.firstPassGood,8);
+  const changed=structuredClone(built.snapshot);
+  Object.values(changed.losses).find(r=>r.kind==='rework').amount=2;
+  const checked=await validatePresentationDataset(changed,built.manifest);
+  assert.equal(checked.ok,false);
+  assert.ok(checked.diagnostics.some(d=>d.code==='REWORK_RECONCILIATION'));
+});
+
 test('catalog mapping covers the 41 workbook parameters and keeps NHPL independent',()=>{
   const map=presentationParameterMap('sample');
   assert.equal(getMsaParameterCatalog().length,41);

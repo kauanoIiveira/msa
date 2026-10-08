@@ -4,7 +4,9 @@ import {datasetHash} from './dataset-hash.js';
 import {presentationParameterMap,exampleReading} from './parameter-map.js';
 import {validatePresentationDataset,validatePresentationProjection} from './dataset-validation.js';
 
-const roots=['members','machines','processes','products','pilots','parameters','parameterVersions','reasons','targets','targetRevisions','recipeVersions','productionCases','productionPolicies','productionPlans','productionIntervals','collections','production','losses','stoppages','machineRuns','reviews','technicalRecords','coverageWitnesses','corrections','plannedCorrections'];
+// Memberships are readable only at members/<auth.uid> in the deployed rules.
+// An optional external backup can preserve them in the isolated snapshot.
+const roots=['machines','processes','products','pilots','parameters','parameterVersions','reasons','targets','targetRevisions','recipeVersions','productionCases','productionPolicies','productionPlans','productionIntervals','collections','production','losses','stoppages','machineRuns','reviews','technicalRecords','coverageWitnesses','corrections','plannedCorrections'];
 const sourceSnapshots=new WeakMap();
 const dayMs=86400000,hourMs=3600000;
 const dayOffset=(day,n)=>new Date(Date.parse(day+'T12:00:00Z')+n*dayMs).toISOString().slice(0,10);
@@ -78,7 +80,7 @@ export function buildPresentationDataset({anchorOperationalDate,version='1',exis
       const occurrence=start+90*60000;
       add(`reject_${key}`,'operations','recordLoss',{id:`${prefix}_reject_${key}`,context,origin:'demo',occurredAt:occurrence,kind:'reject',unit:'pieces',amount:16,reasonId:`${prefix}_reason_reject_1`});
       add(`material_${key}`,'operations','recordLoss',{id:`${prefix}_material_${key}`,context,origin:'demo',occurredAt:occurrence,kind:'material',unit:'kg',amount:1.2,reasonId:`${prefix}_reason_material_1`});
-      add(`rework_${key}`,'operations','recordLoss',{id:`${prefix}_rework_${key}`,context,origin:'demo',occurredAt:occurrence,kind:'rework',unit:'pieces',amount:2,reasonId:`${prefix}_reason_rework_1`});
+      add(`rework_${key}`,'operations','recordLoss',{id:`${prefix}_rework_${key}`,context,origin:'demo',occurredAt:occurrence,kind:'rework',unit:'pieces',amount:8,reasonId:`${prefix}_reason_rework_1`});
       const stopId=`${prefix}_stop_${key}`,stopStart=start+20*60000;
       add(`stop_${key}`,'operations','startStoppage',{id:stopId,context,origin:'demo',startedAt:stopStart,planned:false,reasonId:`${prefix}_reason_stop_1`});
       add(`stop_close_${key}`,'operations','closeStoppage',stopId,{endedAt:stopStart+10*60000,reasonId:`${prefix}_reason_stop_1`,goodValidated:true});
@@ -97,11 +99,21 @@ export function buildPresentationDataset({anchorOperationalDate,version='1',exis
 export async function previewPresentationDataset(dataset,{repo,actor,clock,existingSnapshot}={}){
   const source=repo??createSnapshotRepository(),isolated=createSnapshotRepository({timestamp:()=>source.timestamp()}),snapshot={};
   if(!repo)for(const [root,value]of Object.entries(existingSnapshot??sourceSnapshots.get(dataset)??{}))await source.create(root,value);
+  const backupMembers=(existingSnapshot??sourceSnapshots.get(dataset))?.members;
+  if(backupMembers!=null){snapshot.members=structuredClone(backupMembers);await isolated.create('members',backupMembers);}
   for(const root of roots){const value=await source.get(root);if(value!=null){snapshot[root]=value;await isolated.create(root,value);}}
+  async function validate(snapshot,manifest,isolatedRepo){
+    const result=await validatePresentationDataset(snapshot,manifest);
+    if(result.ok){
+      const services=createMsaServices({repo:isolatedRepo,actor,clock:clock??(()=>instant(manifest.toOperationalDate,31))});
+      result.diagnostics.push(...await validatePresentationProjection(services,manifest,result.metricsByContext));
+    }
+    return {...result,ok:result.diagnostics.length===0};
+  }
   const entries=dataset.manifest.entries??[];
   if(entries.length){const conflicts=[];let allPresent=true;for(const entry of entries){const current=await isolated.get(entry.path);if(current==null)allPresent=false;else if(await datasetHash(current)!==entry.hash)conflicts.push({code:'CONTENT_CONFLICT',path:entry.path});}
     if(conflicts.length||!allPresent)return {ok:false,manifest:dataset.manifest,commands:dataset.commands,diagnostics:conflicts.length?conflicts:[{code:'PARTIAL_PACKAGE_REQUIRES_RECONCILIATION'}],snapshot};
-    const validation=await validatePresentationDataset(snapshot,dataset.manifest);
+    const validation=await validate(snapshot,dataset.manifest,isolated);
     return {ok:validation.ok,manifest:dataset.manifest,commands:dataset.commands,diagnostics:validation.diagnostics,snapshot,metricsByContext:validation.metricsByContext,added:0};
   }
   const writes=[],tracked={...isolated,create:async(path,value)=>{if(await isolated.get(path)!=null){const error=new Error('CONTENT_CONFLICT');error.code='CONTENT_CONFLICT';throw error;}const result=await isolated.create(path,value);writes.push(path);return result;},transact:async(path,update)=>{const result=await isolated.transact(path,update);writes.push(path);return result;}};
@@ -117,11 +129,8 @@ export async function previewPresentationDataset(dataset,{repo,actor,clock,exist
     }catch(error){return {ok:false,manifest:dataset.manifest,commands:dataset.commands,diagnostics:[{code:error.code??'COMMAND_FAILED',commandId:command.id,message:error.message}],snapshot,failedCommand:command.id};}
   }
   const output={};for(const root of roots){const value=await isolated.get(root);if(value!=null)output[root]=value;}
+  if(backupMembers!=null)output.members=await isolated.get('members');
   const unique=[...new Set(writes)],manifest={...dataset.manifest,createdBy:actor.uid,createdAt:source.timestamp(),entries:await Promise.all(unique.map(async path=>({path,hash:await datasetHash(await isolated.get(path))})))};
-  const validation=await validatePresentationDataset(output,manifest);
-  if(validation.ok){
-    const projection=await validatePresentationProjection(createMsaServices({repo:tracked,actor,clock:now}),manifest,validation.metricsByContext);
-    validation.diagnostics.push(...projection);
-  }
-  return {ok:validation.diagnostics.length===0,manifest,commands:dataset.commands,diagnostics:validation.diagnostics,snapshot:output,metricsByContext:validation.metricsByContext,added:unique.length};
+  const validation=await validate(output,manifest,tracked);
+  return {ok:validation.ok,manifest,commands:dataset.commands,diagnostics:validation.diagnostics,snapshot:output,metricsByContext:validation.metricsByContext,added:unique.length};
 }

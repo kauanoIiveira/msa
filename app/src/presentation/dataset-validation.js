@@ -48,11 +48,13 @@ export async function validatePresentationDataset(snapshot,manifest){
     if(!reference||!Number.isFinite(reference.idealSeconds))issue('REFERENCE_MISSING',{key});
     const grossPieces=sum(gross,'quantity'),goodPieces=sum(good,'quantity'),firstPassGood=sum(planInspections,'firstPassGood'),plannedPieces=plan.plannedPieces;
     const rejectPieces=sum(losses.filter(r=>own(r)&&r.kind==='reject'&&r.unit==='pieces'&&r.context?.productId===context.productId&&r.context?.shift===context.shift&&r.occurredAt>=plan.startedAt&&r.occurredAt<plan.endedAt),'amount');
+    const reworkPieces=sum(losses.filter(r=>own(r)&&r.kind==='rework'&&r.unit==='pieces'&&r.context?.productId===context.productId&&r.context?.shift===context.shift&&r.occurredAt>=plan.startedAt&&r.occurredAt<plan.endedAt),'amount');
     const lossKg=sum(losses.filter(r=>own(r)&&r.unit==='kg'&&r.context?.productId===context.productId&&r.context?.shift===context.shift&&r.occurredAt>=plan.startedAt&&r.occurredAt<plan.endedAt),'amount');
     const stopSeconds=sum(planStops.map(s=>({seconds:(s.endedAt-s.startedAt)/1000})),'seconds'),repairSeconds=sum(failed.map(s=>{const c=classifications.find(r=>r.stopId===s.id);return {seconds:(c.repairEndedAt-c.repairStartedAt)/1000};}),'seconds');
     const plannedSeconds=(plan.endedAt-plan.startedAt)/1000,productiveSeconds=plannedSeconds-stopSeconds;
-    const kpi={plannedPieces,grossPieces,goodPieces,firstPassGood,rejectPieces,lossKg,productivityPercent:100*grossPieces/plannedPieces,scrapPercent:100*rejectPieces/grossPieces,mtbfSeconds:productiveSeconds/failed.length,mttrSeconds:repairSeconds/failed.length,oee:firstPassGood*reference?.idealSeconds/plannedSeconds};
+    const kpi={plannedPieces,grossPieces,goodPieces,firstPassGood,rejectPieces,reworkPieces,lossKg,productivityPercent:100*grossPieces/plannedPieces,scrapPercent:100*rejectPieces/grossPieces,mtbfSeconds:productiveSeconds/failed.length,mttrSeconds:repairSeconds/failed.length,oee:firstPassGood*reference?.idealSeconds/plannedSeconds};
     if(grossPieces-goodPieces!==rejectPieces)issue('REJECT_RECONCILIATION',{key});
+    if(goodPieces-firstPassGood!==reworkPieces)issue('REWORK_RECONCILIATION',{key});
     if(Object.values(kpi).some(v=>!Number.isFinite(v)))issue('KPI_NOT_FINITE',{key});
     if(Math.abs(kpi.productivityPercent-90)>1e-9||Math.abs(kpi.scrapPercent-100*rejectPieces/grossPieces)>1e-9)issue('KPI_MEMORY_MISMATCH',{key});
     metricsByContext[key]=kpi;
