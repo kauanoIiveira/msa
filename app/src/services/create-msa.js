@@ -1,3 +1,4 @@
+import {createPresentationService} from './presentation-dataset.js';
 import {createRegistryService} from './registry.js';
 import {createOperations} from './operations.js';
 import {createAnalysisService} from './analysis.js';
@@ -24,7 +25,7 @@ export function createMsaServices(options) {
   analysis.requestCorrection=payload=>payload.intervalId?plannedProduction.requestCorrection(payload):requestCorrection(payload);
   analysis.decideCorrection=async(id,payload)=>{let row;try{row=await options.repo.get('plannedCorrections/'+id);}catch(error){if(error.code!=='FORBIDDEN')throw error;}return row?plannedProduction.decideCorrection(id,payload):decideCorrection(id,payload);};
   return {
-    registry:createRegistryService(options),catalog:createCatalogService(options),operations,analysis,history,
+    presentation:createPresentationService(options),registry:createRegistryService(options),catalog:createCatalogService(options),operations,analysis,history,
     productions:createProductionCaseService(options),
     coverage:createCoverageService(options),
     technical:createTechnicalService({...options,operations,plannedProduction}),

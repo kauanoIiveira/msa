@@ -4312,6 +4312,91 @@
               ".validate": false
             }
           }
+        },
+        "presentationManifests": {
+          ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
+          "$id": {
+            ".write": "auth != null && root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' && !data.exists() && newData.exists()",
+            ".validate": "newData.hasChildren(['id','packageId','version','origin','fromOperationalDate','toOperationalDate','defaultSelection','entries','entryCount','entriesHash','previewHash','backupHash','state','createdBy','createdAt']) && newData.child('entries').child('0').exists() && newData.child('entries').child((newData.child('entryCount').val() - 1) + '').exists()",
+            "id": {
+              ".validate": "newData.val() == $id"
+            },
+            "packageId": {
+              ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{1,100}$/)"
+            },
+            "baseManifestId": {
+              ".validate": "newData.isString() && root.child('workspaces').child($ws).child('presentationManifests').child(newData.val()).child('state').val() == 'published' && root.child('workspaces').child($ws).child('presentationManifests').child(newData.val()).child('packageId').val() == newData.parent().child('packageId').val()"
+            },
+            "version": {
+              ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{1,100}$/)"
+            },
+            "origin": {
+              ".validate": "newData.val() == 'demo'"
+            },
+            "state": {
+              ".validate": "newData.val() == 'published'"
+            },
+            "fromOperationalDate": {
+              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+            },
+            "toOperationalDate": {
+              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+            },
+            "defaultSelection": {
+              ".validate": "newData.hasChildren(['query','recording']) && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).exists() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('machineId').val() == newData.child('query').child('context').child('machineId').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('machineId').val() == newData.child('recording').child('context').child('machineId').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('processId').val() == newData.child('query').child('context').child('processId').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('processId').val() == newData.child('recording').child('context').child('processId').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('productId').val() == newData.child('query').child('context').child('productId').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('productId').val() == newData.child('recording').child('context').child('productId').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('order').val() == newData.child('query').child('context').child('order').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('order').val() == newData.child('recording').child('context').child('order').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('lot').val() == newData.child('query').child('context').child('lot').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('lot').val() == newData.child('recording').child('context').child('lot').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('shift').val() == newData.child('query').child('context').child('shift').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('shift').val() == newData.child('recording').child('context').child('shift').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('variant').val() == newData.child('query').child('context').child('variant').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('variant').val() == newData.child('recording').child('context').child('variant').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('recipeVersionId').val() == newData.child('recording').child('context').child('recipe').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('recipeVersionId').val() == newData.child('query').child('context').child('recipe').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('operationalDate').val() == newData.child('query').child('fromDate').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('operationalDate').val() == newData.child('query').child('toDate').val() && root.child('workspaces').child($ws).child('productionCases').child(newData.child('recording').child('productionCaseId').val()).child('shift').val() == newData.child('query').child('shift').val()",
+              "query": {
+                ".validate": "newData.hasChildren()"
+              },
+              "recording": {
+                ".validate": "newData.hasChild('productionCaseId')"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "entries": {
+              ".validate": "newData.hasChildren()",
+              "$index": {
+                ".validate": "$index.matches(/^(0|[1-9][0-9]*)$/) && newData.child('index').val() < newData.parent().parent().child('entryCount').val() && ($index == '0' || newData.parent().child((newData.child('index').val() - 1) + '').exists()) && newData.hasChildren(['index','path','scope','hash']) && $index == newData.child('index').val() + '' && root.child('workspaces').child($ws).child(newData.child('path').val()).exists()",
+                "index": {
+                  ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0"
+                },
+                "path": {
+                  ".validate": "newData.isString() && newData.val().matches(/^(machines|processes|products|pilots|parameters|parameterVersions|reasons|targets|targetRevisions|recipeVersions|productionCases|productionPolicies|productionPlans|productionIntervals|collections|production|losses|stoppages|machineRuns|reviews|technicalRecords|coverageWitnesses|corrections|plannedCorrections)(\\/[A-Za-z0-9_-]+)+$/)"
+                },
+                "scope": {
+                  ".validate": "newData.val() == 'record' || (newData.val() == 'ledger-header' && newData.parent().child('path').val().matches(/^(productionPlans|productionIntervals|machineRuns|productionPolicies|targetRevisions)\\/[A-Za-z0-9_-]+$/) && root.child('workspaces').child($ws).child(newData.parent().child('path').val()).hasChild('firstSlotId'))"
+                },
+                "hash": {
+                  ".validate": "newData.isString() && newData.val().matches(/^[a-f0-9]{64}$/)"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "entryCount": {
+              ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 10000 && newData.val() % 1 == 0"
+            },
+            "entriesHash": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-f0-9]{64}$/)"
+            },
+            "previewHash": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-f0-9]{64}$/)"
+            },
+            "backupHash": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-f0-9]{64}$/)"
+            },
+            "createdBy": {
+              ".validate": "newData.val() == auth.uid"
+            },
+            "createdAt": {
+              ".validate": "newData.val() == now"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
         }
       }
     }

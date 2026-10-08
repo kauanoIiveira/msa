@@ -1,3 +1,5 @@
+import {runPresentationCommands} from './dataset-commands.js';
+import {manifestEntryValue,manifestEntryScope} from './dataset-hash.js';
 import {createMsaServices} from '../services/create-msa.js';
 import {createSnapshotRepository} from './snapshot-repository.js';
 import {datasetHash} from './dataset-hash.js';
@@ -6,22 +8,12 @@ import {validatePresentationDataset,validatePresentationProjection} from './data
 
 // Memberships are readable only at members/<auth.uid> in the deployed rules.
 // An optional external backup can preserve them in the isolated snapshot.
-const roots=['machines','processes','products','pilots','parameters','parameterVersions','reasons','targets','targetRevisions','recipeVersions','productionCases','productionPolicies','productionPlans','productionIntervals','collections','production','losses','stoppages','machineRuns','reviews','technicalRecords','coverageWitnesses','corrections','plannedCorrections'];
+export const presentationRoots=['machines','processes','products','pilots','parameters','parameterVersions','reasons','targets','targetRevisions','recipeVersions','productionCases','productionPolicies','productionPlans','productionIntervals','collections','production','losses','stoppages','machineRuns','reviews','technicalRecords','coverageWitnesses','corrections','plannedCorrections'];
 const sourceSnapshots=new WeakMap();
 const dayMs=86400000,hourMs=3600000;
 const dayOffset=(day,n)=>new Date(Date.parse(day+'T12:00:00Z')+n*dayMs).toISOString().slice(0,10);
 const instant=(day,hour)=>Date.parse(`${day}T00:00:00-03:00`)+hour*hourMs;
 const ref=(command,path=[])=>({$ref:command,path});
-function resolve(value,results,repo,actor){
-  if(Array.isArray(value))return Promise.all(value.map(v=>resolve(v,results,repo,actor)));
-  if(value&&typeof value==='object'){
-    if(value.$ref)return Promise.resolve(value.path.reduce((node,key)=>node?.[key],results.get(value.$ref)));
-    if(value.$ledgerLast)return resolve(value.$ledgerLast,results,repo,actor).then(id=>repo.get(`productionIntervals/${id}`)).then(r=>Object.values(r?.events??{}).sort((a,b)=>a.sequence-b.sequence).at(-1)?.id??null);
-    if(value.$coverage)return resolve(value.$coverage,results,repo,actor).then(input=>createMsaServices({repo,actor}).coverage.preview(input)).then(r=>r.recordsFingerprint);
-    return Promise.all(Object.entries(value).map(async([k,v])=>[k,await resolve(v,results,repo,actor)])).then(Object.fromEntries);
-  }
-  return Promise.resolve(value);
-}
 
 export function buildPresentationDataset({anchorOperationalDate,version='1',existingSnapshot={}}){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(anchorOperationalDate)||new Date(anchorOperationalDate+'T12:00:00Z').toISOString().slice(0,10)!==anchorOperationalDate)throw new Error('INVALID_ANCHOR_DATE');
@@ -91,7 +83,7 @@ export function buildPresentationDataset({anchorOperationalDate,version='1',exis
     }
   }
   const lastContext={machineId:'nhpl',processId:'nhpl-montagem',productId:'nhpl-mark-v',order:`${prefix}_order_mark`,lot:`${prefix}_lot_mark`,shift:'3',recipe:`${prefix}_recipe_mark_1`};
-  const dataset={manifest:{id:prefix,version,origin:'demo',fromOperationalDate:from,toOperationalDate:to,defaultSelection:{query:{context:lastContext,fromDate:to,toDate:to,shift:'3'},recording:{productionCaseId:`${prefix}_case_d6_s3_p1_1`,context:lastContext}},entries:[],state:'prepared',createdBy:null,createdAt:null},commands,diagnostics:[]};
+  const dataset={manifest:{id:prefix,packageId:prefix,version,origin:'demo',fromOperationalDate:from,toOperationalDate:to,defaultSelection:{query:{context:lastContext,fromDate:to,toDate:to,shift:'3'},recording:{productionCaseId:`${prefix}_case_d6_s3_p1_1`,context:lastContext}},entries:[],state:'prepared',createdBy:null,createdAt:null},commands,diagnostics:[]};
   sourceSnapshots.set(dataset,existingSnapshot);
   return dataset;
 }
@@ -101,7 +93,7 @@ export async function previewPresentationDataset(dataset,{repo,actor,clock,exist
   if(!repo)for(const [root,value]of Object.entries(existingSnapshot??sourceSnapshots.get(dataset)??{}))await source.create(root,value);
   const backupMembers=(existingSnapshot??sourceSnapshots.get(dataset))?.members;
   if(backupMembers!=null){snapshot.members=structuredClone(backupMembers);await isolated.create('members',backupMembers);}
-  for(const root of roots){const value=await source.get(root);if(value!=null){snapshot[root]=value;await isolated.create(root,value);}}
+  for(const root of presentationRoots){const value=await source.get(root);if(value!=null){snapshot[root]=value;await isolated.create(root,value);}}
   async function validate(snapshot,manifest,isolatedRepo){
     const result=await validatePresentationDataset(snapshot,manifest);
     if(result.ok){
@@ -111,26 +103,18 @@ export async function previewPresentationDataset(dataset,{repo,actor,clock,exist
     return {...result,ok:result.diagnostics.length===0};
   }
   const entries=dataset.manifest.entries??[];
-  if(entries.length){const conflicts=[];let allPresent=true;for(const entry of entries){const current=await isolated.get(entry.path);if(current==null)allPresent=false;else if(await datasetHash(current)!==entry.hash)conflicts.push({code:'CONTENT_CONFLICT',path:entry.path});}
+  if(entries.length){const conflicts=[];let allPresent=true;for(const entry of entries){const current=await isolated.get(entry.path);if(current==null)allPresent=false;else if(await datasetHash(manifestEntryValue(current,entry))!==entry.hash)conflicts.push({code:'CONTENT_CONFLICT',path:entry.path});}
     if(conflicts.length||!allPresent)return {ok:false,manifest:dataset.manifest,commands:dataset.commands,diagnostics:conflicts.length?conflicts:[{code:'PARTIAL_PACKAGE_REQUIRES_RECONCILIATION'}],snapshot};
     const validation=await validate(snapshot,dataset.manifest,isolated);
     return {ok:validation.ok,manifest:dataset.manifest,commands:dataset.commands,diagnostics:validation.diagnostics,snapshot,metricsByContext:validation.metricsByContext,added:0};
   }
-  const writes=[],tracked={...isolated,create:async(path,value)=>{if(await isolated.get(path)!=null){const error=new Error('CONTENT_CONFLICT');error.code='CONTENT_CONFLICT';throw error;}const result=await isolated.create(path,value);writes.push(path);return result;},transact:async(path,update)=>{const result=await isolated.transact(path,update);writes.push(path);return result;}};
-  const results=new Map(),now=clock??(()=>instant(dataset.manifest.toOperationalDate,31));
-  for(const command of dataset.commands){
-    let number=0,idFactory=()=>`${command.id}_${++number}`;
-    try{
-      const args=await Promise.all(command.args.map(arg=>resolve(arg,results,tracked,actor)));
-      const services=createMsaServices({repo:tracked,actor,clock:now,idFactory,enforceOperationalShifts:true});
-      const method=command.service.split('.').reduce((node,key)=>node[key],services)[command.method];
-      const owner=command.service.split('.').reduce((node,key)=>node[key],services);
-      results.set(command.id,await method.apply(owner,args));
-    }catch(error){return {ok:false,manifest:dataset.manifest,commands:dataset.commands,diagnostics:[{code:error.code??'COMMAND_FAILED',commandId:command.id,message:error.message}],snapshot,failedCommand:command.id};}
-  }
-  const output={};for(const root of roots){const value=await isolated.get(root);if(value!=null)output[root]=value;}
+  const writes=[],intents=[];let activeCommand;
+  const tracked={...isolated,create:async(path,value)=>{const before=await isolated.get(path);if(before!=null){const error=new Error('CONTENT_CONFLICT');error.code='CONTENT_CONFLICT';throw error;}const result=await isolated.create(path,value);writes.push(path);intents.push({commandId:activeCommand.id,kind:'create',path,before,after:result});return result;},transact:async(path,update)=>{const before=await isolated.get(path),result=await isolated.transact(path,update);writes.push(path);intents.push({commandId:activeCommand.id,kind:'transact',path,before,after:result});return result;}};
+  try{await runPresentationCommands(dataset.commands,{repo:tracked,actor,clock:clock??(()=>instant(dataset.manifest.toOperationalDate,31)),onCommand:command=>{activeCommand=command;}});}
+  catch(error){return {ok:false,manifest:dataset.manifest,commands:dataset.commands,diagnostics:[{code:error.code??'COMMAND_FAILED',commandId:activeCommand?.id,message:error.message}],snapshot,failedCommand:activeCommand?.id};}
+  const output={};for(const root of presentationRoots){const value=await isolated.get(root);if(value!=null)output[root]=value;}
   if(backupMembers!=null)output.members=await isolated.get('members');
-  const unique=[...new Set(writes)],manifest={...dataset.manifest,createdBy:actor.uid,createdAt:source.timestamp(),entries:await Promise.all(unique.map(async path=>({path,hash:await datasetHash(await isolated.get(path))})))};
+  const unique=[...new Set(writes)],manifest={...dataset.manifest,createdBy:actor.uid,createdAt:source.timestamp(),entries:await Promise.all(unique.map(async (path,index)=>({index,path,scope:manifestEntryScope(path),hash:await datasetHash(manifestEntryValue(await isolated.get(path),{scope:manifestEntryScope(path)}))})))};
   const validation=await validate(output,manifest,tracked);
-  return {ok:validation.ok,manifest,commands:dataset.commands,diagnostics:validation.diagnostics,snapshot:output,metricsByContext:validation.metricsByContext,added:unique.length};
+  return {ok:validation.ok,manifest,commands:dataset.commands,diagnostics:validation.diagnostics,snapshot:output,baselineSnapshot:snapshot,intents,metricsByContext:validation.metricsByContext,added:unique.length};
 }

@@ -4,3 +4,4 @@ await import('./nhpl-rules.mjs');
 await import('./technical-rules.mjs');
 await import('./production-case-rules.mjs');
 await import('./coverage-rules.mjs');
+await import('./presentation-rules.mjs');

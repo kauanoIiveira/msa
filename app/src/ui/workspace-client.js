@@ -8,6 +8,7 @@ export function connectionState({authenticated,authorized,connected,pending=fals
 export async function openWorkspaceClient({session,workspaceId,repository,manifest,services}) {
  const securedServices=services??await session.onWorkspace(workspaceId);
  const repo=session.repository?.()??repository;requireThat(repo?.get&&repo?.watch,'REPOSITORY_REQUIRED');
+ manifest??=await securedServices.presentation?.latest();
  return {mode:'workspace',services:securedServices,repo,defaultSelection:manifest?.defaultSelection?structuredClone(manifest.defaultSelection):null,
   async exportBackup(){const values={};for(const root of backupRoots)values[root]=await repo.get(root);return JSON.stringify({schemaVersion:1,workspaceId,exportedAt:new Date().toISOString(),values},null,2);},
   dispose(){}
