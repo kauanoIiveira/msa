@@ -1,0 +1,25 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assertFails} from '@firebase/rules-unit-testing';
+import {setup,sdk} from '../helpers/firebase-env.js';
+import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
+import {createRegistryService} from '../../app/src/services/registry.js';
+import {createProductionCaseService} from '../../app/src/services/production-case.js';
+test('production cases and recipe revisions enforce membership, context and immutability in RTDB',async t=>{
+ const env=await setup(t),db=env.authenticatedContext('admin').database(),repo=createFirebaseRepository({db,sdk,workspaceId:'demo'});let n=0;
+ const registry=createRegistryService({repo,actor:{uid:'admin',role:'admin'},idFactory:()=>`registry_${++n}`});
+ const m=await registry.create('machines',{name:'M'}),p=await registry.create('processes',{name:'P',machineId:m.id});
+ const a=await registry.create('products',{name:'A',processIds:{[p.id]:true}}),b=await registry.create('products',{name:'B',processIds:{[p.id]:true}});
+ const service=createProductionCaseService({repo,actor:{uid:'admin',role:'admin'},idFactory:()=>`production_${++n}`});
+ const recipe=await service.recipes.create({recipeId:'recipe',productId:a.id,processId:p.id,label:'Receita A',source:'Exemplo',status:'draft',settings:{pressure:6.5}});
+ const row=await service.create({machineId:m.id,processId:p.id,productId:a.id,recipeVersionId:recipe.id,order:'OP-1',lot:'LT-1',shift:'1',operationalDate:'2026-10-07',startedAt:Date.parse('2026-10-07T07:00:00-03:00'),endedAt:Date.parse('2026-10-07T11:00:00-03:00'),status:'planned'});
+ assert.equal(row.createdBy,'admin');
+ await assertFails(sdk.set(sdk.ref(db,'workspaces/demo/productionCases/wrong'),{...row,id:'wrong',productId:b.id,createdAt:sdk.serverTimestamp()}));
+ await assertFails(sdk.update(sdk.ref(db,'workspaces/demo/productionCases/'+row.id),{lot:'changed'}));
+ await assertFails(sdk.remove(sdk.ref(db,'workspaces/demo/recipeVersions/'+recipe.id)));
+ const view=env.authenticatedContext('view').database();
+ await assertFails(sdk.set(sdk.ref(view,'workspaces/demo/productionCases/forged'),{...row,id:'forged',createdBy:'view',createdAt:sdk.serverTimestamp()}));
+ const op=env.authenticatedContext('op').database();
+ await assertFails(sdk.set(sdk.ref(op,'workspaces/demo/recipeVersions/forged'),{...recipe,id:'forged',createdBy:'op',createdAt:sdk.serverTimestamp()}));
+ await assertFails(sdk.set(sdk.ref(db,'workspaces/demo/productionCases/unknown'),{...row,id:'unknown',unknown:true,createdAt:sdk.serverTimestamp()}));
+});

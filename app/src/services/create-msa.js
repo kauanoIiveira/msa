@@ -15,6 +15,7 @@ import {createPlannedProductionService} from './planned-production.js';
 import {buildProductivity} from '../domain/productivity.js';
 import {createMachineRunService} from './machine-runs.js';
 import {createTechnicalService} from './technical.js';
+import {createProductionCaseService} from './production-case.js';
 export function createMsaServices(options) {
   const history=createHistoryService(options),operations=createOperations(options);
   const plannedProduction=createPlannedProductionService(options),analysis=createAnalysisService(options);
@@ -23,6 +24,7 @@ export function createMsaServices(options) {
   analysis.decideCorrection=async(id,payload)=>{let row;try{row=await options.repo.get('plannedCorrections/'+id);}catch(error){if(error.code!=='FORBIDDEN')throw error;}return row?plannedProduction.decideCorrection(id,payload):decideCorrection(id,payload);};
   return {
     registry:createRegistryService(options),catalog:createCatalogService(options),operations,analysis,history,
+    productions:createProductionCaseService(options),
     technical:createTechnicalService({...options,operations,plannedProduction}),
     nhpl:createNhplService(options),policies:createProductionPolicyService(options),planning:createPlanningService(options),plannedProduction,runs:createMachineRunService(options),
     csv:createCsvService({...options,operations}),
