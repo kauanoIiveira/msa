@@ -36,11 +36,11 @@
 
 ## Estado e execução
 
-Este índice e os planos derivados são propostas escritas, preparadas por solicitação expressa das duas skills. Não significam implementação iniciada ou autorização presumida sobre artefatos novos. A escolha de exemplos completos já foi feita pelo usuário; não refazer essa pergunta.
+Este índice, a spec e os planos derivados foram aprovados pelo usuário. A execução está em andamento, incluindo reformulações visuais básicas, funcionalidades úteis do MSE e compatibilidade com GitHub Pages. A escolha de exemplos completos já foi feita pelo usuário; não refazer essa pergunta.
 
 Base de leitura: `C:\Users\Kauan\Desktop\msa-master`, sem `.git`. Antes de executar, usar checkout Git conferido em `a231c145bbe34101358e6ba83b58862ae751af7b` ou sucessor explicitamente verificado, incluindo os materiais locais preservados. O checkout do cwd em `69f674a` está antigo. Não executar pull/reset sobre alterações do usuário, não inventar commits da cópia Desktop e não publicar sem registrar o resultado. Se houver branch nova, usar prefixo `codex/`.
 
-Os caminhos de código nos planos são relativos à raiz MSA conferida. Comandos pressupõem Node no PATH do terminal de execução. Neste computador o runtime verificado está em `C:\Users\Kauan\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe`. Não instalar dependências ou sincronizar checkouts durante a revisão do plano.
+Execução isolada em `C:\Users\Kauan\.codex\worktrees\msa-jornada-coesa\Desafio de Ideias`, branch `codex/msa-jornada-coesa`, iniciada de `a231c145bbe34101358e6ba83b58862ae751af7b`. O checkout antigo e a cópia Desktop permanecem preservados. Os caminhos de código nos planos são relativos à raiz MSA conferida. Comandos pressupõem Node no PATH do terminal de execução. Neste computador o runtime verificado está em `C:\Users\Kauan\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe`.
 
 ## Entregas derivadas
 

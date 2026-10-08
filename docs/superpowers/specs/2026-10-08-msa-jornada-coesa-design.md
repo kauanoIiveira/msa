@@ -1,6 +1,6 @@
 # MSA — jornada coesa, operação e apresentação completa
 
-Data: 08/10/2026. Status: proposta escrita para revisão. Pedido: comparar MSE e incorporar suas capacidades úteis, exceto Mapa e Chat, mantendo a aparência do MSA e todas as entregas existentes.
+Data: 08/10/2026. Status: aprovado pelo usuário; implementação em andamento. Pedido: comparar MSE e incorporar suas capacidades úteis, exceto Mapa e Chat, mantendo a aparência do MSA e todas as entregas existentes.
 
 ## Objetivo e sucesso esperado
 
@@ -140,7 +140,7 @@ Tipos documentais a implementar em JavaScript:
 - `ProductionCase = {id,machineId,processId,productId,variant?,order,lot,recipeVersionId?,shift,operationalDate,startedAt,endedAt,status}`; auditoria segue padrões existentes. `RecipeVersion = {id,recipeId,productId,processId,label,material?,thicknessMm?,settings,source,status,supersedes?}`. Projeção acrescenta códigos/nomes sem mudar IDs históricos.
 - `Selection = {query:{context,fromDate,toDate,shift},recording:{productionCaseId,context}|null}`. Contexto da gravação é snapshot validado, separado da consulta.
 - `WorkspaceView = {selection,period,technical,catalog,asOf}`; base adaptada ao estado existente, sem recalcular por tela.
-- `DatasetManifest = {id,version,origin:'demo',fromOperationalDate,toOperationalDate,defaultSelection,entries:[{path,hash}],state:'prepared'|'published',createdBy,createdAt}`. Referências reais não são substituídas.
+- `DatasetManifest = {id,packageId,baseManifestId?,version,origin:'demo',fromOperationalDate,toOperationalDate,defaultSelection,entries:[{index,path,scope:'record'|'ledger-header',hash}],entryCount?,entriesHash?,previewHash?,backupHash?,state:'prepared'|'published',createdBy,createdAt}`. Referências reais não são substituídas.
 - `CoverageWitness = {id,context,startedAt,endedAt,complete,evidence,recordsFingerprint,supersedes?,createdBy,createdAt}`. A cobertura é consultável e invalidada quando registros relevantes mudam.
 - Serviços comuns: `productions.list(query)`, `productions.create(input)`, `productions.context(id)`, `projection.load(selection)`, `metrics.project(view)`, `coverage.confirm(input)` e `presentation.prepare({anchorDate,actor,repo})`/`presentation.publish(preview)`.
 - Módulos operacionais retornam registros auditados e snapshots; usam `ProductionCase` e `Selection`. Exports consomem `WorkspaceView` completo e retornam `{files,manifest,diagnostics}` sem efeitos de escrita.
@@ -163,4 +163,4 @@ Interfaces completas, testes e nomes de arquivo estão nos três planos derivado
 
 Três entregas independentes e integráveis: (1) contexto/fonte/dados/cobertura; (2) operação e coordenação; (3) indicadores/BI/Excel/acabamento integrado. O plano índice registra a cobertura total e o gate final. Recomenda-se executar na conversa atual, sequencialmente, por causa dos contratos e da publicação Firebase compartilhados.
 
-Ainda pendente: revisão humana desta proposta e dos planos; configuração/acesso efetivos ao Firebase serão verificados na execução, antes de qualquer carga. Autorização para preencher com exemplos já foi concedida; não solicitar novamente a escolha real/simulado. Implementação ainda não ocorreu, e a preparação local não deve ser apresentada como publicação.
+O usuário aprovou a proposta e os três planos, incluindo as reformulações visuais básicas e a compatibilidade com GitHub Pages. Autorização para preencher com exemplos já foi concedida; não solicitar novamente a escolha real/simulado. A implementação está em andamento. A sessão administradora e o backup privado da base e das regras foram verificados na retomada; a preparação local não deve ser apresentada como publicação.
