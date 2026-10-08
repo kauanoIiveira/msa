@@ -1,0 +1,25 @@
+{
+  "productionPlans": {
+    "nhpl": {
+      "machineId": "nhpl",
+      "firstSlotId": "legacy-slot",
+      "events": {
+        "legacy-slot": {
+          "id": "legacy-slot",
+          "sequence": 1,
+          "nextSlotId": "legacy-next",
+          "kind": "plan",
+          "planId": "legacy-plan",
+          "context": {"machineId":"nhpl","processId":"nhpl-montagem","productId":"nhpl-vgard-hp","order":"LEGACY-OP","lot":"LEGACY-LOT","shift":"1"},
+          "startedAt": 1790848800000,
+          "endedAt": 1790863200000,
+          "breaks": [],
+          "intervals": [{"id":"legacy-interval","startedAt":1790848800000,"endedAt":1790863200000,"plannedPieces":100}]
+        }
+      }
+    }
+  },
+  "production": {
+    "legacy-history": {"id":"legacy-history","quantity":25,"basis":"gross","context":{"machineId":"nhpl","processId":"nhpl-montagem","productId":"nhpl-vgard-hp","order":"LEGACY-OP","lot":"LEGACY-LOT","shift":"1"},"startedAt":1790848800000,"endedAt":1790863200000}
+  }
+}
