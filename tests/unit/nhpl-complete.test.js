@@ -57,6 +57,8 @@ test('technical screen computes the exact sample and suspends inspection after a
  try{
  const query={context:local.context,fromDate:local.fromDate,toDate:local.toDate},period=await local.services.history.loadPeriod(query),state={context:local.context,period,technical:await local.services.technical.records(),fromDate:local.fromDate,toDate:local.toDate};
  let view=technicalView(state);assert.equal(view.coverage.evaluated,4);assert.ok(Math.abs(view.segments[2].oee-2/3)<1e-12);assert.equal(view.segments[2].reliability.mttr,300);
+ state.client={mode:'live'};state.liveCoverage={complete:false,gaps:[{from:view.segments[0].from+1,to:view.segments[0].to-1}]};
+ assert.equal(technicalView(state).segments[0].oee,null,'missing observed span cannot be presented as confirmed OEE');delete state.client;delete state.liveCoverage;
  const record=period.effective.production.find(r=>r.intervalId===view.segments[2].intervalId&&r.basis==='gross');
  const request=await local.services.analysis.requestCorrection({recordType:'production',recordId:record.id,intervalId:record.intervalId,replacement:{...record,quantity:249},reason:'Conferência de teste'});
  const {createMsaServices}=await import('../../app/src/services/create-msa.js'),other=createMsaServices({repo:local.repo,actor:{uid:'other-eng',role:'engineer'},papa:Papa,clock:now});
@@ -69,14 +71,14 @@ test('counter import preserves origin, restarts baseline and requires validated 
  const storage={getItem(){return null;},setItem(){}},now=()=>Date.parse('2026-10-07T20:00:00-03:00');
  const local=await openPresentation({storage,papa:Papa,now,actor:{uid:'admin',role:'admin'}});
  try{
- const end=now()-3600000,start=end-3600000,plan=await local.services.planning.approve({context:local.context,startedAt:start,endedAt:end,intervalMinutes:60,quantitySource:'informed',plannedPieces:300}),id=plan.intervals[0].id;
- const base={schemaVersion:1,sourceId:'counter',context:local.context,type:'counter',basis:'gross',intervalId:id};
+ const context={...local.context,shift:'2'},end=now()-3600000,start=end-3600000,plan=await local.services.planning.approve({context,startedAt:start,endedAt:end,intervalMinutes:60,quantitySource:'informed',plannedPieces:300}),id=plan.intervals[0].id;
+ const base={schemaVersion:1,sourceId:'counter',context,type:'counter',basis:'gross',intervalId:id};
  await local.services.technical.ingest({...base,eventId:'c1',sequence:1,occurredAt:start+1000,epoch:'one',count:100});
  await local.services.technical.ingest({...base,eventId:'c2',sequence:2,occurredAt:start+2000,epoch:'one',count:110});
  await assert.rejects(()=>local.services.technical.ingest({...base,eventId:'reset-bad',sequence:3,occurredAt:start+3000,epoch:'one',count:2}),{code:'COUNTER_RESET'});
  await local.services.technical.ingest({...base,eventId:'reset',sequence:3,occurredAt:start+3000,epoch:'two',count:2});
  const header=await local.repo.get('productionIntervals/'+id),production=Object.values(header.events).filter(r=>r.kind==='production');assert.deepEqual(production.map(r=>r.quantity),[10]);assert.ok(production.every(r=>r.origin==='import'));
- const state={schemaVersion:1,sourceId:'states',context:local.context};
+ const state={schemaVersion:1,sourceId:'states',context};
  await local.services.technical.ingest({...state,eventId:'s1',sequence:1,occurredAt:start+1000,type:'state',state:'stopped'});
  await local.services.technical.ingest({...state,eventId:'s2',sequence:2,occurredAt:start+2000,type:'state',state:'running'});
  assert.equal((await local.repo.get('stoppages/evt_states_s1')).endedAt,undefined);

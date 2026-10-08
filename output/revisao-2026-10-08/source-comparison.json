@@ -1,0 +1,30 @@
+{
+  "base": "69f674ae35f6265a3998deff90778b90e0bfcaff",
+  "checked": 372,
+  "changed": [
+    {
+      "path": "app/src/ui/cep.js"
+    },
+    {
+      "path": "app/src/ui/data-tools.js"
+    },
+    {
+      "path": "app/src/ui/format.js"
+    },
+    {
+      "path": "app/src/ui/forms.js"
+    },
+    {
+      "path": "app/src/ui/main.js"
+    },
+    {
+      "path": "app/src/ui/presentation-details.js"
+    },
+    {
+      "path": "app/src/ui/technical.js"
+    },
+    {
+      "path": "index.html"
+    }
+  ]
+}

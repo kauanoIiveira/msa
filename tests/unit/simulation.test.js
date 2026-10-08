@@ -7,7 +7,7 @@ test('isolated scenarios exercise the same dashboard calculations without Fireba
   const local=await openSimulation(scenario.id,{papa:Papa,now:()=>Date.parse('2026-10-06T01:00:00Z')});
   const q={context:local.context,fromDate:local.fromDate,toDate:local.toDate,limit:500};
   const d=await local.services.getDashboard(q,local.range);
-  assert.equal(d.parameters.length,scenario.id.startsWith('nhpl-')?0:41,'legacy seal references do not populate NHPL');
+  assert.equal(d.parameters.length,scenario.id==='complete'?2:scenario.id.startsWith('nhpl-')?0:41,'legacy seal references do not populate NHPL');
   const p=d.parameters.find(p=>p.code==='MSA_AX');
   if(scenario.id==='normal')assert.equal(p.state,'within');
   if(scenario.id==='outside')assert.equal(p.state,'outside');

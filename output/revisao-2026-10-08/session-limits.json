@@ -1,0 +1,8 @@
+{
+  "results": [
+    "repository index redirect to login",
+    "login, session restoration, logout and protected routes",
+    "draft persistence, explicit approval, new collections and immutable historical references"
+  ],
+  "errors": []
+}

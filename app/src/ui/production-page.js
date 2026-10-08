@@ -1,0 +1,2 @@
+import {pageTabs} from './workspace-routes.js';
+export function productionPage({state,renderers}){const tab=state.pageTabs?.production??'summary';return pageTabs('production',tab,[['summary','Resumo e hora a hora'],['planning','Planejamento'],['records','Apontamentos'],['times','Horários'],['occurrences','Ocorrências']])+({summary:renderers.summary,planning:renderers.planning,records:()=>renderers.records('production'),times:renderers.times,occurrences:renderers.occurrences}[tab]??renderers.summary)();}

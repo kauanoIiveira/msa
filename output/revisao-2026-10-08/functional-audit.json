@@ -1,0 +1,35 @@
+{
+  "fixtureOnly": true,
+  "results": [
+    "registry create/edit/activate, collections, rejection, stoppage closure, CSV import, engineering decision, CEP/OEE exports, backup, approved plan, production confirmation and mobile",
+    {
+      "role": "admin",
+      "permissions": true,
+      "pages": true,
+      "cleanLabels": true,
+      "logout": true
+    },
+    {
+      "role": "engineer",
+      "permissions": true,
+      "pages": true,
+      "cleanLabels": true,
+      "logout": true
+    },
+    {
+      "role": "operator",
+      "permissions": true,
+      "pages": true,
+      "cleanLabels": true,
+      "logout": true
+    },
+    {
+      "role": "viewer",
+      "permissions": true,
+      "pages": true,
+      "cleanLabels": true,
+      "logout": true
+    }
+  ],
+  "errors": []
+}

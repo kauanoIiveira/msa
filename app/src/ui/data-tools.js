@@ -1,4 +1,4 @@
-import {escapeHtml as e} from './format.js';
+import {escapeRecordText as e} from './format.js';
 import {parseReading} from '../domain/numbers.js';
 import {saoPauloInstant} from './forms.js';
 import {requireThat} from '../domain/errors.js';

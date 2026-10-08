@@ -24,7 +24,7 @@ export function effectiveRecords(type,rows,corrections=[]) {
     return {...row,...replacement,...(type==='collections'?{readings:{...row.readings,...replacement.readings},originalReadings:structuredClone(row.readings)}:{}),originalId:row.id,correctionId:correction.id};
   });return {items,conflicts};
 }
-export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}={}) {
+export function buildIndicators(data,{from,to,windows=[{from,to}],complete,sigmaMethod='population'}={}) {
   requireThat(Number.isSafeInteger(from)&&Number.isSafeInteger(to)&&from>=0&&to>from,'INVALID_PERIOD');
   const notes=[],alerts=[],series=[],groups=new Map();
   const collectionsComplete=data.coverage?.collections??complete===true;
@@ -36,7 +36,10 @@ export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}
   const totals={grossPieces:sumKnown(gross,'quantity'),goodPieces:sumKnown(good,'quantity'),rejectedPieces:sumKnown(rejected,'amount'),lossKg:sumKnown(mass,'amount'),reworkPieces:sumKnown(rework,'amount'),reworkKg:sumKnown(reworkMass,'amount'),stopMinutes:null,openStoppages:0,rejectPercent:null};
   const perMachine=new Map();for(const s of stoppages) {const key=s.context.machineId,rows=perMachine.get(key)??[];rows.push(s);perMachine.set(key,rows);}
   let stopMs=0,overlap=false;
-  for(const rows of perMachine.values()) {const result=unionDuration(rows,{from,to});stopMs+=result.milliseconds;totals.openStoppages+=result.openCount;overlap||=result.hasOverlap;}
+  for(const rows of perMachine.values()) {
+    totals.openStoppages+=rows.filter(r=>r.endedAt==null&&windows.some(w=>r.startedAt<w.to)).length;
+    for(const window of windows){const result=unionDuration(rows,window);stopMs+=result.milliseconds;overlap||=result.hasOverlap;}
+  }
   if(stoppages.length) totals.stopMinutes=stopMs/60000;
   if(overlap) notes.push('overlapping-reasons');if(totals.openStoppages) notes.push('open-stoppages-not-final');
   const grossContexts=new Set(gross.map(p=>contextKey(p.context)));
@@ -59,7 +62,7 @@ export function buildIndicators(data,{from,to,complete,sigmaMethod='population'}
     const trustedReadings=g.readings.map(r=>r.revisionConflict?{...r,status:'invalid',value:null}:r);
     return {...g,readings:undefined,...summarizeReadings(trustedReadings,{sigmaMethod,rule:version?.rule}),cp:cep.cp,cpk:cep.cpk,pp:cep.pp,ppk:cep.ppk,nConflicted:cep.nConflicted,capabilityReason:cep.reason,cep,unit:version?.unit??null,nature:version?.nature??null,versionStatus:version?.status??null};
   });
-  const closed=stoppages.filter(s=>s.endedAt!=null&&s.startedAt<to&&s.endedAt>from).map(s=>({...s,minutes:(Math.min(s.endedAt,to)-Math.max(s.startedAt,from))/60000}));
+  const closed=stoppages.filter(s=>s.endedAt!=null&&windows.some(w=>s.startedAt<w.to&&s.endedAt>w.from)).map(s=>({...s,minutes:windows.reduce((n,w)=>n+Math.max(0,Math.min(s.endedAt,w.to)-Math.max(s.startedAt,w.from))/60000,0)}));
   const reasonRanking={stopMinutes:ranking(closed,'minutes','minutes'),rejectedPieces:ranking(rejected,'amount','pieces'),lossKg:ranking(mass,'amount','kg'),reworkPieces:ranking(rework,'amount','pieces'),reworkKg:ranking(reworkMass,'amount','kg')};
   for(const target of (data.targets??[]).filter(t=>t.active)) {
     if(!complete||target.fromDate!==eventDate(from)||target.toDate!==eventDate(to-1)) {notes.push(`target-window-unavailable:${target.id}`);continue;}

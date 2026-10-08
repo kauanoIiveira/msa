@@ -1,3 +1,4 @@
+import {assertShiftPeriod} from '../domain/shifts.js';
 import {assertRole,assertId,requireThat,knownKeys} from '../domain/errors.js';
 import {assertPeriod} from '../domain/time.js';
 import {readLedger,appendLedgerEvent} from '../repositories/append-ledger.js';
@@ -5,10 +6,10 @@ import {projectIntervalProduction,getOperationRecord} from '../repositories/oper
 import {effectiveRecords} from '../domain/indicators.js';
 import {validateReplacement} from '../domain/review.js';
 import {latestPlans} from '../domain/planning.js';
-export function createPlannedProductionService({repo,actor,clock=Date.now,idFactory=()=>crypto.randomUUID()}) {
+export function createPlannedProductionService({repo,actor,enforceOperationalShifts=false,clock=Date.now,idFactory=()=>crypto.randomUUID()}) {
  const options={actor,idFactory},path=id=>'productionIntervals/'+assertId(id),allowed=()=>assertRole(actor,['admin','engineer','operator']);
  async function interval(id,allowClosed=false){const view=await readLedger(repo,path(id));requireThat(view.complete,'INCOMPLETE_DATA');const plans=await readLedger(repo,'productionPlans/'+view.header.context.machineId),plan=latestPlans(plans.events).find(p=>p.planId===view.header.planId);requireThat(plans.complete&&plan?.id===view.header.planRevisionId&&plan.intervals.some(i=>i.id===id)&&view.last?.kind!=='retire','STALE_PLAN');requireThat(allowClosed?view.last?.kind==='closure':view.last?.kind!=='closure','CORRECTION_REQUIRED');return view;}
- return {async record(id,payload){allowed();knownKeys(payload,['id','quantity','basis','startedAt','endedAt','origin','expectedRevision']);const view=await interval(id);assertPeriod(payload.startedAt,payload.endedAt);requireThat(payload.startedAt>=view.header.startedAt&&payload.endedAt<=view.header.endedAt,'INVALID_PERIOD');requireThat(Number.isSafeInteger(payload.quantity)&&payload.quantity>=0&&payload.quantity<=1e12,'INVALID_QUANTITY');requireThat(['gross','good'].includes(payload.basis),'INVALID_BASIS');requireThat(['manual','demo','import'].includes(payload.origin??'manual'),'INVALID_ORIGIN');if(payload.id)requireThat(!view.events.some(e=>e.clientId===payload.id),'CONFLICT');
+ return {async record(id,payload){allowed();knownKeys(payload,['id','quantity','basis','startedAt','endedAt','origin','expectedRevision']);const view=await interval(id);assertPeriod(payload.startedAt,payload.endedAt);if(enforceOperationalShifts)assertShiftPeriod(view.header.context,payload.startedAt,payload.endedAt);requireThat(payload.startedAt>=view.header.startedAt&&payload.endedAt<=view.header.endedAt,'INVALID_PERIOD');requireThat(Number.isSafeInteger(payload.quantity)&&payload.quantity>=0&&payload.quantity<=1e12,'INVALID_QUANTITY');requireThat(['gross','good'].includes(payload.basis),'INVALID_BASIS');requireThat(['manual','demo','import'].includes(payload.origin??'manual'),'INVALID_ORIGIN');if(payload.id)requireThat(!view.events.some(e=>e.clientId===payload.id),'CONFLICT');
   requireThat(payload.endedAt<=clock(),'INVALID_TIME');
   const event=await appendLedgerEvent(repo,path(id),{expectedEventId:payload.expectedRevision??view.last?.id??null,event:{kind:'production',quantity:payload.quantity,basis:payload.basis,startedAt:payload.startedAt,endedAt:payload.endedAt,origin:payload.origin??'manual',...(payload.id?{clientId:assertId(payload.id)}:{}),createdBy:actor.uid,createdAt:repo.timestamp()}},options);
   return projectIntervalProduction({[id]:{...view.header,events:{[event.id]:event}}})[0];

@@ -7,12 +7,12 @@
     <script>
       location.replace(
         location.protocol === "file:"
-          ? "http://127.0.0.1:5173/" + location.hash
-          : new URL("./app/index.html" + location.hash, location.href).href,
+          ? "http://127.0.0.1:5173/" + (location.hash || "#login")
+          : new URL("./app/index.html" + (location.hash || "#login"), location.href).href,
       );
     </script>
   </head>
   <body>
-    <a href="./app/index. html">Abrir MSA</a>
+    <a href="./app/index.html#login">Abrir MSA</a>
   </body>
 </html>

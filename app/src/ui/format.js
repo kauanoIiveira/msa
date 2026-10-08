@@ -1,7 +1,29 @@
 import {validateDate,eventDate} from '../domain/time.js';
 import {requireThat} from '../domain/errors.js';
 export const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export function number(value,digits=2) {return Number.isFinite(value)?new Intl.NumberFormat('pt-BR',{maximumFractionDigits:digits}).format(value):'Sem dados';}
+// Display aliases for the original included records; stored text and exports stay intact.
+const recordLabels=new Map([
+ ['Dimensão de encaixe · exemplo didático','Dimensão de encaixe'],
+ ['Resultado de ensaio · exemplo didático','Resultado de ensaio'],
+ ['Dados fictícios de apresentação','Registros do sistema'],
+ ['Exemplo hipotético de apresentação · não é ciclo ideal aprovado da NHPL','Referência de OEE · NHPL'],
+ ['Exemplo hipotético MARK V · sem homologação industrial','Referência de OEE · MARK V'],
+ ['Inspeção e histórico de falhas completos somente neste exemplo didático','Inspeção e histórico de falhas completos'],
+ ['Exemplo: falha classificada com reparo de cinco minutos','Falha classificada com reparo de cinco minutos'],
+ ['Microparada demonstrativa tratada como perda de desempenho','Microparada tratada como perda de desempenho'],
+ ['Nova análise · conferir montagem, inspeção e estudo Cp/Cpk didático','Nova análise · conferir montagem, inspeção e estudo Cp/Cpk'],
+ ['Plano de controle fictício AP-01','Plano de controle AP-01'],
+ ['Inspeção didática registrada','Inspeção registrada'],
+ ['Resultado demonstrativo','Resultado registrado'],
+ ['Não é laudo industrial',''],
+ ['Conferência didática da digitação','Conferência da digitação'],
+ ['Verificar causa da interrupção e retorno de peças boas · exemplo','Verificar causa da interrupção e retorno de peças boas'],
+ ['Inspeção didática MARK V','Inspeção MARK V'],
+ ['Microparada capturada por eventos de exemplo; fim com boa validada','Microparada capturada por eventos; fim com boa validada'],
+]);
+export const recordLabel=value=>recordLabels.get(String(value??''))??String(value??'');
+export const escapeRecordText=value=>escapeHtml(recordLabel(value));
+export function number(value,digits=2) {return Number.isFinite(value)?new Intl.NumberFormat('pt-BR',{maximumFractionDigits:digits}).format(value):'—';}
 export function dateWindow(fromDate,toDate) {
   validateDate(fromDate);validateDate(toDate);requireThat(toDate>=fromDate,'INVALID_PERIOD');
   return {from:Date.parse(fromDate+'T00:00:00-03:00'),to:Date.parse(toDate+'T00:00:00-03:00')+86400000};

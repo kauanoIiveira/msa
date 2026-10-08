@@ -7,6 +7,12 @@ const fixture=`
 import {createLocalRepository} from './ui/demo-workspace.js';
 import {createMsaServices} from './services/create-msa.js';
 import {loginAccounts} from './config/login-accounts.js';
+if(location.search.includes('qa-faults')){
+ let failNext=false;const write=Storage.prototype.setItem;
+ Storage.prototype.setItem=function(key,value){if(failNext&&key==='msa.nhpl.live.v1'){failNext=false;throw new Error('QA: quota simulada');}return write.call(this,key,value);};
+ const button=document.createElement('button');button.textContent='QA: falhar próxima gravação';button.style.cssText='position:fixed;right:10px;bottom:10px;z-index:1000';button.onclick=()=>{failNext=true;};document.body.append(button);
+}
+
 export function createBrowserMsa(){
  let user=JSON.parse(sessionStorage.getItem('qa-nhpl-user')??'null'),actor;
  const observers=new Set(),auth=new Set(),local=createLocalRepository({data:{}});
@@ -24,4 +30,4 @@ const server=createServer(async(req,res)=>{
  const type={'.js':'text/javascript','.mjs':'text/javascript','.html':'text/html','.css':'text/css','.png':'image/png','.webp':'image/webp','.json':'application/json'}[extname(file)]??'application/octet-stream';
  const bytes=await readFile(file);res.writeHead(200,{'Content-Type':type,'Cache-Control':'no-store'}).end(bytes);}catch{if(!res.headersSent)res.writeHead(404);res.end();}
 });
-server.listen(5180,'127.0.0.1',()=>console.log('QA NHPL isolado: http://127.0.0.1:5180/ · senha fictícia fixture-only'));
+const port=Number(process.env.QA_PORT??5180);server.listen(port,'127.0.0.1',()=>console.log('QA NHPL isolado: http://127.0.0.1:'+port+'/ · senha fictícia fixture-only'));

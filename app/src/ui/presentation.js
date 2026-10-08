@@ -5,10 +5,11 @@ import {dateWindow,dayOffset} from './format.js';
 import {requireThat} from '../domain/errors.js';
 import {validateRule} from '../domain/limits.js';
 import {ledgerView} from '../repositories/append-ledger.js';
+import {populateFinalExamples,populateTechnicalExamples} from './complete-presentation.js';
 const key='msa.nhpl.presentation.v3';
 const context={machineId:'nhpl',processId:'nhpl-montagem',productId:'nhpl-vgard-hp',order:'OP-AP-001',lot:'LOTE-AP-001',shift:'1',variant:'Medium'};
 const roots=['machines','processes','products','parameters','parameterVersions','reasons','targets','collections','production','losses','stoppages','reviews','corrections','pilots','productionPolicies','targetRevisions','productionPlans','productionIntervals','plannedCorrections','machineRuns','technicalRecords'];
-export async function seedPresentation({papa,now=Date.now}={}) {
+export async function seedPresentation({papa,now=Date.now,includeFuturePlan=true,coherentShifts=false}={}) {
  const local=createLocalRepository({data:Object.fromEntries(roots.map(r=>[r,{}])),now});
  const actor={uid:'presentation-preparation',role:'admin'},s=createMsaServices({repo:local.repo,actor,papa,clock:now});
  try {
@@ -54,7 +55,7 @@ export async function seedPresentation({papa,now=Date.now}={}) {
  await other.analysis.requestCorrection({recordType:'collections',recordId:orig.id,replacement,reason:'Conferência didática da digitação'});
  await other.technical.occurrence({context,type:'maintenance',note:'Verificar causa da interrupção e retorno de peças boas · exemplo',occurredAt:stoppedAt});
  const markContext={...context,productId:'nhpl-mark-v',order:'OP-AP-002',lot:'LOTE-AP-002',shift:'2',variant:'Low'};
- const markPlan=await s.planning.approve({context:markContext,startedAt:from+5*3600000,endedAt:from+7*3600000,intervalMinutes:60,quantitySource:'informed',plannedPieces:600});
+ const markPlan=await s.planning.approve({context:markContext,startedAt:from+(coherentShifts?7:5)*3600000,endedAt:from+(coherentShifts?9:7)*3600000,intervalMinutes:60,quantitySource:'informed',plannedPieces:600});
  await s.technical.reference({context:markContext,idealSeconds:10,microStopSeconds:60,effectiveFrom:range.from,source:'Exemplo hipotético MARK V · sem homologação industrial'});
  for(let i=0;i<2;i++){
   const h=markPlan.intervals[i],quantity=[286,292][i];
@@ -64,9 +65,9 @@ export async function seedPresentation({papa,now=Date.now}={}) {
   await s.technical.inspect({intervalId:h.id,firstPassGood:quantity-4,historyComplete:true,note:'Inspeção didática MARK V'});
   await s.operations.recordLoss({context:markContext,kind:'reject',amount:4,unit:'pieces',reasonId:'nhpl-reject',occurredAt:h.endedAt-1000,origin:'demo'});
  }
- for(let i=0;i<30;i++)await s.operations.recordCollection({id:'ap-mark-collection-'+i,context:markContext,origin:'demo',occurredAt:from+5*3600000+i*60000,readings:refs.map(r=>({parameterId:r.id,versionId:r.v.id,raw:String(r.mean+variation[i%10]*r.spread)}))});
+ for(let i=0;i<30;i++)await s.operations.recordCollection({id:'ap-mark-collection-'+i,context:markContext,origin:'demo',occurredAt:from+(coherentShifts?7:5)*3600000+i*60000,readings:refs.map(r=>({parameterId:r.id,versionId:r.v.id,raw:String(r.mean+variation[i%10]*r.spread)}))});
  const next=Date.parse(eventDate(now())+'T16:00:00-03:00');
- await s.planning.approve({context,startedAt:next,endedAt:next+3600000,intervalMinutes:60,quantitySource:'informed',plannedPieces:300});
+ if(includeFuturePlan)await s.planning.approve({context:coherentShifts?{...context,shift:'2'}:context,startedAt:next,endedAt:next+3600000,intervalMinutes:60,quantitySource:'informed',plannedPieces:300});
  const sourceId='ap-source',base={schemaVersion:1,sourceId,context};
  for(const event of [
   {...base,eventId:'stop',sequence:1,occurredAt:from+3*3600000+600000,type:'state',state:'stopped',reasonId:'nhpl-stop'},
@@ -77,10 +78,12 @@ export async function seedPresentation({papa,now=Date.now}={}) {
  return {schemaVersion:1,fromDate:day,toDate:day,context,data:local.snapshot()};
  }finally{local.dispose();}
 }
-export async function openPresentation({storage=globalThis.localStorage,papa=globalThis.Papa,now=Date.now,actor={uid:'presentation-reader',role:'viewer'},displayName='Consulta NHPL',re=''}={}) {
+export async function openPresentation({storage=globalThis.localStorage,papa=globalThis.Papa,now=Date.now,actor={uid:'presentation-reader',role:'viewer'},displayName='Consulta NHPL',re='',completeSections=false}={}) {
  let saved=storage.getItem(key),pack;
  try{pack=saved?JSON.parse(saved):await seedPresentation({papa,now});}catch{throw Object.assign(new Error('Base local inválida. Preserve o backup antes de restaurar.'),{code:'DEMO_CORRUPT'});}
  requireThat(pack?.schemaVersion===1&&pack.context?.machineId==='nhpl'&&roots.every(r=>pack.data?.[r]&&typeof pack.data[r]==='object'&&!Array.isArray(pack.data[r])),'DEMO_CORRUPT');
+ if(completeSections&&!pack.finalExamplesVersion){const original=saved;const added=await populateFinalExamples({data:pack.data,papa,now});requireThat(storage.getItem(key)===original,'CONFLICT');pack={...pack,...added,finalExamplesVersion:1};saved=JSON.stringify(pack);storage.setItem(key,saved);}
+ if(completeSections&&!pack.finalTechnicalExamplesVersion){const original=saved;const data=await populateTechnicalExamples({data:pack.data,papa,now});requireThat(storage.getItem(key)===original,'CONFLICT');pack={...pack,data,finalTechnicalExamplesVersion:1};saved=JSON.stringify(pack);storage.setItem(key,saved);}
  const data=pack.data;
  for(const p of Object.values(data.processes))requireThat(data.machines[p.machineId],'DEMO_CORRUPT');
  for(const p of Object.values(data.products))requireThat(p.processIds&&Object.keys(p.processIds).length&&Object.entries(p.processIds).every(([id,linked])=>linked===true&&data.processes[id]),'DEMO_CORRUPT');
@@ -95,11 +98,11 @@ export async function openPresentation({storage=globalThis.localStorage,papa=glo
   for(const h of Object.values(data.productionIntervals??{}))if(Object.values(h.events??{}).some(r=>r.kind==='production'&&r.origin!=='demo'))observed.push(h.eventDate);
   const next={...pack,toDate:[pack.toDate,...observed].sort().at(-1),data},serialized=JSON.stringify(next);storage.setItem(key,serialized);pack=next;saved=serialized;
  }});
- const sessionActor=structuredClone(actor),services=createMsaServices({repo:local.repo,actor:sessionActor,papa,clock:now});
+ const sessionActor=structuredClone(actor),services=createMsaServices({repo:local.repo,actor:sessionActor,papa,clock:now,enforceOperationalShifts:true});
  let off=()=>{};
  if(storage===globalThis.localStorage&&typeof window!=='undefined'){
   const listener=event=>{if(event.key===key&&event.newValue){try{const next=JSON.parse(event.newValue);requireThat(next.schemaVersion===1&&roots.every(r=>next.data?.[r]),'DEMO_CORRUPT');saved=event.newValue;pack=next;local.hydrate(next.data);}catch{sessionActor.role='viewer';}}};
   window.addEventListener('storage',listener);off=()=>window.removeEventListener('storage',listener);
  }
- return {mode:'presentation',actor:sessionActor,repo:local.repo,services,context:structuredClone(pack.context),get fromDate(){return pack.fromDate;},get toDate(){return pack.toDate;},get range(){return dateWindow(pack.fromDate,pack.toDate);},displayName,re,exportBackup:()=>JSON.stringify({...pack,data:local.snapshot()},null,2),dispose(){off();local.dispose();}};
+ return {mode:'presentation',actor:sessionActor,repo:local.repo,services,context:completeSections?{machineId:pack.context.machineId,processId:pack.context.processId,productId:pack.context.productId}:structuredClone(pack.context),get fromDate(){return pack.fromDate;},get toDate(){return pack.toDate;},get range(){return dateWindow(pack.fromDate,pack.toDate);},displayName,re,exportBackup:()=>JSON.stringify({...pack,data:local.snapshot()},null,2),dispose(){off();local.dispose();}};
 }

@@ -4,8 +4,11 @@ import {createMsaServices} from '../services/create-msa.js';
 import {requireThat} from '../domain/errors.js';
 import {dateWindow,dayOffset} from './format.js';
 import {eventDate} from '../domain/time.js';
+import {seedPresentation} from './presentation.js';
+import {populateFinalExamples} from './complete-presentation.js';
 
 export const simulationCases = [
+  {id:'complete',name:'NHPL · visão completa · três turnos e indicadores'},
   {id:'nhpl-met',name:'NHPL · 285 / 300 · meta atingida'},
   {id:'nhpl-below',name:'NHPL · 284 / 300 · abaixo da meta'},
   {id:'nhpl-missing',name:'NHPL · apontamento ausente'},
@@ -26,6 +29,12 @@ export const simulationCases = [
 
 export async function openSimulation(caseId,{papa=globalThis.Papa,now=Date.now,effectiveActor}={}) {
   requireThat(simulationCases.some(c=>c.id===caseId),'INVALID_SCENARIO');
+  if(caseId==='complete'){
+    const pack=await seedPresentation({papa,now,includeFuturePlan:false,coherentShifts:true});
+    const added=await populateFinalExamples({data:pack.data,papa,now}),local=createLocalRepository({data:added.data,now});
+    const actor=effectiveActor??{uid:'simulation-viewer',role:'viewer'},context={machineId:pack.context.machineId,processId:pack.context.processId,productId:pack.context.productId},fromDate=pack.fromDate,toDate=added.toDate;
+    return {repo:local.repo,services:createMsaServices({repo:local.repo,actor,papa,clock:now,enforceOperationalShifts:true}),actor,context,fromDate,toDate,range:dateWindow(fromDate,toDate),displayName:'Simulação completa',dispose:local.dispose};
+  }
   if(caseId.startsWith('nhpl-')){
     const local=createLocalRepository({data:{},now}),preparationActor={uid:'simulation-preparation',role:'admin'},prepare=createMsaServices({repo:local.repo,actor:preparationActor,papa,clock:now});
     const pilot=await prepare.nhpl.install({}),context={machineId:pilot.machineId,processId:pilot.processId,productId:pilot.productIds[0],order:'OP-SIM',lot:'LOTE-SIM',shift:'1'};
