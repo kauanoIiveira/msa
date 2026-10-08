@@ -1,3 +1,4 @@
+import {projectWorkspaceMetrics} from '../domain/workspace-metrics.js';
 import {aggregateOee,periodReliability,periodMicroStops} from '../domain/period-metrics.js';
 import {calculateOee,calculateReliability,unionSeconds} from '../domain/oee.js';
 import {productiveWindows,latestPlans,netSeconds} from '../domain/planning.js';
@@ -14,37 +15,7 @@ const recordingFields=c=>['order','lot','shift'].map((k,i)=>`<label class="field
 const recordedContext=(data,context)=>({...context,...Object.fromEntries(['order','lot','shift'].map(k=>[k,String(data.get('context_'+k)??'').trim()]))});
 const local=t=>new Date(t-10800000).toISOString().slice(0,19);
 const input=(label,key,val='',type='text')=>`<label class="field">${e(label)}<input name="${key}" type="${type}" ${type==='datetime-local'?'step="1"':''} value="${e(val)}" required></label>`;
-export function technicalView(state,{now=state.asOf??Date.now()}={}) {
- const technical=state.technical??[],segments=productivityView(state).segments,plans=latestPlans(state.period.plans??[]),allStops=state.period.effective?.stoppages??[];
- const evaluated=segments.filter(s=>s.intervalId&&s.from<now&&s.state!=='programmed').map(s=>{
-  const through=Math.min(now,s.to),plan=plans.find(p=>p.id===s.planRevisionId),planned=plan?netSeconds(plan,s.from,through):null;
-  const refs=technical.filter(r=>r.kind==='reference'&&matchesScope(r.context,s.context)).sort((a,b)=>a.effectiveFrom-b.effectiveFrom);
-  const ref=refs.filter(r=>r.effectiveFrom<=s.from).at(-1),crosses=refs.some(r=>r.effectiveFrom>s.from&&r.effectiveFrom<through);
-  const applicable=refs.filter(r=>r.effectiveFrom<s.to),refConflict=new Set(applicable.map(r=>r.supersedes??'root')).size!==applicable.length;
-  const stops=allStops.filter(r=>matchesScope(s.context,r.context)&&r.startedAt<through&&(r.endedAt??through)>s.from);
-  const classified=stops.map(stop=>({stop,classification:technical.filter(r=>r.kind==='classification'&&r.stopId===stop.id).at(-1)}));
-  const live=state.client?.mode==='live',gap=(state.liveCoverage?.gaps??[]).some(g=>g.from<through&&g.to>s.from);
-  const pending=state.period.coverage?.stoppages!==true||classified.some(x=>!x.classification||(!live&&x.stop.endedAt==null)||x.stop.revisionConflict||x.classification.stopFingerprint!==stableStringify([x.stop.startedAt,x.stop.endedAt??null,x.stop.correctionId??null])||x.classification.category==='outside-plan'&&plan&&productiveWindows(plan).some(w=>x.stop.startedAt<w.endedAt&&(x.stop.endedAt??through)>w.startedAt));
-  const loss=plan?productiveWindows(plan).reduce((sum,w)=>sum+unionSeconds(classified.filter(x=>x.classification?.category==='availability').map(x=>x.stop),Math.max(s.from,w.startedAt),Math.min(through,w.endedAt)),0):null;
-  const inspection=technical.filter(r=>r.kind==='inspection'&&r.intervalId===s.intervalId).at(-1);
-  const rows=(state.period.effective?.production??[]).filter(r=>r.intervalId===s.intervalId);
-  const trusted=inspection?.productionFingerprint===stableStringify(rows.map(r=>[r.id,r.quantity,r.correctionId??null]).sort((a,b)=>a[0].localeCompare(b[0])));
-  const result=calculateOee({plannedSeconds:planned,runSeconds:pending?null:planned-loss,idealSeconds:crosses?null:ref?.idealSeconds,total:s.grossPieces,firstPassGood:trusted?inspection.firstPassGood:null,complete:s.state==='final'&&state.period.nhplComplete===true});
-  if(inspection&&!trusted)result.reason='inspection-outdated';
-  if(crosses)result.reason='reference-crosses-period';
-  if(refConflict){result.performance=null;result.oee=null;result.reason='reference-conflict';result.state='unavailable';}
-  if(gap){result.runSeconds=null;result.availability=null;result.performance=null;result.oee=null;result.reason='history-incomplete';result.state='unavailable';}
-  if(s.reason&&!['policy-required','policy-conflict','confirmation-required','production-required','awaiting-update','future'].includes(s.reason)){result.performance=null;result.quality=null;result.oee=null;result.reason=s.reason;result.state='unavailable';}
-  const crossingFailure=classified.some(x=>x.classification?.failure&&(x.stop.startedAt<s.from||(x.stop.endedAt??Infinity)>s.to));
-  const rel=calculateReliability({operatingSeconds:result.runSeconds,repairs:classified.filter(x=>x.classification?.failure&&x.stop.startedAt>=s.from&&(x.stop.endedAt??Infinity)<=s.to).map(x=>x.classification),complete:inspection?.historyComplete===true&&!pending&&!crossingFailure&&s.state==='final'});
-  const micros=stops.filter(r=>r.endedAt!=null&&!r.planned&&(r.endedAt-r.startedAt)/1000<=(ref?.microStopSeconds??60));
-  return {...s,...result,referenceId:ref?.id,inspectionId:inspection?.id,classificationIds:classified.map(x=>x.classification?.id).filter(Boolean),reliability:rel,microCount:micros.length,microSeconds:unionSeconds(micros,s.from,s.to)};
- });
- const valid=evaluated.filter(s=>s.oee!=null),aggregate=aggregateOee(evaluated),windows=state.operationalQuery?.windows??[dateWindow(state.fromDate,state.toDate)],manualCoverage=evaluated.length>0&&evaluated.every(s=>technical.find(r=>r.id===s.inspectionId)?.historyComplete===true);
- if(aggregate.oee!=null&&state.period.coverage?.production===false)aggregate.state='partial';
- const reliability=periodReliability({plans,stops:allStops,classifications:technical.filter(r=>r.kind==='classification'),windows,now,coverage:{complete:state.period.nhplComplete===true&&state.period.coverage?.stoppages===true&&(state.client?.mode==='live'?state.liveCoverage?.complete===true:manualCoverage),provisional:state.client?.mode==='live'}}),micros=periodMicroStops({stops:allStops,references:technical.filter(r=>r.kind==='reference'),windows});
- return {segments:evaluated,aggregate,reliability,coverage:{evaluated:valid.length,total:evaluated.length},microCount:micros.count,microSeconds:micros.seconds};
-}
+export function technicalView(state,options){return projectWorkspaceMetrics(state,options);}
 export function technicalMarkup(state,{compact=false}={}) {
  const v=technicalView(state),a=v.aggregate,eng=['admin','engineer'].includes(state.actor?.role),op=['admin','engineer','operator'].includes(state.actor?.role);
  return `<section class="data-section"><div class="section-heading"><div><h2>OEE e confiabilidade</h2><p>${v.coverage.evaluated}/${v.coverage.total} intervalos com bases completas · ${a?.state==='final'?'Confirmado':'Parcial / pendente'}</p></div><div class="toolbar-right">${eng?btn('Referência de OEE','tech:reference','sliders-horizontal'):''}${btn('Memória CSV','tech:export','download')}</div></div><div class="metrics">${[['Disponibilidade',a?.availability],['Desempenho',a?.performance],['Qualidade',a?.quality],['OEE',a?.oee]].map(([title,value])=>`<article class="metric"><div class="metric-title">${title}</div><div class="metric-value">${pct(value)}</div></article>`).join('')}</div><div class="cep-indices"><div><span>Microparadas</span><strong>${n(v.microCount)}</strong></div><div><span>Duração acumulada</span><strong>${n(v.microSeconds)} s</strong></div></div>${compact?'':`<div class="table-wrap"><table class="data-table"><thead><tr><th>Intervalo / OP</th><th>Bases (s / peças)</th><th>A / P / Q / OEE</th><th>Confiabilidade</th><th>Situação / ação</th></tr></thead><tbody>${v.segments.map(s=>`<tr><td>${date(s.from,true)}<div class="small muted">${e(s.context.order)} · ${e(s.context.variant??'')}</div></td><td>Planejado ${n(s.plannedSeconds)} · operação ${n(s.runSeconds)}<div class="small muted">Ciclo ideal ${n(s.idealSeconds)} s/peça · total ${n(s.total)} · primeira passagem ${n(s.firstPassGood)}</div></td><td>${pct(s.availability)} / ${pct(s.performance)} / ${pct(s.quality)}<div><strong>${pct(s.oee)}</strong></div></td><td>MTBF ${n(s.reliability.mtbf==null?null:s.reliability.mtbf/60)} min<div class="small muted">MTTR ${n(s.reliability.mttr==null?null:s.reliability.mttr/60)} min · taxa ${n(s.reliability.failureRate)} falhas/h</div></td><td>${e(oeeReasons[s.reason]??(s.state==='final'?'Confirmado':'Parcial'))}${op?btn('Inspeção / cobertura','tech:inspect:'+s.intervalId,'check-check'):''}</td></tr>`).join('')||'<tr><td colspan="5">Sem intervalo produtivo neste contexto</td></tr>'}</tbody></table></div>`}<p class="source-notes">Produtividade de 95% é separada do OEE. Takt 12 s não é ciclo ideal. MTBF/MTTR exigem falhas e reparos classificados; ausência não equivale a zero.</p></section>`;

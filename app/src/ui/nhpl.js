@@ -1,3 +1,4 @@
+import {projectProductivity} from '../domain/workspace-metrics.js';
 import {escapeHtml as e,number as n,date,dateWindow} from './format.js';
 import {saoPauloInstant} from './forms.js';
 import {parseReading} from '../domain/numbers.js';
@@ -14,12 +15,7 @@ const btn=(label,action,ico='plus')=>`<button class="btn" data-action="${e(actio
 const can=(state,roles)=>state.client&&(state.dataset!=='presentation'||state.simulation)&&roles.includes(state.actor?.role);
 const engineering=state=>can(state,['admin','engineer']),operator=state=>can(state,['admin','engineer','operator']);
 const num=(data,key)=>{const r=parseReading(data.get(key));requireThat(r.status==='valid','INVALID_QUANTITY',key);return r.value;};
-export function productivityView(state){
- const op=state.operationalQuery,context=op?.query.context??state.context,windows=op?.windows??[dateWindow(state.fromDate,state.toDate)],config={context,now:state.asOf??Date.now(),mode:state.client?.mode==='live'?'continuous':'manual',coverage:{complete:state.period.nhplComplete!==false&&(state.period.complete??state.period.coverage?.production)===true&&state.period.coverage?.corrections===true}};
- const views=windows.map(w=>buildProductivity({...state.period,production:state.period.effective?.production??[],losses:state.period.effective?.losses??[]},{...config,...w})),segments=views.flatMap(v=>v.segments).filter(s=>s.intervalId||views.length===1),available=segments.filter(s=>s.percent!=null),expected=available.reduce((n,s)=>n+s.expectedPieces,0),gross=available.reduce((n,s)=>n+s.grossPieces,0),targets=new Set(available.map(s=>s.targetPercent));
- const aggregate=expected?{state:state.period.coverage?.production===true&&segments.every(s=>['final','not-scheduled'].includes(s.state))?'final':'partial',percent:gross/expected*100,grossPieces:gross,expectedPieces:expected,plannedPieces:available.reduce((n,s)=>n+s.plannedPieces,0),targetPercent:targets.size===1?available[0].targetPercent:null,minimumPieces:available.reduce((n,s)=>n+s.minimumPieces,0),coverage:available.length/Math.max(1,segments.length)}:null;
- return {segments,aggregate,coverage:{complete:config.coverage.complete,evaluated:available.length,total:segments.length},from:windows[0].from,to:windows.at(-1).to};
-}
+export const productivityView=projectProductivity;
 export function productivityMarkup(state,{compact=false,actions=true}={}){
  const view=productivityView(state),aggregate=view.aggregate;
  return `<section class="data-section nhpl-panel"><div class="section-heading"><div><h2>Produtividade · NHPL</h2><p>Produção bruta / plano aprovado · metas e takt conforme a vigência</p></div>${state.client&&!compact?btn('CSV','nhpl:export','download'):''}</div><div class="metrics"><div class="metric"><div class="metric-title">Produtividade</div><div class="metric-value">${aggregate?n(aggregate.percent)+'%':'Indisponível'}</div><p>${aggregate?`${names[aggregate.state]} · ${n(aggregate.grossPieces)} / ${n(aggregate.expectedPieces)} peças · cobertura ${n(aggregate.coverage*100)}%`:'Sem resultado confirmado no período'}</p></div><div class="metric"><div class="metric-title">Meta aplicada</div><div class="metric-value">${aggregate?n(aggregate.targetPercent)+'%':'Por intervalo'}</div><p>${aggregate?`${n(aggregate.minimumPieces)} peças mínimas`:'Confira as vigências no planejamento'}</p></div></div>${compact?'':segmentTable(actions?state:{...state,client:null},view)}</section>`;

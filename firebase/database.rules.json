@@ -4245,6 +4245,73 @@
               ".validate": false
             }
           }
+        },
+        "coverageWitnesses": {
+          ".read": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'viewer')",
+          "$id": {
+            ".write": "auth != null && (root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'admin' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'engineer' || root.child('workspaces').child($ws).child('members').child(auth.uid).child('role').val() == 'operator') && !data.exists() && newData.exists() && $id.matches(/^[A-Za-z0-9_-]{1,100}$/)",
+            ".validate": "newData.hasChildren(['id','context','startedAt','endedAt','complete','evidence','recordsFingerprint','createdBy','createdAt']) && newData.child('endedAt').val() > newData.child('startedAt').val() && (!newData.hasChild('supersedes') || (root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).exists() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('startedAt').val() == newData.child('startedAt').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('endedAt').val() == newData.child('endedAt').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('machineId').val() == newData.child('context').child('machineId').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('processId').val() == newData.child('context').child('processId').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('productId').val() == newData.child('context').child('productId').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('order').val() == newData.child('context').child('order').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('lot').val() == newData.child('context').child('lot').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('shift').val() == newData.child('context').child('shift').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('recipe').val() == newData.child('context').child('recipe').val() && root.child('workspaces').child($ws).child('coverageWitnesses').child(newData.child('supersedes').val()).child('context').child('variant').val() == newData.child('context').child('variant').val()))",
+            "id": {
+              ".validate": "newData.val() == $id"
+            },
+            "createdBy": {
+              ".validate": "newData.val() == auth.uid"
+            },
+            "createdAt": {
+              ".validate": "newData.val() == now"
+            },
+            "context": {
+              ".validate": "newData.hasChildren([\"machineId\",\"processId\",\"productId\"]) && (data.exists() || (root.child('workspaces').child($ws).child('machines').child(newData.child('machineId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('active').val() == true && root.child('workspaces').child($ws).child('processes').child(newData.child('processId').val()).child('machineId').val() == newData.child('machineId').val() && root.child('workspaces').child($ws).child('products').child(newData.child('productId').val()).child('processIds').child(newData.child('processId').val()).val() == true)) && ((!data.hasChild('machineId') || newData.hasChild('machineId')) && (!data.hasChild('processId') || newData.hasChild('processId')) && (!data.hasChild('productId') || newData.hasChild('productId')) && (!data.hasChild('recipe') || newData.hasChild('recipe')) && (!data.hasChild('lot') || newData.hasChild('lot')) && (!data.hasChild('order') || newData.hasChild('order')) && (!data.hasChild('shift') || newData.hasChild('shift'))) && (newData.child('machineId').val() != 'nhpl' || newData.hasChildren(['order','lot','shift']))",
+              "machineId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "processId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "productId": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "recipe": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "lot": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "order": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "shift": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.parent().exists() || newData.val() == data.val())"
+              },
+              "$other": {
+                ".validate": false
+              },
+              "variant": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+              }
+            },
+            "startedAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0"
+            },
+            "endedAt": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 == 0"
+            },
+            "complete": {
+              ".validate": "newData.isBoolean()"
+            },
+            "evidence": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+            },
+            "recordsFingerprint": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100000"
+            },
+            "supersedes": {
+              ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{1,100}$/)"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
         }
       }
     }

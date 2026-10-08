@@ -16,6 +16,7 @@ import {buildProductivity} from '../domain/productivity.js';
 import {createMachineRunService} from './machine-runs.js';
 import {createTechnicalService} from './technical.js';
 import {createProductionCaseService} from './production-case.js';
+import {createCoverageService} from './coverage.js';
 export function createMsaServices(options) {
   const history=createHistoryService(options),operations=createOperations(options);
   const plannedProduction=createPlannedProductionService(options),analysis=createAnalysisService(options);
@@ -25,6 +26,7 @@ export function createMsaServices(options) {
   return {
     registry:createRegistryService(options),catalog:createCatalogService(options),operations,analysis,history,
     productions:createProductionCaseService(options),
+    coverage:createCoverageService(options),
     technical:createTechnicalService({...options,operations,plannedProduction}),
     nhpl:createNhplService(options),policies:createProductionPolicyService(options),planning:createPlanningService(options),plannedProduction,runs:createMachineRunService(options),
     csv:createCsvService({...options,operations}),

@@ -58,6 +58,8 @@ export function createHistoryService({repo}) {
       result.nhplComplete=true;
       const optional=async path=>{try{return await repo.get(path)??{};}catch(error){if(error.code!=='FORBIDDEN')throw error;result.nhplComplete=false;return {};}};
       result.pilot=await optional('pilots/nhpl');result.intervalHeaders=await optional('productionIntervals');
+      try{result.coverageWitnesses=Object.values(await repo.get('coverageWitnesses')??{});result.coverageWitnessesAvailable=true;}
+      catch(error){if(!['FORBIDDEN','INVALID_PATH'].includes(error.code))throw error;result.coverageWitnesses=[];result.coverageWitnessesAvailable=false;}
       result.policies=[];result.plans=[];result.closures={};result.runs=[];result.retiredIntervals=[];
       const readChains=(headers,key)=>{for(const header of Object.values(headers)){try{const chain=ledgerView(header);result.nhplComplete&&=chain.complete;result[key].push(...chain.events);}catch{result.nhplComplete=false;}}};
       readChains(await optional('productionPolicies'),'policies');readChains(await optional('productionPlans'),'plans');readChains(await optional('machineRuns'),'runs');
