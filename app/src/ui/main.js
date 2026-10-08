@@ -1,7 +1,7 @@
 import {patchSnapshot} from './snapshot-dom.js';
 import {productionContextCard} from './production-context-card.js';
 import {initialSelection} from './production-selection.js';
-import {parametersPage} from './parameters-page.js';
+import {parametersPage,visibleParameters} from './parameters-page.js';
 import {equipmentPage,equipmentView} from './equipment-page.js';
 import {createProductionJourney} from './production-journey.js';
 import {requireThat} from '../domain/errors.js';
@@ -1007,7 +1007,18 @@ async function action(action) {
     const saved=state.lastSaved;if(!saved)return;const r=saved.record,day=shiftAt(r.occurredAt??r.startedAt).operationalDate;
     applyQuery({context:r.context,fromDate:day,toDate:day,shift:'all'});state.route=action==='saved-history'?'history':saved.kind==='collections'?'parameters':'production';state.tab.history=saved.kind;state.pageTabs.production='summary';history.replaceState(null,'','#'+state.route);await refresh();if(action==='saved-history')detail(saved.kind,r.id);return;
   }
-  if(action.startsWith('equipment-detail:')){const id=action.slice(17),row=equipmentView({catalog:state.registries,events:state.equipmentEvents}).find(r=>r.id===id);if(row)showModal(row.name,`<p>${e(row.status)}</p><p>Última leitura: ${row.lastReading?date(row.lastReading.occurredAt,true):e(row.lastReadingReason)}</p><p>${e(row.processes.map(p=>p.name).join(' · '))}</p><p class="source-notes">Situação baseada nos registros consultados, sem comprovação de conexão física.</p>${row.lastReading?recordContextMarkup(row.lastReading,state.registries)+`<dl>${Object.values(row.lastReading.readings??{}).map(r=>`<dt>${e(name('parameters',r.parameterId))}</dt><dd>${e(r.raw??'Sem leitura')} ${e(state.registries.parameterVersions?.[r.versionId]?.unit??'')} · versão ${e(r.versionId)}</dd>`).join('')}</dl>`:''}`);return;}
+  if(action.startsWith('equipment-history:')){
+    const id=action.slice(18),row=equipmentView({catalog:state.registries,events:state.equipmentEvents}).find(r=>r.id===id),record=Object.values(state.equipmentEvents?.collections??{}).find(r=>row?.conflictedRecordIds.includes(r.id));
+    if(!record)return;const day=shiftAt(record.occurredAt).operationalDate;applyQuery({context:record.context,fromDate:day,toDate:day,shift:'all'});state.route='history';state.tab.history='collections';modal.close();history.replaceState(null,'','#history');await refresh();return;
+  }
+  if(action.startsWith('equipment-detail:')){
+    const id=action.slice(17),row=equipmentView({catalog:state.registries,events:state.equipmentEvents}).find(r=>r.id===id);
+    if(row){
+      const conflict=row.conflictedRecordIds.length?`<p>Os valores permanecem indisponíveis até resolver a revisão.</p><button class="btn" data-action="equipment-history:${e(row.id)}">Ver conflito no histórico</button>`:'';
+      const readings=row.lastReading?recordContextMarkup(row.lastReading,state.registries)+`<dl>${Object.values(row.lastReading.readings??{}).map(r=>`<dt>${e(name('parameters',r.parameterId))}</dt><dd>${e(r.raw??'Sem leitura')} ${e(state.registries.parameterVersions?.[r.versionId]?.unit??'')} · versão ${e(r.versionId)}</dd>`).join('')}</dl>`:'';
+      showModal(row.name,`<p>${e(row.status)}</p><p>Última leitura: ${row.lastReading?date(row.lastReading.occurredAt,true):e(row.lastReadingReason)}</p><p>${e(row.processes.map(p=>p.name).join(' · '))}</p><p class="source-notes">Situação baseada nos registros consultados, sem comprovação de conexão física.</p>${conflict}${readings}`);
+    }return;
+  }
   if(action.startsWith("live:")){const type=action.slice(5);if(type==='retry')await state.client.live.retry();else await state.client.live.command(type);return refresh();}
   if(action==='pending-back'){if(state.pendingReturn){Object.assign(state,state.pendingReturn);state.pendingReturn=null;await refresh();}return;}
   if(action.startsWith('registry-edit:')){const[,kind,id]=action.split(':'),r=state.registries[kind]?.[id];if(!r||!engineer())return;showModal('Editar cadastro',`<div class="form-grid"><label class="field">Nome<input name="name" value="${e(r.name)}" required maxlength="160"></label><label class="field">Código<input name="code" value="${e(r.code??'')}" maxlength="100"></label></div><p class="source-notes">Identificador e vínculos históricos são preservados.</p>`,{submit:data=>services().registry.update(kind,id,{name:data.get('name'),...(data.get('code')?{code:data.get('code')}:{})})});return;}
@@ -1224,11 +1235,7 @@ document.addEventListener("input", (event) => {
   if (event.target.id === "parameter-search") {
     state.search = event.target.value;
     document.getElementById("parameter-results").innerHTML = parameterTable(
-      (state.dashboard?.parameters ?? []).filter((p) =>
-        p.name
-          .toLocaleLowerCase("pt-BR")
-          .includes(state.search.toLocaleLowerCase("pt-BR")),
-      ),
+      visibleParameters(state),
     );
     icons();
   }

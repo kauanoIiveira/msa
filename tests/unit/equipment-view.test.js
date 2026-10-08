@@ -11,3 +11,7 @@ test('date-only observations prevent inventing a latest timed reading on the sam
  const rows=equipmentView({catalog,events:{collections:[{id:'c',context:{machineId:'a'},occurredAt:100,eventDate:'1970-01-01'},{id:'u',context:{machineId:'a'},timePrecision:'date',eventDate:'1970-01-01'}]}});
  assert.equal(rows[0].lastReading,null);assert.equal(rows[0].lastReadingReason,'Horário da leitura não informado');
 });
+test('a conflicting latest collection cannot supply authoritative values or fall back to older readings',()=>{
+ const events={collections:[{id:'old',context:{machineId:'a'},occurredAt:100,readings:{p:{raw:'10'}}},{id:'conflict',context:{machineId:'a'},occurredAt:200,revisionConflict:true,readings:{p:{raw:'99'}}}]};
+ const row=equipmentView({catalog,events})[0];assert.equal(row.lastReading,null);assert.equal(row.lastReadingReason,'Revisão conflitante na última leitura');assert.deepEqual(row.conflictedRecordIds,['conflict']);
+});

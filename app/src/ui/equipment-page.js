@@ -4,7 +4,8 @@ export function equipmentView({catalog={},events={},selection={}}){
  return Object.values(catalog.machines??{}).filter(m=>!sector||m.sector===sector).map(machine=>{
   const collections=values('collections').filter(c=>c.context?.machineId===machine.id),timed=collections.filter(c=>Number.isSafeInteger(c.occurredAt)).sort((a,b)=>b.occurredAt-a.occurredAt),openStops=values('stoppages').filter(s=>s.context?.machineId===machine.id&&s.endedAt==null);
   const latestTimed=timed[0]??null,missingTime=collections.some(c=>!Number.isSafeInteger(c.occurredAt)&&(!latestTimed||c.eventDate>=latestTimed.eventDate)),latest=missingTime?null:latestTimed,ambiguous=latest&&timed[1]?.occurredAt===latest.occurredAt;
-  return {id:machine.id,name:machine.name,sector:machine.sector??null,active:machine.active,status:openStops.length?'Parada registrada em aberto':machine.active?'Ativo no cadastro':'Inativo no cadastro',lastReading:ambiguous?null:latest,lastReadingReason:ambiguous?'Horários empatados':collections.length&&!latest?'Horário da leitura não informado':!latest?'Sem leitura no período':null,processes:Object.values(catalog.processes??{}).filter(p=>p.machineId===machine.id)};
+  const conflictedRecordIds=timed.filter(c=>c.occurredAt===latestTimed?.occurredAt&&c.revisionConflict).map(c=>c.id),conflict=conflictedRecordIds.length>0;
+  return {id:machine.id,name:machine.name,sector:machine.sector??null,active:machine.active,status:openStops.length?'Parada registrada em aberto':machine.active?'Ativo no cadastro':'Inativo no cadastro',lastReading:ambiguous||conflict?null:latest,lastReadingReason:conflict?'Revisão conflitante na última leitura':ambiguous?'Horários empatados':collections.length&&!latest?'Horário da leitura não informado':!latest?'Sem leitura no período':null,conflictedRecordIds,processes:Object.values(catalog.processes??{}).filter(p=>p.machineId===machine.id)};
  });
 }
 export function equipmentPage({state}){
