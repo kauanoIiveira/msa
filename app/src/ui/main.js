@@ -4,7 +4,7 @@ import {patchSnapshot} from './snapshot-dom.js';
 import {productionContextCard} from './production-context-card.js';
 import {initialSelection} from './production-selection.js';
 import {parametersPage,visibleParameters} from './parameters-page.js';
-import {equipmentPage,equipmentView,equipmentHistoryQuery,equipmentResults} from './equipment-page.js';
+import {equipmentPage,equipmentView,equipmentHistoryQuery,equipmentResults,equipmentConsultation} from './equipment-page.js';
 import {createProductionJourney} from './production-journey.js';
 import {requireThat} from '../domain/errors.js';
 import {saoPauloInstant} from './forms.js';
@@ -1004,7 +1004,11 @@ async function exportCsv() {
 function renderEquipmentResults(){const args={catalog:state.registries,events:state.equipmentEvents??{},state};document.getElementById('equipment-results').innerHTML=equipmentResults(equipmentView({...args,selection:{order:'name',...state.equipmentFilters}}),equipmentView(args));}
 async function action(action) {
   if(action==='equipment-clear'){state.equipmentFilters={};layout();return;}
-  if(action.startsWith('equipment-consult:')||action.startsWith('equipment-records:')){const id=action.split(':')[1],process=rows('processes').find(p=>p.machineId===id);if(!process)return;applyQuery({...state.selection.query,context:{machineId:id,processId:process.id},fromDate:state.fromDate,toDate:state.toDate,shift:state.consultationShift});state.route=action.startsWith('equipment-records:')?'history':'production';state.tab.history='collections';modal.close();history.replaceState(null,'','#'+state.route);await refresh();return;}
+  if(action.startsWith('equipment-consult:')||action.startsWith('equipment-records:')){
+    const [command,id,explicitProcess]=action.split(':'),selectedProcess=state.equipmentFilters?.sector,processId=explicitProcess??(state.registries.processes?.[selectedProcess]?.machineId===id?selectedProcess:undefined),target=equipmentConsultation({catalog:state.registries,machineId:id,processId,fromDate:state.fromDate,toDate:state.toDate,shift:state.consultationShift});
+    if(!target.query){showModal('Escolher processo',target.choices.length?'<p>Escolha o processo para esta consulta.</p><div class="operation-toolbar">'+target.choices.map(p=>`<button class="btn" type="button" data-action="${command}:${e(id)}:${e(p.id)}">${e(p.name)}</button>`).join('')+'</div>':'<p>Nenhum processo ativo disponível para consulta.</p>');return;}
+    applyQuery({...state.selection.query,...target.query});state.route=command==='equipment-records'?'history':'production';state.tab.history='collections';modal.close();history.replaceState(null,'','#'+state.route);await refresh();return;
+  }
 
   if(action.startsWith('bi-export:')){if(state.loading||state.error)throw new Error('Aguarde a consulta terminar.');const result=exportBi({view:state,kind:action.slice(10)});for(const file of result.files)downloadCsv(file.text,file.name);return;}
   if(action==='consult-production'){const row=state.productionCases.find(r=>r.id===state.selection.recording?.productionCaseId);if(row){applyQuery({context:structuredClone(state.selection.recording.context),fromDate:row.operationalDate,toDate:row.operationalDate,shift:row.shift});modal.close();return refresh();}return;}
@@ -1021,17 +1025,17 @@ async function action(action) {
     applyQuery({context:r.context,fromDate:day,toDate:day,shift:'all'});state.route=action==='saved-history'?'history':saved.kind==='collections'?'parameters':'production';state.tab.history=saved.kind;state.pageTabs.production='summary';history.replaceState(null,'','#'+state.route);await refresh();if(action==='saved-history')detail(saved.kind,r.id);return;
   }
   if(action.startsWith('equipment-history:')){
-    const id=action.slice(18),row=equipmentView({catalog:state.registries,events:state.equipmentEvents,state}).find(r=>r.id===id),record=Object.values(state.equipmentEvents?.collections??{}).find(r=>row?.conflictedRecordIds.includes(r.id));
+    const id=action.slice(18),row=equipmentView({catalog:state.registries,events:state.equipmentEvents,state,selection:{sector:state.equipmentFilters?.sector}}).find(r=>r.id===id),record=Object.values(state.equipmentEvents?.collections??{}).find(r=>row?.conflictedRecordIds.includes(r.id));
     if(!record)return;applyQuery(equipmentHistoryQuery(record));state.route='history';state.tab.history='collections';modal.close();history.replaceState(null,'','#history');await refresh();return;
   }
   if(action.startsWith('equipment-case-consult:')){const row=state.productionCases.find(r=>r.id===action.slice(23));if(!row)return;applyQuery({context:{machineId:row.machineId,processId:row.processId,productId:row.productId,order:row.order,lot:row.lot},fromDate:row.operationalDate,toDate:row.operationalDate,shift:row.shift});state.route='production';modal.close();history.replaceState(null,'','#production');await refresh();return;}
   if(action.startsWith('equipment-register:'))return journey.choose(action.slice(19));
   if(action.startsWith('equipment-detail:')){
-    const id=action.slice(17),row=equipmentView({catalog:state.registries,events:state.equipmentEvents,state}).find(r=>r.id===id);
+    const id=action.slice(17),row=equipmentView({catalog:state.registries,events:state.equipmentEvents,state,selection:{sector:state.equipmentFilters?.sector}}).find(r=>r.id===id);
     if(row){
       const conflict=row.conflictedRecordIds.length?`<p>Os valores permanecem indisponíveis até resolver a revisão.</p><button class="btn" data-action="equipment-history:${e(row.id)}">Ver conflito no histórico</button>`:'';
       const readings=row.lastReading?recordContextMarkup(row.lastReading,state.registries)+`<dl>${Object.values(row.lastReading.readings??{}).map(r=>`<dt>${e(name('parameters',r.parameterId))}</dt><dd>${e(r.raw??'Sem leitura')} ${e(state.registries.parameterVersions?.[r.versionId]?.unit??'')} · versão ${e(r.versionId)}</dd>`).join('')}</dl>`:'';
-      const productions=state.productionCases.filter(r=>r.machineId===id&&state.operationalQuery.windows.some(w=>r.startedAt<w.to&&r.endedAt>w.from));
+      const productions=state.productionCases.filter(r=>r.machineId===id&&(!state.equipmentFilters?.sector||!state.registries.processes?.[state.equipmentFilters.sector]||r.processId===state.equipmentFilters.sector)&&state.operationalQuery.windows.some(w=>r.startedAt<w.to&&r.endedAt>w.from));
       const productionList=productions.map(r=>`<article class="production-choice"><div><strong>${e(name('products',r.productId))}</strong><p>OP ${e(r.order)} · Lote ${e(r.lot)} · ${r.shift}º turno</p><p>${date(r.startedAt,true)} a ${date(r.endedAt,true)}</p></div><div><button class="btn" data-action="equipment-case-consult:${e(r.id)}">Consultar</button>${operator()?`<button class="btn" data-action="select-production:${e(r.id)}">Selecionar para registrar</button>`:''}</div></article>`).join('');
       showModal(row.name,`<p>${e(row.status)}</p><p>Última leitura: ${row.lastReading?date(row.lastReading.occurredAt,true):e(row.lastReadingReason)}</p><p>${e(row.processes.map(p=>p.name).join(' · '))}</p><p class="source-notes">Situação baseada nos registros consultados, sem comprovação de conexão física.</p>${row.alerts.map(a=>`<p class="equipment-alert">${e(a)}</p>`).join('')}${conflict}${readings}<h3>Produções no período</h3>${productionList||'<p>Sem produção cadastrada neste período.</p>'}<div class="operation-toolbar"><button class="btn" data-action="equipment-consult:${e(row.id)}">Consultar produção</button><button class="btn" data-action="equipment-records:${e(row.id)}">Ver histórico</button>${operator()?'<button class="btn" data-action="equipment-register:'+e(row.id)+'">Escolher produção para registrar</button>':''}</div>`);
     }return;

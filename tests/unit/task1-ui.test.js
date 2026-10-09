@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {productionChoices,productionContextCard} from '../../app/src/ui/production-context-card.js';
 import {equipmentView} from '../../app/src/ui/equipment-page.js';
+import * as equipmentUi from '../../app/src/ui/equipment-page.js';
 import {reportsPage} from '../../app/src/ui/reports-page.js';
 import {buildOperationalQuery} from '../../app/src/ui/operational-query.js';
 import {stableStringify} from '../../app/src/domain/canonical.js';
@@ -19,10 +20,26 @@ test('chooser matches unordered words, accents, surrounding space and the visibl
  assert.match(productionChoices({cases,catalog,search:'ausente'}),/0 de 1/);
 });
 test('equipment search includes registered code and linked product, process and recorded alert filters',()=>{
- const events={collections:[{id:'c',context:{machineId:'m'},occurredAt:100,revisionConflict:true}]};
+ const events={collections:[{id:'c',context:{machineId:'m',processId:'p'},occurredAt:100,revisionConflict:true}]};
  assert.deepEqual(equipmentView({catalog,events,selection:{search:'ag-1 protecao',sector:'p',status:'alerts'}}).map(r=>r.id),['m']);
  assert.deepEqual(equipmentView({catalog,events,selection:{search:'inexistente'}}),[]);
  assert.deepEqual(equipmentView({catalog,events,selection:{sector:'p',status:'inactive'}}),[]);
+});
+test('equipment status, latest reading and linked pending records share the selected process and shift',()=>{
+ const at=Date.parse('2026-10-07T10:00:00-03:00'),night=Date.parse('2026-10-08T01:00:00-03:00'),context={machineId:'m',processId:'p',shift:'1'};
+ const events={collections:[{id:'c',context,occurredAt:at}],production:[{id:'prod',context,startedAt:at,endedAt:at+3600000}],stoppages:[{id:'stop',context,startedAt:night,endedAt:null}]};
+ const state={client:{mode:'workspace'},equipmentPeriod:{...events,complete:true,coverage:{},reviews:[{collectionId:'c',state:'waiting'}],corrections:[{recordType:'collections',recordId:'c',state:'waiting'}]},technical:[{id:'old',kind:'occurrence',context,occurredAt:at},{id:'p1',kind:'occurrence',context,occurredAt:night}],operationalQuery:buildOperationalQuery({context:{},fromDate:'2026-10-07',toDate:'2026-10-07',shift:'3'})};
+ const extended={...catalog,processes:{...catalog.processes,p2:{id:'p2',machineId:'m',name:'Outro processo'}}};
+ const nightRow=equipmentView({catalog:extended,events,state})[0];assert.equal(nightRow.lastReading,null);assert.equal(nightRow.hasProduction,false);assert.ok(!nightRow.alerts.some(a=>a.includes('análise')||a.includes('correção')));assert.ok(nightRow.alerts.includes('1 ocorrência(s) pendente(s)'));
+ const p2=equipmentView({catalog:extended,events,state,selection:{sector:'p2'}})[0];assert.equal(p2.status,'Ativo no cadastro');assert.equal(p2.openStops,0);assert.equal(p2.hasProduction,false);assert.equal(p2.lastReading,null);assert.deepEqual(p2.alerts,[]);
+ const dayState={...state,operationalQuery:buildOperationalQuery({context:{},fromDate:'2026-10-07',toDate:'2026-10-07',shift:'1'})},dayRow=equipmentView({catalog:extended,events,state:dayState,selection:{sector:'p'}})[0];assert.equal(dayRow.lastReading.id,'c');assert.equal(dayRow.hasProduction,true);assert.ok(dayRow.alerts.some(a=>a.includes('análise')));assert.ok(dayRow.alerts.some(a=>a.includes('correção')));
+});
+test('equipment consultation requires a choice for multiple processes and preserves the explicit process and recording',()=>{
+ const extended={...catalog,processes:{...catalog.processes,p2:{id:'p2',machineId:'m',name:'Outro processo'}}},selection={query:{context:{machineId:'other'}},recording:{productionCaseId:'keep'}},before=structuredClone(selection);
+ const input={catalog:extended,machineId:'m',selection,fromDate:'2026-10-07',toDate:'2026-10-07',shift:'3'};
+ const ambiguous=equipmentUi.equipmentConsultation?.(input);assert.equal(ambiguous?.requiresChoice,true);assert.equal(ambiguous.query,null);
+ const chosen=equipmentUi.equipmentConsultation({...input,processId:'p2'});assert.deepEqual(chosen.query.context,{machineId:'m',processId:'p2'});assert.equal(chosen.query.shift,'3');assert.deepEqual(selection,before);
+ assert.equal(equipmentUi.equipmentConsultation({...input,processId:'foreign'}).query,null);
 });
 test('equipment attributes open reviews and corrections through their original records and unresolved occurrences by context',()=>{
  const events={collections:[{id:'c',context:{machineId:'m'},occurredAt:100}]},state={equipmentPeriod:{...events,reviews:[{collectionId:'c',state:'waiting'}],corrections:[{recordType:'collections',recordId:'c',state:'waiting'}]},technical:[{id:'o',kind:'occurrence',context:{machineId:'m'}}]};

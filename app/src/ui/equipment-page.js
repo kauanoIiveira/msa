@@ -3,6 +3,7 @@ import {eventDate,validateDate} from '../domain/time.js';
 import {shiftAt} from '../domain/shifts.js';
 import {matchesSearch} from './search.js';
 import {selectOperationalPeriod} from './operational-query.js';
+import {matchesScope} from '../domain/production-policy.js';
 import {projectWorkspaceMetrics} from '../domain/workspace-metrics.js';
 function latestCandidates(collections){
  const day=row=>row.eventDate??(Number.isSafeInteger(row.occurredAt)?eventDate(row.occurredAt):null);
@@ -16,17 +17,21 @@ export function equipmentHistoryQuery(record){
  const day=Number.isSafeInteger(record.occurredAt)?shiftAt(record.occurredAt).operationalDate:validateDate(record.eventDate);
  return {context:record.context,fromDate:day,toDate:day,shift:'all'};
 }
+export function equipmentConsultation({catalog,machineId,processId,fromDate,toDate,shift}){
+ const choices=Object.values(catalog.processes??{}).filter(p=>p.machineId===machineId&&p.active!==false),process=processId?choices.find(p=>p.id===processId):choices.length===1?choices[0]:null;
+ return {choices,requiresChoice:!process,query:process?{context:{machineId,processId:process.id},fromDate,toDate,shift}:null};
+}
 export function equipmentView({catalog={},events={},selection={},state}){
- const values=kind=>Object.values(events[kind]??{});
  return Object.values(catalog.machines??{}).map(machine=>{
-  const collections=values('collections').filter(c=>c.context?.machineId===machine.id),openStops=values('stoppages').filter(s=>s.context?.machineId===machine.id&&s.endedAt==null),production=values('production').filter(r=>r.context?.machineId===machine.id);
+  const processes=Object.values(catalog.processes??{}).filter(p=>p.machineId===machine.id),context={machineId:machine.id,...(processes.some(p=>p.id===selection.sector)?{processId:selection.sector}:{})},products=Object.values(catalog.products??{}).filter(p=>processes.filter(process=>!context.processId||process.id===context.processId).some(process=>p.processIds?.[process.id]));
+  let metrics=null,op=null,period=null;
+  if(state?.equipmentPeriod&&state.operationalQuery){op={...state.operationalQuery,query:{...state.operationalQuery.query,context},consultation:{...state.operationalQuery.consultation,context}};period=selectOperationalPeriod(state.equipmentPeriod,op);metrics=projectWorkspaceMetrics({...state,context,operationalQuery:op,period,productivity:undefined});}
+  const values=kind=>Object.values(period?.[kind]??events[kind]??{}).filter(r=>matchesScope(context,r.context??{}));
+  const collections=values('collections'),openStops=values('stoppages').filter(s=>s.endedAt==null),production=values('production');
   const candidates=latestCandidates(collections),missingTime=candidates.some(c=>!Number.isSafeInteger(c.occurredAt)),ambiguous=!missingTime&&candidates.length>1,latest=missingTime?null:candidates[0]??null;
   const conflictedRecordIds=candidates.filter(c=>c.revisionConflict).map(c=>c.id),conflict=conflictedRecordIds.length>0;
-  const processes=Object.values(catalog.processes??{}).filter(p=>p.machineId===machine.id),products=Object.values(catalog.products??{}).filter(p=>processes.some(process=>p.processIds?.[process.id]));
-  let metrics=null;
-  if(state?.equipmentPeriod&&state.operationalQuery){const context={machineId:machine.id,...(processes.some(p=>p.id===selection.sector)?{processId:selection.sector}:{})},op={...state.operationalQuery,query:{...state.operationalQuery.query,context},consultation:{...state.operationalQuery.consultation,context}};const period=selectOperationalPeriod(state.equipmentPeriod,op);metrics=projectWorkspaceMetrics({...state,context,operationalQuery:op,period,productivity:undefined});}
   const goodSegments=metrics?.productivity.segments.filter(s=>s.state==='final'&&Number.isFinite(s.goodPieces))??[],goodPieces=goodSegments.length?goodSegments.reduce((sum,s)=>sum+s.goodPieces,0):null;
-  const base=state?.equipmentPeriod??{},belongs=(kind,id)=>Object.values(base[kind]??{}).some(r=>r.id===id&&r.context?.machineId===machine.id),reviews=(base.reviews??[]).filter(r=>['waiting','analyzing'].includes(r.state)&&belongs('collections',r.collectionId)),corrections=(base.corrections??[]).filter(r=>r.state==='waiting'&&belongs(r.recordType,r.recordId)),occurrences=(state?.technical??[]).filter(r=>r.kind==='occurrence'&&r.context?.machineId===machine.id&&(state.technical.filter(d=>d.kind==='occurrence-decision'&&d.occurrenceId===r.id).at(-1)?.decision!=='resolved'));
+  const base=state?.equipmentPeriod??{},belongs=(kind,id)=>values(kind).some(r=>r.id===id),reviews=(base.reviews??[]).filter(r=>['waiting','analyzing'].includes(r.state)&&belongs('collections',r.collectionId)),corrections=(base.corrections??[]).filter(r=>r.state==='waiting'&&belongs(r.recordType,r.recordId)),occurrences=(state?.technical??[]).filter(r=>r.kind==='occurrence'&&matchesScope(context,r.context??{})&&(!op||op.windows.some(w=>r.occurredAt>=w.from&&r.occurredAt<w.to))&&(state.technical.filter(d=>d.kind==='occurrence-decision'&&d.occurrenceId===r.id).at(-1)?.decision!=='resolved'));
   const alerts=[...(reviews.length?[reviews.length+' análise(s) pendente(s)']:[]),...(corrections.length?[corrections.length+' correção(ões) pendente(s)']:[]),...(occurrences.length?[occurrences.length+' ocorrência(s) pendente(s)']:[]),...(conflict?['Revisão conflitante na última leitura']:[]),...(ambiguous?['Horários empatados']:[]),...(missingTime?['Horário da leitura não informado']:[]),...(metrics&&metrics.coverage.evaluated<metrics.coverage.total?['Bases de OEE incompletas']:[])];
   return {id:machine.id,code:machine.code??machine.id,name:machine.name,sector:machine.sector??null,active:machine.active,status:openStops.length?'Parada registrada em aberto':production.length?'Produção registrada':machine.active?'Ativo no cadastro':'Inativo no cadastro',openStops:openStops.length,hasProduction:production.length>0,goodPieces,alerts,metrics,products,lastReading:ambiguous||conflict?null:latest,lastReadingReason:conflict?'Revisão conflitante na última leitura':ambiguous?'Horários empatados':collections.length&&!latest?'Horário da leitura não informado':!latest?'Sem leitura no período':null,conflictedRecordIds,processes};
  }).filter(r=>(!selection.sector||r.sector===selection.sector||r.processes.some(p=>p.id===selection.sector))&&matchesSearch([r.code,r.name,...r.products.map(p=>p.name)],selection.search)&&(!selection.status||({production:r.hasProduction,intervention:r.openStops>0,alerts:r.alerts.length>0,inactive:!r.active,active:r.active})[selection.status])).sort((a,b)=>selection.order==='alerts'?b.alerts.length-a.alerts.length||a.name.localeCompare(b.name,'pt-BR'):selection.order==='code'?a.code.localeCompare(b.code,'pt-BR',{numeric:true}):selection.order==='name'?a.name.localeCompare(b.name,'pt-BR'):0);
