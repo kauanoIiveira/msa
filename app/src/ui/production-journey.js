@@ -7,11 +7,13 @@ import {shiftAt} from '../domain/shifts.js';
 const options=(rows,value)=>rows.map(r=>`<option value="${e(r.id)}" ${r.id===value?'selected':''}>${e(r.name??r.label)}</option>`).join('');
 export function createProductionJourney({state,services,showModal,modal,refresh,layout,openForm}){
  const canWrite=()=>['admin','engineer','operator'].includes(state.actor?.role);
- async function choose(){
+ async function choose(machineId=''){
   const client=state.client,result=await services().productions.list();requireThat(state.client===client,'STALE_SESSION');state.productionCases=result.items;
   showModal('Escolher produção',`<div class="form-grid"><label class="field">Máquina<select id="production-machine"><option value="">Todas as máquinas</option>${options(Object.values(state.registries.machines??{}))}</select></label><label class="field">Buscar produto, OP, lote ou turno<input id="production-search" type="search" placeholder="Buscar produção"></label></div><p class="small muted">A busca reduz somente esta lista. A consulta e os registros anteriores são preservados.</p><div id="production-choices">${productionChoices({cases:result.items,catalog:state.registries})}</div>${canWrite()?'<button type="button" class="btn" data-action="create-production">Cadastrar produção</button>':''}`,{wide:true});
   const update=()=>{modal.querySelector('#production-choices').innerHTML=productionChoices({cases:result.items,catalog:state.registries,search:modal.querySelector('#production-search').value,machineId:modal.querySelector('#production-machine').value});};
+  modal.querySelector('#production-machine').value=machineId;update();
   modal.querySelector('#production-search').addEventListener('input',update);modal.querySelector('#production-machine').addEventListener('change',update);
+  const clear=modal.ownerDocument.createElement('button');clear.type='button';clear.className='btn';clear.textContent='Limpar busca e máquina';modal.querySelector('#production-choices').before(clear);clear.addEventListener('click',()=>{modal.querySelector('#production-search').value='';modal.querySelector('#production-machine').value='';update();modal.querySelector('#production-search').focus();});
  }
  async function select(id,decision){
   const row=state.productionCases.find(r=>r.id===id);requireThat(row,'NOT_FOUND');

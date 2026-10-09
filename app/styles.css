@@ -2044,3 +2044,26 @@ body[data-access="operator"] .top-tools > a,body[data-access="viewer"] .top-tool
 .rail-bottom {width:100%;margin-top:6px;}
 @media(max-width:600px){.rail {width:220px;}.shell {margin-left:0;}.rail-scrim {left:220px;width:auto;transform:none;}}
 @media(max-height:580px){.rail-logo {min-height:28px;margin-bottom:4px;}.rail-logo .workspace-logo {width:104px;}.rail nav {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:3px;}.rail-group {grid-column:1/-1;padding:4px 5px 2px;}.rail nav .rail-link {flex-direction:column;gap:4px;padding:5px 3px;font-size:11px;min-height:40px;}.rail nav .rail-link span {max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.rail-bottom {margin-top:auto;}}
+/* Dense operational tables retain the established MSA typography and palette. */
+.compact-query {padding:12px 16px;margin-bottom:20px;}
+.compact-query .section-heading {margin-bottom:8px;gap:12px;}
+.compact-query .section-heading p {margin:0;font-size:13px;}
+.compact-query .context-eyebrow {display:none;}
+.compact-query .query-details > summary {font-weight:600;cursor:pointer;}
+.equipment-filters {display:grid;grid-template-columns:minmax(200px,2fr) repeat(3,minmax(130px,1fr)) auto;gap:12px;align-items:end;margin:20px 0;}
+.equipment-filters .field {margin:0;min-width:0;}
+.equipment-summary {display:flex;flex-wrap:wrap;gap:12px 24px;padding:14px 0;border-block:1px solid var(--line);font-size:13px;margin-bottom:16px;color:var(--muted);}
+.equipment-summary strong {color:var(--ink);}
+.equipment-table,.report-preview {max-width:100%;overflow:auto;outline-offset:4px;}
+.equipment-table .data-table {min-width:1050px;}
+.report-preview .data-table {min-width:850px;}
+.equipment-table .data-table td,.report-preview .data-table td {white-space:normal;vertical-align:top;min-width:120px;max-width:280px;}
+.equipment-table td:first-child,.report-preview td:nth-child(2) {min-width:190px;}
+.equipment-alert {color:var(--amber);margin-top:5px;}
+.record-trace {max-width:230px;}
+.record-trace summary {cursor:pointer;white-space:nowrap;}
+.record-trace dl {font-size:12px;margin-top:12px;}
+.record-trace dt {font-weight:600;margin-top:8px;}
+.record-trace dd {margin:3px 0;overflow-wrap:anywhere;}
+@media(max-width:1000px){.equipment-filters {grid-template-columns:repeat(2,minmax(0,1fr));}.equipment-filters > :first-child {grid-column:1/-1;}}
+@media(max-width:600px){.equipment-filters {grid-template-columns:1fr;}.equipment-summary {gap:10px;flex-direction:column;}.compact-query {padding:12px;}.compact-query .section-heading {align-items:flex-start;}.compact-query .filterbar {display:grid;grid-template-columns:1fr;}}
