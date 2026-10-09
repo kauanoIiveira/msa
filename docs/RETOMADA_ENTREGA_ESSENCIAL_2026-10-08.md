@@ -1,5 +1,7 @@
 # Retomada — entrega essencial MSA — 08/10/2026
 
+Atualização de publicação: o usuário autorizou subir toda a entrega na `master`; conferir `docs/PUBLICACAO_MASTER_2026-10-08.md`. As menções abaixo a ausência de push descrevem o estado anterior a essa autorização. O deploy de Pages continua separado e manual.
+
 A execução foi reduzida com aprovação do usuário: várias máquinas e dados Firebase, coleta/indicadores/clareza visual, CSV BI com Scrap, paradas/reparos, QA e GitHub Pages. Não retomar módulos adiados sem novo pedido; não refazer base concluída nem pedir aprovação novamente para os exemplos já autorizados. T20/Z1–Z21 deixou de orientar o trabalho novo; dados existentes preservados.
 
 Checkout: C:\Users\Kauan\.codex\worktrees\msa-jornada-coesa\Desafio de Ideias
