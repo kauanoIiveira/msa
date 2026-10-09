@@ -23,3 +23,7 @@ Publicação authenticatedSDK por publicador atual, CLI dryrun/revisão/apply me
 Cp/Cpk já funciona; remover qualquer alteração/teste/seed dedicado à capacidade estatística desta extensão. Task2 passa a ser apenas exemplos de paradas/análises/correções/ocorrências com publicação aditiva segura; não criar versões ou medições novas só para Cp/Cpk.
 
 Task1 também revisa visibilidade do cabeçalho: bloco Registrar em somente páginas operacionais de apontamento (Parâmetros, Produção quando apropriado, Paradas, Qualidade e Captura) e sempre no formulário de gravação. Visão geral/Indicadores/CEP/Engenharia/Histórico/Relatórios ficam com contexto de consulta; Equipamentos usa filtro de período/setor/situação do catálogo, não uma máquina de gravação fixa; Cadastros/Configurações não precisam dos dois blocos. Painel TV mostra seu título/período compacto, sem cartão de registro. Ações de gravação em páginas de consulta abrem formulário com contexto explícito e acesso Escolher produção quando necessário; esconder cartão nunca perde seleção ou rascunho. Enxugar consultas por rota sem esconder o período que governa indicadores/exportação.
+
+## Precisão de escopo — última orientação
+
+Cp e Cpk permanecem no sistema e na entrega; já estão funcionando. Nenhuma função, tela, exportação ou capacidade existente será excluída. Somente não haverá revisão ou alteração adicional dedicada a Cp/Cpk nesta extensão.
