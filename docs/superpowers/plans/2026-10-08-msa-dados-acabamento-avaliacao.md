@@ -27,3 +27,11 @@ Task1 também revisa visibilidade do cabeçalho: bloco Registrar em somente pág
 ## Precisão de escopo — última orientação
 
 Cp e Cpk permanecem no sistema e na entrega; já estão funcionando. Nenhuma função, tela, exportação ou capacidade existente será excluída. Somente não haverá revisão ou alteração adicional dedicada a Cp/Cpk nesta extensão.
+
+## Task 3: Retomada com relógios de auditoria reais
+
+Bug descoberto na aplicação real, depois da correção das regras: review.history[índice].at é timestamp do servidor, enquanto preview carrega placeholder. Não tratar esse relógio como conteúdo operacional. Normalizar somente at dos eventos numéricos do histórico de análise, mantendo state/by/justification, IDs e todos os instantes operacionais no digest. Preservar os eventos de histórico já gravados e seus timestamps ao avançar a análise; somente o novo evento recebe relógio do servidor. Nenhuma mudança de papéis, dados antigos ou payload de exemplo.
+
+A revisão evaluation ainda não tem manifesto publicado; quatro caminhos novos existem. Preparar novo envelope somente da mesma revisão e mesmos comandos/baseline protegidos do envelope original, recalculando seus novos digests após a correção. Verificar hash original do envelope/backup, ator autenticado idêntico, manifesto não publicado, preservação dos dados externos e hashes herdados; não trocar revisão nem excluir registros parciais. Salvar envelope novo privado, mantendo o original. Aplicar novo envelope deve reconciliar os quatro caminhos e completar sem duplicação. Se manifesto já estiver publicado, não remapear digests históricos.
+
+TDD: simular/usar emulador com timestamps efetivos diferentes entre preview, criação e transições; persistir/reler/history imutável, retomar/repetir, estado/autoria/justificativa adulterados continuam rejeitados; at operacional continua protegido. CLI modo de reprepare apenas leitura antes do apply, sem credenciais em arquivos. Conferir por teste real review variant no SDK. Commit/relatório Task3, revisão focal e publicação pelo controlador.
