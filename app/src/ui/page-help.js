@@ -54,6 +54,7 @@ const guides={
   step('Exportar estudo','Baixe os resultados e observações. É preciso ter leituras disponíveis.','[data-action="cep-export"]')]],
  indicators:['Indicadores',[filters,
   step('Confiabilidade','Confira MTBF e MTTR e os motivos exibidos quando faltam bases para o cálculo.','#page .metric'),
+  step('Microparadas e tempo acumulado','Veja quantas pequenas paradas encerradas ocorreram e quanto tempo elas ocuparam no período, sem somar trechos sobrepostos da mesma máquina.','#indicator-micro-stops'),
   step('Bases dos indicadores','Confira os intervalos e a cobertura que sustentam os indicadores.','#page .data-table thead'),
   step('Painel TV','Abra uma visão ampliada para acompanhar a produção.','#page a[href="#tv"]')]],
  history:['Histórico',[filters,

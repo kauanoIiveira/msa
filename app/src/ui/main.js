@@ -21,7 +21,7 @@ import {resolveWorkspaceRoute,groupedNavigation,pagePurposes} from './workspace-
 import {productionPage} from './production-page.js';
 import {stoppagesPage} from './stoppages-page.js';
 import {qualityPage} from './quality-page.js';
-import {overviewMarkup,reliabilityMarkup} from './overview.js';
+import {overviewMarkup,reliabilityMarkup,microStopsMarkup} from './overview.js';
 import { createBrowserMsa } from "../browser.js";
 import { emptyDashboard, workspaceId } from "./operational-workspace.js";
 import {
@@ -383,7 +383,10 @@ function page() {
   if(state.route==='production')return productionPage({state,renderers:{summary:()=>state.period.plans?.some(p=>p.context.machineId===state.context.machineId)?productivityMarkup(state):hourlyPage(state),planning:()=>planningMarkup(state),records:kind=>operations({kind,showTabs:false}),times:manualTimes,occurrences:()=>occurrencesMarkup(state)}});
   if(state.route==='stoppages')return stoppagesPage({state,renderers:{reliability:()=>reliabilityMarkup(technicalView(state)),classification:()=>stopsTechnicalMarkup(state),records:(kind,open)=>operations({kind,showTabs:false,openOnly:open})}});
   if(state.route==='quality')return qualityPage({state,renderers:{records:kind=>operations({kind,showTabs:false}),inspections:()=>inspectionsMarkup(state)}});
-  if(state.route==='indicators')return reliabilityMarkup(technicalView(state))+ `<div class="table-tools"><h2>Acompanhamento do processo</h2><a class="btn" href="#tv">${icon('monitor')}Abrir painel TV</a></div>`+technicalMarkup(state)+stopsTechnicalMarkup(state);
+  if(state.route==='indicators'){
+    const metrics=technicalView(state);
+    return reliabilityMarkup(metrics)+microStopsMarkup(metrics)+`<div class="table-tools"><h2>Acompanhamento do processo</h2><a class="btn" href="#tv">${icon('monitor')}Abrir painel TV</a></div>`+technicalMarkup(state,{metrics,showMicroStops:false})+stopsTechnicalMarkup(state);
+  }
   if(state.route==='capture')return captureMarkup(state);
   if(state.route==='tv')return `<section class="tv-heading"><img src="./assets/msa/msalogo.png" width="108" alt="MSA"><h2>${e(name('machines',state.context.machineId))} · ${e(name('processes',state.context.processId))}</h2><p>${e(name('products',state.context.productId))} · OP ${e(state.context.order??'')} · turno ${e(state.consultationShift==='all'?'Todos':state.consultationShift)}</p><p>Período ${date(state.fromDate)} a ${date(state.toDate)} · consulta ${date(state.asOf??Date.now(),true)}</p><div>${button(document.fullscreenElement?'Sair da tela cheia':'Tela cheia','tv-fullscreen',document.fullscreenElement?'minimize':'maximize')}${button('Voltar ao painel','tv-back','arrow-left')}</div></section>${reliabilityMarkup(technicalView(state))}${captureMarkup(state,{compact:true})}${productivityMarkup(state,{compact:true})}${technicalMarkup(state,{compact:true})}`;
   if(state.route==='planning')return planningMarkup(state);
