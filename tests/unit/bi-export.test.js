@@ -42,3 +42,18 @@ test('export keeps more than 1000 collections and diagnoses missing shift alloca
  const view=fixture();view.period.collections=Array.from({length:1001},(_,i)=>({...view.period.collections[0],id:'c'+i}));assert.equal(exportBi({view,kind:'collections'}).manifest.counts.collections,1001);
  view.period.production=[{...production[0],endedAt:at+86400000}];assert.equal(buildBiFacts(view).collections[0].scrapPercent,null);
 });
+test('collection allocation gates attachment without invalidating valid production scope',()=>{
+ const t=Date.parse('2026-10-08T08:00:00-03:00'),ctx={...context,shift:'1'};
+ for(const [patch,reason] of [
+  [{occurredAt:Date.parse('2026-10-08T16:00:00-03:00'),queryDiagnostics:['shift-conflict']},'shift-conflict'],
+  [{occurredAt:Date.parse('2026-10-08T16:00:00-03:00')},'shift-conflict'],
+  [{timePrecision:'date',occurredAt:undefined,eventDate:'2026-10-08'},'time-required'],
+  [{timePrecision:'date'},'time-required'],
+  [{queryDiagnostics:['no-shift-allocation']},'no-shift-allocation']
+ ]){
+  const view=fixture();view.period.production=[{...production[0],context:ctx,startedAt:t,endedAt:t+1000}];view.period.losses=[{...losses[0],context:ctx,occurredAt:t}];
+  view.period.collections=[{...view.period.collections[0],context:ctx,occurredAt:t,...patch}];
+  const facts=buildBiFacts(view);assert.equal(facts.collections[0].scrapPercent,null);assert.equal(facts.collections[0].scrapState,reason);
+  assert.equal(facts.indicators.find(r=>r.grossPieces===100).pct,10);assert.equal(facts.production[0].quantity,100);assert.equal(facts.losses[0].amount,10);
+ }
+});

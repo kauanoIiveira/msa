@@ -5,6 +5,15 @@ const keys=['machineId','processId','productId','variant','order','lot','recipe'
 function scopeOf(row){const instant=row.occurredAt??row.startedAt;const time=Number.isSafeInteger(instant)?shiftAt(instant):{};return {...row.context,shift:normalizeShift(row.context?.shift)??row.context?.shift??time.shift,operationalDate:time.operationalDate??row.operationalDate??null};}
 export function biScopeId(scope){return JSON.stringify(keys.map(k=>scope[k]??null));}
 const same=(row,scope)=>biScopeId(scopeOf(row))===biScopeId(scope);
+function collectionAllocationReason(row,windows){
+ if(row.timePrecision==='date'||!Number.isSafeInteger(row.occurredAt)||row.occurredAt<0)return 'time-required';
+ if(row.queryDiagnostics?.length)return row.queryDiagnostics[0];
+ const shift=normalizeShift(row.context?.shift);
+ if(!shift)return 'shift-required';
+ if(shift!==shiftAt(row.occurredAt).shift)return 'shift-conflict';
+ if(windows?.length&&!windows.some(w=>row.occurredAt>=w.from&&row.occurredAt<w.to))return 'no-shift-allocation';
+ return null;
+}
 export function calculateScrap({production=[],losses=[],scope,coverage}){
  const rows=production.filter(r=>same(r,scope)&&r.basis==='gross'),rejects=losses.filter(r=>same(r,scope)&&r.kind==='reject'&&r.unit==='pieces');
  const grossPieces=rows.length?rows.reduce((n,r)=>n+r.quantity,0):null,rejectedPieces=coverage===true?rejects.reduce((n,r)=>n+r.amount,0):null;
@@ -32,7 +41,9 @@ export function buildBiFacts(view){
   if(kind==='production')out.originalQuantity=source.quantity;
   if(kind==='losses')out.originalAmount=source.amount;
   if(kind==='collections'){
-   Object.assign(out,{recipeVersionId:recipe?.id??scope.recipe??null,material:recipe?.settings?.material??null,thickness:recipe?.settings?.thickness??null,recipeSettings:recipe?.settings??null,scrapPercent:summary?.pct??null,scrapState:summary?.state??'time-required',grossPieces:summary?.grossPieces??null,rejectedPieces:summary?.rejectedPieces??null});
+   const allocationReason=collectionAllocationReason(row,view.operationalQuery?.windows??period.operationalQuery?.windows);
+   if(allocationReason)diagnostics.push(row.id+':'+allocationReason);
+   Object.assign(out,{recipeVersionId:recipe?.id??scope.recipe??null,material:recipe?.settings?.material??null,thickness:recipe?.settings?.thickness??null,recipeSettings:recipe?.settings??null,scrapPercent:allocationReason?null:summary?.pct??null,scrapState:allocationReason??summary?.state??'time-required',grossPieces:summary?.grossPieces??null,rejectedPieces:summary?.rejectedPieces??null});
    for(const [id,r] of Object.entries(row.readings??{})){const version=period.parameterVersions?.[r.versionId]??registries.parameterVersions?.[r.versionId];Object.assign(out,{[id+'.value']:r.value??null,[id+'.originalValue']:source.readings?.[id]?.value??null,[id+'.raw']:r.raw??null,[id+'.unit']:version?.unit??null,[id+'.versionId']:r.versionId??null,[id+'.status']:r.status??null});}
   }
   facts[kind].push(out);
