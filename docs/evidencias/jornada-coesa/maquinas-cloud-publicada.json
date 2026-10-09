@@ -1,0 +1,15 @@
+{
+  "status": "published-and-reloaded",
+  "manifestId": "presentation_20261008_v1_rev_machines",
+  "created": 609,
+  "updated": 9,
+  "existing": 0,
+  "repeatCreated": 0,
+  "verifiedEntries": 2353,
+  "previewHash": "a7ace45c189a9fc99a667a9f34a46830d4795f0eeb1dc26d920ead81ceb3ff30",
+  "entriesHash": "a54e8345fc220b193881953d020937dc9f3ae539a4c94e9f9c9742d4aea68ea0",
+  "membersPreserved": true,
+  "outsidePackagePreserved": true,
+  "secondAuthenticatedSession": true,
+  "distinctUsers": false
+}

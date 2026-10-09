@@ -31,3 +31,7 @@ Os códigos humanos usam o helper único de identidade: por exemplo, `OP-HP-2610
 No contexto T20 do próprio pacote, as 30 coletas com 41 parâmetros compartilham caso, ordem, lote, receita, dia e turno com produção bruta de 100 peças, 95 boas e refugo de 5 peças. O indicador do período integral resulta em 5%; dados de outra ordem/lote não servem como denominador. Isso não atribui MTBF ou planejamento NHPL à T20.
 
 O callback opcional `publish({...,onProgress})` informa apenas manifesto/contagens/estado, após ACK de escrita ou conferência de conteúdo existente. O CLI imprime a cada 100 intenções e ao persistir o manifesto. `state: published` indica que o marcador foi confirmado após verificação; a prova completa da segunda sessão e do backup posterior só aparece no relatório final. Em erro, não há sinal antecipado de publicação concluída.
+
+## Extensão de máquinas publicada
+
+Manifesto `presentation_20261008_v1_rev_machines`: 609 registros criados, nove transições de estado, 2.353 entradas conferidas após releitura em outra sessão autenticada; repetição criou zero. Memberships e dados externos preservados. Três máquinas novas, nove produções e 270 coletas persistidos. Evidências: `maquinas-cloud-preview.json`, `maquinas-cloud-publicada.json`, `regras-maquinas-verificacao.json`. Hash das regras combinadas publicadas: `30194620d2b9249b042a3b4df07add6cc4d97c1a1921b16ed8da56bb26fa512c`. Hash das entradas: `a54e8345fc220b193881953d020937dc9f3ae539a4c94e9f9c9742d4aea68ea0`. Duas sessões usam a mesma conta, sem alegação de segunda pessoa ou computador.
