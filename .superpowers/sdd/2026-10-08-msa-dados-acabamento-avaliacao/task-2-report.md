@@ -50,3 +50,19 @@ O primeiro comando obtém novos backups automaticamente e só prepara. Aplicaç�
 ## Arquivos
 
 `app/src/presentation/evaluation-examples.js`, `app/src/domain/occurrences.js`, `app/src/domain/pending.js`, `app/src/ui/technical.js`, `app/src/ui/equipment-page.js`, `app/src/services/presentation-dataset.js`, `scripts/presentation-dataset.mjs`, `tests/unit/evaluation-examples.test.js` e este relatório.
+
+## Fix final — contrato de variante de análise (base 23a2f6b)
+
+O controlador reproduziu FORBIDDEN no primeiro `reviews.create`, antes de qualquer registro novo ou marker. Causa confirmada: `reviewContext` do gerador não aceitava `variant`, embora o serviço copie integralmente o contexto original, incluindo Medium no exemplo VGARD HP.
+
+Corrigido somente `reviews.context` em `firebase/rules-source.mjs`, regenerando `firebase/database.rules.json` pelo pipeline existente. A variante aceita deve ser exatamente a da coleta, sua presença deve coincidir com a fonte, e `scalar`/`object` mantêm imutabilidade e impedem remoção nas transições. Fluxos de papel, membros, aprovação, autoaprovação de correção e todas as outras regras permanecem idênticos. Nenhuma mudança em comandos, payloads, builder, valores ou envelope privado; o controlador pode repetir o mesmo apply depois da revisão/publicação das regras.
+
+Verificação real, com o runtime acima e `JAVA_HOME=C:/Users/Kauan/Documents/ChatGPT/Desafio de Ideias/.runtime/java/jdk-21.0.12.1+1`:
+
+- RED: `node scripts/run-emulator-tests.mjs tests/rules/review-variant.test.js`, **0 passou / 1 falhou**, exit 1, 1316.2666 ms; o primeiro submitReview legítimo com variante retornou FORBIDDEN no emulador.
+- Geração: `node scripts/build-rules.mjs`, passou.
+- GREEN: mesmo comando do emulador, **1 passou / zero falhas**, exit 0, 1430.3641 ms. Criação/admin start/analyzing/approved legítimos com variante e legado sem variante passam. Variante forjada ou ausente na criação, alterada/removida em ambas as transições e variante adicionada a fonte legado são rejeitadas.
+- Consistência: repetido `node scripts/build-rules.mjs`; SHA-256 do JSON antes/depois idêntico. `node --input-type=module` com asserts do contrato gerado e comparação com `git show HEAD:firebase/database.rules.json` após restaurar apenas `reviews.context`: igualdade completa, confirmando que nenhum outro contrato/permissão mudou.
+- `git diff --check`: passou. Nenhuma suite global repetida; nenhuma publicação, credencial ou escrita em nuvem nesta implementação.
+
+Arquivos desta correção: `firebase/rules-source.mjs`, `firebase/database.rules.json`, `tests/rules/review-variant.test.js` e atualização deste relatório. Evidência de cloud preview produzida pelo controlador não foi incluída no commit.
