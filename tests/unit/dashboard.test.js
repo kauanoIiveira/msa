@@ -12,7 +12,7 @@ const collection=(id,value,offset=100,extra={})=>({id,context,eventDate:'2026-10
 const build=(data,range={})=>{assert.equal(typeof api.buildDashboard,'function','Missing complete parameter dashboard');return api.buildDashboard(data,{context,from,to,complete:true,...range});};
 
 test('dashboard includes all 41 references with unknown values instead of zeros or healthy states',()=>{
-  const view=build({});assert.equal(view.parameters.length,41);assert.equal(view.totals.grossPieces,null);
+  const view=build({}, {context:{...context,machineId:'t20'}});assert.equal(view.parameters.length,41);assert.equal(view.totals.grossPieces,null);
   assert.ok(view.parameters.every(row=>row.latest===null&&row.state==='not-configured'&&row.statistics.length===0));
   assert.equal(view.parameters.find(row=>row.code==='MSA_CH').source.limits.lower,-600);
 });
@@ -63,8 +63,12 @@ test('dashboard service exposes registered custom parameters and uses approved c
   const request=await op.analysis.requestCorrection({recordType:'collections',recordId:col.id,reason:'Synthetic correction',replacement:{...col,readings:{[f.parameterId]:{...col.readings[f.parameterId],raw:'-550',value:-550}}}});
   await eng.analysis.decideCorrection(request.id,{decision:'approved',justification:'Synthetic check'});
   const query={context:f.context,fromDate:'2026-10-05',toDate:'2026-10-05'};
-  const view=await op.getDashboard(query,{from,to});assert.equal(view.parameters.length,42);
+  const view=await op.getDashboard(query,{from,to});assert.equal(view.parameters.length,1);
   const custom=view.parameters.find(r=>r.group==='custom');assert.equal(custom.latest.value,-550);assert.equal(custom.state,'outside');
   assert.equal((await repo.get(`collections/${col.id}`)).readings[f.parameterId].value,-650);
   await assert.rejects(()=>op.getDashboard({...query,fromDate:'2026-10-04'},{from,to}),{code:'INVALID_PERIOD'});
+});
+test('generic equipment exposes only its own parameters, never the T20 catalog',()=>{
+ const view=build({parameters:{force:{id:'force',code:'P02_FORCE',name:'Força',processId:'p',active:true}}});
+ assert.deepEqual(view.parameters.map(r=>r.code),['P02_FORCE']);
 });

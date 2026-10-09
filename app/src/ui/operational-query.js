@@ -7,7 +7,7 @@ export function buildOperationalQuery(consultation){
  return {consultation:{...consultation,shift,context},windows,range,query:{fromDate:eventDate(range.from),toDate:eventDate(range.to-1),context,limit:500,dataset:consultation.dataset??'all'}};
 }
 export function selectOperationalPeriod(period,op){
- const selected={...period,effective:{},unallocated:{},coverage:{...period.coverage},operationalQuery:op};
+ const selected={...period,effective:{},unallocated:{},originalRecords:period.originalRecords??Object.fromEntries(['collections','production','losses','stoppages'].map(kind=>[kind,period[kind]??[]])),coverage:{...period.coverage},operationalQuery:op};
  for(const kind of ['production','stoppages','collections','losses']){
   const source=period.effective?.[kind]??period[kind]??[],included=[],allocated=[],unallocated=[];
   for(const row of source){

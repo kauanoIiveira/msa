@@ -25,3 +25,12 @@ test('CSV export neutralizes text formulas without changing numeric vacuum or qu
   const parsed=Papa.parse(exported,{header:true,delimiter:';',skipEmptyLines:true});
   assert.equal(parsed.data[0].value,'-600');assert.ok(parsed.data[0].raw.startsWith("'="));assert.equal(parsed.data[0].note,'line 1\nline "2"');
 });
+test('concurrent import verifies payload after RECORD_CONFLICT and rejects changed content',async()=>{
+ for(const changed of [false,true]){
+  const repo=memoryRepository(),f=await seed(repo),writer=createOperations({repo,actor:{uid:'eng',role:'engineer'}});
+  const operations={async recordCollection(payload){await writer.recordCollection(changed?{...payload,readings:payload.readings.map(r=>({...r,raw:'-550'}))}:payload);throw Object.assign(new Error('race'),{code:'RECORD_CONFLICT'});}};
+  const csv=createCsvService({papa:Papa,repo,operations}),preview=await csv.previewImport('date;parameter;raw\n2026-08-31;Vacuum;-600',{source:{file:'race.csv'},context:f.context,parameterMap:{Vacuum:{parameterId:f.parameterId,versionId:f.versionId}}});
+  if(changed)await assert.rejects(()=>csv.confirmImport(preview,{confirmed:true}),{code:'IMPORT_CONFLICT'});
+  else assert.deepEqual(await csv.confirmImport(preview,{confirmed:true}),{created:0,existing:1,total:1});
+ }
+});

@@ -1,3 +1,5 @@
+import {reportsPage} from './reports-page.js';
+import {exportBi} from '../io/bi-export.js';
 import {patchSnapshot} from './snapshot-dom.js';
 import {productionContextCard} from './production-context-card.js';
 import {initialSelection} from './production-selection.js';
@@ -87,6 +89,7 @@ const labels = {
   operations: "Apontamentos",
   engineering: "Engenharia",
   history: "Histórico",
+  reports: "Relatórios",
   registry: "Cadastros",
   settings: "Configurações",
   cep: "CEP e capacidade",
@@ -101,7 +104,7 @@ const labels = {
   occurrences: "Ocorrências",
   indicators: "Indicadores",
   capture: "Importação de dados",
-  tv: "Acompanhamento NHPL",
+  tv: "Acompanhamento da produção",
   machines: "Máquinas",
   processes: "Processos",
   products: "Produtos",
@@ -109,7 +112,7 @@ const labels = {
   targets: "Metas",
 };
 const allNavigation = [
- ['dashboard','layout-dashboard','Visão geral'],['production','factory','Produção'],['equipment','boxes','Equipamentos'],['stoppages','timer','Paradas'],['quality','badge-check','Qualidade'],['parameters','sliders-horizontal','Parâmetros'],['engineering','shield-check','Engenharia'],['cep','chart-line','CEP'],['indicators','gauge','Indicadores'],['history','history','Histórico'],['registry','database','Cadastros']
+ ['dashboard','layout-dashboard','Visão geral'],['production','factory','Produção'],['equipment','boxes','Equipamentos'],['stoppages','timer','Paradas'],['quality','badge-check','Qualidade'],['parameters','sliders-horizontal','Parâmetros'],['engineering','shield-check','Engenharia'],['cep','chart-line','CEP'],['indicators','gauge','Indicadores'],['history','history','Histórico'],['reports','file-down','Relatórios'],['registry','database','Cadastros']
 ];
 const state = {
   accountOpen: false,
@@ -359,7 +362,7 @@ function layout({background=false}={}) {
     ? state.route
     : "dashboard";
   state.route = route;
-  const markup = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${groupedNavigation(navigation,([id,ico,label])=>`<a href="#${id}" title="${label}" class="rail-link ${route===id?"active":""}" ${route===id?'aria-current="page"':""}>${icon(ico)}<span>${label}</span></a>`)}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${e(pagePurposes[route]??"")}</p></div><div class="page-actions">${state.client && state.context.productId && !['settings','registry','cep'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}${state.pendingReturn?button("Voltar à consulta anterior","pending-back","arrow-left"):""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
+  const markup = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${groupedNavigation(navigation,([id,ico,label])=>`<a href="#${id}" title="${label}" class="rail-link ${route===id?"active":""}" ${route===id?'aria-current="page"':""}>${icon(ico)}<span>${label}</span></a>`)}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${e(pagePurposes[route]??"")}</p></div><div class="page-actions">${state.client && state.context.productId && !['settings','registry','cep','reports'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}${state.pendingReturn?button("Voltar à consulta anterior","pending-back","arrow-left"):""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
   if(background)patchSnapshot(app,markup);else app.innerHTML=markup;
   icons();
   const period = document.getElementById("period");
@@ -368,13 +371,14 @@ function layout({background=false}={}) {
   drawPageCharts();
 }
 function page() {
+  if(state.route==='reports')return reportsPage(state);
   if(state.route==='equipment')return equipmentPage({state});
   if(state.route==='production')return productionPage({state,renderers:{summary:()=>state.period.plans?.some(p=>p.context.machineId===state.context.machineId)?productivityMarkup(state):hourlyPage(state),planning:()=>planningMarkup(state),records:kind=>operations({kind,showTabs:false}),times:manualTimes,occurrences:()=>occurrencesMarkup(state)}});
   if(state.route==='stoppages')return stoppagesPage({state,renderers:{reliability:()=>reliabilityMarkup(technicalView(state)),classification:()=>stopsTechnicalMarkup(state),records:(kind,open)=>operations({kind,showTabs:false,openOnly:open})}});
   if(state.route==='quality')return qualityPage({state,renderers:{records:kind=>operations({kind,showTabs:false}),inspections:()=>inspectionsMarkup(state)}});
   if(state.route==='indicators')return reliabilityMarkup(technicalView(state))+ `<div class="table-tools"><h2>Acompanhamento do processo</h2><a class="btn" href="#tv">${icon('monitor')}Abrir painel TV</a></div>`+technicalMarkup(state)+stopsTechnicalMarkup(state);
   if(state.route==='capture')return captureMarkup(state);
-  if(state.route==='tv')return `<section class="tv-heading"><img src="./assets/msa/msalogo.png" width="108" alt="MSA"><h2>NHPL · Montagem</h2><p>${e(name('products',state.context.productId))} · OP ${e(state.context.order??'')} · turno ${e(state.context.shift??'')}</p><p>Período ${date(state.fromDate)} a ${date(state.toDate)} · consulta ${date(state.asOf??Date.now(),true)}</p><div>${button(document.fullscreenElement?'Sair da tela cheia':'Tela cheia','tv-fullscreen',document.fullscreenElement?'minimize':'maximize')}${button('Voltar ao painel','tv-back','arrow-left')}</div></section>${reliabilityMarkup(technicalView(state))}${captureMarkup(state,{compact:true})}${productivityMarkup(state,{compact:true})}${technicalMarkup(state,{compact:true})}`;
+  if(state.route==='tv')return `<section class="tv-heading"><img src="./assets/msa/msalogo.png" width="108" alt="MSA"><h2>${e(name('machines',state.context.machineId))} · ${e(name('processes',state.context.processId))}</h2><p>${e(name('products',state.context.productId))} · OP ${e(state.context.order??'')} · turno ${e(state.consultationShift==='all'?'Todos':state.consultationShift)}</p><p>Período ${date(state.fromDate)} a ${date(state.toDate)} · consulta ${date(state.asOf??Date.now(),true)}</p><div>${button(document.fullscreenElement?'Sair da tela cheia':'Tela cheia','tv-fullscreen',document.fullscreenElement?'minimize':'maximize')}${button('Voltar ao painel','tv-back','arrow-left')}</div></section>${reliabilityMarkup(technicalView(state))}${captureMarkup(state,{compact:true})}${productivityMarkup(state,{compact:true})}${technicalMarkup(state,{compact:true})}`;
   if(state.route==='planning')return planningMarkup(state);
   if (state.route === "settings") return settings()+dataManagement();
   if (state.route === "registry") return registry();
@@ -823,7 +827,7 @@ async function openForm(kind, record = {},resume=false) {
       registries: state.registries,
       context,
       record,
-      catalog: context.machineId==='nhpl'?[]:getMsaParameterCatalog(),
+      catalog: getMsaParameterCatalog().filter(item=>Object.values(state.registries.parameters??{}).some(p=>p.processId===context.processId&&p.code===item.code)),
     }),
     {
       wide: kind === "collection",
@@ -995,6 +999,7 @@ async function exportCsv() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 async function action(action) {
+  if(action.startsWith('bi-export:')){if(state.loading||state.error)throw new Error('Aguarde a consulta terminar.');const result=exportBi({view:state,kind:action.slice(10)});for(const file of result.files)downloadCsv(file.text,file.name);return;}
   if(action==='consult-production'){const row=state.productionCases.find(r=>r.id===state.selection.recording?.productionCaseId);if(row){applyQuery({context:structuredClone(state.selection.recording.context),fromDate:row.operationalDate,toDate:row.operationalDate,shift:row.shift});modal.close();return refresh();}return;}
   if(action==='choose-production')return journey.choose();
   if(action.startsWith('select-production:'))return journey.select(action.slice(18));

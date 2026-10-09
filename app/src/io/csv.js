@@ -42,7 +42,7 @@ export function createCsvService({papa,operations,repo}) {
         if(old) {requireThat(matches(old),'IMPORT_CONFLICT');existing++;continue;}
         try {await operations.recordCollection(payload);created++;}
         catch(e) {
-          if(e.code!=='CONFLICT') throw e;
+          if(!['CONFLICT','RECORD_CONFLICT'].includes(e.code)) throw e;
           const raced=await repo.get(`collections/${id}`);if(!matches(raced)) throw new MsaError('IMPORT_CONFLICT');existing++;
         }
       }

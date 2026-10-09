@@ -20,7 +20,8 @@ export function buildDashboard(data,{context,from,to,windows,complete,sigmaMetho
   const indicators=buildIndicators(scoped,{from,to,windows,complete:complete===true&&!imprecise,sigmaMethod});
   if(imprecise) indicators.notes.push('date-only-in-partial-day-window');
   const registered=Object.values(data.parameters??{}).filter(p=>p.processId===context.processId&&p.active===true);
-  const references=context.machineId==='nhpl'?[]:getMsaParameterCatalog(),codes=new Set(references.map(item=>item.code));
+  const ownCatalog=getMsaParameterCatalog(),usesT20=context.machineId==='t20'||registered.some(p=>ownCatalog.some(item=>item.code===p.code));
+  const references=usesT20?ownCatalog:[],codes=new Set(references.map(item=>item.code));
   for(const parameter of registered.filter(p=>!codes.has(p.code))) references.push({code:parameter.code??parameter.id,name:parameter.name,group:'custom',unit:null,source:null,issues:[],questions:[],customId:parameter.id});
   const versions=data.parameterVersions??{};
   indicators.statistics=indicators.statistics.map(group=>{
