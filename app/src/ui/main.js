@@ -1,3 +1,4 @@
+import {mountPageHelp} from './page-help.js';
 import {reportsPage} from './reports-page.js';
 import {exportBi} from '../io/bi-export.js';
 import {patchSnapshot} from './snapshot-dom.js';
@@ -49,7 +50,7 @@ import {readConsultation,writeConsultation} from './consultation.js';
 import {openSimulation,simulationCases} from './simulation.js';
 
 import {selectParameterStudy} from '../domain/cep.js';
-import {cepPage,drawCepCharts,getCepStudy,cepReportRows,cepReasons} from './cep.js';
+import {cepPage,drawCepCharts,getCepStudy,cepDisplayReportRows,cepReasons} from './cep.js';
 import {hourlyPage,drawHourlyChart} from './hourly.js';
 import {parseReading} from '../domain/numbers.js';
 import {openCsvImport,openCorrection} from './data-tools.js';
@@ -63,6 +64,7 @@ import {inspectionsMarkup,technicalMarkup,technicalView,captureMarkup,occurrence
 import {loginAccounts} from '../config/login-accounts.js';
 const app = document.getElementById("app"),
   modal = document.getElementById("modal");
+const updatePageHelp = mountPageHelp();
 const roots = [
   "recipeVersions",
   "machines",
@@ -284,6 +286,7 @@ function filters(){
  return `${productionContextCard({recording:state.selection.recording,catalog:state.registries,cases:state.productionCases,editable:Boolean(state.client),route:state.route})}${state.draft?'<div class="context-notice"><span>Rascunho de '+e({collection:'coleta',loss:'perda',production:'produção',stoppage:'parada'}[state.draft.kind]??'registro')+' preservado no contexto original.</span><button class="btn" data-action="resume-draft">Continuar rascunho</button></div>':''}${state.lastSaved?'<div class="context-notice" role="status"><span>Registro confirmado: '+e(state.lastSaved.record.id)+' · '+date(state.lastSaved.record.occurredAt??state.lastSaved.record.startedAt,true)+'</span><button class="btn" data-action="saved-summary">Ver no resumo</button><button class="btn" data-action="saved-history">Ver no histórico</button></div>':''}<section class="consultation-context compact-query"><div class="section-heading"><div><span class="context-eyebrow">Consultar</span><p>${e(name('machines',state.context.machineId))} · ${state.context.productId?e(name('products',state.context.productId)):'Todos os produtos'} · ${date(state.fromDate)} a ${date(state.toDate)} · ${state.consultationShift==='all'?'Todos os turnos':state.consultationShift+'º turno'}</p></div>${state.client?.defaultSelection?button('Último período concluído','latest-period','calendar'):''}</div><details class="query-details"><summary>Filtros da consulta</summary><p class="source-notes">Estes filtros alteram os resultados consultados. Registrar em conserva a produção escolhida. O dia operacional vai das 7h às 7h do dia seguinte.</p><form id="query-form"><div class="filterbar"><label class="context-field">Máquina<select name="machineId" data-query-catalog="machine">${options('machines',state.context.machineId)}</select></label><label class="context-field">Processo<select name="processId" data-query-catalog="process">${options('processes',state.context.processId,r=>r.machineId===state.context.machineId)}</select></label><label class="context-field">Produto<select name="productId">${options('products',state.context.productId,r=>r.processIds?.[state.context.processId],true)}</select></label><label class="context-field">Turno<select name="shift">${[['all','Todos'],['1','1º · 07–15'],['2','2º · 15–23'],['3','3º · 23–07']].map(([v,l])=>`<option value="${v}" ${state.consultationShift===v?'selected':''}>${l}</option>`).join('')}</select></label><label class="context-field">De<input type="date" name="fromDate" value="${state.fromDate}" required></label><label class="context-field">Até<input type="date" name="toDate" value="${state.toDate}" required></label></div><div class="context-extra form-grid">${[['order','OP'],['lot','Lote'],['recipe','Configuração (ID)']].map(([key,label])=>`<label class="field">${label}<input name="${key}" value="${e(state.context[key]??'')}" placeholder="Todos" maxlength="100"></label>`).join('')}</div><div class="operation-toolbar"><button class="btn primary" type="submit">Aplicar filtros</button><button class="btn" type="button" data-action="clear-query">Limpar filtros</button></div></form></details></section>`;
 }
 function login(error = state.loginError) {
+  updatePageHelp('login');
   if(location.hash!=='#login'){
     state.returnRoute=location.hash.slice(1)||state.returnRoute;
     history.replaceState(null,'',location.pathname+location.search+'#login');
@@ -365,6 +368,7 @@ function layout({background=false}={}) {
     ? state.route
     : "dashboard";
   state.route = route;
+  updatePageHelp(route);
   const markup = `<aside class="rail" aria-label="Menu principal"><a class="rail-logo" href="#dashboard" aria-label="MSA · Página inicial"><img class="workspace-logo" src="./assets/msa/msalogo.png" width="540" height="178" alt="MSA"></a><nav>${groupedNavigation(navigation,([id,ico,label])=>`<a href="#${id}" title="${label}" class="rail-link ${route===id?"active":""}" ${route===id?'aria-current="page"':""}>${icon(ico)}<span>${label}</span></a>`)}</nav><div class="rail-bottom"><a href="#settings" class="rail-link ${route === "settings" ? "active" : ""}" title="Configurações">${icon("settings")}<span>Configurações</span></a></div></aside><button class="rail-scrim" data-action="menu-close" aria-label="Fechar menu" hidden></button><div class="shell"><header class="topbar"><div class="workspace-brand"><button class="icon-btn mobile-menu" data-action="menu" aria-label="Abrir menu">${icon("menu")}</button><span class="workspace-title">Produção e engenharia</span></div><div class="top-tools"><a href="#engineering" class="icon-btn" title="Análises" aria-label="Análises">${icon("bell")}</a>${accountMarkup()}</div></header><main class="content" id="content" tabindex="-1"><div class="page-heading"><div><h1>${labels[route]}</h1><p>${e(pagePurposes[route]??"")}</p></div><div class="page-actions">${state.client && state.context.productId && !['settings','registry','cep','reports','equipment'].includes(route) && !(route==='operations'&&state.tab.operations==='hourly') ? button("Exportar", "export", "download", "export") : ""}${operator() && route === "parameters" ? button("Nova coleta", "form:collection", "plus", "primary") : ""}</div></div>${!["settings", "registry"].includes(route) ? filters() : ""}${!state.client ? `<div class="context-notice">${button("Conectar ao Firebase", "connect", "log-in")}<span>Entre para consultar e registrar os dados.</span></div>` : ""}${state.error ? `<div class="error-band" role="alert">${e(errorText(state.error))}${button("Atualizar", "refresh", "refresh-cw")}</div>` : ""}${state.simulation ? `<div class="simulation-notice"><span><strong>Simulação local</strong> · ${e(simulationCases.find(c=>c.id===state.simulation)?.name)}. Alterações não vão para o Firebase.</span>${button("Voltar aos registros", "end-simulation", "arrow-left")}</div>` : ""}${state.pendingReturn?button("Voltar à consulta anterior","pending-back","arrow-left"):""}<div id="page">${page()}</div></main></div>${state.loading ? '<div class="loading-line" aria-label="Carregando"></div>' : ""}`;
   if(background)patchSnapshot(app,markup);else app.innerHTML=markup;
   icons();
@@ -1067,7 +1071,7 @@ async function action(action) {
   if(command==='cep-export') {
     if(state.exporting)return;
     state.exporting=true;
-    const report=cepReportRows(state),columns=[...new Set(report.flatMap(r=>Object.keys(r)))];
+    const report=cepDisplayReportRows(state),columns=[...new Set(report.flatMap(r=>Object.keys(r)))];
     try {await downloadExport((...args)=>services().csv.exportRecords(...args),report,columns,downloadCsv,'msa-cep-'+state.toDate+'.csv');}
     finally {state.exporting=false;}return;
   }

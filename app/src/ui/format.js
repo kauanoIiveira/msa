@@ -23,7 +23,7 @@ const recordLabels=new Map([
 ]);
 export const recordLabel=value=>recordLabels.get(String(value??''))??String(value??'');
 export const escapeRecordText=value=>escapeHtml(recordLabel(value));
-export function number(value,digits=2) {return Number.isFinite(value)?new Intl.NumberFormat('pt-BR',{maximumFractionDigits:digits}).format(value):'—';}
+export function number(value,digits=2) {return Number.isFinite(value)?new Intl.NumberFormat('pt-BR',{maximumFractionDigits:digits}).format(value):'Sem dados';}
 export function dateWindow(fromDate,toDate) {
   validateDate(fromDate);validateDate(toDate);requireThat(toDate>=fromDate,'INVALID_PERIOD');
   return {from:Date.parse(fromDate+'T00:00:00-03:00'),to:Date.parse(toDate+'T00:00:00-03:00')+86400000};

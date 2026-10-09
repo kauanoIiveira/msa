@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 test('UI escapes external text and preserves missing values and numeric zero',async()=>{
   const ui=await import('../../app/src/ui/format.js');
   assert.equal(ui.escapeHtml('<img onerror="x">'), '&lt;img onerror=&quot;x&quot;&gt;');
-  assert.equal(ui.number(null),'—');assert.equal(ui.number(0),'0');
+  assert.equal(ui.number(null),'Sem dados');assert.equal(ui.number(0),'0');
   assert.equal(ui.number(0.8),'0,8');assert.equal(ui.number(-600),'-600');
 });
 test('calendar filters produce an exclusive next-day range and do not silently replace invalid dates',async()=>{
