@@ -1,0 +1,20 @@
+{
+  "status": "browser-download-verified",
+  "rows": 30,
+  "parseErrors": 0,
+  "bom": true,
+  "crlf": true,
+  "grossPieces": "360",
+  "rejectedPieces": "16",
+  "scrapPercent": "4,444444444444445",
+  "allRowsSameScope": true,
+  "allRowsSameRate": true,
+  "operationalDate": "2026-10-07",
+  "parameterColumns": 3,
+  "origin": "demo",
+  "firebaseSourceMatched": true,
+  "sourceConfirmedGross": 360,
+  "sourceReject": 16,
+  "finalCode": "b1cb5a9",
+  "validExportUnchangedAfterAllocationFix": true
+}
