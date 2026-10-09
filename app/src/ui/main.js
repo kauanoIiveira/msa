@@ -5,7 +5,7 @@ import {patchSnapshot} from './snapshot-dom.js';
 import {productionContextCard} from './production-context-card.js';
 import {initialSelection} from './production-selection.js';
 import {parametersPage,visibleParameters} from './parameters-page.js';
-import {equipmentPage,equipmentView,equipmentHistoryQuery,equipmentResults,equipmentConsultation} from './equipment-page.js';
+import {equipmentPage,equipmentRows,equipmentHistoryQuery,equipmentResults,equipmentConsultation} from './equipment-page.js';
 import {createProductionJourney} from './production-journey.js';
 import {requireThat} from '../domain/errors.js';
 import {saoPauloInstant} from './forms.js';
@@ -1005,7 +1005,7 @@ async function exportCsv() {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-function renderEquipmentResults(){const args={catalog:state.registries,events:state.equipmentEvents??{},state};document.getElementById('equipment-results').innerHTML=equipmentResults(equipmentView({...args,selection:{order:'name',...state.equipmentFilters}}),equipmentView(args));}
+function renderEquipmentResults(){document.getElementById('equipment-results').innerHTML=equipmentResults(equipmentRows(state,{order:'name',...state.equipmentFilters}),Object.values(state.registries.machines??{}));}
 async function action(action) {
   if(action==='equipment-clear'){state.equipmentFilters={};layout();return;}
   if(action.startsWith('equipment-consult:')||action.startsWith('equipment-records:')){
@@ -1029,13 +1029,13 @@ async function action(action) {
     applyQuery({context:r.context,fromDate:day,toDate:day,shift:'all'});state.route=action==='saved-history'?'history':saved.kind==='collections'?'parameters':'production';state.tab.history=saved.kind;state.pageTabs.production='summary';history.replaceState(null,'','#'+state.route);await refresh();if(action==='saved-history')detail(saved.kind,r.id);return;
   }
   if(action.startsWith('equipment-history:')){
-    const id=action.slice(18),row=equipmentView({catalog:state.registries,events:state.equipmentEvents,state,selection:{sector:state.equipmentFilters?.sector}}).find(r=>r.id===id),record=Object.values(state.equipmentEvents?.collections??{}).find(r=>row?.conflictedRecordIds.includes(r.id));
+    const id=action.slice(18),row=equipmentRows(state,{sector:state.equipmentFilters?.sector}).find(r=>r.id===id),record=Object.values(state.equipmentEvents?.collections??{}).find(r=>row?.conflictedRecordIds.includes(r.id));
     if(!record)return;applyQuery(equipmentHistoryQuery(record));state.route='history';state.tab.history='collections';modal.close();history.replaceState(null,'','#history');await refresh();return;
   }
   if(action.startsWith('equipment-case-consult:')){const row=state.productionCases.find(r=>r.id===action.slice(23));if(!row)return;applyQuery({context:{machineId:row.machineId,processId:row.processId,productId:row.productId,order:row.order,lot:row.lot},fromDate:row.operationalDate,toDate:row.operationalDate,shift:row.shift});state.route='production';modal.close();history.replaceState(null,'','#production');await refresh();return;}
   if(action.startsWith('equipment-register:'))return journey.choose(action.slice(19));
   if(action.startsWith('equipment-detail:')){
-    const id=action.slice(17),row=equipmentView({catalog:state.registries,events:state.equipmentEvents,state,selection:{sector:state.equipmentFilters?.sector}}).find(r=>r.id===id);
+    const id=action.slice(17),row=equipmentRows(state,{sector:state.equipmentFilters?.sector}).find(r=>r.id===id);
     if(row){
       const conflict=row.conflictedRecordIds.length?`<p>Os valores permanecem indisponíveis até resolver a revisão.</p><button class="btn" data-action="equipment-history:${e(row.id)}">Ver conflito no histórico</button>`:'';
       const readings=row.lastReading?recordContextMarkup(row.lastReading,state.registries)+`<dl>${Object.values(row.lastReading.readings??{}).map(r=>`<dt>${e(name('parameters',r.parameterId))}</dt><dd>${e(r.raw??'Sem leitura')} ${e(state.registries.parameterVersions?.[r.versionId]?.unit??'')} · versão ${e(r.versionId)}</dd>`).join('')}</dl>`:'';

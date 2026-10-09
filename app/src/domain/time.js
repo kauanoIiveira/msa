@@ -1,4 +1,5 @@
 import {requireThat} from './errors.js';
+const operationalDateFormatter=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'});
 export function assertInstant(value) { requireThat(Number.isSafeInteger(value)&&value>=0,'INVALID_TIME');return value; }
 export function validateDate(value) {
   requireThat(typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value),'INVALID_DATE');
@@ -6,7 +7,7 @@ export function validateDate(value) {
 }
 export function eventDate(instant) {
   assertInstant(instant);
-  const parts=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(instant).map(p=>[p.type,p.value]));
+  const parts=Object.fromEntries(operationalDateFormatter.formatToParts(instant).map(p=>[p.type,p.value]));
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 export function assertPeriod(startedAt,endedAt) {assertInstant(startedAt);assertInstant(endedAt);requireThat(endedAt>startedAt,'INVALID_PERIOD');}
