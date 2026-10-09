@@ -5,7 +5,9 @@
 export function canonicalDatasetValue(value){
   if(Array.isArray(value))return value.map(canonicalDatasetValue);
   if(value&&typeof value==='object'){
-    const pairs=Object.keys(value).sort().filter(k=>!['createdAt','closedAt'].includes(k)&&value[k]!=null).map(k=>[k,canonicalDatasetValue(value[k])]).filter(([,v])=>v!=null&&!(typeof v==='object'&&!Object.keys(v).length));
+    const review=typeof value.collectionId==='string'&&typeof value.scope==='string'&&value.context&&value.history&&['waiting','analyzing','approved','rejected'].includes(value.state);
+    const child=k=>review&&k==='history'?Object.fromEntries(Object.entries(value.history).map(([index,event])=>[index,/^(0|[1-9]\d*)$/.test(index)&&event&&typeof event==='object'?Object.fromEntries(Object.entries(event).filter(([field])=>field!=='at')):event])):value[k];
+    const pairs=Object.keys(value).sort().filter(k=>!['createdAt','closedAt'].includes(k)&&value[k]!=null).map(k=>[k,canonicalDatasetValue(child(k))]).filter(([,v])=>v!=null&&!(typeof v==='object'&&!Object.keys(v).length));
     return pairs.length?Object.fromEntries(pairs):null;
   }
   return value;

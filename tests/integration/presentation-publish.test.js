@@ -4,7 +4,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {setup,sdk} from '../helpers/firebase-env.js';
 import {createFirebaseRepository} from '../../app/src/repositories/firebase-repository.js';
-import {prepare,publish} from '../../app/src/services/presentation-dataset.js';
+import {prepare,publish,prepareRevision} from '../../app/src/services/presentation-dataset.js';
 import {datasetHash} from '../../app/src/presentation/dataset-hash.js';
 test('authenticated publication persists actual stamps, resumes inside a plan and is visible in another session',async t=>{
  const env=await setup(t),repo=uid=>createFirebaseRepository({db:env.authenticatedContext(uid).database(),sdk,workspaceId:'demo'}),admin=repo('admin'),actor={uid:'admin',role:'admin'};
@@ -22,4 +22,17 @@ test('authenticated publication persists actual stamps, resumes inside a plan an
  const before=await datasetHash(await admin.get('members/admin'));assert.equal((await publish({preview,expectedHash:preview.previewHash,repo:admin,actor})).created,0);assert.equal(await datasetHash(await admin.get('members/admin')),before);
  // Claiming admin in JS does not change the authenticated viewer's rule permissions.
  await assert.rejects(()=>publish({preview,expectedHash:preview.previewHash,repo:viewer,actor:{uid:'view',role:'admin'}}));
+ // Replay review commands through the publisher with real RTDB-resolved clocks.
+ const collection=Object.values(await admin.get('collections')).find(row=>row.context.variant==='Medium'),prefix=manifest.packageId+'_rev_evaluation';
+ const commands=[{id:prefix+'_review',service:'analysis',method:'submitReview',args:[{collectionId:collection.id,scope:'Conferência'}]},{id:prefix+'_start',service:'analysis',method:'startReview',args:[{$ref:prefix+'_review',path:['id']}]},{id:prefix+'_approve',service:'analysis',method:'decideReview',args:[{$ref:prefix+'_review',path:['id']},{decision:'approved',justification:'Conferido'}]}];
+ const revision=await prepareRevision({repo:admin,actor,baseManifestId:manifest.id,revision:'evaluation',commands}),reviewPath=revision.intents[0].path;
+ let waiting;const cutCreate={...admin,create:async(path,row)=>{const result=await admin.create(path,row);if(path===reviewPath){waiting=await admin.get(path);throw Error('REVIEW_INTERRUPTED');}return result;}};
+ await assert.rejects(()=>publish({preview:revision,expectedHash:revision.previewHash,repo:cutCreate,actor}),/REVIEW_INTERRUPTED/);
+ assert.equal(typeof waiting.history[0].at,'number');
+ let analyzing;const cutStart={...admin,transact:async(path,update)=>{const result=await admin.transact(path,update);if(path===reviewPath){analyzing=await admin.get(path);throw Error('REVIEW_INTERRUPTED');}return result;}};
+ await assert.rejects(()=>publish({preview:revision,expectedHash:revision.previewHash,repo:cutStart,actor}),/REVIEW_INTERRUPTED/);
+ assert.deepEqual(analyzing.history[0],waiting.history[0]);assert.equal(typeof analyzing.history[1].at,'number');
+ await publish({preview:revision,expectedHash:revision.previewHash,repo:admin,actor});
+ const approved=await viewer.get(reviewPath);assert.equal(approved.state,'approved');assert.equal(approved.context.variant,'Medium');assert.deepEqual(approved.history[0],waiting.history[0]);assert.deepEqual(approved.history[1],analyzing.history[1]);assert.equal(typeof approved.history[2].at,'number');
+ assert.equal((await publish({preview:revision,expectedHash:revision.previewHash,repo:admin,actor})).created,0);
 });

@@ -11,19 +11,22 @@ import {firebaseConfig} from '../app/src/config/firebase.js';
 import {loginAccounts} from '../app/src/config/login-accounts.js';
 import {resolveLoginEmail} from '../app/src/services/auth.js';
 import {createFirebaseRepository} from '../app/src/repositories/firebase-repository.js';
-import {prepare,prepareRevision,publish,readPresentationSnapshot,assertPrivateBackupPreserved} from '../app/src/services/presentation-dataset.js';
+import {prepare,prepareRevision,publish,readPresentationSnapshot,assertPrivateBackupPreserved,reprepareEvaluationPreview} from '../app/src/services/presentation-dataset.js';
 import {datasetHash,manifestEntryValue} from '../app/src/presentation/dataset-hash.js';
 import {stableStringify} from '../app/src/domain/canonical.js';
 import {shiftAt} from '../app/src/domain/shifts.js';
 const args=process.argv.slice(2),flags=new Map();
-for(let n=0;n<args.length;n++){const flag=args[n];if(['--apply','--dry-run','--help','--machine-expansion','--evaluation-examples'].includes(flag))flags.set(flag,true);else if(['--preview','--anchor-date','--version','--backup','--evidence','--base-manifest','--revision'].includes(flag)&&args[n+1]&&!args[n+1].startsWith('--'))flags.set(flag,args[++n]);else throw new Error('INVALID_ARGUMENT');}
-if(flags.has('--help')){console.log('Default: --dry-run --preview <private file>. Apply: --apply --preview <same private file>. Revision dry-run: --evaluation-examples --base-manifest <published ID> --revision evaluation, or --machine-expansion --base-manifest <published ID> --revision machines. Optional: --backup <private JSON> --anchor-date YYYY-MM-DD --version v1 --evidence <sanitized report>. Credentials only in MSA_TEST_RE and MSA_TEST_PASSWORD. Scope fixed: msayellowteam/workspaces/msa.');process.exit(0);}
+for(let n=0;n<args.length;n++){const flag=args[n];if(['--apply','--dry-run','--help','--machine-expansion','--evaluation-examples'].includes(flag))flags.set(flag,true);else if(['--preview','--reprepare-preview','--anchor-date','--version','--backup','--evidence','--base-manifest','--revision'].includes(flag)&&args[n+1]&&!args[n+1].startsWith('--'))flags.set(flag,args[++n]);else throw new Error('INVALID_ARGUMENT');}
+if(flags.has('--help')){console.log('Default: --dry-run --preview <private file>. Apply: --apply --preview <same private file>. Read-only repair: --reprepare-preview <original private file> --preview <new private file>. Revision dry-run: --evaluation-examples --base-manifest <published ID> --revision evaluation, or --machine-expansion --base-manifest <published ID> --revision machines. Optional: --backup <private JSON> --anchor-date YYYY-MM-DD --version v1 --evidence <sanitized report>. Credentials only in MSA_TEST_RE and MSA_TEST_PASSWORD. Scope fixed: msayellowteam/workspaces/msa.');process.exit(0);}
 if(flags.has('--evaluation-examples')&&flags.has('--machine-expansion'))throw new Error('AMBIGUOUS_REVISION');
 if(flags.has('--apply')&&flags.has('--dry-run'))throw new Error('AMBIGUOUS_MODE');
+if(flags.has('--reprepare-preview')&&['--apply','--evaluation-examples','--machine-expansion','--backup','--base-manifest','--revision','--anchor-date','--version'].some(flag=>flags.has(flag)))throw new Error('AMBIGUOUS_MODE');
 if(firebaseConfig.projectId!=='msayellowteam'||firebaseConfig.databaseURL!=='https://msayellowteam-default-rtdb.firebaseio.com')throw new Error('WRONG_PROJECT');
 const privateRoot=resolve(process.env.USERPROFILE??process.env.HOME,'.codex/private/msa-jornada-coesa');
 function privatePath(value){const path=resolve(value),rel=relative(privateRoot,path);if(!rel||rel.startsWith('..')||isAbsolute(rel))throw new Error('PRIVATE_PATH_REQUIRED');return path;}
 const previewPath=privatePath(flags.get('--preview')??join(privateRoot,'publication-preview.json'));
+const repreparePath=flags.has('--reprepare-preview')?privatePath(flags.get('--reprepare-preview')):null;
+if(repreparePath&&(!flags.has('--preview')||repreparePath.toLowerCase()===previewPath.toLowerCase()))throw new Error('NEW_PREVIEW_PATH_REQUIRED');
 const hash=value=>datasetHash(stableStringify(value));
 async function backup(label){const file=join(privateRoot,`${label}-${Date.now()}.json`);await mkdir(privateRoot,{recursive:true});await new Promise((ok,fail)=>{const child=spawn(process.execPath,['node_modules/firebase-tools/lib/bin/firebase.js','database:get','/workspaces/msa','--project','msayellowteam','--output',file],{stdio:'ignore'});child.on('error',()=>fail(new Error('PRIVATE_BACKUP_FAILED')));child.on('exit',code=>code===0?ok():fail(new Error('PRIVATE_BACKUP_FAILED')));});return {file,snapshot:JSON.parse(await readFile(file,'utf8'))};}
 async function session(name){const app=initializeApp(firebaseConfig,name),auth=getAuth(app);try{const credential=await signInWithEmailAndPassword(auth,resolveLoginEmail(process.env.MSA_TEST_RE,loginAccounts),process.env.MSA_TEST_PASSWORD??'');const repo=createFirebaseRepository({db:sdk.getDatabase(app),sdk,workspaceId:'msa'}),member=await repo.get('members/'+credential.user.uid);if(member?.role!=='admin')throw new Error('ADMIN_SESSION_REQUIRED');return {app,auth,repo,actor:{uid:credential.user.uid,role:member.role}};}catch{await deleteApp(app);throw new Error('AUTHORIZED_SESSION_REQUIRED');}}
@@ -32,7 +35,12 @@ try{
  if(!process.env.MSA_TEST_RE||!process.env.MSA_TEST_PASSWORD)throw new Error('AUTHORIZED_SESSION_REQUIRED');
  const active=await session('msa-publication-'+Date.now());sessions.push(active);
  let evidence;
- if(!flags.has('--apply')){
+ if(repreparePath){
+  const original=JSON.parse(await readFile(repreparePath,'utf8')),current=await backup('before-reprepare');
+  const envelope=await reprepareEvaluationPreview({envelope:original,repo:active.repo,actor:active.actor,currentFullBackup:current.snapshot});
+  await mkdir(dirname(previewPath),{recursive:true});await writeFile(previewPath,JSON.stringify(envelope),{flag:'wx'});
+  evidence={status:'reprepared-cloud-not-published',manifestId:envelope.preview.manifest.id,commands:envelope.preview.commands.length,entries:envelope.preview.manifest.entries.length,previewHash:envelope.preview.previewHash,originalPreviewHash:original.preview.previewHash,backupHash:envelope.preview.backupHash,fullBackupHash:envelope.fullBackupHash};
+ }else if(!flags.has('--apply')){
   const full=flags.has('--backup')?{file:privatePath(flags.get('--backup')),snapshot:JSON.parse(await readFile(privatePath(flags.get('--backup')),'utf8'))}:await backup('before');
   let preview;
   if(flags.has('--evaluation-examples')){const baseManifestId=flags.get('--base-manifest'),revision=flags.get('--revision')??'evaluation';if(!baseManifestId)throw new Error('BASE_MANIFEST_REQUIRED');if(revision!=='evaluation')throw new Error('INVALID_REVISION');const snapshot=await readPresentationSnapshot(active.repo),commands=buildEvaluationExamples({snapshot,baseManifestId,revision});preview=await prepareRevision({repo:active.repo,actor:active.actor,baseManifestId,revision,commands});}

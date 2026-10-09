@@ -94,7 +94,10 @@ export async function publish({preview,expectedHash,repo,actor,onProgress}){
   else await repo.transact(path,row=>{
    requireThat(same(row,live),'CONCURRENT_CHANGE');
    // Domain transition is replayed with the actual server timestamp. Existing audits stay intact.
-   const output={...row,...next};if(row?.createdAt!=null)output.createdAt=row.createdAt;return output;
+   const output={...row,...next};if(row?.createdAt!=null)output.createdAt=row.createdAt;
+   if(row?.closedAt!=null)output.closedAt=row.closedAt;
+   if(path.startsWith('reviews/')&&row?.history)output.history={...next.history,...clone(row.history)};
+   return output;
   });
   if(kind==='create')created++;else updated++;await notify('writing');return next;
  }
@@ -115,4 +118,29 @@ export function createPresentationService({repo,actor}){return {prepare:options=
 export async function assertPrivateBackupPreserved(original,current,preview){
  const privatePreview={...preview,baselineSnapshot:original};
  requireThat(await contentHash(outsidePackage(current,privatePreview))===await contentHash(prune(clone(original))),'PRIVATE_BACKUP_CHANGED');
+}
+
+// Read-only repair of an unpublished evaluation envelope. Replay only its original
+// baseline; a partial live publication is never accepted as a replacement baseline.
+export async function reprepareEvaluationPreview({envelope,repo,actor,currentFullBackup}){
+ assertRole(actor,['admin']);
+ requireThat(envelope.projectId==='msayellowteam'&&envelope.workspaceId==='msa'&&await contentHash(envelope.fullBackup)===envelope.fullBackupHash,'PRIVATE_BACKUP_INVALID');
+ const original=envelope.preview,{previewHash,...body}=original;
+ requireThat(same(actor,original.actor),'ACTOR_CHANGED');
+ requireThat(await contentHash(body)===previewHash,'PREVIEW_HASH_MISMATCH');
+ requireThat(await contentHash(original.baselineSnapshot)===original.backupHash,'BACKUP_HASH_MISMATCH');
+ requireThat(original.format===1&&!original.conflicts.length&&original.manifest.version==='evaluation'&&original.manifest.id===original.manifest.packageId+'_rev_evaluation','INVALID_PREVIEW');
+ requireThat(!await repo.get('presentationManifests/'+original.manifest.id),'MANIFEST_EXISTS');
+ const originalRepo=await isolated(original.baselineSnapshot,()=>({'.sv':'timestamp'})),fullRepo=await isolated(envelope.fullBackup,()=>({'.sv':'timestamp'}));
+ requireThat(await contentHash(await readPresentationSnapshot(fullRepo))===original.backupHash,'BACKUP_HASH_MISMATCH');
+ const candidate=await prepareRevision({repo:originalRepo,actor,baseManifestId:original.manifest.baseManifestId,revision:'evaluation',commands:clone(original.commands)});
+ requireThat(!candidate.conflicts.length&&same(candidate.intents,original.intents)&&candidate.backupHash===original.backupHash,'REPREPARE_CONTENT_CHANGED');
+ const inherited=original.baselineSnapshot.presentationManifests[original.manifest.baseManifestId].entries;
+ requireThat(same(original.manifest.entries.slice(0,inherited.length),inherited)&&same(candidate.manifest.entries.slice(0,inherited.length),inherited),'INHERITED_DIGEST_CHANGED');
+ const withoutHashes=manifest=>({...manifest,entries:manifest.entries.map(({hash,...entry})=>entry)});
+ requireThat(same(withoutHashes(candidate.manifest),withoutHashes(original.manifest)),'REPREPARE_CONTENT_CHANGED');
+ for(let n=inherited.length;n<candidate.manifest.entries.length;n++)if(!candidate.manifest.entries[n].path.startsWith('reviews/'))requireThat(candidate.manifest.entries[n].hash===original.manifest.entries[n].hash,'REPREPARE_CONTENT_CHANGED');
+ await assertPrivateBackupPreserved(envelope.fullBackup,currentFullBackup,candidate);
+ await preflight(candidate,repo);
+ return {...clone(envelope),preview:candidate};
 }
