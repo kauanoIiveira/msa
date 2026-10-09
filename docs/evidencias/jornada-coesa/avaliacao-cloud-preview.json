@@ -1,0 +1,10 @@
+{
+  "status": "prepared-cloud-not-published",
+  "manifestId": "presentation_20261008_v1_rev_evaluation",
+  "commands": 120,
+  "entries": 2478,
+  "conflicts": [],
+  "previewHash": "c8d5c4ef88b4a4b4a048e2f7f0fb0dd096a7aaccc145b33ae20d9d9de42a7010",
+  "backupHash": "2902d30263c4d79c06fa2f74a85c1a3a04a825d1987a83cced0eacb96486f3a5",
+  "fullBackupHash": "4b5e28f617eb7dd7eb01874938c9c5e70914ce6b03842fcb71247929006a2183"
+}

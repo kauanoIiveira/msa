@@ -1,0 +1,15 @@
+{
+  "status": "published-and-reloaded",
+  "manifestId": "presentation_20261008_v1_rev_evaluation",
+  "created": 121,
+  "updated": 10,
+  "existing": 4,
+  "repeatCreated": 0,
+  "verifiedEntries": 2478,
+  "previewHash": "eddc8cb01fd2b2b9b51f1d079251d91c2deb84b6c7ce3848ba11b01537144834",
+  "entriesHash": "6bee4c2376b0523ac9c38bc2e470b860726d8591b882d6d3e3866207fd708184",
+  "membersPreserved": true,
+  "outsidePackagePreserved": true,
+  "secondAuthenticatedSession": true,
+  "distinctUsers": false
+}
