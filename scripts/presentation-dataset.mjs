@@ -1,3 +1,4 @@
+import {buildEvaluationExamples} from '../app/src/presentation/evaluation-examples.js';
 import {buildMachineExpansion} from '../app/src/presentation/machine-expansion.js';
 // Authenticated client publication only. Firebase CLI is used strictly for private read-only backups.
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
@@ -15,8 +16,9 @@ import {datasetHash,manifestEntryValue} from '../app/src/presentation/dataset-ha
 import {stableStringify} from '../app/src/domain/canonical.js';
 import {shiftAt} from '../app/src/domain/shifts.js';
 const args=process.argv.slice(2),flags=new Map();
-for(let n=0;n<args.length;n++){const flag=args[n];if(['--apply','--dry-run','--help','--machine-expansion'].includes(flag))flags.set(flag,true);else if(['--preview','--anchor-date','--version','--backup','--evidence','--base-manifest','--revision'].includes(flag)&&args[n+1]&&!args[n+1].startsWith('--'))flags.set(flag,args[++n]);else throw new Error('INVALID_ARGUMENT');}
-if(flags.has('--help')){console.log('Default: --dry-run --preview <private file>. Apply: --apply --preview <same private file>. Revision dry-run: --machine-expansion --base-manifest <published ID> --revision machines. Optional: --backup <private JSON> --anchor-date YYYY-MM-DD --version v1 --evidence <sanitized report>. Credentials only in MSA_TEST_RE and MSA_TEST_PASSWORD. Scope fixed: msayellowteam/workspaces/msa.');process.exit(0);}
+for(let n=0;n<args.length;n++){const flag=args[n];if(['--apply','--dry-run','--help','--machine-expansion','--evaluation-examples'].includes(flag))flags.set(flag,true);else if(['--preview','--anchor-date','--version','--backup','--evidence','--base-manifest','--revision'].includes(flag)&&args[n+1]&&!args[n+1].startsWith('--'))flags.set(flag,args[++n]);else throw new Error('INVALID_ARGUMENT');}
+if(flags.has('--help')){console.log('Default: --dry-run --preview <private file>. Apply: --apply --preview <same private file>. Revision dry-run: --evaluation-examples --base-manifest <published ID> --revision evaluation, or --machine-expansion --base-manifest <published ID> --revision machines. Optional: --backup <private JSON> --anchor-date YYYY-MM-DD --version v1 --evidence <sanitized report>. Credentials only in MSA_TEST_RE and MSA_TEST_PASSWORD. Scope fixed: msayellowteam/workspaces/msa.');process.exit(0);}
+if(flags.has('--evaluation-examples')&&flags.has('--machine-expansion'))throw new Error('AMBIGUOUS_REVISION');
 if(flags.has('--apply')&&flags.has('--dry-run'))throw new Error('AMBIGUOUS_MODE');
 if(firebaseConfig.projectId!=='msayellowteam'||firebaseConfig.databaseURL!=='https://msayellowteam-default-rtdb.firebaseio.com')throw new Error('WRONG_PROJECT');
 const privateRoot=resolve(process.env.USERPROFILE??process.env.HOME,'.codex/private/msa-jornada-coesa');
@@ -33,7 +35,8 @@ try{
  if(!flags.has('--apply')){
   const full=flags.has('--backup')?{file:privatePath(flags.get('--backup')),snapshot:JSON.parse(await readFile(privatePath(flags.get('--backup')),'utf8'))}:await backup('before');
   let preview;
-  if(flags.has('--machine-expansion')){const baseManifestId=flags.get('--base-manifest'),revision=flags.get('--revision')??'machines';if(!baseManifestId)throw new Error('BASE_MANIFEST_REQUIRED');const base=await active.repo.get('presentationManifests/'+baseManifestId);if(base?.state!=='published')throw new Error('BASE_MANIFEST_REQUIRED');const commands=buildMachineExpansion({baseManifestId,packageId:base.packageId,revision,operationalDate:base.toOperationalDate});preview=await prepareRevision({repo:active.repo,actor:active.actor,baseManifestId,revision,commands});}
+  if(flags.has('--evaluation-examples')){const baseManifestId=flags.get('--base-manifest'),revision=flags.get('--revision')??'evaluation';if(!baseManifestId)throw new Error('BASE_MANIFEST_REQUIRED');if(revision!=='evaluation')throw new Error('INVALID_REVISION');const snapshot=await readPresentationSnapshot(active.repo),commands=buildEvaluationExamples({snapshot,baseManifestId,revision});preview=await prepareRevision({repo:active.repo,actor:active.actor,baseManifestId,revision,commands});}
+  else if(flags.has('--machine-expansion')){const baseManifestId=flags.get('--base-manifest'),revision=flags.get('--revision')??'machines';if(!baseManifestId)throw new Error('BASE_MANIFEST_REQUIRED');const base=await active.repo.get('presentationManifests/'+baseManifestId);if(base?.state!=='published')throw new Error('BASE_MANIFEST_REQUIRED');const commands=buildMachineExpansion({baseManifestId,packageId:base.packageId,revision,operationalDate:base.toOperationalDate});preview=await prepareRevision({repo:active.repo,actor:active.actor,baseManifestId,revision,commands});}
   else preview=await prepare({repo:active.repo,actor:active.actor,anchorDate:flags.get('--anchor-date')??shiftAt(Date.now()).operationalDate,version:flags.get('--version')??'v1'});
   await assertPrivateBackupPreserved(full.snapshot,await backup('preflight').then(r=>r.snapshot),preview);
   const envelope={projectId:'msayellowteam',workspaceId:'msa',preview,fullBackup:full.snapshot,fullBackupHash:await hash(full.snapshot)};

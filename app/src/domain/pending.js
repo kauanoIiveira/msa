@@ -1,4 +1,5 @@
 import {matchesScope} from './production-policy.js';
+import {latestOccurrenceDecision} from './occurrences.js';
 import {evaluateReading} from './limits.js';
 import {contextKey} from './context.js';
 export function buildPending({pendingBase={},period={},technical=[],productivity={},consultation,actor,asOf=Date.now()}){
@@ -7,7 +8,7 @@ export function buildPending({pendingBase={},period={},technical=[],productivity
  for(const s of pendingBase.effective?.stoppages??[])if(s.endedAt==null&&matchesScope(ctx,s.context)){const c=technical.filter(r=>r.kind==='classification'&&r.stopId===s.id).at(-1);add(open,'stoppages',s,'stoppages','open',['Parada em aberto',...(!c?['Classificação pendente']:[])],op?'close-stoppage':null);}
  for(const r of pendingBase.reviews??[])if(['waiting','analyzing'].includes(r.state))add(open,'reviews',r,'engineering','reviews',['Análise '+(r.state==='waiting'?'aguardando':'em andamento')],eng?'review':null);
  for(const r of pendingBase.corrections??[])if(r.state==='waiting')add(open,'corrections',r,'engineering','corrections',['Correção aguardando decisão'],eng&&r.createdBy!==actor.uid?'decide-correction':null);
- for(const r of technical.filter(r=>r.kind==='occurrence'&&matchesScope(ctx,r.context))){const last=technical.filter(x=>x.kind==='occurrence-decision'&&x.occurrenceId===r.id).at(-1);if(last?.decision!=='resolved')add(open,'occurrence',r,'engineering','occurrences',['Ocorrência '+(last?.decision==='analyzing'?'em análise':'aguardando análise')],eng?'decide-occurrence':null);}
+ for(const r of technical.filter(r=>r.kind==='occurrence'&&matchesScope(ctx,r.context))){const last=latestOccurrenceDecision(technical,r.id);if(last?.decision!=='resolved')add(open,'occurrence',r,'engineering','occurrences',['Ocorrência '+(last?.decision==='analyzing'?'em análise':'aguardando análise')],eng?'decide-occurrence':null);}
  const missingReferences=new Set();
  for(const [id,h]of Object.entries(period.intervalHeaders??{}))if(h.endedAt<=asOf&&matchesScope(ctx,h.context)&&(period.plans??[]).some(p=>p.intervals?.some(i=>i.id===id))){
   const conditions=[];if(!period.closures?.[id])conditions.push('Confirmação pendente');if(!technical.some(r=>r.kind==='inspection'&&r.intervalId===id))conditions.push('Inspeção pendente');

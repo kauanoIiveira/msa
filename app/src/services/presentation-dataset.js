@@ -1,4 +1,5 @@
 import {validateMachineExpansion} from '../presentation/machine-expansion.js';
+import {validateEvaluationExamples} from '../presentation/evaluation-examples.js';
 import {assertRole,assertId,requireThat} from '../domain/errors.js';
 import {stableStringify} from '../domain/canonical.js';
 import {shiftAt} from '../domain/shifts.js';
@@ -43,6 +44,7 @@ export async function prepareRevision({repo,actor,baseManifestId,revision,comman
  const snapshot=await readPresentationSnapshot(local),validation=await validatePresentationDataset(snapshot,manifest);
  validation.diagnostics.push(...await validatePresentationProjection(createMsaServices({repo:local,actor}),manifest,validation.metricsByContext));
  validation.diagnostics.push(...(await validateMachineExpansion(createMsaServices({repo:local,actor}),manifest)).diagnostics);
+  validation.diagnostics.push(...(await validateEvaluationExamples(createMsaServices({repo:local,actor}),manifest)).diagnostics);
  return seal({manifest,commands,intents,diagnostics:validation.diagnostics},baseline,actor);
 }
 function outsidePackage(snapshot,preview){
@@ -70,7 +72,7 @@ async function verifyPersisted(snapshot,manifest,repo,actor){
  const validation=await validatePresentationDataset(snapshot,manifest);requireThat(validation.ok,'VERIFICATION_FAILED');
  // The caller just reloaded every business root and checked all entry digests.
  const fresh=await isolated(snapshot,()=>repo.timestamp()),services=createMsaServices({repo:fresh,actor});
- const diagnostics=await validatePresentationProjection(services,manifest,validation.metricsByContext);diagnostics.push(...(await validateMachineExpansion(services,manifest)).diagnostics);requireThat(!diagnostics.length,'VERIFICATION_FAILED');
+ const diagnostics=await validatePresentationProjection(services,manifest,validation.metricsByContext);diagnostics.push(...(await validateMachineExpansion(services,manifest)).diagnostics,...(await validateEvaluationExamples(services,manifest)).diagnostics);requireThat(!diagnostics.length,'VERIFICATION_FAILED');
 }
 export async function publish({preview,expectedHash,repo,actor,onProgress}){
  assertRole(actor,['admin']);requireThat(same(actor,preview.actor),'ACTOR_CHANGED');
